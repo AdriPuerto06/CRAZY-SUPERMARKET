@@ -221,15 +221,15 @@ void Scene::LoadLevel1() {
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
 
-	//Create a new item using the entity manager and set the position to (200, 672) to test
-	std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
-	item->position = Vector2D(200, 672);
-	item->Start(); //L17 Important call Start
+	////Create a new item using the entity manager and set the position to (200, 672) to test
+	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
+	//item->position = Vector2D(200, 672);
+	//item->Start(); //L17 Important call Start
 
-	//Create a new enemy 
-	std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
-	enemy1->position = Vector2D(384, 672);
-	enemy1->Start(); //L17 Important call Start
+	////Create a new enemy 
+	//std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
+	//enemy1->position = Vector2D(384, 672);
+	//enemy1->Start(); //L17 Important call Start
 }
 
 void Scene::UpdateLevel1(float dt) {
