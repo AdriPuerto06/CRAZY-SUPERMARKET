@@ -97,20 +97,7 @@ void Player::Move() {
 	}
 }
 
-void Player::Jump() {
-	//// This function can be used for more complex jump logic if needed
-	//if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-	//	Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
-	//	anims.SetCurrent("jump");
-	//	isJumping = true;
-	//}
-}
-
 void Player::ApplyPhysics() {
-	//// Preserve vertical speed while jumping
-	//if (isJumping == true) {
-	//	velocity.y = Engine::GetInstance().physics->GetYVelocity(pbody);
-	//}
 
 	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
