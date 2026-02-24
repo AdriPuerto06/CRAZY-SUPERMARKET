@@ -36,6 +36,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	// IMG
+	gameLogo = Engine::GetInstance().textures->Load("Assets/Textures/.png");
 	return true;
 }
 
@@ -181,7 +183,10 @@ void Scene::UnloadCurrentScene() {
 void Scene::LoadMainMenu() {
 
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
-
+	//imagen grupo
+	Engine::GetInstance().render->DrawTexture();
+	// imagen logo juego
+	
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "MyButton", btPos, this));
