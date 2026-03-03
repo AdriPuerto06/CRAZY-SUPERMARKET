@@ -38,6 +38,8 @@ public:
 	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool useCamera = true) const;
 	// L16: method DrawText to render text on screen. Uses SDL3_ttf
 	bool DrawText(const char* text, int x, int y, int w, int h, SDL_Color color) const;
+	bool TextDisplay(const char* text);
+	bool AnimatedTextDisplay(const char* text);
 
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);

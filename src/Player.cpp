@@ -55,7 +55,6 @@ bool Player::Update(float dt)
 {
 	GetPhysicsValues();
 	Move();
-	Jump();
 	Teleport();
 	ApplyPhysics();
 	Draw(dt);
@@ -83,15 +82,15 @@ void Player::Move() {
 		velocity.x = -speed;
 		anims.SetCurrent("move");
 	}
-	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
 		anims.SetCurrent("move");
 	}
-	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		velocity.y = -speed;
 		anims.SetCurrent("move");
 	}
-	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		velocity.y = speed;
 		anims.SetCurrent("move");
 	}

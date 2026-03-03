@@ -7,6 +7,32 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+#define CHAR_LENGTH 10
+#define CHAR_HEIGHT 16
+#define TEXT_DISPLAY_X 50
+#define TEXT_DISPLAY_Y 600
+
+#define MAX_CHARS_PER_LINE 50
+
+int Length(const char* text) {
+	int count = 0;
+	while (text[count] != '\0') { count++; }
+	return count;
+}
+
+char* GetChars(const char* text, int n) {
+	//Security check
+	int check_length = Length(text);
+	if (n > check_length) 
+
+	char* ret_text;
+	for (int i = 0; i < n; i++) {
+		ret_text[i] = text[i];
+	}
+
+	return ret_text;
+}
+
 Render::Render() : Module()
 {
 	name = "render";
@@ -331,4 +357,20 @@ bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color co
 	return true;
 }
 
+bool Render::TextDisplay(const char* text) {
+	int w = Length(text)*CHAR_LENGTH;
+	int h = CHAR_HEIGHT;
+	SDL_Color color = { 0,0,0,0 };
+	DrawText(text, TEXT_DISPLAY_X, TEXT_DISPLAY_Y, w, h, color);
 
+	return true;
+}
+
+bool Render::AnimatedTextDisplay(const char* text) {
+	//Increase the text shown per time
+	int chars = 1;
+	const char* displayed_text = text;
+
+
+	return true;
+}
