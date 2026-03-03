@@ -9,28 +9,21 @@
 
 #define CHAR_LENGTH 10
 #define CHAR_HEIGHT 16
-#define TEXT_DISPLAY_X 50
+#define TEXT_DISPLAY_X 70
 #define TEXT_DISPLAY_Y 600
 
 #define MAX_CHARS_PER_LINE 50
+
+std::string fullText;
+int visibleChars = 0;
+float typeTimer = 0.0f;
+float typeSpeed = 0.05f;
+bool isTyping = false;
 
 int Length(const char* text) {
 	int count = 0;
 	while (text[count] != '\0') { count++; }
 	return count;
-}
-
-char* GetChars(const char* text, int n) {
-	//Security check
-	int check_length = Length(text);
-	if (n > check_length) {/*stop?*/ }
-
-	char* ret_text = nullptr;
-	for (int i = 0; i < n; i++) {
-		ret_text[i] = text[i];
-	}
-
-	return ret_text;
 }
 
 Render::Render() : Module()
@@ -116,11 +109,34 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+	if (isTyping)
+	{
+		typeTimer += dt;
+
+		if (typeTimer >= typeSpeed)
+		{
+			typeTimer = 0.0f;
+
+			if (visibleChars < fullText.size())
+			{
+				visibleChars++;
+			}
+			else
+			{
+				isTyping = false;
+			}
+		}
+	}
 	return true;
 }
 
 bool Render::PostUpdate()
 {
+	if (!fullText.empty())
+	{
+		std::string visible = fullText.substr(0, visibleChars);
+		TextDisplay(visible);
+	}
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
@@ -357,26 +373,31 @@ bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color co
 	return true;
 }
 
-bool Render::TextDisplay(const char* text) {
-	int w = Length(text)*CHAR_LENGTH;
+bool Render::TextDisplay(std::string text) {
+	const char* ctext = text.c_str();
+	int w = Length(ctext)*CHAR_LENGTH;
 	int h = CHAR_HEIGHT;
 	SDL_Color color = { 0,0,0,0 };
-	DrawText(text, TEXT_DISPLAY_X, TEXT_DISPLAY_Y, w, h, color);
+	DrawText(ctext, TEXT_DISPLAY_X, TEXT_DISPLAY_Y, w, h, color);
 
 	return true;
 }
 
 bool Render::AnimatedTextDisplay(const char* text) {
-	//Increase the text shown per time
-	int chars = Length(text);
-	char* displayed_text;
+	/*int chars = Length(text);
+	std::string displayed_text;
 	for (int i = 1; i < chars; i++) {
-		displayed_text = GetChars(text, i);
+		displayed_text = std::string(text).substr(0, i);
 		TextDisplay(displayed_text);
-		SDL_Delay(500);
 	}
-	
-
-
+	*/
 	return true;
+}
+
+void Render::StartTextDisplay(const char* text, float speed) {
+	fullText = text;
+	visibleChars = 0;
+	typeTimer = 0.0f;
+	typeSpeed = speed;
+	isTyping = true;
 }

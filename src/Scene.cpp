@@ -221,6 +221,8 @@ void Scene::LoadLevel1() {
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
+	const char* text = "Hello player! Move with WASD.";
+	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
 	////Create a new item using the entity manager and set the position to (200, 672) to test
 	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
@@ -238,9 +240,6 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
 	}
-
-	const char* text = "Hello player!Move with WASD.";
-	Engine::GetInstance().render->AnimatedTextDisplay(text);
 
 }
 
