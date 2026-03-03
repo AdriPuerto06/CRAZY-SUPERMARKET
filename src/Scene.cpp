@@ -171,7 +171,7 @@ void Scene::UnloadCurrentScene() {
 		UnloadLevel2();
 		break;
 	}
-
+	
 }
 
 // *********************************************
@@ -237,7 +237,13 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
 	}
-
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
+		Engine::GetInstance().window->SetFullSize();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
+		Engine::GetInstance().window->SetWindowed();
+	}
+	
 }
 
 void Scene::UnloadLevel1() {

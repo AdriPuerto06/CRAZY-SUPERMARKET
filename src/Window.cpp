@@ -98,3 +98,37 @@ int Window::GetScale() const
 {
 	return scale;
 }
+
+bool Window::SetFullSize() {
+
+	SDL_SetWindowFullscreenMode(window, nullptr); // use desktop resolution
+	SDL_SetWindowFullscreen(window, true);
+
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_ShowWindow(window);
+
+	return true;
+}
+
+bool Window::SetWindowed() {
+
+	SDL_SetWindowFullscreen(window, false);
+	//SDL_SetWindowSize(window, 1280, 720);
+	SDL_SyncWindow(window);
+
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_ShowWindow(window);
+
+	return true;
+}
+/*
+
+Recommended SDL2 Functions
+
+SDL_GetDesktopDisplayMode(): Use this to get the native resolution of the desktop, even if your game is currently running in a different resolution fullscreen.
+
+SDL_GetCurrentDisplayMode(): Use this to get the resolution the display is currently using.
+
+SDL_GetDisplayBounds(): Use this to get the size (and position) of the display area, which is useful for multi-monitor setups.
+
+*/

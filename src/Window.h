@@ -27,6 +27,9 @@ public:
 	// Retrieve window scale
 	int GetScale() const;
 
+	bool SetFullSize();
+	bool SetWindowed();
+
 public:
 	// The window we'll be rendering to
 	SDL_Window* window;
