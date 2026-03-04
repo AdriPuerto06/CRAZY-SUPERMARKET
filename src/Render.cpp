@@ -12,7 +12,7 @@
 #define TEXT_DISPLAY_X 70
 #define TEXT_DISPLAY_Y 600
 
-#define MAX_CHARS_PER_LINE 50
+#define MAX_CHARS_PER_LINE 75
 
 std::string fullText;
 int visibleChars = 0;
@@ -135,7 +135,20 @@ bool Render::PostUpdate()
 	if (!fullText.empty())
 	{
 		std::string visible = fullText.substr(0, visibleChars);
-		TextDisplay(visible);
+		if (visible.size() > MAX_CHARS_PER_LINE)
+		{
+			int text_lines = visible.size() / MAX_CHARS_PER_LINE;
+			if (text_lines == 0) text_lines = 1;
+			for (int i = 0; i < text_lines; ++i)
+			{
+				LOG("Text to show: %s", visible.substr(i * MAX_CHARS_PER_LINE, (i + 1) * MAX_CHARS_PER_LINE));
+				TextDisplay(visible.substr(i * MAX_CHARS_PER_LINE, (i + 1) * MAX_CHARS_PER_LINE), 0, i*CHAR_HEIGHT);
+			}
+		}
+		else 
+		{
+			TextDisplay(visible, 0, 0);
+		}
 	}
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
@@ -373,12 +386,12 @@ bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color co
 	return true;
 }
 
-bool Render::TextDisplay(std::string text) {
+bool Render::TextDisplay(std::string text, int x_offset, int y_offset) {
 	const char* ctext = text.c_str();
-	int w = Length(ctext)*CHAR_LENGTH;
+	int w = Length(ctext)*CHAR_LENGTH; //width doesn't change proportionally as some chars have less spacing than others
 	int h = CHAR_HEIGHT;
 	SDL_Color color = { 0,0,0,0 };
-	DrawText(ctext, TEXT_DISPLAY_X, TEXT_DISPLAY_Y, w, h, color);
+	DrawText(ctext, TEXT_DISPLAY_X+x_offset, TEXT_DISPLAY_Y+y_offset, w, h, color);
 
 	return true;
 }
