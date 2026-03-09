@@ -221,7 +221,7 @@ void Scene::LoadLevel1() {
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
-	const char* text = "Hello player! Move with WASD. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla .";
+	const char* text = "Hello player! Move with WASD.sHello player! Move with WASD.sHello player! Move with WASD.s";
 	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
 	////Create a new item using the entity manager and set the position to (200, 672) to test
