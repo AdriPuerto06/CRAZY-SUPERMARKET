@@ -165,8 +165,9 @@ bool Render::PostUpdate()
 		line = visible.substr((text_lines-1) * MAX_CHARS_PER_LINE, visible.size());
 		lines.emplace_back(line);
 
-		for (int i = 0; i < text_lines; i++) 
+		for (int i = 0; i < text_lines; i++)
 		{
+			LOG("Line display: %s", lines.at(i).c_str());
 			TextDisplay(lines.at(i), 0, i * CHAR_HEIGHT);
 		}
 
