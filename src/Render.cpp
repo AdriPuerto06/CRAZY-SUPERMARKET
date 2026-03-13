@@ -13,7 +13,7 @@
 #define TEXT_DISPLAY_X 70
 #define TEXT_DISPLAY_Y 600
 
-#define MAX_CHARS_PER_LINE 30
+#define MAX_CHARS_PER_LINE 75
 
 std::string fullText;
 int visibleChars = 0;
@@ -135,45 +135,13 @@ bool Render::PostUpdate()
 {
 	if (!fullText.empty())
 	{
-		/*std::string visible = fullText.substr(0, visibleChars);
-		TextDisplay(visible, 0, 0);*/
-		/*std::string visible = fullText.substr(0, visibleChars);
-		if (visibleChars > MAX_CHARS_PER_LINE)
-		{
-			int text_lines = visibleChars / MAX_CHARS_PER_LINE;
-			if (text_lines == 0) text_lines = 1;
-			for (int i = 1; i <= text_lines; ++i)
-			{
-				LOG("Text to show: %s", visible.substr((i-1) * MAX_CHARS_PER_LINE, i * MAX_CHARS_PER_LINE));
-				TextDisplay(visible.substr((i - 1) * MAX_CHARS_PER_LINE, i * MAX_CHARS_PER_LINE), 0, i*CHAR_HEIGHT);
-			}
-		}
-		else 
-		{
-			TextDisplay(visible, 0, 0);
-		}*/
-		//Get all the lines and store them in a vector "lines".
 		std::string visible = fullText.substr(0, visibleChars);
-		int text_lines = (visible.size() / MAX_CHARS_PER_LINE) + 1;
-		std::vector<std::string> lines;
-		std::string line;
-		for (int i = 0; i < text_lines-1; ++i)
-		{
-			line = visible.substr(i * MAX_CHARS_PER_LINE, (i + 1) * MAX_CHARS_PER_LINE);
-			lines.emplace_back(line);
-		}
-		line = visible.substr((text_lines-1) * MAX_CHARS_PER_LINE, visible.size());
-		lines.emplace_back(line);
 
-		for (int i = 0; i < text_lines; i++) 
+		for (int i = 0; i < visible.size(); i += MAX_CHARS_PER_LINE)
 		{
-			TextDisplay(lines.at(i), 0, i * CHAR_HEIGHT);
+			std::string line = visible.substr(i, MAX_CHARS_PER_LINE);
+			TextDisplay(line, 0, (i / MAX_CHARS_PER_LINE) * CHAR_HEIGHT);
 		}
-
-		lines.clear();
-		line.clear()
-		/*std::string visible = fullText.substr(0, visibleChars);
-		TextDisplay(visible, 0, 0);*/
 	}
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
