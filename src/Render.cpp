@@ -170,6 +170,8 @@ bool Render::PostUpdate()
 			TextDisplay(lines.at(i), 0, i * CHAR_HEIGHT);
 		}
 
+		lines.clear();
+		line.clear()
 		/*std::string visible = fullText.substr(0, visibleChars);
 		TextDisplay(visible, 0, 0);*/
 	}
