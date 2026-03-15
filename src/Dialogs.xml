@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogs>
+	<text>
+		<id value ="1"/>
+		<branch value="1"/>
+		<content value ="text1"/>
+		<next value="2"/>
+	</text>
+	<text>
+		<id value ="2"/>
+		<branch value="1"/>
+		<content value ="text2"/>
+		<next value="0"/>
+	</text>
+	
+</dialogs>
