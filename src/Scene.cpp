@@ -38,7 +38,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	Engine::GetInstance().dialogueManager->LoadDialogs("/src/", "Dialogs.xml");
+	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	return true;
 }
 
@@ -226,10 +226,6 @@ void Scene::LoadLevel1() {
 	const char* text = "Hello player! Move with WASD.sHello player! Move with WASD.sHello player! Move with WASD.s";
 	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		/*Engine::GetInstance().dialogueManager->*/
-	}
-
 	////Create a new item using the entity manager and set the position to (200, 672) to test
 	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
 	//item->position = Vector2D(200, 672);
@@ -245,6 +241,10 @@ void Scene::UpdateLevel1(float dt) {
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
+		Engine::GetInstance().dialogueManager->ShowOptions(1);
 	}
 
 }

@@ -44,6 +44,7 @@ bool DialogueManager::LoadDialogs(std::string path, std::string fileName)
 		LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
 		return false;
 	}
+	LOG("Dialogs.xml loaded successfully.");
 	return true;
 }
 
@@ -53,20 +54,26 @@ bool DialogueManager::ShowOptions(int node_value) {
 	SDL_Rect bt1Pos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, GetTextFromNode(node_value), bt1Pos, this));
 
-	SDL_Rect bt2Pos = { 520, 350, 120,20 };
+	SDL_Rect bt2Pos = { 720, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, GetTextFromNode(node_value+1), bt2Pos, this));
 
-	SDL_Rect bt3Pos = { 520, 350, 120,20 };
+	SDL_Rect bt3Pos = { 520, 400, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, GetTextFromNode(node_value+2), bt3Pos, this));
 
-	SDL_Rect bt4Pos = { 520, 350, 120,20 };
+	SDL_Rect bt4Pos = { 720, 400, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, GetTextFromNode(node_value+3), bt4Pos, this));
 }
 
 const char* DialogueManager::GetTextFromNode(int node_value) {
+	const char* ret = "Couldn't find the text.";
 	for (pugi::xml_node node = dialogsFileXML.child("dialogs").child("text"); node != NULL; node = node.next_sibling("text"))
 	{
-		if (node.attribute("id").as_int() == node_value) return node.attribute("content").as_string();
+		LOG("Node id value: %i", node.attribute("id").as_int());
+		if (node.attribute("id").as_int() == node_value)
+		{
+			ret = (const char*)node.attribute("content").as_string();
+			LOG("Text from node assigned.");
+		}
 	}
-	return "Text not found.";
+	return ret;
 }

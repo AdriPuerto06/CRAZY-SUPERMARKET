@@ -12,5 +12,16 @@
 		<content value ="text2"/>
 		<next value="0"/>
 	</text>
-	
+	<text>
+		<id value ="3"/>
+		<branch value="2"/>
+		<content value ="text3"/>
+		<next value="4"/>
+	</text>
+	<text>
+		<id value ="4"/>
+		<branch value="2"/>
+		<content value ="text4"/>
+		<next value="0"/>
+	</text>
 </dialogs>
