@@ -188,13 +188,12 @@ void Scene::LoadMainMenu() {
 	//Imagenes
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
 	//Imagen Juego
-	Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
-	/*Timer timer_logo_1;
+	Timer timer_logo_1;
 	timer_logo_1.Start();
 	while (timer_logo_1.ReadSec() <= 5) {
 		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
 	
-	}*/
+	}
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
