@@ -96,6 +96,9 @@
     <ClCompile Include="src\UIButton.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\DialogueManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -170,10 +173,19 @@
     <ClInclude Include="src\UIElement.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\DialogueManager.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml">
       <Filter>Configuration FIles</Filter>
+    </Xml>
+    <Xml Include="Dialogs.xml">
+      <Filter>Source Files\Game</Filter>
+    </Xml>
+    <Xml Include="src\Dialogs.xml">
+      <Filter>Source Files\Engine</Filter>
     </Xml>
   </ItemGroup>
 </Project>

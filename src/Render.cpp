@@ -2,10 +2,30 @@
 #include "Window.h"
 #include "Render.h"
 #include "Log.h"
+#include <vector>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
+
+#define CHAR_LENGTH 10
+#define CHAR_HEIGHT 16
+#define TEXT_DISPLAY_X 70
+#define TEXT_DISPLAY_Y 600
+
+#define MAX_CHARS_PER_LINE 75
+
+std::string fullText;
+int visibleChars = 0;
+float typeTimer = 0.0f;
+float typeSpeed = 0.05f;
+bool isTyping = false;
+
+int Length(const char* text) {
+	int count = 0;
+	while (text[count] != '\0') { count++; }
+	return count;
+}
 
 Render::Render() : Module()
 {
@@ -90,11 +110,39 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+	if (isTyping)
+	{
+		typeTimer += dt;
+
+		if (typeTimer >= typeSpeed)
+		{
+			typeTimer = 0.0f;
+
+			if (visibleChars < fullText.size())
+			{
+				visibleChars++;
+			}
+			else
+			{
+				isTyping = false;
+			}
+		}
+	}
 	return true;
 }
 
 bool Render::PostUpdate()
 {
+	if (!fullText.empty())
+	{
+		std::string visible = fullText.substr(0, visibleChars);
+
+		for (int i = 0; i < visible.size(); i += MAX_CHARS_PER_LINE)
+		{
+			std::string line = visible.substr(i, MAX_CHARS_PER_LINE);
+			TextDisplay(line, 0, (i / MAX_CHARS_PER_LINE) * CHAR_HEIGHT);
+		}
+	}
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
@@ -331,4 +379,31 @@ bool Render::DrawText(const char* text, int x, int y, int w, int h, SDL_Color co
 	return true;
 }
 
+bool Render::TextDisplay(std::string text, int x_offset, int y_offset) {
+	const char* ctext = text.c_str();
+	int w = Length(ctext)*CHAR_LENGTH; //width doesn't change proportionally as some chars have less spacing than others
+	int h = CHAR_HEIGHT;
+	SDL_Color color = { 0,0,0,0 };
+	DrawText(ctext, TEXT_DISPLAY_X+x_offset, TEXT_DISPLAY_Y+y_offset, w, h, color);
 
+	return true;
+}
+
+bool Render::AnimatedTextDisplay(const char* text) {
+	/*int chars = Length(text);
+	std::string displayed_text;
+	for (int i = 1; i < chars; i++) {
+		displayed_text = std::string(text).substr(0, i);
+		TextDisplay(displayed_text);
+	}
+	*/
+	return true;
+}
+
+void Render::StartTextDisplay(const char* text, float speed) {
+	fullText = text;
+	visibleChars = 0;
+	typeTimer = 0.0f;
+	typeSpeed = speed;
+	isTyping = true;
+}
