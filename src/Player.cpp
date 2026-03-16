@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "Window.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -121,12 +122,17 @@ void Player::Draw(float dt) {
 
 	//L10: TODO 7: Center the camera on the player
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
+
+	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
+
 	float limitLeft = (float)Engine::GetInstance().render->camera.w / 4;
 	float limitRight = (float)mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
 	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
 		Engine::GetInstance().render->camera.x = (int) - position.getX() + (int)(Engine::GetInstance().render->camera.w / 4);
 	}
-
+	if (position.getY() > 0 && position.getY() < mapSize.getY()) {
+		Engine::GetInstance().render->camera.y = (int)-position.getY() + (int)(Engine::GetInstance().render->camera.h / 2);
+	}
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
 }

@@ -239,9 +239,16 @@ void Scene::UpdateLevel1(float dt) {
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		Engine::GetInstance().window->SetFullSize();
+		/*int window_w = Engine::GetInstance().window->width;
+		int window_y = Engine::GetInstance().window->height;
+		LOG("WINDOW SIZE: %d, %d", window_w, window_y);*/
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
 		Engine::GetInstance().window->SetWindowed();
+
+		/*int window_w = Engine::GetInstance().window->width;
+		int window_y = Engine::GetInstance().window->height;
+		LOG("WINDOW SIZE: %d, %d", window_w, window_y);*/
 	}
 	
 }

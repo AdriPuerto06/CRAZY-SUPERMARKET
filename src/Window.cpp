@@ -88,10 +88,23 @@ void Window::SetTitle(const char* new_title)
 	SDL_SetWindowTitle(window, new_title);
 }
 
-void Window::GetWindowSize(int& width, int& height) const
+void Window::SetWindowSize(int& width, int& height) const
 {
 	width = this->width;
 	height = this->height;
+}
+
+
+Vector2D Window::GetWindowSize() {
+
+	int w, y;
+	SDL_GetWindowSizeInPixels(window, &w, &y);
+	LOG("WINDOW SIZE: %d, %d", w, y);
+	Vector2D Size;
+	Size.setX(w);
+	Size.setY(y);
+
+	return Size;
 }
 
 int Window::GetScale() const
@@ -103,22 +116,29 @@ bool Window::SetFullSize() {
 
 	SDL_SetWindowFullscreenMode(window, nullptr); // use desktop resolution
 	SDL_SetWindowFullscreen(window, true);
-
+	
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	SDL_ShowWindow(window);
 
+	/*int w, y;
+	SDL_GetWindowSizeInPixels(window, &w, &y);
+	LOG("WINDOW SIZE: %d, %d", w, y);*/
 	return true;
 }
 
 bool Window::SetWindowed() {
 
 	SDL_SetWindowFullscreen(window, false);
-	//SDL_SetWindowSize(window, 1280, 720);
+	SDL_SetWindowSize(window, 640, 360);
+	width = 640;
+	height = 360;
 	SDL_SyncWindow(window);
 
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	SDL_ShowWindow(window);
-
+	/*int w, y;
+	SDL_GetWindowSizeInPixels(window, &w, &y);
+	LOG("WINDOW SIZE: %d, %d", w, y);*/
 	return true;
 }
 /*
