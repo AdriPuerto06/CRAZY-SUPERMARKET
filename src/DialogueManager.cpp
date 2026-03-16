@@ -22,6 +22,7 @@ bool DialogueManager::Start()
 
 bool DialogueManager::Update(float dt) 
 {
+
 	return true;
 }
 
@@ -48,6 +49,33 @@ bool DialogueManager::LoadDialogs(std::string path, std::string fileName)
 	return true;
 }
 
+bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
+{
+	switch (uiElement->id)
+	{
+	case 1: // Button MyButton
+		LOG("Dialogs: Choice 1.");
+		//choice made id = 1
+		break;
+	case 2: // Button MyButton
+		LOG("Dialogs: Choice 2.");
+		//choice made id = 2
+		break;
+	case 3: // Button MyButton
+		LOG("Dialogs: Choice 3.");
+		//choice made id = 3
+		break;
+	case 4: // Button MyButton
+		LOG("Dialogs: Choice 4.");
+		//choice made id = 4
+		break;
+	default:
+		break;
+	}
+
+	return true;
+}
+
 bool DialogueManager::ShowOptions(int node_value) {
 	/*if (node_value == 0) return 0;*/
 
@@ -70,7 +98,6 @@ const char* DialogueManager::GetTextFromNode(int node_value) {
 	const char* ret = "Couldn't find the text.";
 	for (pugi::xml_node node = dialogsFileXML.child("dialogs").child("text"); node != NULL; node = node.next_sibling("text"))
 	{
-		LOG("Node id value: %i", node.child("id").attribute("value").as_int());
 		if (node.child("id").attribute("value").as_int() == node_value)
 		{
 			ret = (const char*)node.child("content").attribute("value").as_string();

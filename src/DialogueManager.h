@@ -22,8 +22,9 @@ public:
 
 	bool LoadDialogs(std::string path, std::string fileName);
 
+	bool OnUIMouseClickEvent(UIElement* uiElement);
 	bool ShowOptions(int node_value);
-
+	
 	const char* GetTextFromNode(int node_value);
 
 	std::string dialogsFileName;
