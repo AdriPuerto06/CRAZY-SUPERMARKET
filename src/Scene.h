@@ -92,4 +92,10 @@ private:
 
 	// L17 TODO 1: Current scene attribute with initial value
 	SceneID currentScene = SceneID::MAIN_MENU;
+
+	//Imagen
+	bool showLogo = false;
+	SDL_Texture* logoImg = nullptr;
+	int LImg_W;
+	int LImg_H;
 };

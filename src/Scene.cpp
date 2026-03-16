@@ -30,12 +30,15 @@ bool Scene::Awake()
 	LoadScene(currentScene); // empieza en MAIN_MENU
 	bool ret = true;
 
+
 	return ret;
 }
 
 // Called before the first frame
 bool Scene::Start()
 {
+	
+
 	return true;
 }
 
@@ -182,6 +185,17 @@ void Scene::LoadMainMenu() {
 
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
 
+	//Imagenes
+	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+	//Imagen Juego
+	Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	/*Timer timer_logo_1;
+	timer_logo_1.Start();
+	while (timer_logo_1.ReadSec() <= 5) {
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	
+	}*/
+
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "MyButton", btPos, this));
@@ -190,6 +204,8 @@ void Scene::LoadMainMenu() {
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
+	Engine::GetInstance().textures->UnLoad(logoImg);
+	logoImg = nullptr;
 }
 
 void Scene::UpdateMainMenu(float dt) {}
