@@ -124,7 +124,7 @@ bool Scene::CleanUp()
 Vector2D Scene::GetPlayerPosition()
 {
 	if (player) return player->GetPosition();
-	else Vector2D(0,0);
+	else return Vector2D(0,0);
 }
 
 // *********************************************
@@ -187,13 +187,11 @@ void Scene::LoadMainMenu() {
 
 	//Imagenes
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
-	//Imagen Juego
-	Timer timer_logo_1;
-	timer_logo_1.Start();
-	while (timer_logo_1.ReadSec() <= 5) {
-		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
-	
+	if (logoImg == nullptr)
+	{
+		LOG("Error cargando logo");
 	}
+	logoTimer.Start();
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
@@ -207,7 +205,14 @@ void Scene::UnloadMainMenu() {
 	logoImg = nullptr;
 }
 
-void Scene::UpdateMainMenu(float dt) {}
+void Scene::UpdateMainMenu(float dt) {
+	//Imagen Juego
+	if (logoTimer.ReadSec() <= 5 && logoImg != nullptr)
+	{
+		SDL_Rect help = { 0, 0, 1280, 720 };
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0, &help);
+	}
+}
 
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
