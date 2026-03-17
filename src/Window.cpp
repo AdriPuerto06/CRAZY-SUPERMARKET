@@ -99,7 +99,9 @@ Vector2D Window::GetWindowSize() {
 
 	int w, y;
 	SDL_GetWindowSizeInPixels(window, &w, &y);
+	/*
 	LOG("WINDOW SIZE: %d, %d", w, y);
+	*/
 	Vector2D Size;
 	Size.setX(w);
 	Size.setY(y);
