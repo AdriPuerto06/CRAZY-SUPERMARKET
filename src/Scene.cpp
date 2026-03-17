@@ -13,6 +13,9 @@
 #include "Item.h"
 #include "Enemy.h"
 #include "UIManager.h"
+#include "DialogueManager.h"
+//test comment
+//erik test
 
 Scene::Scene() : Module()
 {
@@ -36,6 +39,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	return true;
 }
 
@@ -184,7 +188,7 @@ void Scene::LoadMainMenu() {
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "MyButton", btPos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Play", btPos, this));
 }
 
 void Scene::UnloadMainMenu() {
@@ -220,16 +224,18 @@ void Scene::LoadLevel1() {
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
+	const char* text = "Hello player! Move with WASD.sHello player! Move with WASD.sHello player! Move with WASD.s";
+	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
-	//Create a new item using the entity manager and set the position to (200, 672) to test
-	std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
-	item->position = Vector2D(200, 672);
-	item->Start(); //L17 Important call Start
+	////Create a new item using the entity manager and set the position to (200, 672) to test
+	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
+	//item->position = Vector2D(200, 672);
+	//item->Start(); //L17 Important call Start
 
-	//Create a new enemy 
-	std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
-	enemy1->position = Vector2D(384, 672);
-	enemy1->Start(); //L17 Important call Start
+	////Create a new enemy 
+	//std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
+	//enemy1->position = Vector2D(384, 672);
+	//enemy1->Start(); //L17 Important call Start
 }
 
 void Scene::UpdateLevel1(float dt) {
@@ -251,6 +257,10 @@ void Scene::UpdateLevel1(float dt) {
 		LOG("WINDOW SIZE: %d, %d", window_w, window_y);*/
 	}
 	
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
+		Engine::GetInstance().dialogueManager->ShowOptions(1);
+	}
+
 }
 
 void Scene::UnloadLevel1() {

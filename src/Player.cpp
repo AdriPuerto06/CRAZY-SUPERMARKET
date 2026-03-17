@@ -58,7 +58,6 @@ bool Player::Update(float dt)
 {
 	GetPhysicsValues();
 	Move();
-	Jump();
 	Teleport();
 	ApplyPhysics();
 	Draw(dt);
@@ -76,7 +75,7 @@ void Player::Teleport() {
 void Player::GetPhysicsValues() {
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-	velocity = { 0, velocity.y }; // Reset horizontal velocity by default, this way the player stops when no key is pressed
+	velocity = { 0, 0 }; // Reset horizontal and vertical velocity by default
 }
 
 void Player::Move() {
@@ -90,22 +89,17 @@ void Player::Move() {
 		velocity.x = speed;
 		anims.SetCurrent("move");
 	}
-}
-
-void Player::Jump() {
-	// This function can be used for more complex jump logic if needed
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
-		anims.SetCurrent("jump");
-		isJumping = true;
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		velocity.y = -speed;
+		anims.SetCurrent("move");
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		velocity.y = speed;
+		anims.SetCurrent("move");
 	}
 }
 
 void Player::ApplyPhysics() {
-	// Preserve vertical speed while jumping
-	if (isJumping == true) {
-		velocity.y = Engine::GetInstance().physics->GetYVelocity(pbody);
-	}
 
 	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
@@ -157,8 +151,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
-		//reset the jump flag when touching the ground
-		isJumping = false;
 		anims.SetCurrent("idle");
 		break;
 	case ColliderType::ITEM:
