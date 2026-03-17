@@ -30,15 +30,16 @@ Scene::~Scene()
 bool Scene::Awake()
 {
 	LOG("Loading Scene");
-	LoadScene(currentScene); // empieza en MAIN_MENU
 	bool ret = true;
-
 	return ret;
 }
 
 // Called before the first frame
 bool Scene::Start()
 {
+	
+	LoadScene(currentScene); // empieza en Intro Screen
+
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	return true;
 }
@@ -55,6 +56,7 @@ bool Scene::Update(float dt)
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
+		UpdateIntroScreen(dt);
 		break;
 	case SceneID::MAIN_MENU:
 		UpdateMainMenu(dt);
@@ -125,7 +127,7 @@ bool Scene::CleanUp()
 Vector2D Scene::GetPlayerPosition()
 {
 	if (player) return player->GetPosition();
-	else Vector2D(0,0);
+	return Vector2D(0, 0);
 }
 
 // *********************************************
@@ -138,6 +140,9 @@ void Scene::LoadScene(SceneID newScene)
 
 	switch (newScene)
 	{
+	case SceneID::INTRO_SCREEN:
+		LoadIntroScreen();
+		break;
 	case SceneID::MAIN_MENU:
 		LoadMainMenu();
 		break;
@@ -163,6 +168,9 @@ void Scene::UnloadCurrentScene() {
 
 	switch (currentScene)
 	{
+	case SceneID::INTRO_SCREEN:
+		UnloadIntroScreen();
+		break;
 	case SceneID::MAIN_MENU:
 		UnloadMainMenu();
 		break;
@@ -179,31 +187,118 @@ void Scene::UnloadCurrentScene() {
 }
 
 // *********************************************
+// INTRO SCREEN functions
+// *********************************************
+
+
+void Scene::LoadIntroScreen()
+{
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
+	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+	
+
+
+	if (logoImg == nullptr || teamImg == nullptr)
+	{
+		LOG("ERROR: no se pudo cargar imagen/es.png");
+		LOG("SDL error: %s", SDL_GetError());
+	}
+
+	splashTime = 0.0f;
+}
+
+void Scene::UpdateIntroScreen(float dt)
+{
+	if (logoImg != nullptr)
+	{
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	}
+
+	splashTime += dt / 1000.0f;
+	if (splashTime >= logoGameTimer && teamImg != nullptr)
+	{
+		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
+	}
+
+	if (splashTime >= logoTeamTimer)
+	{
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
+
+		splashTime = 0;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+}
+
+void Scene::UnloadIntroScreen()
+{
+	if (logoImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(logoImg);
+		logoImg = nullptr;
+	}
+
+	if (teamImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(teamImg);
+		teamImg = nullptr;
+	}
+}
+
+// *********************************************
 // MAIN MENU functions
 // *********************************************
 
 void Scene::LoadMainMenu() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	
 
 	// Instantiate a UIButton in the Scene
-	SDL_Rect btPos = { 520, 350, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Play", btPos, this));
+
+	SDL_Rect bt1Pos = { 520, 350, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
+
+	SDL_Rect bt2Pos = { 520, 380, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Options", bt2Pos, this));
+
+	SDL_Rect bt3Pos = { 520, 410, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Multiplayer", bt3Pos, this));
+
+	SDL_Rect bt4Pos = { 520, 440, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Credits", bt4Pos, this));
+
 }
 
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
+
 }
 
-void Scene::UpdateMainMenu(float dt) {}
-
+void Scene::UpdateMainMenu(float dt)
+{
+	
+}
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
 	switch (uiElement->id)
 	{
-	case 1: // Button MyButton
-		LOG("Main Menu: MyButton clicked!");
+	case 1: 
+		LOG("Main Menu: Start clicked");
+		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 2: 
+		LOG("Main Menu: Options clicked");
+		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 3: 
+		LOG("Main Menu: Multiplayer clicked");
+		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 4:
+		LOG("Main Menu: Credits clicked");
 		ChangeScene(SceneID::LEVEL1);
 		break;
 	default:

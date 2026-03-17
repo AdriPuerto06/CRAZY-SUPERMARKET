@@ -61,6 +61,11 @@ public:
 
 private:
 
+	// Intro / Splash
+	void LoadIntroScreen();
+	void UpdateIntroScreen(float dt);
+	void UnloadIntroScreen();
+
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
 	void UnloadMainMenu();
@@ -91,5 +96,15 @@ private:
 	float volume = 1.0;
 
 	// L17 TODO 1: Current scene attribute with initial value
-	SceneID currentScene = SceneID::MAIN_MENU;
+	//SceneID currentScene = SceneID::MAIN_MENU;
+	SceneID currentScene = SceneID::INTRO_SCREEN;
+
+
+	//Imagen
+
+	SDL_Texture* logoImg = nullptr;
+	SDL_Texture* teamImg = nullptr;
+	float splashTime = 0.0f;
+	float logoGameTimer = 3.0f;
+	float logoTeamTimer = 6.0f;
 };

@@ -39,6 +39,7 @@ private:
 	void Teleport();
 	void ApplyPhysics();
 	void Draw(float dt);
+	void GodMode();
 
 public:
 
@@ -53,10 +54,14 @@ public:
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
+
 	int HP = MAX_HP;
+
 
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;
+
+	bool godMode = false;
 
 };

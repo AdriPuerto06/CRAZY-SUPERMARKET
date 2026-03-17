@@ -135,7 +135,7 @@ void Enemy::PerformPathfinding() {
 void Enemy::GetPhysicsValues() {
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-	velocity = { 0, velocity.y }; 
+	velocity = { 0, 0 }; 
 }
 
 void Enemy::Move() {

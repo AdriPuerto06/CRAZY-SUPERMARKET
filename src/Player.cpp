@@ -58,6 +58,7 @@ bool Player::Update(float dt)
 	Move();
 	Teleport();
 	ApplyPhysics();
+	GodMode();
 	Draw(dt);
 
 	return true;
@@ -101,6 +102,23 @@ void Player::ApplyPhysics() {
 
 	// Apply velocity via helper
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
+}
+
+void Player::GodMode() {
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+		LOG("God mode switched");
+		godMode = !godMode;
+
+		//ideas provisionalse para el GodMode
+		//desactivar colisiones
+
+		//tecla abrir combat UI
+
+		//all objects
+
+	}
+
 }
 
 void Player::Draw(float dt) {
@@ -150,6 +168,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+
 		anims.SetCurrent("idle");
 		break;
 	case ColliderType::ITEM:
