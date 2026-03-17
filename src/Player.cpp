@@ -117,22 +117,26 @@ void Player::Draw(float dt) {
 	position.setY((float)y);
 
 	//L10: TODO 7: Center the camera on the player
-	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
+	//------------------------------------------------------------------------------------------------------------------
+	// THIS WILL GO TO ANOTHER FUNCTION + WE HAVE TO ADD A FUNCTION THAT POSITIONS THE CAMERA WITHOUT TELEPORTING
+	//------------------------------------------------------------------------------------------------------------------
+		Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 
-	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
+		Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
-	float limitLeft = (float)Engine::GetInstance().render->camera.w / 4;
-	float limitRight = (float)mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
-	float limitUp = (float)Engine::GetInstance().render->camera.h / 2;
-	float limitDown = (float)mapSize.getY() - Engine::GetInstance().render->camera.h / 2;
+		float limitLeft = (float)Engine::GetInstance().render->camera.w / 4;
+		float limitRight = (float)mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
+		float limitUp = (float)Engine::GetInstance().render->camera.h / 2;
+		float limitDown = (float)mapSize.getY() - Engine::GetInstance().render->camera.h / 2;
 
-	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
-		Engine::GetInstance().render->camera.x = (int)-position.getX() + WindowSize.getX() / 2;
-	}
-	if (position.getY() < limitDown && position.getY() > limitUp) { //harcoded values
-		Engine::GetInstance().render->camera.y = (int)-position.getY() + WindowSize.getY() / 2;
-	}
-
+		if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
+			Engine::GetInstance().render->camera.x = (int)-position.getX() + WindowSize.getX() / 2;
+		}
+		if (position.getY() < limitDown && position.getY() > limitUp) { //harcoded values
+			Engine::GetInstance().render->camera.y = (int)-position.getY() + WindowSize.getY() / 2;
+		}
+	//------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
 }
