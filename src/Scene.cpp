@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "Enemy.h"
 #include "UIManager.h"
+#include "DialogueManager.h"
 //test comment
 //erik test
 Scene::Scene() : Module()
@@ -37,6 +38,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	return true;
 }
 
@@ -239,6 +241,10 @@ void Scene::UpdateLevel1(float dt) {
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
+		Engine::GetInstance().dialogueManager->ShowOptions(1);
 	}
 
 }
