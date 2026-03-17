@@ -58,6 +58,7 @@ bool Player::Update(float dt)
 	Jump();
 	Teleport();
 	ApplyPhysics();
+	GodMode();
 	Draw(dt);
 
 	return true;
@@ -116,6 +117,23 @@ void Player::ApplyPhysics() {
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
 }
 
+void Player::GodMode() {
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+		LOG("God mode switched");
+		godMode = !godMode;
+
+		//ideas provisionalse para el GodMode
+		//desactivar colisiones
+
+		//tecla abrir combat UI
+
+		//all objects
+
+	}
+
+}
+
 void Player::Draw(float dt) {
 
 	anims.Update(dt);
@@ -154,7 +172,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
 		//reset the jump flag when touching the ground
-		isJumping = false;
+		//isJumping = false;
 		anims.SetCurrent("idle");
 		break;
 	case ColliderType::ITEM:

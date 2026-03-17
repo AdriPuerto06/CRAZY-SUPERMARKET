@@ -27,18 +27,15 @@ Scene::~Scene()
 bool Scene::Awake()
 {
 	LOG("Loading Scene");
-	LoadScene(currentScene); // empieza en MAIN_MENU
 	bool ret = true;
-
-
 	return ret;
 }
 
 // Called before the first frame
 bool Scene::Start()
 {
-	// IMG
-	gameLogo = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+	
+	LoadScene(currentScene); // empieza en Intro Screen
 
 	return true;
 }
@@ -55,6 +52,7 @@ bool Scene::Update(float dt)
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
+		UpdateIntroScreen(dt);
 		break;
 	case SceneID::MAIN_MENU:
 		UpdateMainMenu(dt);
@@ -125,7 +123,7 @@ bool Scene::CleanUp()
 Vector2D Scene::GetPlayerPosition()
 {
 	if (player) return player->GetPosition();
-	else return Vector2D(0,0);
+	return Vector2D(0, 0);
 }
 
 // *********************************************
@@ -138,6 +136,9 @@ void Scene::LoadScene(SceneID newScene)
 
 	switch (newScene)
 	{
+	case SceneID::INTRO_SCREEN:
+		LoadIntroScreen();
+		break;
 	case SceneID::MAIN_MENU:
 		LoadMainMenu();
 		break;
@@ -163,6 +164,9 @@ void Scene::UnloadCurrentScene() {
 
 	switch (currentScene)
 	{
+	case SceneID::INTRO_SCREEN:
+		UnloadIntroScreen();
+		break;
 	case SceneID::MAIN_MENU:
 		UnloadMainMenu();
 		break;
@@ -179,12 +183,72 @@ void Scene::UnloadCurrentScene() {
 }
 
 // *********************************************
+// INTRO SCREEN functions
+// *********************************************
+
+
+void Scene::LoadIntroScreen()
+{
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
+	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+	
+
+
+	if (logoImg == nullptr || teamImg == nullptr)
+	{
+		LOG("ERROR: no se pudo cargar imagen/es.png");
+		LOG("SDL error: %s", SDL_GetError());
+	}
+
+	splashTime = 0.0f;
+}
+
+void Scene::UpdateIntroScreen(float dt)
+{
+	if (logoImg != nullptr)
+	{
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	}
+
+	splashTime += dt / 1000.0f;
+	if (splashTime >= logoGameTimer && teamImg != nullptr)
+	{
+		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
+	}
+
+	if (splashTime >= logoTeamTimer)
+	{
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+}
+
+void Scene::UnloadIntroScreen()
+{
+	if (logoImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(logoImg);
+		logoImg = nullptr;
+	}
+
+	if (teamImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(teamImg);
+		teamImg = nullptr;
+	}
+}
+
+// *********************************************
 // MAIN MENU functions
 // *********************************************
 
 void Scene::LoadMainMenu() {
 
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
+
+	//Imagenes
+	//logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+	//Imagen Juego
+	
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
@@ -194,19 +258,13 @@ void Scene::LoadMainMenu() {
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
-	Engine::GetInstance().textures->UnLoad(gameLogo);
-	gameLogo = nullptr;
+
 }
 
-void Scene::UpdateMainMenu(float dt) {
-	//Imagen 
-	if (logoTimer.ReadSec() <= 5 && gameLogo != nullptr)
-	{
-		SDL_Rect help = { 0, 0, 1280, 720 };
-		Engine::GetInstance().render->DrawTexture(gameLogo, 0, 0, &help);
-	}
+void Scene::UpdateMainMenu(float dt)
+{
+	
 }
-
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
 	switch (uiElement->id)
