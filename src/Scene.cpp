@@ -220,6 +220,12 @@ void Scene::UpdateIntroScreen(float dt)
 	{
 		ChangeScene(SceneID::MAIN_MENU);
 	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
+
+		splashTime = 0;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
 }
 
 void Scene::UnloadIntroScreen()
@@ -243,16 +249,21 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
-
-	//Imagenes
-	//logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
-	//Imagen Juego
-	
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	
 
 	// Instantiate a UIButton in the Scene
-	SDL_Rect btPos = { 520, 350, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "MyButton", btPos, this));
+	SDL_Rect bt1Pos = { 520, 350, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
+
+	SDL_Rect bt2Pos = { 520, 380, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Options", bt2Pos, this));
+
+	SDL_Rect bt3Pos = { 520, 410, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Multiplayer", bt3Pos, this));
+
+	SDL_Rect bt4Pos = { 520, 440, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Credits", bt4Pos, this));
+
 }
 
 void Scene::UnloadMainMenu() {
@@ -269,8 +280,20 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
 	switch (uiElement->id)
 	{
-	case 1: // Button MyButton
-		LOG("Main Menu: MyButton clicked!");
+	case 1: 
+		LOG("Main Menu: Start clicked");
+		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 2: 
+		LOG("Main Menu: Options clicked");
+		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 3: 
+		LOG("Main Menu: Multiplayer clicked");
+		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 4:
+		LOG("Main Menu: Credits clicked");
 		ChangeScene(SceneID::LEVEL1);
 		break;
 	default:
