@@ -75,11 +75,11 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 	return true;
 }
 
-bool DialogueManager::StartDialog(int dialogue_tree_ID, int node_value)
+bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 {
-	TextNode node;
-	GetNodeAttributes(&node, dialogue_tree_ID, node_value);
-	Engine::GetInstance().render->StartTextDisplay(GetTextFromNode(dialogue_tree_ID, node_value), 100.0f);
+	DialogTree tree;
+	GetTreeAttributes(&tree, dialogue_tree_ID, npc_id);
+	Engine::GetInstance().render->StartTextDisplay(tree.nodes_text[0], 100.0f);
 	
 
 	return true;
@@ -118,16 +118,25 @@ const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_valu
 	return ret;
 }
 
-//millor agafar el dialogue_tree i fer un vector de nodes
-void DialogueManager::GetNodeAttributes(TextNode* node, int dialogue_tree_ID, int npc_id)
+//error: there are not vectors instantiated previouly
+void DialogueManager::GetTreeAttributes(DialogTree* tree, int dialogue_tree_ID, int npc_id)
 {
+	int current_node_counter = 0;
 	for (pugi::xml_node dialogue_tree_node = dialogsFileXML.child("dialogs").child("dialogue_tree"); dialogue_tree_node != NULL; dialogue_tree_node = dialogue_tree_node.next_sibling("dialogue_tree"))
 	{
 		if (dialogue_tree_node.attribute("ID").as_int() == dialogue_tree_ID && dialogue_tree_node.attribute("NPC").as_int() == npc_id)
 		{
-			for (pugi::xml_node node = dialogue_tree_node.child("node"); node != NULL; node = node.next_sibling("node"))
+			for (pugi::xml_node current_node = dialogue_tree_node.child("node"); current_node != NULL; current_node = current_node.next_sibling("node"))
 			{
-				
+				current_node_counter++;
+				tree->nodes_text.emplace_back((const char*)current_node.attribute("text").as_string());
+				tree->nodes_id.emplace_back(current_node.attribute("id").as_int());
+				for (pugi::xml_node current_choice = current_node.child("choice"); current_choice != NULL; current_choice = current_choice.next_sibling("choice"))
+				{
+					tree->choices_id[current_node_counter-1].emplace_back(current_choice.attribute("id").as_int());
+					tree->choices_text[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("option").as_string());
+					tree->choices_next_node[current_node_counter - 1].emplace_back(current_choice.attribute("next_node").as_int());
+				}
 			}
 		}
 	}

@@ -244,7 +244,7 @@ void Scene::UpdateLevel1(float dt) {
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		Engine::GetInstance().dialogueManager->StartDialog(0, 0);
+		Engine::GetInstance().dialogueManager->StartDialog(0, 1);
 	}
 
 }

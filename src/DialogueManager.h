@@ -2,12 +2,12 @@
 #include "UIButton.h"
 #include <vector>
 
-struct TextNode {
-	int node_id;
-	const char* text;
-	std::vector<const char*> choices;
-	std::vector<int> id;
-	std::vector<int> next;
+struct DialogTree {
+	std::vector<const char*> nodes_text;
+	std::vector<int> nodes_id;
+	std::vector<std::vector<int>> choices_id;
+	std::vector<std::vector<const char*>> choices_text;
+	std::vector<std::vector<int>> choices_next_node;
 };
 
 class DialogueManager : public Module {
@@ -32,16 +32,14 @@ public:
 	bool LoadDialogs(std::string path, std::string fileName);
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
-	bool StartDialog(int dialogue_tree_ID, int node_value);
+	bool StartDialog(int dialogue_tree_ID, int npc_id);
 	bool ShowOptions(int dialogue_tree_ID, int node_value);
 	
 	const char* GetTextFromNode(int dialogue_tree_ID, int node_value);
-	void GetNodeAttributes(TextNode* node, int dialogue_tree_ID, int npc_id);
+	void GetTreeAttributes(DialogTree* node, int dialogue_tree_ID, int npc_id);
 
 	std::string dialogsFileName;
 	std::string dialogsPath;
-
-	TextNode current_text_node;
 
 private:
 	pugi::xml_document dialogsFileXML;
