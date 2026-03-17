@@ -3,6 +3,8 @@
 #include "Input.h"
 #include "Render.h"
 
+#define MAX_HP 100
+
 enum class EntityType
 {
 	PLAYER,

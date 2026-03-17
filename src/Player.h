@@ -36,7 +36,6 @@ private:
 
 	void GetPhysicsValues();
 	void Move();
-	void Jump();
 	void Teleport();
 	void ApplyPhysics();
 	void Draw(float dt);
@@ -55,8 +54,9 @@ public:
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-	//float jumpForce = 2.5f; // The force to apply when jumping
-	//bool isJumping = false; // Flag to check if the player is currently jumping
+
+	int HP = MAX_HP;
+
 
 private:
 	b2Vec2 velocity;
