@@ -93,8 +93,8 @@ private:
 	// L17 TODO 1: Current scene attribute with initial value
 	SceneID currentScene = SceneID::MAIN_MENU;
 
-	//IMG
-	bool showingLogo = false;
-	SDL_Texture* gameLogo = nullptr;
-	//Audio
+	//Imagen
+	bool showLogo = false;
+	SDL_Texture* logoImg = nullptr;
+	Timer logoTimer;
 };

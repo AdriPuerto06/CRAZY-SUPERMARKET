@@ -30,6 +30,7 @@ bool Scene::Awake()
 	LoadScene(currentScene); // empieza en MAIN_MENU
 	bool ret = true;
 
+
 	return ret;
 }
 
@@ -37,7 +38,8 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	// IMG
-	gameLogo = Engine::GetInstance().textures->Load("Assets/Textures/.png");
+	gameLogo = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+
 	return true;
 }
 
@@ -123,7 +125,7 @@ bool Scene::CleanUp()
 Vector2D Scene::GetPlayerPosition()
 {
 	if (player) return player->GetPosition();
-	else Vector2D(0,0);
+	else return Vector2D(0,0);
 }
 
 // *********************************************
@@ -183,10 +185,7 @@ void Scene::UnloadCurrentScene() {
 void Scene::LoadMainMenu() {
 
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
-	//imagen grupo
-	Engine::GetInstance().render->DrawTexture();
-	// imagen logo juego
-	
+
 	// Instantiate a UIButton in the Scene
 	SDL_Rect btPos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "MyButton", btPos, this));
@@ -195,9 +194,18 @@ void Scene::LoadMainMenu() {
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
+	Engine::GetInstance().textures->UnLoad(logoImg);
+	logoImg = nullptr;
 }
 
-void Scene::UpdateMainMenu(float dt) {}
+void Scene::UpdateMainMenu(float dt) {
+	//Imagen 
+	if (logoTimer.ReadSec() <= 5 && logoImg != nullptr)
+	{
+		SDL_Rect help = { 0, 0, 1280, 720 };
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0, &help);
+	}
+}
 
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
@@ -226,15 +234,15 @@ void Scene::LoadLevel1() {
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
 
-	//Create a new item using the entity manager and set the position to (200, 672) to test
-	std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
-	item->position = Vector2D(200, 672);
-	item->Start(); //L17 Important call Start
+	////Create a new item using the entity manager and set the position to (200, 672) to test
+	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
+	//item->position = Vector2D(200, 672);
+	//item->Start(); //L17 Important call Start
 
-	//Create a new enemy 
-	std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
-	enemy1->position = Vector2D(384, 672);
-	enemy1->Start(); //L17 Important call Start
+	////Create a new enemy 
+	//std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
+	//enemy1->position = Vector2D(384, 672);
+	//enemy1->Start(); //L17 Important call Start
 }
 
 void Scene::UpdateLevel1(float dt) {
