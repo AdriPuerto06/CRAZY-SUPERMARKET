@@ -194,16 +194,16 @@ void Scene::LoadMainMenu() {
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
-	Engine::GetInstance().textures->UnLoad(logoImg);
-	logoImg = nullptr;
+	Engine::GetInstance().textures->UnLoad(gameLogo);
+	gameLogo = nullptr;
 }
 
 void Scene::UpdateMainMenu(float dt) {
 	//Imagen 
-	if (logoTimer.ReadSec() <= 5 && logoImg != nullptr)
+	if (logoTimer.ReadSec() <= 5 && gameLogo != nullptr)
 	{
 		SDL_Rect help = { 0, 0, 1280, 720 };
-		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0, &help);
+		Engine::GetInstance().render->DrawTexture(gameLogo, 0, 0, &help);
 	}
 }
 

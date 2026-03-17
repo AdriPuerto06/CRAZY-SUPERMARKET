@@ -95,6 +95,6 @@ private:
 
 	//Imagen
 	bool showLogo = false;
-	SDL_Texture* logoImg = nullptr;
+	SDL_Texture* gameLogo = nullptr;
 	Timer logoTimer;
 };
