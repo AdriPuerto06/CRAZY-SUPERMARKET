@@ -1,27 +1,24 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <dialogs>
-	<text>
-		<id value ="1"/>
-		<branch value="1"/>
-		<content value ="text1"/>
-		<next value="2"/>
-	</text>
-	<text>
-		<id value ="2"/>
-		<branch value="1"/>
-		<content value ="text2"/>
-		<next value="0"/>
-	</text>
-	<text>
-		<id value ="3"/>
-		<branch value="2"/>
-		<content value ="text3"/>
-		<next value="4"/>
-	</text>
-	<text>
-		<id value ="4"/>
-		<branch value="2"/>
-		<content value ="text4"/>
-		<next value="0"/>
-	</text>
+	<dialogue_tree ID="0" NPC="1">
+		<node id ="0" text="Hello. Who are you?">
+			<choice id ="1" option="I'm aaaa" next_node ="1"/>
+			<choice id ="2" option="Why do you ask?" next_node ="2"/>
+			<choice id ="3" option="..." next_node ="1"/>
+			<choice id ="4" option="I'm bbbb" next_node ="1"/>
+		</node>
+		<node id ="1" text="What happens?">
+			<choice id ="1" option="Nothing vejestorio" next_node ="2"/>
+			<choice id ="2" option="You don't wanna know" next_node ="2"/>
+			<choice id ="3" option="Shut up!" next_node ="2"/>
+			<choice id ="4" option="AAAAAAAA" next_node ="2"/>
+		</node>
+		<node id ="2" text="You are CRAZY">
+			<choice id ="1" option="I will slap you" next_node ="-1"/>
+			<choice id ="2" option="I will slap you!" next_node ="-1"/>
+			<choice id ="3" option="I will slap you!!" next_node ="-1"/>
+			<choice id ="4" option="I will slap you!!!" next_node ="-1"/>
+		</node>
+	</dialogue_tree>
+	
 </dialogs>

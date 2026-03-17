@@ -59,7 +59,6 @@ bool UIButton::Update(float dt)
 		}
 
 		Engine::GetInstance().render->DrawText(text.c_str(), bounds.x, bounds.y, bounds.w, bounds.h, {255,255,255,255});
-
 	}
 
 	return false;
