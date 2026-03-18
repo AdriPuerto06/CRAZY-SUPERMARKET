@@ -10,6 +10,13 @@ struct DialogTree {
 	std::vector<std::vector<int>> choices_next_node;
 };
 
+struct CurrentDialog {
+	int dialogue_tree_ID;
+	int node_id;
+	int choice;
+	int next_node;
+};
+
 class DialogueManager : public Module {
 public:
 	DialogueManager();
@@ -33,13 +40,17 @@ public:
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	bool StartDialog(int dialogue_tree_ID, int npc_id);
-	bool ShowOptions(int dialogue_tree_ID, int node_value);
+	bool ShowOptions(int node_value);
 	
 	const char* GetTextFromNode(int dialogue_tree_ID, int node_value);
-	void GetTreeAttributes(DialogTree* node, int dialogue_tree_ID, int npc_id);
+	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
 
 	std::string dialogsFileName;
 	std::string dialogsPath;
+
+
+	CurrentDialog* dialogue;
+	DialogTree* tree;
 
 private:
 	pugi::xml_document dialogsFileXML;

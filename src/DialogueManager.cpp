@@ -54,7 +54,10 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1: // Button MyButton
-		LOG("Dialogs: Choice 1.");
+		dialogue->choice = 1;
+		dialogue->next_node = tree->choices_next_node[dialogue->node_id][1];
+		dialogue->node_id = dialogue->next_node;
+		LOG("Dialogs: Choice 1. Current node: %i", dialogue->node_id);
 		break;
 	case 2: // Button MyButton
 		LOG("Dialogs: Choice 2.");
@@ -77,29 +80,33 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 {
-	DialogTree tree;
-	GetTreeAttributes(&tree, dialogue_tree_ID, npc_id);
-	Engine::GetInstance().render->StartTextDisplay(tree.nodes_text[0], 100.0f);
+	tree = new DialogTree;
+	GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
+	dialogue = new CurrentDialog;
+	dialogue->dialogue_tree_ID = dialogue_tree_ID;
+	dialogue->node_id = tree->nodes_id[0];
+	
+	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[0], 100.0f);
+	ShowOptions(0);
 	
 	return true;
 }
 
-bool DialogueManager::ShowOptions(int dialogue_tree_ID, int node_value) {
-	if (node_value == 0) return 0;
+bool DialogueManager::ShowOptions(int node_value) {
 
-	/*SDL_Rect bt1Pos = { 520, 350, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, , bt1Pos, this));
+	SDL_Rect bt1Pos = { 520, 350, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
 	SDL_Rect bt2Pos = { 720, 350, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, , bt2Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
 
 	SDL_Rect bt3Pos = { 520, 400, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, , bt3Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, tree->choices_text[node_value][2], bt3Pos, this));
 
 	SDL_Rect bt4Pos = { 720, 400, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, , bt4Pos, this));*/
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, tree->choices_text[node_value][3], bt4Pos, this));
 
-	return 1;
+	return true;
 }
 
 const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_value) {
@@ -118,7 +125,7 @@ const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_valu
 }
 
 //error: there are not vectors instantiated previouly
-void DialogueManager::GetTreeAttributes(DialogTree* tree, int dialogue_tree_ID, int npc_id)
+void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 {
 	int current_node_counter = 0;
 	for (pugi::xml_node dialogue_tree_node = dialogsFileXML.child("dialogs").child("dialogue_tree"); dialogue_tree_node != NULL; dialogue_tree_node = dialogue_tree_node.next_sibling("dialogue_tree"))
@@ -128,7 +135,7 @@ void DialogueManager::GetTreeAttributes(DialogTree* tree, int dialogue_tree_ID, 
 			for (pugi::xml_node current_node = dialogue_tree_node.child("node"); current_node != NULL; current_node = current_node.next_sibling("node"))
 			{
 				current_node_counter++;
-				tree->nodes_text.emplace_back((const char*)current_node.attribute("text").as_string());
+				tree->nodes_text.push_back((const char*)current_node.attribute("text").as_string());
 				tree->nodes_id.emplace_back(current_node.attribute("id").as_int());
 				for (pugi::xml_node current_choice = current_node.child("choice"); current_choice != NULL; current_choice = current_choice.next_sibling("choice"))
 				{
