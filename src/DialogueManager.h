@@ -37,12 +37,13 @@ public:
 	bool CleanUp();
 
 	bool LoadDialogs(std::string path, std::string fileName);
+	void UnloadDialogueUI();
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	bool StartDialog(int dialogue_tree_ID, int npc_id);
 	bool ShowOptions(int node_value);
 	
-	const char* GetTextFromNode(int dialogue_tree_ID, int node_value);
+	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
 
 	std::string dialogsFileName;

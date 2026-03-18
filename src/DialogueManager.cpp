@@ -49,32 +49,54 @@ bool DialogueManager::LoadDialogs(std::string path, std::string fileName)
 	return true;
 }
 
+void DialogueManager::UnloadDialogueUI()
+{
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+}
+
 bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 {
+	if (dialogue->node_id == -1)
+	{
+		UnloadDialogueUI(); //will need to wait until the player decides to finish the conversation
+		return true;
+	}
 	switch (uiElement->id)
 	{
 	case 1: // Button MyButton
 		dialogue->choice = 1;
-		dialogue->next_node = tree->choices_next_node[dialogue->node_id][1];
+		dialogue->next_node = tree->choices_next_node[dialogue->node_id][0];
 		dialogue->node_id = dialogue->next_node;
 		LOG("Dialogs: Choice 1. Current node: %i", dialogue->node_id);
 		break;
 	case 2: // Button MyButton
-		LOG("Dialogs: Choice 2.");
-		//choice made id = 2
+		dialogue->choice = 2;
+		dialogue->next_node = tree->choices_next_node[dialogue->node_id][1];
+		dialogue->node_id = dialogue->next_node;
+		LOG("Dialogs: Choice 2. Current node: %i", dialogue->node_id);
 		break;
 	case 3: // Button MyButton
-		LOG("Dialogs: Choice 3.");
-		//choice made id = 3
+		dialogue->choice = 3;
+		dialogue->next_node = tree->choices_next_node[dialogue->node_id][2];
+		dialogue->node_id = dialogue->next_node;
+		LOG("Dialogs: Choice 3. Current node: %i", dialogue->node_id);
 		break;
 	case 4: // Button MyButton
-		LOG("Dialogs: Choice 4.");
-		//choice made id = 4
+		dialogue->choice = 4;
+		dialogue->next_node = tree->choices_next_node[dialogue->node_id][3];
+		dialogue->node_id = dialogue->next_node;
+		LOG("Dialogs: Choice 4. Current node: %i", dialogue->node_id);
 		break;
 	default:
 		break;
 	}
 
+	if (dialogue->node_id != -1)
+	{
+		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+		ShowOptions(dialogue->node_id);
+	}
 	return true;
 }
 
@@ -86,6 +108,7 @@ bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->node_id = tree->nodes_id[0];
 	
+
 	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[0], 100.0f);
 	ShowOptions(0);
 	
@@ -93,7 +116,7 @@ bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 }
 
 bool DialogueManager::ShowOptions(int node_value) {
-
+	if (node_value == -1) return true;
 	SDL_Rect bt1Pos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
@@ -109,20 +132,20 @@ bool DialogueManager::ShowOptions(int node_value) {
 	return true;
 }
 
-const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_value) {
-	const char* ret = "Couldn't find the text.";
-	for (pugi::xml_node dialogue_tree_node = dialogsFileXML.child("dialogs").child("dialogue_tree"); dialogue_tree_node != NULL; dialogue_tree_node = dialogue_tree_node.next_sibling("dialogue_tree"))
-	{
-		if (dialogue_tree_node.attribute("ID").as_int() == dialogue_tree_ID)
-		{
-			for(pugi::xml_node node = dialogue_tree_node.child("node"); node != NULL; node = node.next_sibling("node"))
-			{
-				if (node.attribute("id").as_int() == node_value) ret = (const char*)node.attribute("text").as_string();
-			}
-		}
-	}
-	return ret;
-}
+//const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_value) {
+//	const char* ret = "Couldn't find the text.";
+//	for (pugi::xml_node dialogue_tree_node = dialogsFileXML.child("dialogs").child("dialogue_tree"); dialogue_tree_node != NULL; dialogue_tree_node = dialogue_tree_node.next_sibling("dialogue_tree"))
+//	{
+//		if (dialogue_tree_node.attribute("ID").as_int() == dialogue_tree_ID)
+//		{
+//			for(pugi::xml_node node = dialogue_tree_node.child("node"); node != NULL; node = node.next_sibling("node"))
+//			{
+//				if (node.attribute("id").as_int() == node_value) ret = (const char*)node.attribute("text").as_string();
+//			}
+//		}
+//	}
+//	return ret;
+//}
 
 //error: there are not vectors instantiated previouly
 void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
