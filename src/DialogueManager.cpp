@@ -81,7 +81,6 @@ bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 	GetTreeAttributes(&tree, dialogue_tree_ID, npc_id);
 	Engine::GetInstance().render->StartTextDisplay(tree.nodes_text[0], 100.0f);
 	
-
 	return true;
 }
 
@@ -133,6 +132,12 @@ void DialogueManager::GetTreeAttributes(DialogTree* tree, int dialogue_tree_ID, 
 				tree->nodes_id.emplace_back(current_node.attribute("id").as_int());
 				for (pugi::xml_node current_choice = current_node.child("choice"); current_choice != NULL; current_choice = current_choice.next_sibling("choice"))
 				{
+					std::vector<int> newVec;
+					tree->choices_id.push_back(newVec);
+					tree->choices_next_node.push_back(newVec);
+					std::vector<const char*> newVec2;
+					tree->choices_text.push_back(newVec2);
+					//add vectors so it doesn't crash
 					tree->choices_id[current_node_counter-1].emplace_back(current_choice.attribute("id").as_int());
 					tree->choices_text[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("option").as_string());
 					tree->choices_next_node[current_node_counter - 1].emplace_back(current_choice.attribute("next_node").as_int());
