@@ -57,31 +57,33 @@ void DialogueManager::UnloadDialogueUI()
 
 bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 {
-	
+	if (dialogue->node_id == -1 && !showing_continue)
+	{
+		SDL_Rect bt5Pos = { 520, 550, 180,30 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+		return true;
+	}
+
 	switch (uiElement->id)
 	{
 	case 1: // Button MyButton
 		dialogue->choice = 1;
-		dialogue->next_node = tree->choices_next_node[dialogue->node_id][0];
-		dialogue->node_id = dialogue->next_node;
+		dialogue->node_id = tree->choices_next_node[dialogue->node_id][0];
 		LOG("Dialogs: Choice 1. Current node: %i", dialogue->node_id);
 		break;
 	case 2: // Button MyButton
 		dialogue->choice = 2;
-		dialogue->next_node = tree->choices_next_node[dialogue->node_id][1];
-		dialogue->node_id = dialogue->next_node;
+		dialogue->node_id = tree->choices_next_node[dialogue->node_id][1];
 		LOG("Dialogs: Choice 2. Current node: %i", dialogue->node_id);
 		break;
 	case 3: // Button MyButton
 		dialogue->choice = 3;
-		dialogue->next_node = tree->choices_next_node[dialogue->node_id][2];
-		dialogue->node_id = dialogue->next_node;
+		dialogue->node_id = tree->choices_next_node[dialogue->node_id][2];
 		LOG("Dialogs: Choice 3. Current node: %i", dialogue->node_id);
 		break;
 	case 4: // Button MyButton
 		dialogue->choice = 4;
-		dialogue->next_node = tree->choices_next_node[dialogue->node_id][3];
-		dialogue->node_id = dialogue->next_node;
+		dialogue->node_id = tree->choices_next_node[dialogue->node_id][3];
 		LOG("Dialogs: Choice 4. Current node: %i", dialogue->node_id);
 		break;
 	case 5: // Button MyButton
@@ -92,19 +94,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 	default:
 		break;
 	}
-
-	if (dialogue->node_id == -1 && !showing_continue)
-	{
-		SDL_Rect bt5Pos = { 520, 550, 180,30 };
-		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
-		return true;
-	}
-
-	if (dialogue->node_id != -1 && !showing_continue)
+	/*if (dialogue->node_id != -1 && !showing_continue)
 	{
 		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+		UnloadDialogueUI();
 		ShowOptions(dialogue->node_id);
-	}
+	}*/
 	return true;
 }
 
@@ -125,6 +120,7 @@ bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 
 bool DialogueManager::ShowOptions(int node_value) {
 	if (node_value == -1) return true;
+	LOG("ShowOptions called");
 	SDL_Rect bt1Pos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
@@ -155,7 +151,6 @@ bool DialogueManager::ShowOptions(int node_value) {
 //	return ret;
 //}
 
-//error: there are not vectors instantiated previouly
 void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 {
 	int current_node_counter = 0;

@@ -3,7 +3,7 @@
 	<dialogue_tree ID="0" NPC="1">
 		<node id ="0" text="Hello. Who are you?">
 			<choice id ="1" option="I'm aaaa" next_node ="1"/>
-			<choice id ="2" option="Why do you ask?" next_node ="2"/>
+			<choice id ="2" option="Why do you ask?" next_node ="1"/>
 			<choice id ="3" option="..." next_node ="1"/>
 			<choice id ="4" option="I'm bbbb" next_node ="1"/>
 		</node>
