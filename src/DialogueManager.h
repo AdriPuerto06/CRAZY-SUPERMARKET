@@ -53,6 +53,8 @@ public:
 	CurrentDialog* dialogue;
 	DialogTree* tree;
 
+	bool showing_continue;
+
 private:
 	pugi::xml_document dialogsFileXML;
 

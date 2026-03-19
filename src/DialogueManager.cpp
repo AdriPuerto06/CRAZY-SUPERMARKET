@@ -57,11 +57,7 @@ void DialogueManager::UnloadDialogueUI()
 
 bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 {
-	if (dialogue->node_id == -1)
-	{
-		UnloadDialogueUI(); //will need to wait until the player decides to finish the conversation
-		return true;
-	}
+	
 	switch (uiElement->id)
 	{
 	case 1: // Button MyButton
@@ -88,11 +84,23 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 		dialogue->node_id = dialogue->next_node;
 		LOG("Dialogs: Choice 4. Current node: %i", dialogue->node_id);
 		break;
+	case 5: // Button MyButton
+		UnloadDialogueUI();
+		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
+		LOG("Dialogs: Choice 5. Cleaned dialogue UI.");
+		break;
 	default:
 		break;
 	}
 
-	if (dialogue->node_id != -1)
+	if (dialogue->node_id == -1 && !showing_continue)
+	{
+		SDL_Rect bt5Pos = { 520, 550, 180,30 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+		return true;
+	}
+
+	if (dialogue->node_id != -1 && !showing_continue)
 	{
 		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
 		ShowOptions(dialogue->node_id);
@@ -108,7 +116,7 @@ bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->node_id = tree->nodes_id[0];
 	
-
+	showing_continue = false;
 	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[0], 100.0f);
 	ShowOptions(0);
 	
