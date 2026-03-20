@@ -67,6 +67,21 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
 		break;
+	case SceneID::OPTIONS:
+		UpdateOptions(dt);
+		break;
+	case SceneID::MULTIPLAYER:
+		UpdateMultiplayer(dt);
+		break;
+	case SceneID::CREDITS:
+		UpdateCredits(dt);
+		break;
+	case SceneID::SOUND:
+		UpdateSounds(dt);
+		break;
+	case SceneID::GRAFICS:
+		UpdateGrafics(dt);
+		break;
 	}
 
 	return true;
@@ -86,6 +101,21 @@ bool Scene::PostUpdate()
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
+		break;
+	case SceneID::OPTIONS:
+		PostUpdateOptions();
+		break;
+	case SceneID::MULTIPLAYER:
+		PostUpdateMultiplayer();
+		break;
+	case SceneID::CREDITS:
+		PostUpdateCredits();
+		break;
+	case SceneID::SOUND:
+		PostUpdateSounds();
+		break;
+	case SceneID::GRAFICS:
+		PostUpdateGrafics();
 		break;
 	default:
 		break;
@@ -109,6 +139,16 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::LEVEL1:
 		break;
 	case SceneID::LEVEL2:
+		break;
+	case SceneID::OPTIONS:
+		break;
+	case SceneID::MULTIPLAYER:
+		break;
+	case SceneID::CREDITS:
+		break;
+	case SceneID::SOUND:
+		break;
+	case SceneID::GRAFICS:
 		break;
 	default:
 		break;
@@ -154,6 +194,27 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
+
+	case SceneID::OPTIONS:
+		LoadOptions();
+		break;
+
+	case SceneID::MULTIPLAYER:
+		LoadMultiplayer();
+		break;
+
+	case SceneID::CREDITS:
+		LoadCredits();
+		break;
+
+	case SceneID::SOUND:
+		LoadSounds();
+		break;
+
+	case SceneID::GRAFICS:
+		LoadGrafics();
+		break;
+
 	}
 }
 
@@ -181,6 +242,25 @@ void Scene::UnloadCurrentScene() {
 
 	case SceneID::LEVEL2:
 		UnloadLevel2();
+		break;
+	case SceneID::OPTIONS:
+		UnloadOptions();
+		break;
+
+	case SceneID::MULTIPLAYER:
+		UnloadMultiplayer();
+		break;
+
+	case SceneID::CREDITS:
+		UnloadCredits();
+		break;
+
+	case SceneID::SOUND:
+		UnloadSounds();
+		break;
+
+	case SceneID::GRAFICS:
+		UnloadGrafics();
 		break;
 	}
 	
@@ -261,13 +341,13 @@ void Scene::LoadMainMenu() {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
 
 	SDL_Rect bt2Pos = { 520, 380, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Options", bt2Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Options", bt2Pos, this));
 
 	SDL_Rect bt3Pos = { 520, 410, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Multiplayer", bt3Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
 
 	SDL_Rect bt4Pos = { 520, 440, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Credits", bt4Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
 
 }
 
@@ -290,16 +370,28 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::LEVEL1);
 		break;
 	case 2: 
-		LOG("Main Menu: Options clicked");
-		ChangeScene(SceneID::LEVEL1);
+		LOG("LvL2");
+		ChangeScene(SceneID::LEVEL2);
 		break;
 	case 3: 
-		LOG("Main Menu: Multiplayer clicked");
-		ChangeScene(SceneID::LEVEL1);
+		LOG("Main Menu: Options clicked");
+		ChangeScene(SceneID::OPTIONS);
 		break;
 	case 4:
+		LOG("Main Menu: Multiplayer clicked");
+		ChangeScene(SceneID::MULTIPLAYER);
+		break;
+	case 5:
 		LOG("Main Menu: Credits clicked");
-		ChangeScene(SceneID::LEVEL1);
+		ChangeScene(SceneID::CREDITS);
+		break;
+	case 6:
+		LOG("Options: Sounds clicked");
+		ChangeScene(SceneID::SOUND);
+		break;
+	case 7:
+		LOG("Options: Grafics clicked");
+		ChangeScene(SceneID::GRAFICS);
 		break;
 	default:
 		break;
@@ -420,5 +512,126 @@ void Scene::UnloadLevel2() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
+}
+
+
+// *********************************************
+// OPTIONS functions
+// *********************************************
+
+void Scene::LoadOptions()
+{
+
+	//UI Buttons
+	SDL_Rect bt5Pos = { 520, 350, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
+
+	SDL_Rect bt6Pos = { 520, 380, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
+
+
+}
+
+void Scene::UnloadOptions()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+void Scene::UpdateOptions(float dt)
+{
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+}
+
+void Scene::PostUpdateOptions()
+{
+}
+
+
+// *********************************************
+// MULTIPLAYER functions
+// *********************************************
+
+void Scene::LoadMultiplayer()
+{
+}
+
+void Scene::UnloadMultiplayer()
+{
+}
+
+void Scene::UpdateMultiplayer(float dt)
+{
+}
+
+void Scene::PostUpdateMultiplayer()
+{
+}
+
+
+// *********************************************
+// CREDITS functions
+// *********************************************
+
+void Scene::LoadCredits()
+{
+}
+
+void Scene::UnloadCredits()
+{
+}
+
+void Scene::UpdateCredits(float dt)
+{
+}
+
+void Scene::PostUpdateCredits()
+{
+}
+
+
+// *********************************************
+// SOUNDS functions
+// *********************************************
+
+void Scene::LoadSounds()
+{
+}
+
+void Scene::UnloadSounds()
+{
+}
+
+void Scene::UpdateSounds(float dt)
+{
+}
+
+void Scene::PostUpdateSounds()
+{
+}
+
+
+// *********************************************
+// GRAFICS functions
+// *********************************************
+
+void Scene::LoadGrafics()
+{
+}
+
+void Scene::UnloadGrafics()
+{
+}
+
+void Scene::UpdateGrafics(float dt)
+{
+}
+
+void Scene::PostUpdateGrafics()
+{
 }
 

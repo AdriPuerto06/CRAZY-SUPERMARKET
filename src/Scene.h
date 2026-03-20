@@ -12,7 +12,13 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
-	LEVEL2
+	LEVEL2,
+	OPTIONS,
+	CREDITS,
+	MULTIPLAYER,
+	SOUND,
+	GRAFICS,
+
 };
 
 
@@ -82,6 +88,36 @@ private:
 	void LoadLevel2();
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
+
+	//OPTIONS
+	void LoadOptions();
+	void UnloadOptions();
+	void UpdateOptions(float dt);
+	void PostUpdateOptions();
+
+	//MULTIPLAYER
+	void LoadMultiplayer();
+	void UnloadMultiplayer();
+	void UpdateMultiplayer(float dt);
+	void PostUpdateMultiplayer();
+
+	//CREDITS
+	void LoadCredits();
+	void UnloadCredits();
+	void UpdateCredits(float dt);
+	void PostUpdateCredits();
+
+	//SOUNDS
+	void LoadSounds();
+	void UnloadSounds();
+	void UpdateSounds(float dt);
+	void PostUpdateSounds();
+
+	//GRAFICS
+	void LoadGrafics();
+	void UnloadGrafics();
+	void UpdateGrafics(float dt);
+	void PostUpdateGrafics();
 
 private:
 
