@@ -62,12 +62,6 @@ void DialogueManager::UnloadDialogueUI()
 
 bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 {
-	if (dialogue->node_id == -1 && !showing_continue)
-	{
-		SDL_Rect bt5Pos = { 520, 550, 180,30 };
-		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
-		return true;
-	}
 
 	switch (uiElement->id)
 	{
@@ -82,6 +76,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
 			}
 			can_be_clicked = false;
+			if (dialogue->node_id == -1 && !showing_continue)
+			{
+				SDL_Rect bt5Pos = { 520, 550, 180,30 };
+				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				return true;
+			}
 		}
 		break;
 	case 2: // Button MyButton
@@ -95,6 +95,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
 			}
 			can_be_clicked = false;
+			if (dialogue->node_id == -1 && !showing_continue)
+			{
+				SDL_Rect bt5Pos = { 520, 550, 180,30 };
+				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				return true;
+			}
 		}
 		break;
 	case 3: // Button MyButton
@@ -108,6 +114,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
 			}
 			can_be_clicked = false;
+			if (dialogue->node_id == -1 && !showing_continue)
+			{
+				SDL_Rect bt5Pos = { 520, 550, 180,30 };
+				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				return true;
+			}
 		}
 		break;
 	case 4: // Button MyButton
@@ -121,6 +133,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
 			}
 			can_be_clicked = false;
+			if (dialogue->node_id == -1 && !showing_continue)
+			{
+				SDL_Rect bt5Pos = { 520, 550, 180,30 };
+				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				return true;
+			}
 		}
 		break;
 	case 5: // Button MyButton
