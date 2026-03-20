@@ -143,4 +143,10 @@ private:
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+
+	//Creditos
+
+	std::vector<std::string> creditsText;
+	float creditsY = 0.0f;
+	float scrollSpeed = 50.0f;
 };

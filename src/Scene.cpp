@@ -579,6 +579,31 @@ void Scene::PostUpdateMultiplayer()
 
 void Scene::LoadCredits()
 {
+
+	creditsText = {
+	"CRAZY SUPERMARKET",
+	"",
+	"",
+	"Developers:",
+	"",
+	"Erik Argemi - Adria Puerto - Biel Cadenas - Pau Gallego - Adam Molina",
+	"",
+	"",
+	"Art Producers & Organization:",
+	"",
+	"Pau Gallego - Biel Cadenas",
+	"",
+	"",
+	"Music Creator & Organization:",
+	"",
+	"Adam Molina",
+	"",
+	"",
+	"Thanks for playing aour crazy game!"
+	};
+
+	creditsY = 720;
+
 }
 
 void Scene::UnloadCredits()
@@ -587,10 +612,24 @@ void Scene::UnloadCredits()
 
 void Scene::UpdateCredits(float dt)
 {
+
+	creditsY -= scrollSpeed * dt / 1000.0f;
+
 }
 
 void Scene::PostUpdateCredits()
 {
+
+	int startX = 400;
+	int lineHeight = 30;
+
+	for (int i = 0; i < creditsText.size(); ++i)
+	{
+		int y = creditsY + i * lineHeight;
+		SDL_Color color = { 255,255,0,255 };
+		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), startX, y, 450, 60, color);
+	}
+
 }
 
 
