@@ -33,6 +33,8 @@ public:
 	// Called every frame
 	bool Update(float dt);
 
+	bool PostUpdate();
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -54,6 +56,7 @@ public:
 	DialogTree* tree;
 
 	bool showing_continue;
+	bool can_be_clicked = true;
 
 private:
 	pugi::xml_document dialogsFileXML;

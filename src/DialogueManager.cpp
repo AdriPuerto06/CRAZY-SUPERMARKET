@@ -26,6 +26,11 @@ bool DialogueManager::Update(float dt)
 	return true;
 }
 
+bool DialogueManager::PostUpdate() {
+	can_be_clicked = true;
+	return true;
+}
+
 bool DialogueManager::CleanUp() 
 {
 	dialogsFileXML.empty();
@@ -67,24 +72,56 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1: // Button MyButton
-		dialogue->choice = 1;
-		dialogue->node_id = tree->choices_next_node[dialogue->node_id][0];
-		LOG("Dialogs: Choice 1. Current node: %i", dialogue->node_id);
+		if (can_be_clicked) {
+			dialogue->choice = 1;
+			dialogue->node_id = tree->choices_next_node[dialogue->node_id][0];
+			LOG("Dialogs: Choice 1. Current node: %i", dialogue->node_id);
+			if (dialogue->node_id != -1 && !showing_continue)
+			{
+				ShowOptions(dialogue->node_id);
+				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+			}
+			can_be_clicked = false;
+		}
 		break;
 	case 2: // Button MyButton
-		dialogue->choice = 2;
-		dialogue->node_id = tree->choices_next_node[dialogue->node_id][1];
-		LOG("Dialogs: Choice 2. Current node: %i", dialogue->node_id);
+		if (can_be_clicked) {
+			dialogue->choice = 2;
+			dialogue->node_id = tree->choices_next_node[dialogue->node_id][1];
+			LOG("Dialogs: Choice 2. Current node: %i", dialogue->node_id);
+			if (dialogue->node_id != -1 && !showing_continue)
+			{
+				ShowOptions(dialogue->node_id);
+				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+			}
+			can_be_clicked = false;
+		}
 		break;
 	case 3: // Button MyButton
-		dialogue->choice = 3;
-		dialogue->node_id = tree->choices_next_node[dialogue->node_id][2];
-		LOG("Dialogs: Choice 3. Current node: %i", dialogue->node_id);
+		if (can_be_clicked) {
+			dialogue->choice = 3;
+			dialogue->node_id = tree->choices_next_node[dialogue->node_id][2];
+			LOG("Dialogs: Choice 3. Current node: %i", dialogue->node_id);
+			if (dialogue->node_id != -1 && !showing_continue)
+			{
+				ShowOptions(dialogue->node_id);
+				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+			}
+			can_be_clicked = false;
+		}
 		break;
 	case 4: // Button MyButton
-		dialogue->choice = 4;
-		dialogue->node_id = tree->choices_next_node[dialogue->node_id][3];
-		LOG("Dialogs: Choice 4. Current node: %i", dialogue->node_id);
+		if (can_be_clicked) {
+			dialogue->choice = 4;
+			dialogue->node_id = tree->choices_next_node[dialogue->node_id][3];
+			LOG("Dialogs: Choice 4. Current node: %i", dialogue->node_id);
+			if (dialogue->node_id != -1 && !showing_continue)
+			{
+				ShowOptions(dialogue->node_id);
+				Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+			}
+			can_be_clicked = false;
+		}
 		break;
 	case 5: // Button MyButton
 		UnloadDialogueUI();
@@ -94,12 +131,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 	default:
 		break;
 	}
-	/*if (dialogue->node_id != -1 && !showing_continue)
-	{
-		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
-		UnloadDialogueUI();
-		ShowOptions(dialogue->node_id);
-	}*/
+
 	return true;
 }
 
@@ -112,15 +144,17 @@ bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
 	dialogue->node_id = tree->nodes_id[0];
 	
 	showing_continue = false;
-	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[0], 100.0f);
-	ShowOptions(0);
-	
+	/*can_be_clicked = true;*/
+	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+	ShowOptions(dialogue->node_id);
+		
 	return true;
 }
 
 bool DialogueManager::ShowOptions(int node_value) {
 	if (node_value == -1) return true;
 	LOG("ShowOptions called");
+	UnloadDialogueUI();
 	SDL_Rect bt1Pos = { 520, 350, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
