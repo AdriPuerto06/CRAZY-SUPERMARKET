@@ -80,6 +80,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 			{
 				SDL_Rect bt5Pos = { 520, 550, 180,30 };
 				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				showing_continue = true;
 				return true;
 			}
 		}
@@ -99,6 +100,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 			{
 				SDL_Rect bt5Pos = { 520, 550, 180,30 };
 				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				showing_continue = true;
 				return true;
 			}
 		}
@@ -118,6 +120,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 			{
 				SDL_Rect bt5Pos = { 520, 550, 180,30 };
 				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				showing_continue = true;
 				return true;
 			}
 		}
@@ -137,6 +140,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 			{
 				SDL_Rect bt5Pos = { 520, 550, 180,30 };
 				std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+				showing_continue = true;
 				return true;
 			}
 		}
