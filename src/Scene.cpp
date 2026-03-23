@@ -41,6 +41,7 @@ bool Scene::Start()
 	LoadScene(currentScene); // empieza en Intro Screen
 
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
+	
 	return true;
 }
 
@@ -275,7 +276,7 @@ void Scene::LoadIntroScreen()
 {
 	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
-	
+	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
 
 	if (logoImg == nullptr || teamImg == nullptr)
@@ -336,17 +337,18 @@ void Scene::LoadMainMenu() {
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	
 
 	// Instantiate a UIButton in the Scene
+	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
-	SDL_Rect bt1Pos = { 520, 350, 120,20 };
+	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { 520, 380, 120,20 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) - 10, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Options", bt2Pos, this));
 
-	SDL_Rect bt3Pos = { 520, 410, 120,20 };
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 20, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
 
-	SDL_Rect bt4Pos = { 520, 440, 120,20 };
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
 
 }
@@ -523,10 +525,12 @@ void Scene::LoadOptions()
 {
 
 	//UI Buttons
-	SDL_Rect bt5Pos = { 520, 350, 120,20 };
+	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
 
-	SDL_Rect bt6Pos = { 520, 380, 120,20 };
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
 
@@ -620,14 +624,14 @@ void Scene::UpdateCredits(float dt)
 void Scene::PostUpdateCredits()
 {
 
-	int startX = 400;
+	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 	int lineHeight = 30;
 
 	for (int i = 0; i < creditsText.size(); ++i)
 	{
 		int y = creditsY + i * lineHeight;
 		SDL_Color color = { 255,255,0,255 };
-		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), startX, y, 450, 60, color);
+		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX()/2, y, 450, 60, color);
 	}
 
 }
