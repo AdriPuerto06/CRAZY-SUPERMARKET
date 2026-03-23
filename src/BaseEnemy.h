@@ -1,7 +1,8 @@
 #include "Entity.h"
+#include "Pathfinding.h"
 #include <vector>
 
-class BaseEnemy : Entity {
+class BaseEnemy : public Entity {
 public:
 	BaseEnemy() {}
 	BaseEnemy(EntityType type) : type(type), active(true) {}
@@ -39,7 +40,13 @@ public:
 
 	};
 
-public:
+	virtual void PerformPathfinding() = 0;
+	virtual void GetPhysicsValues() = 0;
+	virtual void Move() = 0;
+	virtual void ApplyPhysics() = 0;
+	virtual void Draw(float dt) = 0;
+
+protected:
 	EntityType type;
 	bool active;
 	bool renderable = true;
@@ -48,10 +55,14 @@ public:
 	Vector2D position;
 	SDL_Texture* texture = NULL;
 	int texW, texH;
+	AnimationSet anims;
+
+	b2Vec2 velocity;
+	float speed;
+	std::shared_ptr<Pathfinding> pathfinding;
 
 	int HP;
-	std::vector<const char*> attack_names;
+	std::vector<std::string> attack_names;
 	std::vector<int> attack_damage;
-	
 	
 };

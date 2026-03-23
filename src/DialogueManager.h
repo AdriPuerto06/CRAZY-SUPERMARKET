@@ -42,6 +42,7 @@ public:
 	void UnloadDialogueUI();
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
+	void ButtonAction(int ID);
 	bool StartDialog(int dialogue_tree_ID, int npc_id);
 	bool ShowOptions(int node_value);
 	

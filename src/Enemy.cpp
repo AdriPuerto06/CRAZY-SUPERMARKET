@@ -10,10 +10,7 @@
 #include "EntityManager.h"
 #include "Map.h"
 
-Enemy::Enemy() : Entity(EntityType::ENEMY)
-{
-	name = "Enemy";
-}
+Enemy::Enemy() : BaseEnemy(EntityType::ENEMY) {}
 
 Enemy::~Enemy() {
 
