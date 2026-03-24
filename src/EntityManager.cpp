@@ -5,7 +5,12 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Item.h"
+
+#include "BaseEnemy.h"
+#include "BaseNPC.h"
+
 #include "Enemy.h"
+#include "NPC_Vagabundo.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -78,6 +83,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::ENEMY:
 		entity = std::make_shared<Enemy>();
 		break;
+	/*case EntityType::NPC_VAGABUNDO:
+		entity = std::make_shared<NPC_Vagabundo>();
+		break;*/
 	default:
 		break;
 	}
@@ -96,6 +104,18 @@ void EntityManager::DestroyEntity(std::shared_ptr<Entity> entity)
 void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
 {
 	if ( entity != nullptr) entities.push_back(entity);
+}
+
+std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
+{
+	for (std::shared_ptr<Entity> entity : entities)
+	{
+		if (entity->entity_ID == ID && entity->type == type)
+		{
+			return entity;
+		}
+	}
+	return ;
 }
 
 bool EntityManager::Update(float dt)

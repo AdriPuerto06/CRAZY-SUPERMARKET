@@ -197,9 +197,11 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                 std::string entityType = objectNode.attribute("type").as_string();
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
+                int ID = objectNode.attribute("id").as_int();
 
                 // Create entity based on type
-                if (entityType == "Player") {
+                if (entityType == "Player") 
+                {
                     // Create Player entity
                     if (player == nullptr) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
@@ -209,6 +211,15 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                     //If the player already exists, just set its position
                     else {
                         player->SetPosition(Vector2D(x, y));
+                    }
+                }
+
+                if (entityType == "NPC_Vagabundo") 
+                {
+                    if (Engine::GetInstance().entityManager->GetEntity(EntityType::NPC_VAGABUNDO, ID) == nullptr)
+                    {
+
+                        std::shared_ptr<NPC_Vagabundo> npc = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
                     }
                 }
             }
