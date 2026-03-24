@@ -66,6 +66,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
 	//L04: TODO 3a: Instantiate entity according to the type and add the new entity to the list of Entities
+	//Añadir las clases concretas de los enemigos y npcs cuando las tengamos
 	switch (type)
 	{
 	case EntityType::PLAYER:
