@@ -37,12 +37,20 @@ public:
     void SetMusicVolume(float volume); // 0.0f – 1.0f
     void SetSFXVolume(float volume);   // 0.0f – 1.0f
 
+    bool Update(float dt) override;
+
 private:
 
     struct SoundData {
         SDL_AudioSpec spec{};  // source format
         Uint8* buf{ nullptr };
         Uint32 len{ 0 };  // bytes
+    };
+
+    // Currently playing sound effect
+    struct PlayingSfx {
+        SDL_AudioStream* stream{ nullptr };
+        float timeLeft{ 0.0f };   // segundos restantes
     };
 
     // Device and default output format
@@ -56,6 +64,7 @@ private:
     // Loaded sounds
     SoundData music_data_{};
     std::vector<SoundData> sfx_; // 1-based indexing outwardly
+    std::vector<SDL_AudioStream*> active_sfx_streams_;
 
 	// Volume control
     float music_volume_ = 1.0f; // 0.0 = mute, 1.0 = full

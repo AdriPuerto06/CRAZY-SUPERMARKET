@@ -72,6 +72,9 @@ struct TileSet
     int columns;
     SDL_Texture* texture;
 
+    // Animations: map global gid -> list of <frameGlobalGid, durationMs>
+    std::unordered_map<int, std::vector<std::pair<int, int>>> animations;
+
     // L07: TODO 7: Implement the method that receives the gid and returns a Rect
     SDL_Rect GetRect(unsigned int gid) {
         SDL_Rect rect = { 0 };
@@ -84,6 +87,31 @@ struct TileSet
 
         return rect;
     }
+
+	//Implement a method to check if a gid belongs to the tileset
+    /*SDL_Rect GetRect(unsigned int gid) {
+        SDL_Rect rect = { 0, 0, 0, 0 };
+
+        if (columns <= 0 || tileWidth <= 0 || tileHeight <= 0)
+        {
+            // invalid data
+            return rect;
+        }
+
+        int relativeIndex = static_cast<int>(gid) - firstGid;
+        if (relativeIndex < 0 || (tileCount > 0 && relativeIndex >= tileCount))
+        {
+            // gid out of range
+            return rect;
+        }
+
+        rect.w = tileWidth;
+        rect.h = tileHeight;
+        rect.x = margin + (tileWidth + spacing) * (relativeIndex % columns);
+        rect.y = margin + (tileHeight + spacing) * (relativeIndex / columns);
+
+        return rect;
+    }*/
 
 };
 
@@ -153,6 +181,14 @@ public:
 	//L15 TODO 4: Define a method to save entities to the map XML
     void SaveEntities(std::shared_ptr<Player> player);
 
+    //Get the layers in order to draw them correctly
+    MapLayer* GetLayer(const std::string& name) const;
+    void DrawLayers(bool aboveEntities);
+
+    // L19 TODO 2: Calculate Camera limits in Tiles
+    Vector2D GetCameraLimitsInTiles(Vector2D camPosTile);
+    Vector2D GetCameraPositionInTiles();
+
 public: 
     std::string mapFileName;
     std::string mapPath;
@@ -165,4 +201,7 @@ private:
     pugi::xml_document mapFileXML;
     //
 	std::list<PhysBody*> colliderList;
+
+    //global animation timer in milliseconds
+    double animationTimerMs = 0.0;
 };

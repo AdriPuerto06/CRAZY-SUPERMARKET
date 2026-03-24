@@ -409,7 +409,7 @@ void Scene::LoadLevel1() {
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
@@ -489,7 +489,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/that-8-bit-music-322062.wav");
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplateLevel2.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
