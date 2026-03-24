@@ -164,12 +164,15 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Tomato.cpp" />
     <ClCompile Include="src\UIButton.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vector2D.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BaseEnemy.h" />
+    <ClInclude Include="src\Tomato.h" />
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\BaseEnemy.h" />
