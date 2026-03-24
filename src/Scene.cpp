@@ -167,8 +167,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL2:
 		break;
-	case SceneID::OPTIONS:
-		HandleMainMenuUIEvents(uiElement);
+	case SceneID::OPTIONS: 
 		break;
 	case SceneID::MULTIPLAYER:
 		break;
