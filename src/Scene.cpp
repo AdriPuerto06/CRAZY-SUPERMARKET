@@ -29,6 +29,8 @@ Scene::~Scene()
 // Called before render is available
 bool Scene::Awake()
 {
+	WindowSize = Engine::GetInstance().window->GetWindowSize();
+
 	LOG("Loading Scene");
 	bool ret = true;
 	return ret;
@@ -41,6 +43,7 @@ bool Scene::Start()
 	LoadScene(currentScene); // empieza en Intro Screen
 
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
+	
 	return true;
 }
 
@@ -275,7 +278,6 @@ void Scene::LoadIntroScreen()
 {
 	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
-	
 
 
 	if (logoImg == nullptr || teamImg == nullptr)
@@ -337,16 +339,16 @@ void Scene::LoadMainMenu() {
 
 	// Instantiate a UIButton in the Scene
 
-	SDL_Rect bt1Pos = { 520, 350, 120,20 };
+	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { 520, 380, 120,20 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) - 10, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Options", bt2Pos, this));
 
-	SDL_Rect bt3Pos = { 520, 410, 120,20 };
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 20, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
 
-	SDL_Rect bt4Pos = { 520, 440, 120,20 };
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
 
 }
@@ -523,10 +525,11 @@ void Scene::LoadOptions()
 {
 
 	//UI Buttons
-	SDL_Rect bt5Pos = { 520, 350, 120,20 };
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
 
-	SDL_Rect bt6Pos = { 520, 380, 120,20 };
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
 
@@ -579,6 +582,8 @@ void Scene::PostUpdateMultiplayer()
 
 void Scene::LoadCredits()
 {
+	
+
 
 	creditsText = {
 	"CRAZY SUPERMARKET",
@@ -602,7 +607,7 @@ void Scene::LoadCredits()
 	"Thanks for playing aour crazy game!"
 	};
 
-	creditsY = 720;
+	creditsY = WindowSize.getY();
 
 }
 
@@ -612,22 +617,25 @@ void Scene::UnloadCredits()
 
 void Scene::UpdateCredits(float dt)
 {
-
+	
 	creditsY -= scrollSpeed * dt / 1000.0f;
+	if (creditsY <= creditsTimer) {
+
+		ChangeScene(SceneID::MAIN_MENU);
+		creditsY = WindowSize.getY();
+	}
 
 }
 
 void Scene::PostUpdateCredits()
 {
-
-	int startX = 400;
-	int lineHeight = 30;
-
+	
 	for (int i = 0; i < creditsText.size(); ++i)
 	{
+
 		int y = creditsY + i * lineHeight;
-		SDL_Color color = { 255,255,0,255 };
-		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), startX, y, 450, 60, color);
+		SDL_Color color = { 255,0,255,255 };
+		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX() / 2.5, y, 450, 60, color);
 	}
 
 }

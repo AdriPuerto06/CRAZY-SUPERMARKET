@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "UIButton.h"
+#include "Window.h"
 
 struct SDL_Texture;
 
@@ -134,6 +135,7 @@ private:
 	// L17 TODO 1: Current scene attribute with initial value
 	//SceneID currentScene = SceneID::MAIN_MENU;
 	SceneID currentScene = SceneID::INTRO_SCREEN;
+	Vector2D WindowSize;
 
 
 	//Imagen
@@ -148,5 +150,8 @@ private:
 
 	std::vector<std::string> creditsText;
 	float creditsY = 0.0f;
-	float scrollSpeed = 50.0f;
+	float scrollSpeed = 100.0f;
+	int lineHeight = 30;
+	bool isCredits = false;
+	float creditsTimer = 5.f;
 };
