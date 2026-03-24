@@ -104,6 +104,25 @@ bool Map::Update(float dt)
     return ret;
 }
 
+Vector2D Map::MapToWorld(int x, int y) const
+{
+    Vector2D ret;
+
+    ret.setX((float)(x * mapData.tileWidth));
+    ret.setY((float)(y * mapData.tileHeight));
+
+    return ret;
+}
+
+Vector2D Map::WorldToMap(int x, int y)
+{
+    Vector2D ret(0, 0);
+    ret.setX((float)(x / mapData.tileWidth));
+    ret.setY((float)(y / mapData.tileHeight));
+
+    return ret;
+}
+
 // L09: TODO 2: Implement function to the Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
@@ -328,108 +347,11 @@ bool Map::Load(std::string path, std::string fileName)
                     }
                 }
                 //--------------------------------------------Colliders End--------------------------------------------
-                //--------------------------------------------Killers Start--------------------------------------------
-                if (groupName == "Killer")
-                {
-                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
-                    {
-                        float x = object.attribute("x").as_float();
-                        float y = object.attribute("y").as_float();
-                        float width = object.attribute("width").as_float();
-                        float height = object.attribute("height").as_float();
+                
 
-                        // Validate dimensions before using them
-                        if (std::isfinite(width) && std::isfinite(height) && width > 0.0f && height > 0.0f)
-                        {
-                            float centerX = x + width / 2.0f;
-                            float centerY = y + height / 2.0f;
+                 ret = true;
 
-                            PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangle(
-                                centerX, centerY, width, height, STATIC);
-
-                            collider->ctype = ColliderType::KILLER;
-
-                            for (pugi::xml_node prop = object.child("properties").child("property"); prop; prop = prop.next_sibling("property"))
-                            {
-                                std::string propName = prop.attribute("name").as_string();
-                                std::string propValue = prop.attribute("value").as_string();
-
-                                if (propName == "final" && propValue == "true") {
-                                    collider->isFinalKiller = true;
-                                    LOG("Killer final detectado en (%d, %d)", x, y);
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            std::cerr << "Invalid killer dimensions: width=" << width << ", height=" << height << std::endl;
-                        }
-                    }
-                }
-                //--------------------------------------------Killers End--------------------------------------------
-                //-------------------------------------------Respawns Start------------------------------------------
-                if (groupName == "Respawn")
-                {
-                    int i = 0;
-                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
-                    {
-                        float x = object.attribute("x").as_float();
-                        float y = object.attribute("y").as_float();
-                        float width = object.attribute("width").as_float();
-                        float height = object.attribute("height").as_float();
-
-                        if (std::isfinite(width) && std::isfinite(height) && width > 0.0f && height > 0.0f)
-                        {
-                            float centerX = x + width / 2.0f;
-                            float centerY = y + height / 2.0f;
-
-                            PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangleSensor(
-                                centerX, centerY, width, height, STATIC);
-
-                            collider->ctype = ColliderType::RESPAWN;
-                        }
-                        else
-                        {
-                            std::cerr << "Invalid respawn dimensions: width=" << width << ", height=" << height << std::endl;
-                        }
-
-                    }
-                }
-                //--------------------------------------------Respawn End--------------------------------------------
-                //-------------------------------------------Teleport Start------------------------------------------
-                if (groupName == "Teleport")
-                {
-                    int i = 0;
-                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
-                    {
-                        float x = object.attribute("x").as_float();
-                        float y = object.attribute("y").as_float();
-                        float width = object.attribute("width").as_float();
-                        float height = object.attribute("height").as_float();
-
-                        if (std::isfinite(width) && std::isfinite(height) && width > 0.0f && height > 0.0f)
-                        {
-                            float centerX = x + width / 2.0f;
-                            float centerY = y + height / 2.0f;
-
-                            PhysBody* collider = Engine::GetInstance().physics.get()->CreateRectangleSensor(
-                                centerX, centerY, width, height, STATIC);
-
-                            collider->ctype = ColliderType::TELEPORT;
-                        }
-                        else
-                        {
-                            std::cerr << "Invalid teleport dimensions: width=" << width << ", height=" << height << std::endl;
-                        }
-
-                    }
-                }
-            }
-
-            ret = true;
-
-        // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
+                // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
         if (ret == true)
         {
             LOG("Successfully parsed map XML file :%s", fileName.c_str());
@@ -464,24 +386,7 @@ bool Map::Load(std::string path, std::string fileName)
 }
 
 // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
-Vector2D Map::MapToWorld(int x, int y) const
-{
-    Vector2D ret;
 
-    ret.setX((float)(x * mapData.tileWidth));
-    ret.setY((float)(y * mapData.tileHeight));
-
-    return ret;
-}
-
-Vector2D Map::WorldToMap(int x, int y) {
-
-    Vector2D ret(0, 0);
-    ret.setX((float)(x / mapData.tileWidth));
-    ret.setY((float)(y / mapData.tileHeight));
-
-    return ret;
-}
 
 // L09: TODO 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
