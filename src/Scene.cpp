@@ -529,7 +529,7 @@ void Scene::LoadOptions()
 	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
 
-	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
 
@@ -565,10 +565,15 @@ void Scene::LoadMultiplayer()
 
 void Scene::UnloadMultiplayer()
 {
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateMultiplayer(float dt)
 {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		ChangeScene(SceneID::MAIN_MENU);
+	}
 }
 
 void Scene::PostUpdateMultiplayer()
@@ -620,6 +625,12 @@ void Scene::UpdateCredits(float dt)
 	
 	creditsY -= scrollSpeed * dt / 1000.0f;
 	if (creditsY <= creditsTimer) {
+
+		ChangeScene(SceneID::MAIN_MENU);
+		creditsY = WindowSize.getY();
+	}
+	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
+
 
 		ChangeScene(SceneID::MAIN_MENU);
 		creditsY = WindowSize.getY();
