@@ -129,10 +129,10 @@ private:
 	void PostUpdatePause();
 
 	//EXIT
-	/*void LoadExit();
+	void LoadExit();
 	void UnloadExit();
 	void UpdateExit(float dt);
-	void PostUpdateExit();*/
+	void PostUpdateExit();
 
 private:
 

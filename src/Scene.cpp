@@ -88,6 +88,9 @@ bool Scene::Update(float dt)
 	case SceneID::PAUSE:
 		UpdatePause(dt);
 		break;
+	case SceneID::EXIT:
+		UpdateExit(dt);
+		break;
 
 	}
 
@@ -127,6 +130,9 @@ bool Scene::PostUpdate()
 	case SceneID::PAUSE:
 		PostUpdatePause();
 		break;
+	case SceneID::EXIT:
+		PostUpdateExit();
+		break;
 	default:
 		break;
 	}
@@ -162,6 +168,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::LEVEL2:
 		break;
 	case SceneID::OPTIONS:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::MULTIPLAYER:
 		break;
@@ -172,6 +179,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::GRAFICS:
 		break;
 	case SceneID::PAUSE:
+		break;
+	case SceneID::EXIT:
 		break;
 	default:
 		break;
@@ -240,6 +249,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::PAUSE:
 		LoadPause();
 		break;
+	case SceneID::EXIT:
+		LoadExit();
+		break;
 
 	}
 }
@@ -290,6 +302,9 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::PAUSE:
 		UnloadPause();
+		break;
+	case SceneID::EXIT:
+		UnloadExit();
 		break;
 	}
 	
@@ -423,7 +438,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
-		closeGame = true;
+		ChangeScene(SceneID::EXIT);
 		break;
 	default:
 		break;
@@ -768,7 +783,7 @@ void Scene::PostUpdatePause()
 // EXIT functions
 // *********************************************
 
-/*void Scene::LoadExit()
+void Scene::LoadExit()
 {
 }
 
@@ -778,10 +793,13 @@ void Scene::UnloadExit()
 
 void Scene::UpdateExit(float dt)
 {
+
+	closeGame = true;
+
 }
 
 void Scene::PostUpdateExit()
 {
 }
-*/
+
 
