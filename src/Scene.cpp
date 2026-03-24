@@ -29,6 +29,8 @@ Scene::~Scene()
 // Called before render is available
 bool Scene::Awake()
 {
+	WindowSize = Engine::GetInstance().window->GetWindowSize();
+
 	LOG("Loading Scene");
 	bool ret = true;
 	return ret;
@@ -276,7 +278,6 @@ void Scene::LoadIntroScreen()
 {
 	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
-	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
 
 	if (logoImg == nullptr || teamImg == nullptr)
@@ -337,7 +338,6 @@ void Scene::LoadMainMenu() {
 	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	
 
 	// Instantiate a UIButton in the Scene
-	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
 	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
@@ -525,7 +525,6 @@ void Scene::LoadOptions()
 {
 
 	//UI Buttons
-	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
 	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
@@ -583,6 +582,8 @@ void Scene::PostUpdateMultiplayer()
 
 void Scene::LoadCredits()
 {
+	
+
 
 	creditsText = {
 	"CRAZY SUPERMARKET",
@@ -606,7 +607,7 @@ void Scene::LoadCredits()
 	"Thanks for playing aour crazy game!"
 	};
 
-	creditsY = 720;
+	creditsY = WindowSize.getY();
 
 }
 
@@ -616,22 +617,25 @@ void Scene::UnloadCredits()
 
 void Scene::UpdateCredits(float dt)
 {
-
+	
 	creditsY -= scrollSpeed * dt / 1000.0f;
+	if (creditsY <= creditsTimer) {
+
+		ChangeScene(SceneID::MAIN_MENU);
+		creditsY = WindowSize.getY();
+	}
 
 }
 
 void Scene::PostUpdateCredits()
 {
-
-	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
-	int lineHeight = 30;
-
+	
 	for (int i = 0; i < creditsText.size(); ++i)
 	{
+
 		int y = creditsY + i * lineHeight;
-		SDL_Color color = { 255,255,0,255 };
-		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX()/2, y, 450, 60, color);
+		SDL_Color color = { 255,0,255,255 };
+		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX() / 2.5, y, 450, 60, color);
 	}
 
 }
