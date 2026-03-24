@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Entity.h"
 #include "Pathfinding.h"
 #include <vector>
@@ -48,7 +46,6 @@ public:
 	virtual void ApplyPhysics() = 0;
 	virtual void Draw(float dt) = 0;
 
-
 protected:
 	EntityType type;
 	bool active;
@@ -67,5 +64,5 @@ protected:
 	int HP;
 	std::vector<std::string> attack_names;
 	std::vector<int> attack_damage;
-
+	
 };
