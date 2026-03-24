@@ -19,6 +19,8 @@
     </Filter>
     <Filter Include="Source Files\Game\enemies">
       <UniqueIdentifier>{3ef08bd9-8d8a-43f8-9502-00c1639c4c6b}</UniqueIdentifier>
+    <Filter Include="Source Files\Engine\Dialogue">
+      <UniqueIdentifier>{daa022ca-9723-4661-910f-70743c0b28fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +102,7 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\DialogueManager.cpp">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\Engine\Dialogue</Filter>
     </ClCompile>
     <ClCompile Include="src\Tomato.cpp">
       <Filter>Source Files\Game\enemies</Filter>
@@ -180,7 +182,13 @@
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\DialogueManager.h">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\Engine\Dialogue</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseEnemy.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseNPC.h">
+      <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\Tomato.h">
       <Filter>Source Files\Game\enemies</Filter>
@@ -193,11 +201,8 @@
     <Xml Include="config.xml">
       <Filter>Configuration FIles</Filter>
     </Xml>
-    <Xml Include="Dialogs.xml">
-      <Filter>Source Files\Game</Filter>
-    </Xml>
     <Xml Include="src\Dialogs.xml">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\Engine\Dialogue</Filter>
     </Xml>
   </ItemGroup>
 </Project>

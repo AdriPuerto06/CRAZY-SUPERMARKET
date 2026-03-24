@@ -175,6 +175,8 @@
     <ClInclude Include="src\Tomato.h" />
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Audio.h" />
+    <ClInclude Include="src\BaseEnemy.h" />
+    <ClInclude Include="src\BaseNPC.h" />
     <ClInclude Include="src\DialogueManager.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Engine.h" />
@@ -201,7 +203,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />
-    <Xml Include="Dialogs.xml" />
     <Xml Include="src\Dialogs.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

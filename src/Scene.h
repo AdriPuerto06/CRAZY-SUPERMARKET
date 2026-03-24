@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "UIButton.h"
+#include "Window.h"
 
 struct SDL_Texture;
 
@@ -12,7 +13,13 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
-	LEVEL2
+	LEVEL2,
+	OPTIONS,
+	CREDITS,
+	MULTIPLAYER,
+	SOUND,
+	GRAFICS,
+
 };
 
 
@@ -83,6 +90,36 @@ private:
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
 
+	//OPTIONS
+	void LoadOptions();
+	void UnloadOptions();
+	void UpdateOptions(float dt);
+	void PostUpdateOptions();
+
+	//MULTIPLAYER
+	void LoadMultiplayer();
+	void UnloadMultiplayer();
+	void UpdateMultiplayer(float dt);
+	void PostUpdateMultiplayer();
+
+	//CREDITS
+	void LoadCredits();
+	void UnloadCredits();
+	void UpdateCredits(float dt);
+	void PostUpdateCredits();
+
+	//SOUNDS
+	void LoadSounds();
+	void UnloadSounds();
+	void UpdateSounds(float dt);
+	void PostUpdateSounds();
+
+	//GRAFICS
+	void LoadGrafics();
+	void UnloadGrafics();
+	void UpdateGrafics(float dt);
+	void PostUpdateGrafics();
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -98,6 +135,7 @@ private:
 	// L17 TODO 1: Current scene attribute with initial value
 	//SceneID currentScene = SceneID::MAIN_MENU;
 	SceneID currentScene = SceneID::INTRO_SCREEN;
+	Vector2D WindowSize;
 
 
 	//Imagen
@@ -107,4 +145,13 @@ private:
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+
+	//Creditos
+
+	std::vector<std::string> creditsText;
+	float creditsY = 0.0f;
+	float scrollSpeed = 100.0f;
+	int lineHeight = 30;
+	bool isCredits = false;
+	float creditsTimer = 5.f;
 };
