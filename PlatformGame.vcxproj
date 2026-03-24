@@ -172,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Audio.h" />
+    <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\DialogueManager.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Engine.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Item.h" />
+    <ClInclude Include="src\List.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Module.h" />

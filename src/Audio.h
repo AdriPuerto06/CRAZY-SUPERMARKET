@@ -2,12 +2,24 @@
 
 #include "Module.h"
 #include <SDL3/SDL.h>
+#include "Defs.h"
+#include "List.h"
 #include <vector>
 #include <string>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
+#define Mix_LoadWAV(file)   Mix_LoadWAV_RW(SDL_RWFromFile(file, "rb"), 1)
+
 
 struct _Mix_Music;
+struct Mix_Chunk;
+
+
+enum Music {
+    OFF = 0,
+    title
+};
+
 
 class Audio : public Module
 {
@@ -33,9 +45,14 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(int fx, int repeat = 0);
 
+    //Change Music track
+    bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
+
 	// Volume control
     void SetMusicVolume(float volume); // 0.0f – 1.0f
     void SetSFXVolume(float volume);   // 0.0f – 1.0f
+
+
 
 private:
 
@@ -66,4 +83,9 @@ private:
     void FreeSound(SoundData& s);
     bool EnsureDeviceOpen();
     bool EnsureStreams();
+
+    _Mix_Music* music;
+    List<Mix_Chunk*>	fx;
+
+    
 };
