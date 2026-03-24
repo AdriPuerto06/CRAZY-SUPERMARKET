@@ -17,6 +17,9 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{eaf9226b-488a-4c6a-9d1a-2222fdb48e0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\enemies">
+      <UniqueIdentifier>{3ef08bd9-8d8a-43f8-9502-00c1639c4c6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -99,6 +102,9 @@
     <ClCompile Include="src\DialogueManager.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tomato.cpp">
+      <Filter>Source Files\Game\enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -175,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="src\DialogueManager.h">
       <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tomato.h">
+      <Filter>Source Files\Game\enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseEnemy.h">
+      <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

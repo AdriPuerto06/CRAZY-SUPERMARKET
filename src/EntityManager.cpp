@@ -6,6 +6,9 @@
 #include "Log.h"
 #include "Item.h"
 #include "Enemy.h"
+#include "BaseEnemy.h"
+#include "Tomato.h"
+
 
 EntityManager::EntityManager() : Module()
 {
@@ -125,3 +128,14 @@ bool EntityManager::Update(float dt)
 
 	return ret;
 }
+
+//Tomato
+
+void EntityManager::SpawnTomato(float x, float y) {
+
+	/*std::shared_ptr<Entity> tomato = std::make_shared<Tomato>();
+	tomato->position = { x, y };
+	entities.push_back(tomato);*/
+}
+
+

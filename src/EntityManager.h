@@ -32,6 +32,10 @@ public:
 
 	void AddEntity(std::shared_ptr<Entity> entity);
 
+
+	//Tomato
+	void SpawnTomato(float x, float y);
+
 public:
 
 	std::list<std::shared_ptr<Entity>> entities;
