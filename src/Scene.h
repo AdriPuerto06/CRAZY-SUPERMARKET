@@ -19,6 +19,8 @@ enum class SceneID
 	MULTIPLAYER,
 	SOUND,
 	GRAFICS,
+	PAUSE,
+	EXIT
 
 };
 
@@ -120,6 +122,18 @@ private:
 	void UpdateGrafics(float dt);
 	void PostUpdateGrafics();
 
+	//PAUSE
+	void LoadPause();
+	void UnloadPause();
+	void UpdatePause(float dt);
+	void PostUpdatePause();
+
+	//EXIT
+	/*void LoadExit();
+	void UnloadExit();
+	void UpdateExit(float dt);
+	void PostUpdateExit();*/
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -154,4 +168,8 @@ private:
 	int lineHeight = 30;
 	bool isCredits = false;
 	float creditsTimer = 5.f;
+
+
+	SceneID timeScene;
+	bool closeGame = false;
 };

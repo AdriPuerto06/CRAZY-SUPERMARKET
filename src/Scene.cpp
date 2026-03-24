@@ -85,6 +85,10 @@ bool Scene::Update(float dt)
 	case SceneID::GRAFICS:
 		UpdateGrafics(dt);
 		break;
+	case SceneID::PAUSE:
+		UpdatePause(dt);
+		break;
+
 	}
 
 	return true;
@@ -120,12 +124,26 @@ bool Scene::PostUpdate()
 	case SceneID::GRAFICS:
 		PostUpdateGrafics();
 		break;
+	case SceneID::PAUSE:
+		PostUpdatePause();
+		break;
 	default:
 		break;
 	}
 
-	if(Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		ret = false;
+	}
+
+	if (closeGame) {
+		ret = false;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL1)) {
+
+		timeScene = currentScene;
+		ChangeScene(SceneID::PAUSE);
+	}
 
 	return ret;
 }
@@ -152,6 +170,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::SOUND:
 		break;
 	case SceneID::GRAFICS:
+		break;
+	case SceneID::PAUSE:
 		break;
 	default:
 		break;
@@ -217,6 +237,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::GRAFICS:
 		LoadGrafics();
 		break;
+	case SceneID::PAUSE:
+		LoadPause();
+		break;
 
 	}
 }
@@ -264,6 +287,9 @@ void Scene::UnloadCurrentScene() {
 
 	case SceneID::GRAFICS:
 		UnloadGrafics();
+		break;
+	case SceneID::PAUSE:
+		UnloadPause();
 		break;
 	}
 	
@@ -388,12 +414,16 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
-		LOG("Options: Sounds clicked");
+		LOG("Options/Pause: Sounds clicked");
 		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
-		LOG("Options: Grafics clicked");
+		LOG("Options/Pause: Grafics clicked");
 		ChangeScene(SceneID::GRAFICS);
+		break;
+	case 8:
+		LOG("Pause: Exit clicked");
+		closeGame = true;
 		break;
 	default:
 		break;
@@ -587,8 +617,6 @@ void Scene::PostUpdateMultiplayer()
 
 void Scene::LoadCredits()
 {
-	
-
 
 	creditsText = {
 	"CRAZY SUPERMARKET",
@@ -692,4 +720,68 @@ void Scene::UpdateGrafics(float dt)
 void Scene::PostUpdateGrafics()
 {
 }
+
+
+// *********************************************
+// PAUSE functions
+// *********************************************
+
+void Scene::LoadPause()
+{
+
+	//UI Buttons
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
+
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
+
+	SDL_Rect bt7Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt7Pos, this));
+
+}
+
+void Scene::UnloadPause()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdatePause(float dt)
+{
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		
+		ChangeScene(timeScene);
+	}
+
+}
+
+void Scene::PostUpdatePause()
+{
+}
+
+
+// *********************************************
+// EXIT functions
+// *********************************************
+
+/*void Scene::LoadExit()
+{
+}
+
+void Scene::UnloadExit()
+{
+}
+
+void Scene::UpdateExit(float dt)
+{
+}
+
+void Scene::PostUpdateExit()
+{
+}
+*/
 
