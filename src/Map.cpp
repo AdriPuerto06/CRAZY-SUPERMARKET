@@ -123,6 +123,24 @@ Vector2D Map::WorldToMap(int x, int y)
     return ret;
 }
 
+// L09: TODO 6: Load a group of properties from a node and fill a list with it
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+    bool ret = false;
+
+    for (pugi::xml_node propertieNode = node.child("properties").child("property"); propertieNode; propertieNode = propertieNode.next_sibling("property"))
+    {
+        Properties::Property* p = new Properties::Property();
+        p->name = propertieNode.attribute("name").as_string();
+        p->value = propertieNode.attribute("value").as_bool(); // (!!) I'm assuming that all values are bool !!
+
+        properties.propertyList.push_back(p);
+        ret = true;
+    }
+
+    return ret;
+}
+
 // L09: TODO 2: Implement function to the Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
 {
@@ -136,6 +154,193 @@ TileSet* Map::GetTilesetFromTileId(int gid) const
         }
     }
     return set;
+}
+
+// L10: TODO 7: Create a method to get the map size in pixels
+Vector2D Map::GetMapSizeInPixels()
+{
+    Vector2D sizeInPixels;
+    sizeInPixels.setX((float)(mapData.width * mapData.tileWidth));
+    sizeInPixels.setY((float)(mapData.height * mapData.tileHeight));
+    return sizeInPixels;
+}
+
+Vector2D Map::GetMapSizeInTiles()
+{
+    return Vector2D((float)mapData.width, (float)mapData.height);
+}
+
+// Method to get the navigation layer from the map
+MapLayer* Map::GetNavigationLayer() {
+    for (const auto& layer : mapData.layers) {
+        if (layer->properties.GetProperty("Navigation") != NULL &&
+            layer->properties.GetProperty("Navigation")->value) {
+            return layer;
+        }
+    }
+
+    return nullptr;
+}
+
+//L15 TODO 2: Define a method to load entities from the map XML
+void Map::LoadEntities(std::shared_ptr<Player>& player) {
+
+    //Iterate the object groups
+    for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+        //Check if the object group is "Entities"
+        if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
+
+            //Iterate the objects
+            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+
+                //Get the entity type and position
+                std::string entityType = objectNode.attribute("type").as_string();
+                float x = objectNode.attribute("x").as_float();
+                float y = objectNode.attribute("y").as_float();
+
+                // Create entity based on type
+                if (entityType == "Player") {
+                    // Create Player entity
+                    if (player == nullptr) {
+                        player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
+                        player->position = Vector2D(x, y);
+                        player->Start(); //L17: Importan to call Start to initialize teh Entity
+                    }
+                    //If the player already exists, just set its position
+                    else {
+                        player->SetPosition(Vector2D(x, y));
+                    }
+                }
+            }
+        }
+    }
+}
+
+//L15 TODO 4: Define a method to save entities to the map XML
+void Map::SaveEntities(std::shared_ptr<Player> player) {
+
+    //Iterate the object groups
+    for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+
+        //Check if the object group is "Entities"
+        if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
+
+            //Iterate the objects
+            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+                std::string entityType = objectNode.attribute("type").as_string();
+                // Modify entity based on type
+                if (entityType == "Player") {
+                    // Modify the Player entity values
+                    Vector2D playerPos = player->GetPosition();
+                    objectNode.attribute("x").set_value(playerPos.getX());
+                    objectNode.attribute("y").set_value(playerPos.getY());
+                }
+            }
+        }
+    }
+
+    //Important: save the modifications to the XML 
+    std::string mapPathName = mapPath + mapFileName;
+    mapFileXML.save_file(mapPathName.c_str());
+
+}
+
+MapLayer* Map::GetLayer(const std::string& name) const
+{
+    for (auto& layer : mapData.layers)
+    {
+        if (layer->name == name)
+            return layer;
+    }
+    return nullptr;
+}
+
+void Map::DrawLayers(bool aboveEntities)
+{
+    if (!mapLoaded) return;
+
+    // Normalizamos la búsqueda de propiedades: si layer no tiene "AboveEntities", tratamos como false.
+    const unsigned int FLIPPED_MASK = 0xE0000000u;
+
+    for (const auto& mapLayer : mapData.layers) {
+        // Si la capa no tiene Draw=true, no la dibujamos
+        auto drawProp = mapLayer->properties.GetProperty("Draw");
+        if (drawProp == nullptr || drawProp->value == false) continue;
+
+        // Propiedad que marca si la capa va por encima de las entidades
+        auto aboveProp = mapLayer->properties.GetProperty("AboveEntities");
+        bool layerAbove = (aboveProp != nullptr) ? aboveProp->value : false;
+
+        if (layerAbove != aboveEntities) continue; // sólo dibujamos las que correspondan al pase
+
+        for (int i = 0; i < mapData.width; ++i) {
+            for (int j = 0; j < mapData.height; ++j) {
+                unsigned int gidWithFlags = mapLayer->Get(i, j);
+                unsigned int gid = gidWithFlags & ~FLIPPED_MASK; // quitar flags de flip
+                if (gid == 0) continue;
+
+                TileSet* tileSet = GetTilesetFromTileId((int)gid);
+                if (!tileSet) continue;
+
+                int drawGid = (int)gid;
+
+                // animaciones si existen
+                auto itAnim = tileSet->animations.find(drawGid);
+                if (itAnim != tileSet->animations.end() && !itAnim->second.empty()) {
+                    const auto& frames = itAnim->second;
+                    int totalMs = 0;
+                    for (const auto& f : frames) totalMs += f.second;
+                    if (totalMs > 0) {
+                        double t = std::fmod(animationTimerMs, static_cast<double>(totalMs));
+                        int acc = 0;
+                        for (const auto& f : frames) {
+                            acc += f.second;
+                            if (t < acc) {
+                                drawGid = f.first;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                SDL_Rect tileRect = tileSet->GetRect(static_cast<unsigned int>(drawGid));
+                Vector2D mapCoord = MapToWorld(i, j);
+                Engine::GetInstance().render->DrawTexture(tileSet->texture,
+                    (int)mapCoord.getX(),
+                    (int)mapCoord.getY(),
+                    &tileRect);
+            }
+        }
+    }
+}
+
+Vector2D Map::GetCameraPositionInTiles() {
+
+    // Gets the camera position in world space. Moving the camera right means drawing the world shifted left. 
+    // Multiplying by -1 converts render offset actual world - space camera position
+    Vector2D camPos = Vector2D(Engine::GetInstance().render->camera.x * -1, Engine::GetInstance().render->camera.y * -1);
+    if (camPos.getX() < 0) camPos.setX(0);
+    if (camPos.getY() < 0) camPos.setY(0);
+
+    // Converts the camera position to map tile coordinates
+    Vector2D camPosTile = WorldToMap(camPos.getX(), camPos.getY());
+
+    return camPosTile;
+}
+
+// L19 TODO 2: Calculate Camera limits in Tiles
+Vector2D Map::GetCameraLimitsInTiles(Vector2D camPosTile) {
+
+    // Gets the camera size in world space and converts it to map tile coordinates
+    Vector2D camSize = Vector2D(Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);
+    Vector2D camSizeTile = WorldToMap(camSize.getX(), camSize.getY());
+
+    // Computes the tile range to draw
+    Vector2D limits = Vector2D(camPosTile.getX() + camSizeTile.getX(), camPosTile.getY() + camSizeTile.getY());
+    if (limits.getX() > mapData.width) limits.setX(mapData.width);
+    if (limits.getY() > mapData.height) limits.setY(mapData.height);
+
+    return limits;
 }
 
 // Called before quitting
@@ -347,250 +552,46 @@ bool Map::Load(std::string path, std::string fileName)
                     }
                 }
                 //--------------------------------------------Colliders End--------------------------------------------
-                
 
-                 ret = true;
+
+                ret = true;
 
                 // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
-        if (ret == true)
-        {
-            LOG("Successfully parsed map XML file :%s", fileName.c_str());
-            LOG("width : %d height : %d", mapData.width, mapData.height);
-            LOG("tile_width : %d tile_height : %d", mapData.tileWidth, mapData.tileHeight);
-            LOG("Tilesets----");
+                if (ret == true)
+                {
+                    LOG("Successfully parsed map XML file :%s", fileName.c_str());
+                    LOG("width : %d height : %d", mapData.width, mapData.height);
+                    LOG("tile_width : %d tile_height : %d", mapData.tileWidth, mapData.tileHeight);
+                    LOG("Tilesets----");
 
-            //iterate the tilesets
-            for (const auto& tileset : mapData.tilesets) {
-                LOG("name : %s firstgid : %d", tileset->name.c_str(), tileset->firstGid);
-                LOG("tile width : %d tile height : %d", tileset->tileWidth, tileset->tileHeight);
-                LOG("spacing : %d margin : %d", tileset->spacing, tileset->margin);
-            }
-            			
-            LOG("Layers----");
-
-            for (const auto& layer : mapData.layers) {
-                LOG("id : %d name : %s", layer->id, layer->name.c_str());
-				LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
-            }   
-        }
-        else {
-            LOG("Error while parsing map file: %s", mapPathName.c_str());
-        }
-
-        //L15 TODO 2: Remove mapFileXML.reset(); we want keep a reference to the XML
-
-    }
-
-    mapLoaded = ret;
-    return ret;
-}
-
-// L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
-
-
-// L09: TODO 6: Load a group of properties from a node and fill a list with it
-bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
-{
-    bool ret = false;
-
-    for (pugi::xml_node propertieNode = node.child("properties").child("property"); propertieNode; propertieNode = propertieNode.next_sibling("property"))
-    {
-        Properties::Property* p = new Properties::Property();
-        p->name = propertieNode.attribute("name").as_string();
-        p->value = propertieNode.attribute("value").as_bool(); // (!!) I'm assuming that all values are bool !!
-
-        properties.propertyList.push_back(p);
-		ret = true;
-    }
-
-    return ret;
-}
-
-// L10: TODO 7: Create a method to get the map size in pixels
-Vector2D Map::GetMapSizeInPixels()
-{
-    Vector2D sizeInPixels;
-    sizeInPixels.setX((float)(mapData.width * mapData.tileWidth));
-    sizeInPixels.setY((float)(mapData.height * mapData.tileHeight));
-    return sizeInPixels;
-}
-
-Vector2D Map::GetMapSizeInTiles()
-{
-    return Vector2D((float)mapData.width, (float)mapData.height);
-}
-
-// Method to get the navigation layer from the map
-MapLayer* Map::GetNavigationLayer() {
-    for (const auto& layer : mapData.layers) {
-        if (layer->properties.GetProperty("Navigation") != NULL &&
-            layer->properties.GetProperty("Navigation")->value) {
-            return layer;
-        }
-    }
-
-    return nullptr;
-}
-
-//L15 TODO 2: Define a method to load entities from the map XML
- void Map::LoadEntities(std::shared_ptr<Player>& player) {
-    
-	 //Iterate the object groups
-     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
-		 //Check if the object group is "Entities"
-        if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
-            
-			//Iterate the objects
-            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
-
-				//Get the entity type and position
-                std::string entityType = objectNode.attribute("type").as_string();
-                float x = objectNode.attribute("x").as_float();
-                float y = objectNode.attribute("y").as_float();
-                
-                // Create entity based on type
-                if (entityType == "Player") {
-                    // Create Player entity
-                    if (player == nullptr) {
-                        player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
-                        player->position = Vector2D(x, y);
-                        player->Start(); //L17: Importan to call Start to initialize teh Entity
+                    //iterate the tilesets
+                    for (const auto& tileset : mapData.tilesets) {
+                        LOG("name : %s firstgid : %d", tileset->name.c_str(), tileset->firstGid);
+                        LOG("tile width : %d tile height : %d", tileset->tileWidth, tileset->tileHeight);
+                        LOG("spacing : %d margin : %d", tileset->spacing, tileset->margin);
                     }
-					//If the player already exists, just set its position
-                    else {
-                        player->SetPosition(Vector2D(x, y));
+
+                    LOG("Layers----");
+
+                    for (const auto& layer : mapData.layers) {
+                        LOG("id : %d name : %s", layer->id, layer->name.c_str());
+                        LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
                     }
                 }
+                else {
+                    LOG("Error while parsing map file: %s", mapPathName.c_str());
+                }
+
+                //L15 TODO 2: Remove mapFileXML.reset(); we want keep a reference to the XML
+
             }
+
+            mapLoaded = ret;
+            return ret;
         }
+
+        // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
+
+
+        // L09: TODO 6: Load a group of properties from a node and fill a list with it
     }
-}
-
- //L15 TODO 4: Define a method to save entities to the map XML
- void Map::SaveEntities(std::shared_ptr<Player> player) {
-     
-	 //Iterate the object groups
-     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
-
-		 //Check if the object group is "Entities"
-         if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
-
-			 //Iterate the objects
-             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
-                 std::string entityType = objectNode.attribute("type").as_string();
-                 // Modify entity based on type
-                 if (entityType == "Player") {
-                     // Modify the Player entity values
-                     Vector2D playerPos = player->GetPosition();
-                     objectNode.attribute("x").set_value(playerPos.getX());
-                     objectNode.attribute("y").set_value(playerPos.getY());
-                 }
-             }
-         }
-     }
-
-     //Important: save the modifications to the XML 
-     std::string mapPathName = mapPath + mapFileName;
-     mapFileXML.save_file(mapPathName.c_str());
- 
- }
-
- MapLayer* Map::GetLayer(const std::string& name) const
- {
-     for (auto& layer : mapData.layers)
-     {
-         if (layer->name == name)
-             return layer;
-     }
-     return nullptr;
- }
-
- void Map::DrawLayers(bool aboveEntities)
- {
-     if (!mapLoaded) return;
-
-     // Normalizamos la búsqueda de propiedades: si layer no tiene "AboveEntities", tratamos como false.
-     const unsigned int FLIPPED_MASK = 0xE0000000u;
-
-     for (const auto& mapLayer : mapData.layers) {
-         // Si la capa no tiene Draw=true, no la dibujamos
-         auto drawProp = mapLayer->properties.GetProperty("Draw");
-         if (drawProp == nullptr || drawProp->value == false) continue;
-
-         // Propiedad que marca si la capa va por encima de las entidades
-         auto aboveProp = mapLayer->properties.GetProperty("AboveEntities");
-         bool layerAbove = (aboveProp != nullptr) ? aboveProp->value : false;
-
-         if (layerAbove != aboveEntities) continue; // sólo dibujamos las que correspondan al pase
-
-         for (int i = 0; i < mapData.width; ++i) {
-             for (int j = 0; j < mapData.height; ++j) {
-                 unsigned int gidWithFlags = mapLayer->Get(i, j);
-                 unsigned int gid = gidWithFlags & ~FLIPPED_MASK; // quitar flags de flip
-                 if (gid == 0) continue;
-
-                 TileSet* tileSet = GetTilesetFromTileId((int)gid);
-                 if (!tileSet) continue;
-
-                 int drawGid = (int)gid;
-
-                 // animaciones si existen
-                 auto itAnim = tileSet->animations.find(drawGid);
-                 if (itAnim != tileSet->animations.end() && !itAnim->second.empty()) {
-                     const auto& frames = itAnim->second;
-                     int totalMs = 0;
-                     for (const auto& f : frames) totalMs += f.second;
-                     if (totalMs > 0) {
-                         double t = std::fmod(animationTimerMs, static_cast<double>(totalMs));
-                         int acc = 0;
-                         for (const auto& f : frames) {
-                             acc += f.second;
-                             if (t < acc) {
-                                 drawGid = f.first;
-                                 break;
-                             }
-                         }
-                     }
-                 }
-
-                 SDL_Rect tileRect = tileSet->GetRect(static_cast<unsigned int>(drawGid));
-                 Vector2D mapCoord = MapToWorld(i, j);
-                 Engine::GetInstance().render->DrawTexture(tileSet->texture,
-                     (int)mapCoord.getX(),
-                     (int)mapCoord.getY(),
-                     &tileRect);
-             }
-         }
-     }
- }
-
- Vector2D Map::GetCameraPositionInTiles() {
-
-     // Gets the camera position in world space. Moving the camera right means drawing the world shifted left. 
-     // Multiplying by -1 converts render offset actual world - space camera position
-     Vector2D camPos = Vector2D(Engine::GetInstance().render->camera.x * -1, Engine::GetInstance().render->camera.y * -1);
-     if (camPos.getX() < 0) camPos.setX(0);
-     if (camPos.getY() < 0) camPos.setY(0);
-
-     // Converts the camera position to map tile coordinates
-     Vector2D camPosTile = WorldToMap(camPos.getX(), camPos.getY());
-
-     return camPosTile;
- }
-
- // L19 TODO 2: Calculate Camera limits in Tiles
- Vector2D Map::GetCameraLimitsInTiles(Vector2D camPosTile) {
-
-     // Gets the camera size in world space and converts it to map tile coordinates
-     Vector2D camSize = Vector2D(Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);
-     Vector2D camSizeTile = WorldToMap(camSize.getX(), camSize.getY());
-
-     // Computes the tile range to draw
-     Vector2D limits = Vector2D(camPosTile.getX() + camSizeTile.getX(), camPosTile.getY() + camSizeTile.getY());
-     if (limits.getX() > mapData.width) limits.setX(mapData.width);
-     if (limits.getY() > mapData.height) limits.setY(mapData.height);
-
-     return limits;
- }
-
-
