@@ -383,10 +383,10 @@ bool Map::Load(std::string path, std::string fileName)
     //L15 TODO 2: make mapFileXML an attribute of the Map class
     pugi::xml_parse_result result = mapFileXML.load_file(mapPathName.c_str());
 
-    if(result == NULL)
-	{
-		LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
-		ret = false;
+    if (result == NULL)
+    {
+        LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
+        ret = false;
     }
     else {
 
@@ -595,3 +595,4 @@ bool Map::Load(std::string path, std::string fileName)
 
         // L09: TODO 6: Load a group of properties from a node and fill a list with it
     }
+}
