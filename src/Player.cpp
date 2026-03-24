@@ -138,17 +138,44 @@ void Player::Draw(float dt) {
 	Vector2D WindowSize = Engine::GetInstance().window->GetWindowSize();
 
 	float limitUp = (float)Engine::GetInstance().render->camera.h / 2;
-	float limitDown = (float)mapSize.getY() - Engine::GetInstance().render->camera.h / 2;
+	float limitDown = (float)mapSize.getY() - Engine::GetInstance().render->camera.h /4;
 	float limitLeft = Engine::GetInstance().render->camera.w / 2;
-	float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w / 2;
+	float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w / 4;
 	
 	if (position.getX() > limitLeft && position.getX() < limitRight) {
-		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 2;
+		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w ;
 	}
 	if (position.getY() < limitDown && position.getY() > limitUp) {
-		Engine::GetInstance().render->camera.y = (int)-position.getY() + Engine::GetInstance().render->camera.h / 2;
+		Engine::GetInstance().render->camera.y = (int)-position.getY() + Engine::GetInstance().render->camera.h ;
 		LOG("Not in bounds");
 	}
+
+	//float x, y;
+	//int xi, yi;
+	//pbody->GetPosition(xi, yi);
+	//x = (float)xi;
+	//y = (float)yi;
+
+	//float cameraW = (float)Engine::GetInstance().render->camera.w;
+	//float cameraH = (float)Engine::GetInstance().render->camera.h;
+
+	//float mapW = (float)Engine::GetInstance().map->GetMapSizeInPixels().getX();
+	//float mapH = (float)Engine::GetInstance().map->GetMapSizeInPixels().getY();
+
+	//float targetX = -x + cameraW / 2;
+	//float targetY = -y + cameraH / 2;
+
+	//// Clamp final
+	//targetX = std::max(targetX, -(mapW - cameraW));
+	//targetX = std::min(targetX, 0.0f);
+
+	//targetY = std::max(targetY, -(mapH - cameraH));
+	//targetY = std::min(targetY, 0.0f);
+
+	//Engine::GetInstance().render->camera.x = targetX;
+	//Engine::GetInstance().render->camera.y = targetY;
+
+	
 
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
