@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.h"
+#include "BaseEnemy.h"
 #include "Animation.h"
 #include <box2d/box2d.h>
 #include <SDL3/SDL.h>
@@ -8,7 +8,7 @@
 
 struct SDL_Texture;
 
-class Enemy : public Entity
+class Enemy : public BaseEnemy
 {
 public:
 
@@ -31,16 +31,4 @@ private:
 	void ApplyPhysics();
 	void Draw(float dt);
 
-public:
-
-	//Declare enemy parameters
-	float speed = 4.0f;
-	SDL_Texture* texture = NULL;
-	int texW, texH;
-	PhysBody* pbody;
-
-private:
-	b2Vec2 velocity;
-	AnimationSet anims;
-	std::shared_ptr<Pathfinding> pathfinding;
 };
