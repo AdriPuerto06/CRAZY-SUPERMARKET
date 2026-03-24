@@ -39,7 +39,7 @@ bool Enemy::Start() {
 
 	//Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/enemy_spritesheet.png");
-
+	
 	//Add physics to the enemy - initialize physics body
 	texW = 32;
 	texH = 32;
