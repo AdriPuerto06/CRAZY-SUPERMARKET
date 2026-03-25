@@ -1,7 +1,9 @@
+#pragma once
+
 #include "Entity.h"
 #include <vector>
 
-class BaseNPC : Entity {
+class BaseNPC : public Entity {
 public:
 	BaseNPC() {}
 	BaseNPC(EntityType type) : type(type), active(true) {}

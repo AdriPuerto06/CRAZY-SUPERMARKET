@@ -6,7 +6,6 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
-
 #include <math.h>
 
 Map::Map() : Module(), mapLoaded(false)
@@ -195,9 +194,10 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
 
                 //Get the entity type and position
                 std::string entityType = objectNode.attribute("type").as_string();
+                Vector2D pos = MapToWorld(objectNode.attribute("x").as_float(), objectNode.attribute("y").as_float());
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
-                int ID = objectNode.attribute("id").as_int();
+                int ID = objectNode.attribute("ID").as_int();
 
                 // Create entity based on type
                 if (entityType == "Player") 
@@ -205,12 +205,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                     // Create Player entity
                     if (player == nullptr) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
-                        player->position = Vector2D(x, y);
+                        player->position = Vector2D(pos.getX(), pos.getY());
                         player->Start(); //L17: Importan to call Start to initialize teh Entity
+                        LOG("Player created at %i, %i.", pos.getX(), pos.getY());
                     }
                     //If the player already exists, just set its position
                     else {
-                        player->SetPosition(Vector2D(x, y));
+                        player->SetPosition(Vector2D(pos.getX(), pos.getY()));
+                        LOG("Player positioned at %i, %i.", pos.getX(), pos.getY());
                     }
                 }
 
@@ -219,7 +221,16 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                     if (Engine::GetInstance().entityManager->GetEntity(EntityType::NPC_VAGABUNDO, ID) == nullptr)
                     {
 
-                        std::shared_ptr<NPC_Vagabundo> npc = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
+                        std::shared_ptr<NPC_Vagabundo> npc = std::dynamic_pointer_cast<NPC_Vagabundo>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC_VAGABUNDO));
+                        npc->position.setX(pos.getX());
+                        npc->position.setY(pos.getY());
+                        LOG("NPC Vagabundo ID: %i, created at %i, %i.", ID, pos.getX(), pos.getY());
+                    }
+                    else {
+                        std::shared_ptr<Entity> npc = Engine::GetInstance().entityManager->GetEntity(EntityType::NPC_VAGABUNDO, ID);
+                        npc->position.setX(pos.getX());
+                        npc->position.setY(pos.getY());
+                        LOG("NPC Vagabundo ID: %i, positioned at %i, %i.",ID, pos.getX(), pos.getY());
                     }
                 }
             }

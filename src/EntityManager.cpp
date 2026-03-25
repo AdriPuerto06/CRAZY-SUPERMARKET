@@ -83,9 +83,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::ENEMY:
 		entity = std::make_shared<Enemy>();
 		break;
-	/*case EntityType::NPC_VAGABUNDO:
+	case EntityType::NPC_VAGABUNDO:
 		entity = std::make_shared<NPC_Vagabundo>();
-		break;*/
+		break;
 	default:
 		break;
 	}
@@ -115,7 +115,7 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 			return entity;
 		}
 	}
-	return ;
+	return nullptr;
 }
 
 bool EntityManager::Update(float dt)
