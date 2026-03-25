@@ -18,6 +18,7 @@ bool Audio::LoadWavFile(const char* path, SoundData& out) {
     return true;
 }
 
+
 void Audio::FreeSound(SoundData& s) {
     if (s.buf) {
         SDL_free(s.buf);
@@ -248,44 +249,4 @@ void Audio::SetSFXVolume(float volume)
     if (sfx_stream_) {
         SDL_SetAudioStreamGain(sfx_stream_, sfx_volume_);
     }
-}
-
-bool Audio::Update(float dt)
-{
-
-    //If there's no music or it's not playing don't do nothing
-    if (!music_stream_ || !music_data_.buf) {
-        return true;
-    }
-
-    // If it's finished, replay
-    if (SDL_GetAudioStreamAvailable(music_stream_) == 0) {
-        SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
-    }
-
-
-    // Clean up finished sound effect streams
-    for (auto it = active_sfx_streams_.begin(); it != active_sfx_streams_.end(); )
-    {
-
-
-        SDL_AudioStream* stream = *it;
-        if (!stream) {
-            it = active_sfx_streams_.erase(it);
-            continue;
-        }
-
-        int queued = SDL_GetAudioStreamQueued(stream);
-        if (queued == 0) {
-            SDL_DestroyAudioStream(stream);
-            it = active_sfx_streams_.erase(it);
-        }
-        else {
-            ++it;
-        }
-    }
-
-
-
-    return true;
 }
