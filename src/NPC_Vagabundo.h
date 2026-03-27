@@ -15,4 +15,8 @@ public:
 	bool CleanUp();
 	bool Destroy();
 
+private:
+
+	void Draw(float dt);
+
 };

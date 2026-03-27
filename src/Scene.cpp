@@ -335,7 +335,7 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	
+	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
 
 	// Instantiate a UIButton in the Scene
 
@@ -406,14 +406,14 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 
 void Scene::LoadLevel1() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
+	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
-	const char* text = "Hello player! Move with WASD.sHello player! Move with WASD.sHello player! Move with WASD.s";
+	const char* text = "Hello player! Move with WASD.";
 	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
 	////Create a new item using the entity manager and set the position to (200, 672) to test

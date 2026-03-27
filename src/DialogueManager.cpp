@@ -119,6 +119,7 @@ void DialogueManager::ButtonAction(int ID)
 
 	if (dialogue->node_id == -1 && !showing_continue) //create "Continue" button
 	{
+		UnloadDialogueUI();
 		SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 35, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 100, 180,30 };
 		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
 		showing_continue = true;
