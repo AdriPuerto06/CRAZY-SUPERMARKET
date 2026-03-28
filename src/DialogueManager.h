@@ -2,7 +2,7 @@
 #include "UIButton.h"
 #include <vector>
 
-struct DialogTree {
+struct DialogueTree {
 	std::vector<const char*> nodes_text;
 	std::vector<int> nodes_id;
 	std::vector<std::vector<int>> choices_id;
@@ -10,8 +10,9 @@ struct DialogTree {
 	std::vector<std::vector<int>> choices_next_node;
 };
 
-struct CurrentDialog {
+struct CurrentDialogue {
 	int dialogue_tree_ID;
+	int dialogue_tree_NPC;
 	int node_id;
 	int choice;
 	int next_node;
@@ -43,7 +44,8 @@ public:
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	void ButtonAction(int ID);
-	bool StartDialog(int dialogue_tree_ID, int npc_id);
+	void ShowButtonStart(Vector2D position, int dialogue_tree_ID, int npc_id);
+	bool StartDialogue(int dialogue_tree_ID, int npc_id);
 	bool ShowOptions(int node_value);
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
@@ -53,14 +55,14 @@ public:
 	std::string dialogsPath;
 
 
-	CurrentDialog* dialogue;
-	DialogTree* tree;
+	CurrentDialogue* dialogue;
+	DialogueTree* tree;
 
 	bool showing_continue;
 	bool can_be_clicked = true;
+	bool showingButtonStart = false;
 
 private:
 	pugi::xml_document dialogsFileXML;
 
-	
 };

@@ -15,6 +15,9 @@ public:
 	bool CleanUp();
 	bool Destroy();
 
+	void OnCollision(PhysBody* physA, PhysBody* physB);
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
+
 private:
 
 	void Draw(float dt);

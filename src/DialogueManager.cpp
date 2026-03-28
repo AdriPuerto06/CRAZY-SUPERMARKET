@@ -97,6 +97,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		LOG("Dialogs: Choice 5. Cleaned dialogue UI.");
 		break;
+	case 6:
+		UnloadDialogueUI();
+		showingButtonStart = false;
+		StartDialogue(dialogue->dialogue_tree_ID, dialogue->dialogue_tree_NPC);
+		LOG("Dialogue starts.");
+		break;
 	default:
 		break;
 	}
@@ -126,11 +132,19 @@ void DialogueManager::ButtonAction(int ID)
 	}
 }
 
-bool DialogueManager::StartDialog(int dialogue_tree_ID, int npc_id)
+void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, int npc_id)
 {
-	tree = new DialogTree;
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start talk", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
+	dialogue->dialogue_tree_ID = dialogue_tree_ID;
+	dialogue->dialogue_tree_NPC = npc_id;
+	showingButtonStart = true;
+}
+
+bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
+{
+	tree = new DialogueTree;
 	GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
-	dialogue = new CurrentDialog;
+	dialogue = new CurrentDialogue;
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->node_id = tree->nodes_id[0];
 	

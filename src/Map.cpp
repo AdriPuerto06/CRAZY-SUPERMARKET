@@ -218,13 +218,15 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
 
                 if (entityType == "NPC_Vagabundo") 
                 {
+                    int NPC_ID = objectNode.child("properties").child("property").attribute("value").as_int();
                     if (Engine::GetInstance().entityManager->GetEntity(EntityType::NPC_VAGABUNDO, ID) == nullptr)
                     {
 
                         std::shared_ptr<NPC_Vagabundo> npc = std::dynamic_pointer_cast<NPC_Vagabundo>(Engine::GetInstance().entityManager->CreateEntity(EntityType::NPC_VAGABUNDO));
                         npc->position.setX(pos.getX());
                         npc->position.setY(pos.getY());
-                        LOG("NPC Vagabundo ID: %i, created at %f, %f.", ID, pos.getX(), pos.getY());
+                        npc->ID = NPC_ID;
+                        LOG("NPC Vagabundo NPC_ID: %i, created at %f, %f.", NPC_ID, pos.getX(), pos.getY());
                         npc->Start();
                     }
                     else {

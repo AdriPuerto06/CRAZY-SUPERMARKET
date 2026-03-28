@@ -52,5 +52,6 @@ public:
 	int texW, texH;
 
 	int ID;
-
+	
+	bool showingButton;
 };

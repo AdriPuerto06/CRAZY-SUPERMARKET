@@ -6440,6 +6440,9 @@
  </objectgroup>
  <objectgroup id="4" name="Entities">
   <object id="1" name="Vagabundo" type="NPC_Vagabundo" x="468" y="1047.45">
+   <properties>
+    <property name="NPC_ID" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
   <object id="2" name="Octopuss" type="NPC" x="571.152" y="565.697">

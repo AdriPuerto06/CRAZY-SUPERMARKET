@@ -14,8 +14,6 @@
 #include "Enemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
-//test comment
-//erik test
 
 Scene::Scene() : Module()
 {
@@ -447,7 +445,7 @@ void Scene::UpdateLevel1(float dt) {
 	}
 	
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		Engine::GetInstance().dialogueManager->StartDialog(0, 1);
+		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
 	}
 
 }
