@@ -54,7 +54,12 @@ bool Render::Awake()
 	
 	// SDL3: no flags; create default renderer and set vsync separately
 	renderer = SDL_CreateRenderer(window, nullptr);
+	float WindowW = Engine::GetInstance().window->GetWindowSize().getX();
+	float WindowY = Engine::GetInstance().window->GetWindowSize().getY();
 
+	float scaleX = WindowW / Engine::GetInstance().window->GetBaseWidth();
+	float scaleY = WindowY / Engine::GetInstance().window->GetBaseHeight();
+	SDL_SetRenderScale(renderer, scaleX, scaleY);
 	if (renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
@@ -169,6 +174,18 @@ void Render::SetViewPort(const SDL_Rect& rect)
 void Render::ResetViewPort()
 {
 	SDL_SetRenderViewport(renderer, &viewport);
+}
+
+void Render::UpdateScale()
+{
+	float WindowW = Engine::GetInstance().window->GetWindowSize().getX();
+	float WindowY = Engine::GetInstance().window->GetWindowSize().getY();
+
+	float scaleX = WindowW / Engine::GetInstance().window->GetBaseWidth();
+	float scaleY = WindowY / Engine::GetInstance().window->GetBaseHeight();
+
+	SDL_SetRenderScale(renderer, scaleX, scaleY);
+
 }
 
 // Blit to screen

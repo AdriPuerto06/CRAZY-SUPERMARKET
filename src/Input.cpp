@@ -112,11 +112,20 @@ bool Input::PreUpdate()
 
 		case SDL_EVENT_MOUSE_MOTION:
 		{
-			int scale = Engine::GetInstance().window->GetScale();
-			mouseMotionX = (int)(event.motion.xrel / scale);
-			mouseMotionY = (int)(event.motion.yrel / scale);
-			mouseX = (int)(event.motion.x / scale);
-			mouseY = (int)(event.motion.y / scale);
+			int windowW, windowH;
+			SDL_GetWindowSizeInPixels(Engine::GetInstance().window->window, &windowW, &windowH);
+
+			int baseW = Engine::GetInstance().window->GetBaseWidth();
+			int baseH = Engine::GetInstance().window->GetBaseHeight();
+
+			float scaleX = (float)baseW / windowW;
+			float scaleY = (float)baseH / windowH;
+
+			mouseX = (int)(event.motion.x * scaleX);
+			mouseY = (int)(event.motion.y * scaleY);
+
+			mouseMotionX = (int)(event.motion.xrel * scaleX);
+			mouseMotionY = (int)(event.motion.yrel * scaleY);
 		}
 		break;
 		}
