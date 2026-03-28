@@ -39,6 +39,9 @@ bool Window::Awake()
 		height = configParameters.child("resolution").attribute("height").as_int();
 		scale = configParameters.child("resolution").attribute("scale").as_int();
 
+		baseWidth = width;
+		baseHeight = height;
+
 		if (fullscreen == true)        flags |= SDL_WINDOW_FULLSCREEN;
 		if (borderless == true)        flags |= SDL_WINDOW_BORDERLESS;
 		if (resizable == true)         flags |= SDL_WINDOW_RESIZABLE;
@@ -128,13 +131,17 @@ bool Window::SetFullSize() {
 	return true;
 }
 
-bool Window::SetWindowed() {
+bool Window::SetWindowed(int scaleFactor) {
 
 	SDL_SetWindowFullscreen(window, false);
-	SDL_SetWindowSize(window, 640, 360);
-	width = 640;
-	height = 360;
-	SDL_SyncWindow(window);
+
+	int newWidth = baseWidth / scaleFactor;
+	int newHeight = baseHeight / scaleFactor;
+
+	SDL_SetWindowSize(window, newWidth, newHeight);
+
+	width = newWidth;
+	height = newHeight;
 
 	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	SDL_ShowWindow(window);
