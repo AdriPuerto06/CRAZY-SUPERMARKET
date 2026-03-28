@@ -60,7 +60,7 @@ bool Player::Update(float dt)
 	ApplyPhysics();
 	GodMode();
 	Draw(dt);
-
+	CenterCamera();
 	return true;
 }
 
@@ -74,23 +74,23 @@ void Player::CenterCamera() {
 	int camX = x - Engine::GetInstance().render->camera.w / 2;
 	int camY = y - Engine::GetInstance().render->camera.h / 2;
 
-	int maxX = mapWidth - Engine::GetInstance().render->camera.w / 2;
-	int maxY = mapHeight - Engine::GetInstance().render->camera.h;
+	int limitRight = mapWidth - Engine::GetInstance().render->camera.w;
+	int limitDown = mapHeight - Engine::GetInstance().render->camera.h;
 
 	// Clamp
 	if (camX < 0) {
 		camX = 0;
 	}
-	if (camX > maxX) {
-		camX = maxX;
+	if (camX > limitRight) {
+		camX = limitRight;
 	}
 
 	if (camY < 0) {
 		camY = 0;
 	}
 
-	if (camY > maxY) {
-		camY = maxY;
+	if (camY > limitDown) {
+		camY = limitDown;
 	}
 
 
