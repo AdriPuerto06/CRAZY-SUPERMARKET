@@ -97,8 +97,8 @@ void Player::CenterCamera() {
 	// Apply
 	Engine::GetInstance().render->camera.x = -(int)camX;
 	Engine::GetInstance().render->camera.y = -(int)camY;
-	LOG("map: %d x %d", mapWidth, mapHeight);
-	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);
+	/*LOG("map: %d x %d", mapWidth, mapHeight);
+	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
 }
 
 void Player::Teleport() {
@@ -215,6 +215,9 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");
+		break;
+	case ColliderType::NPC:
+		LOG("End Collision NPC");
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");

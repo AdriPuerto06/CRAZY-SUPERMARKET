@@ -11,7 +11,7 @@
 #define CHAR_LENGTH 10
 #define CHAR_HEIGHT 16
 #define TEXT_DISPLAY_X 200
-#define TEXT_DISPLAY_Y 1000
+#define TEXT_DISPLAY_Y 600
 
 #define MAX_CHARS_PER_LINE 75
 

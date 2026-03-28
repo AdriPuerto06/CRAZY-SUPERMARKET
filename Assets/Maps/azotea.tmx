@@ -6439,7 +6439,7 @@
   <object id="14" x="1664" y="448" width="160" height="160"/>
  </objectgroup>
  <objectgroup id="4" name="Entities">
-  <object id="1" name="Vagabundo" type="NPC_Vagabundo" x="468" y="1047.45">
+  <object id="1" name="Vagabundo" type="NPC_Vagabundo" x="874.061" y="708.056">
    <properties>
     <property name="NPC_ID" type="int" value="1"/>
    </properties>

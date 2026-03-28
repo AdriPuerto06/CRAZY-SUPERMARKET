@@ -20,8 +20,9 @@ bool NPC_Vagabundo::Start() {
 	texH = texture->h;
 	texW = texture->w;
 	//sensor
-	pbody = Engine::GetInstance().physics->CreateRectangleSensor(position.getX()+texW/2, position.getY() + texH / 2, texH*1.25 , texW*1.25 , bodyType::STATIC);
+	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX()+texW/2, position.getY() + texH / 2, texH*1.25 , texW*1.25 , bodyType::STATIC);
 	pbody->ctype = ColliderType::NPC;
+	pbody->listener = this;
 	//bools
 	showingButton = false;
 
@@ -53,7 +54,7 @@ void NPC_Vagabundo::OnCollision(PhysBody* physA, PhysBody* physB)
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 	Vector2D buttonPos = Vector2D(position.getX() + texW / 2, position.getY() + texH * 1.5);
 	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, ID);
-	Engine::GetInstance().dialogueManager->showingButtonStart = true;
+	Engine::GetInstance().dialogueManager->showingButtonStart = true;	
 }
 
 void NPC_Vagabundo::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

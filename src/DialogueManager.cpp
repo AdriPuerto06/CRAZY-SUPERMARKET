@@ -18,6 +18,8 @@ bool DialogueManager::Awake()
 
 bool DialogueManager::Start() 
 {
+	tree = new DialogueTree;
+	dialogue = new CurrentDialogue;
 	return true;
 }
 
@@ -135,6 +137,12 @@ void DialogueManager::ButtonAction(int ID)
 void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, int npc_id)
 {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start talk", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
+	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
+	
+	GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
+	dialogue->dialogue_tree_ID = dialogue_tree_ID;
+	dialogue->node_id = tree->nodes_id[0];
+	
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->dialogue_tree_NPC = npc_id;
 	showingButtonStart = true;
@@ -142,9 +150,9 @@ void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, i
 
 bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
 {
-	tree = new DialogueTree;
+	/*tree = new DialogueTree;*/
 	GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
-	dialogue = new CurrentDialogue;
+	/*dialogue = new CurrentDialogue;*/
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->node_id = tree->nodes_id[0];
 	
