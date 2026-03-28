@@ -40,6 +40,7 @@ private:
 	void ApplyPhysics();
 	void Draw(float dt);
 	void GodMode();
+	void CenterCamera();
 
 public:
 
