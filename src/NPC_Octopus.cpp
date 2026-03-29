@@ -1,4 +1,4 @@
-//#include "NPC_Vagabundo.h"
+//#include "NPC_Octopus.h"
 //#include "Engine.h"
 //#include "Textures.h"
 //#include "Render.h"
@@ -7,16 +7,16 @@
 //#include "Window.h"
 //#include "Log.h"
 //
-//NPC_Vagabundo::NPC_Vagabundo() {};
-//NPC_Vagabundo::NPC_Vagabundo(int ID) { this->ID = ID; }
-//NPC_Vagabundo::~NPC_Vagabundo() {};
+//NPC_Octopus::NPC_Octopus() {};
+//NPC_Octopus::NPC_Octopus(int ID) { this->ID = ID; }
+//NPC_Octopus::~NPC_Octopus() {};
 //
-//bool NPC_Vagabundo::Awake() {
+//bool NPC_Octopus::Awake() {
 //
 //	return true;
 //}
 //
-//bool NPC_Vagabundo::Start() {
+//bool NPC_Octopus::Start() {
 //	//texture
 //	texture = Engine::GetInstance().textures->Load("Assets/Textures/goldCoin.png");
 //	texH = texture->h;
@@ -31,27 +31,27 @@
 //	return true;
 //}
 //
-//bool NPC_Vagabundo::Update(float dt) {
+//bool NPC_Octopus::Update(float dt) {
 //	Draw(dt);
 //	return true;
 //}
 //
-//bool NPC_Vagabundo::CleanUp() {
+//bool NPC_Octopus::CleanUp() {
 //
 //	return true;
 //}
 //
-//bool NPC_Vagabundo::Destroy() {
+//bool NPC_Octopus::Destroy() {
 //
 //	return true;
 //}
 //
-//void NPC_Vagabundo::Draw(float dt)
+//void NPC_Octopus::Draw(float dt)
 //{
 //	Engine::GetInstance().render->DrawTexture(texture, position.getX(), position.getY());
 //}
 //
-//void NPC_Vagabundo::OnCollision(PhysBody* physA, PhysBody* physB)
+//void NPC_Octopus::OnCollision(PhysBody* physA, PhysBody* physB)
 //{
 //	if (Engine::GetInstance().dialogueManager->in_conversation) return;
 //	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
@@ -67,7 +67,7 @@
 //	Engine::GetInstance().dialogueManager->showingButtonStart = true;
 //}
 //
-//void NPC_Vagabundo::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
+//void NPC_Octopus::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 //{
 //	if ((physB->ctype == ColliderType::PLAYER) && Engine::GetInstance().dialogueManager->showingButtonStart && !(Engine::GetInstance().dialogueManager->in_conversation))
 //	{

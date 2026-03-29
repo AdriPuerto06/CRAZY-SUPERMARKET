@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\BaseNPC.cpp" />
     <ClCompile Include="src\DialogueManager.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Engine.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\NPC_Octopus.cpp" />
     <ClCompile Include="src\NPC_Vagabundo.cpp" />
     <ClCompile Include="src\Pathfinding.cpp" />
     <ClCompile Include="src\PerfTimer.cpp" />
@@ -186,6 +188,7 @@
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Module.h" />
+    <ClInclude Include="src\NPC_Octopus.h" />
     <ClInclude Include="src\NPC_Vagabundo.h" />
     <ClInclude Include="src\Pathfinding.h" />
     <ClInclude Include="src\PerfTimer.h" />

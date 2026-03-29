@@ -2,12 +2,12 @@
 //
 //#include "BaseNPC.h"
 //
-//class NPC_Vagabundo : public BaseNPC {
+//class NPC_Octopus : public BaseNPC {
 //public:
 //
-//	NPC_Vagabundo();
-//	NPC_Vagabundo(int ID);
-//	~NPC_Vagabundo();
+//	NPC_Octopus();
+//	NPC_Octopus(int ID);
+//	~NPC_Octopus();
 //
 //	bool Awake();
 //	bool Start();
