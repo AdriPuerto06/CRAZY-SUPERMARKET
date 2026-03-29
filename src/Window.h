@@ -23,9 +23,9 @@ public:
 
 	// Retrive window size
 	void SetWindowSize(int& width, int& height) const;
-	Vector2D GetWindowSize();
+	Vector2D GetWindowSize() const;
 	// Retrieve window scale
-	int GetScale() const;
+	float GetScale() const;
 	float GetBaseWidth() const { return baseWidth; }
 	float GetBaseHeight() const { return baseHeight; }
 	bool SetFullSize();

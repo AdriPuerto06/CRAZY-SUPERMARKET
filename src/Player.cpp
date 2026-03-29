@@ -68,15 +68,16 @@ void Player::CenterCamera() {
 
 	int x, y;
 	pbody->GetPosition(x, y);
+
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	int mapWidth = mapSize.getX();
 	int mapHeight = mapSize.getY();
+
 	int camX = x - Engine::GetInstance().render->camera.w / 2;
 	int camY = y - Engine::GetInstance().render->camera.h / 2;
 
 	int limitRight = mapWidth - Engine::GetInstance().render->camera.w;
 	int limitDown = mapHeight - Engine::GetInstance().render->camera.h;
-
 	// Clamp
 	if (camX < 0) {
 		camX = 0;

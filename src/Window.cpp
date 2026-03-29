@@ -98,7 +98,7 @@ void Window::SetWindowSize(int& width, int& height) const
 }
 
 
-Vector2D Window::GetWindowSize() {
+Vector2D Window::GetWindowSize() const{
 
 	int w, y;
 	SDL_GetWindowSizeInPixels(window, &w, &y);
@@ -112,9 +112,15 @@ Vector2D Window::GetWindowSize() {
 	return Size;
 }
 
-int Window::GetScale() const
+float Window::GetScale() const
 {
-	return scale;
+	float windowW = GetWindowSize().getX();
+	float windowH = GetWindowSize().getY();
+
+	float scaleX = windowW / baseWidth;
+	float scaleY = windowH / baseHeight;
+
+	return std::min(scaleX, scaleY);
 }
 
 bool Window::SetFullSize() {

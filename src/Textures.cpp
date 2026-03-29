@@ -45,6 +45,7 @@ bool Textures::CleanUp()
 // Load new texture from file path
 SDL_Texture* const Textures::Load(const char* path)
 {
+
 	SDL_Texture* texture = NULL;
 	SDL_Surface* surface = IMG_Load(path);
 
@@ -55,6 +56,7 @@ SDL_Texture* const Textures::Load(const char* path)
 	else
 	{
 		texture = LoadSurface(surface);
+		SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 		SDL_DestroySurface(surface); // SDL3: free with SDL_DestroySurface
 	}
 
