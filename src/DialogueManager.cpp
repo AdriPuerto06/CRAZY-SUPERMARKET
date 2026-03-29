@@ -97,6 +97,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 		/*if (dialogue->node_id == -1) return true;*/
 		UnloadDialogueUI();
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
+		in_conversation = false;
 		LOG("Dialogs: Choice 5. Cleaned dialogue UI.");
 		break;
 	case 6:
@@ -150,9 +151,8 @@ void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, i
 
 bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
 {
-	/*tree = new DialogueTree;*/
+	in_conversation = true;
 	GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
-	/*dialogue = new CurrentDialogue;*/
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->node_id = tree->nodes_id[0];
 	

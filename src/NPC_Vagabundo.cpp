@@ -4,6 +4,8 @@
 #include "Render.h"
 #include "Physics.h"
 #include "DialogueManager.h"
+#include "Window.h"
+#include "Log.h"
 
 NPC_Vagabundo::NPC_Vagabundo() {};
 NPC_Vagabundo::NPC_Vagabundo(int ID) { this->ID = ID; }
@@ -51,16 +53,25 @@ void NPC_Vagabundo::Draw(float dt)
 
 void NPC_Vagabundo::OnCollision(PhysBody* physA, PhysBody* physB)
 {
+	if (Engine::GetInstance().dialogueManager->in_conversation) return;
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
-	Vector2D buttonPos = Vector2D(position.getX() + texW / 2, position.getY() + texH * 1.5);
+
+	float WindowW = Engine::GetInstance().window->GetWindowSize().getX();
+	float WindowY = Engine::GetInstance().window->GetWindowSize().getY();
+
+	float scaleX = WindowW / Engine::GetInstance().window->GetBaseWidth();
+	float scaleY = WindowY / Engine::GetInstance().window->GetBaseHeight();
+
+	Vector2D buttonPos = Vector2D((position.getX() + texW / 2) / scaleX, (position.getY() + texH * 1.5)/scaleY);
 	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, ID);
-	Engine::GetInstance().dialogueManager->showingButtonStart = true;	
+	Engine::GetInstance().dialogueManager->showingButtonStart = true;
 }
 
 void NPC_Vagabundo::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
-	if ((physB->ctype == ColliderType::PLAYER) && Engine::GetInstance().dialogueManager->showingButtonStart)
+	if ((physB->ctype == ColliderType::PLAYER) && Engine::GetInstance().dialogueManager->showingButtonStart && !(Engine::GetInstance().dialogueManager->in_conversation))
 	{
-		Engine::GetInstance().dialogueManager->CleanUp();
+		Engine::GetInstance().dialogueManager->UnloadDialogueUI();
+		Engine::GetInstance().dialogueManager->in_conversation = false;
 	}
 }

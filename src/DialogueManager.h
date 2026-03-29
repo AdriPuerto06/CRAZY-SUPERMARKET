@@ -61,6 +61,7 @@ public:
 	bool showing_continue;
 	bool can_be_clicked = true;
 	bool showingButtonStart = false;
+	bool in_conversation = false;
 
 private:
 	pugi::xml_document dialogsFileXML;
