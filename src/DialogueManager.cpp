@@ -65,7 +65,6 @@ void DialogueManager::UnloadDialogueUI()
 
 bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 {
-	
 
 	switch (uiElement->id)
 	{
