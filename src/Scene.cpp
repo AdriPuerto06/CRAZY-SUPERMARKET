@@ -289,29 +289,40 @@ void Scene::LoadIntroScreen()
 
 void Scene::UpdateIntroScreen(float dt)
 {
-	if (!sfxLogoPlayed) {
+	
+	if (splashTime == 0.0f && !sfxLogoPlayed) {
+		Engine::GetInstance().audio->SetSFXVolume(0.2f);
 		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 0);
 		sfxLogoPlayed = true;
 	}
 
-	if (logoImg != nullptr) {
-		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
-	}
-
-	splashTime += dt / 1000.0f;
-	if (splashTime >= logoGameTimer && teamImg != nullptr) {
-
-		if (!sfxTeamPlayed) {
-			Engine::GetInstance().audio->PlayFx(s_title_name, 0);
-			sfxTeamPlayed = true;
-		}
-
+	if (teamImg != nullptr && splashTime < logoGameTimer) {
 		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
 	}
 
-	if (splashTime >= logoTeamTimer || Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+	splashTime += dt / 4000.0f;
+
+	if (splashTime >= logoGameTimer && logoImg != nullptr) {
+
+		if (!sfxTeamPlayed) {
+			Engine::GetInstance().audio->SetSFXVolume(0.6f);
+			Engine::GetInstance().audio->PlayFx(s_title_name, 0);
+			sfxTeamPlayed = true;
+		}
+		splashTime += dt / 1000.0f;
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	}
+
+	if (splashTime >= logoTeamTimer) {
 		sfxLogoPlayed = false;
 		sfxTeamPlayed = false;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
+		splashTime = 0;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
 }
