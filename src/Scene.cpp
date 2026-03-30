@@ -289,25 +289,29 @@ void Scene::LoadIntroScreen()
 
 void Scene::UpdateIntroScreen(float dt)
 {
-	if (logoImg != nullptr)
-	{
+	if (!sfxLogoPlayed) {
+		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 0);
+		sfxLogoPlayed = true;
+	}
+
+	if (logoImg != nullptr) {
 		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
 	}
 
 	splashTime += dt / 1000.0f;
-	if (splashTime >= logoGameTimer && teamImg != nullptr)
-	{
+	if (splashTime >= logoGameTimer && teamImg != nullptr) {
+
+		if (!sfxTeamPlayed) {
+			Engine::GetInstance().audio->PlayFx(s_title_name, 0);
+			sfxTeamPlayed = true;
+		}
+
 		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
 	}
 
-	if (splashTime >= logoTeamTimer)
-	{
-		ChangeScene(SceneID::MAIN_MENU);
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
-
-		splashTime = 0;
+	if (splashTime >= logoTeamTimer || Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
 }
@@ -335,8 +339,9 @@ void Scene::LoadMainMenu() {
 
 	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
 
+	
+	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
 	// Instantiate a UIButton in the Scene
-
 	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
 
@@ -406,8 +411,9 @@ void Scene::LoadLevel1() {
 
 	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
 
-	//Call the function to load the map. 
+	//Call the function to load the map & music
 	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
+	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
@@ -479,7 +485,7 @@ void  Scene::PostUpdateLevel1() {
 
 void Scene::LoadLevel2() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/that-8-bit-music-322062.wav");
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");

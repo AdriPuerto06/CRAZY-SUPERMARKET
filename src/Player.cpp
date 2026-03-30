@@ -193,7 +193,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
-		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
+		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 1);
 		physB->listener->Destroy();
 		break;
 	case ColliderType::NPC:

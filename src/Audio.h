@@ -16,8 +16,14 @@ struct Mix_Chunk;
 
 
 enum Music {
-    OFF = 0,
-    title
+    m_OFF = 0,
+    m_title
+};
+
+enum Sfx {
+    s_OFF = 0,
+    s_title_name,
+    s_epic_reveal
 };
 
 
@@ -37,13 +43,13 @@ public:
 	bool CleanUp();
 
 	// Play a music file
-	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(Music id, float fadeTime);
 
 	// Load a WAV in memory
 	int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(int fx, int repeat = 0);
+	bool PlayFx(Sfx id, int repeat);
 
     //Change Music track
     bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
