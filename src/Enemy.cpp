@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Entity.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -10,9 +11,15 @@
 #include "EntityManager.h"
 #include "Map.h"
 
-Enemy::Enemy() : Entity(EntityType::ENEMY)
+Enemy::Enemy() : BaseEnemy(EntityType::ENEMY) {}
+
+Enemy::Enemy(EntityType type, Vector2D position, int HP, int ID, SDL_Texture* texture) 
 {
-	name = "Enemy";
+	this->type = type;
+	this->position = position;
+	this->HP = HP;
+	this->ID = ID;
+	this->texture = texture;
 }
 
 Enemy::~Enemy() {
@@ -32,7 +39,7 @@ bool Enemy::Start() {
 
 	//Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/enemy_spritesheet.png");
-
+	
 	//Add physics to the enemy - initialize physics body
 	texW = 32;
 	texH = 32;
@@ -135,7 +142,7 @@ void Enemy::PerformPathfinding() {
 void Enemy::GetPhysicsValues() {
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-	velocity = { 0, velocity.y }; 
+	velocity = { 0, 0 }; 
 }
 
 void Enemy::Move() {

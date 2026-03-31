@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "Window.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -57,9 +58,48 @@ bool Player::Update(float dt)
 	Move();
 	Teleport();
 	ApplyPhysics();
+	GodMode();
 	Draw(dt);
-
+	CenterCamera();
 	return true;
+}
+
+void Player::CenterCamera() {
+
+	int x, y;
+	pbody->GetPosition(x, y);
+
+	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
+	int mapWidth = mapSize.getX();
+	int mapHeight = mapSize.getY();
+
+	int camX = x - Engine::GetInstance().render->camera.w / 2;
+	int camY = y - Engine::GetInstance().render->camera.h / 2;
+
+	int limitRight = mapWidth - Engine::GetInstance().render->camera.w;
+	int limitDown = mapHeight - Engine::GetInstance().render->camera.h;
+	// Clamp
+	if (camX < 0) {
+		camX = 0;
+	}
+	if (camX > limitRight) {
+		camX = limitRight;
+	}
+
+	if (camY < 0) {
+		camY = 0;
+	}
+
+	if (camY > limitDown) {
+		camY = limitDown;
+	}
+
+
+	// Apply
+	Engine::GetInstance().render->camera.x = -(int)camX;
+	Engine::GetInstance().render->camera.y = -(int)camY;
+	/*LOG("map: %d x %d", mapWidth, mapHeight);
+	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
 }
 
 void Player::Teleport() {
@@ -102,6 +142,23 @@ void Player::ApplyPhysics() {
 	Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity);
 }
 
+void Player::GodMode() {
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+		LOG("God mode switched");
+		godMode = !godMode;
+
+		//ideas provisionalse para el GodMode
+		//desactivar colisiones
+
+		//tecla abrir combat UI
+
+		//all objects
+
+	}
+
+}
+
 void Player::Draw(float dt) {
 
 	anims.Update(dt);
@@ -112,14 +169,6 @@ void Player::Draw(float dt) {
 	pbody->GetPosition(x, y);
 	position.setX((float)x);
 	position.setY((float)y);
-
-	//L10: TODO 7: Center the camera on the player
-	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
-	float limitLeft = (float)Engine::GetInstance().render->camera.w / 4;
-	float limitRight = (float)mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
-	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
-		Engine::GetInstance().render->camera.x = (int) - position.getX() + (int)(Engine::GetInstance().render->camera.w / 4);
-	}
 
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
@@ -139,12 +188,16 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	{
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+
 		anims.SetCurrent("idle");
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
-		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
+		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 1);
 		physB->listener->Destroy();
+		break;
+	case ColliderType::NPC:
+		LOG("Collision NPC");
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
@@ -163,6 +216,9 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::ITEM:
 		LOG("End Collision ITEM");
+		break;
+	case ColliderType::NPC:
+		LOG("End Collision NPC");
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");

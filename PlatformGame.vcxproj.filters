@@ -17,8 +17,11 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{eaf9226b-488a-4c6a-9d1a-2222fdb48e0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\audios">
-      <UniqueIdentifier>{ea502e3a-7c06-4522-8869-38bbc28247f4}</UniqueIdentifier>
+    <Filter Include="Source Files\Engine\Dialogue">
+      <UniqueIdentifier>{daa022ca-9723-4661-910f-70743c0b28fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\NPCs">
+      <UniqueIdentifier>{8ae3e3b8-d859-48b5-93f5-6312e70bcd90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,8 +34,14 @@
     <None Include=".gitignore">
       <Filter>Configuration FIles</Filter>
     </None>
+    <None Include="Assets\Maps\azotea.tmx">
+      <Filter>Configuration FIles</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Audio.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
     <ClCompile Include="src\Engine.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -97,13 +106,16 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\DialogueManager.cpp">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\Engine\Dialogue</Filter>
     </ClCompile>
-    <ClCompile Include="src\Audio.cpp">
-      <Filter>Source Files\Engine\audios</Filter>
+    <ClCompile Include="src\BaseNPC.cpp">
+      <Filter>Source Files\Game\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
     <ClInclude Include="src\Engine.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
@@ -174,27 +186,21 @@
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\DialogueManager.h">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\Engine\Dialogue</Filter>
     </ClInclude>
-    <ClInclude Include="src\Audio.h">
-      <Filter>Source Files\Engine\audios</Filter>
+    <ClInclude Include="src\BaseEnemy.h">
+      <Filter>Source Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\List.h">
-      <Filter>Source Files\Engine\audios</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Defs.h">
-      <Filter>Source Files\Engine\audios</Filter>
+    <ClInclude Include="src\BaseNPC.h">
+      <Filter>Source Files\Game\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml">
       <Filter>Configuration FIles</Filter>
     </Xml>
-    <Xml Include="Dialogs.xml">
-      <Filter>Source Files\Game</Filter>
-    </Xml>
     <Xml Include="src\Dialogs.xml">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\Engine\Dialogue</Filter>
     </Xml>
   </ItemGroup>
 </Project>

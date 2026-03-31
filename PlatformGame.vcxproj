@@ -141,12 +141,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="Assets\Maps\azotea.tmx" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\BaseNPC.cpp" />
     <ClCompile Include="src\DialogueManager.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Engine.cpp" />
@@ -172,7 +174,8 @@
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Audio.h" />
-    <ClInclude Include="src\Defs.h" />
+    <ClInclude Include="src\BaseEnemy.h" />
+    <ClInclude Include="src\BaseNPC.h" />
     <ClInclude Include="src\DialogueManager.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Engine.h" />
@@ -180,7 +183,6 @@
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Item.h" />
-    <ClInclude Include="src\List.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Module.h" />
@@ -200,7 +202,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />
-    <Xml Include="Dialogs.xml" />
     <Xml Include="src\Dialogs.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

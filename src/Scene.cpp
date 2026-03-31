@@ -14,8 +14,6 @@
 #include "Enemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
-//test comment
-//erik test
 
 Scene::Scene() : Module()
 {
@@ -29,17 +27,21 @@ Scene::~Scene()
 // Called before render is available
 bool Scene::Awake()
 {
-	LOG("Loading Scene");
-	LoadScene(currentScene); // empieza en MAIN_MENU
-	bool ret = true;
+	WindowSize = { Engine::GetInstance().window->GetBaseWidth(),   Engine::GetInstance().window->GetBaseHeight() };
 
+	LOG("Loading Scene");
+	bool ret = true;
 	return ret;
 }
 
 // Called before the first frame
 bool Scene::Start()
 {
+	
+	LoadScene(currentScene); // empieza en Intro Screen
+
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
+	
 	return true;
 }
 
@@ -55,6 +57,7 @@ bool Scene::Update(float dt)
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
+		UpdateIntroScreen(dt);
 		break;
 	case SceneID::MAIN_MENU:
 		UpdateMainMenu(dt);
@@ -64,6 +67,21 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
+		break;
+	case SceneID::OPTIONS:
+		UpdateOptions(dt);
+		break;
+	case SceneID::MULTIPLAYER:
+		UpdateMultiplayer(dt);
+		break;
+	case SceneID::CREDITS:
+		UpdateCredits(dt);
+		break;
+	case SceneID::SOUND:
+		UpdateSounds(dt);
+		break;
+	case SceneID::GRAFICS:
+		UpdateGrafics(dt);
 		break;
 	}
 
@@ -84,6 +102,21 @@ bool Scene::PostUpdate()
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
+		break;
+	case SceneID::OPTIONS:
+		PostUpdateOptions();
+		break;
+	case SceneID::MULTIPLAYER:
+		PostUpdateMultiplayer();
+		break;
+	case SceneID::CREDITS:
+		PostUpdateCredits();
+		break;
+	case SceneID::SOUND:
+		PostUpdateSounds();
+		break;
+	case SceneID::GRAFICS:
+		PostUpdateGrafics();
 		break;
 	default:
 		break;
@@ -108,6 +141,16 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL2:
 		break;
+	case SceneID::OPTIONS:
+		break;
+	case SceneID::MULTIPLAYER:
+		break;
+	case SceneID::CREDITS:
+		break;
+	case SceneID::SOUND:
+		break;
+	case SceneID::GRAFICS:
+		break;
 	default:
 		break;
 	}
@@ -125,7 +168,7 @@ bool Scene::CleanUp()
 Vector2D Scene::GetPlayerPosition()
 {
 	if (player) return player->GetPosition();
-	else Vector2D(0,0);
+	return Vector2D(0, 0);
 }
 
 // *********************************************
@@ -138,6 +181,9 @@ void Scene::LoadScene(SceneID newScene)
 
 	switch (newScene)
 	{
+	case SceneID::INTRO_SCREEN:
+		LoadIntroScreen();
+		break;
 	case SceneID::MAIN_MENU:
 		LoadMainMenu();
 		break;
@@ -149,6 +195,27 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
+
+	case SceneID::OPTIONS:
+		LoadOptions();
+		break;
+
+	case SceneID::MULTIPLAYER:
+		LoadMultiplayer();
+		break;
+
+	case SceneID::CREDITS:
+		LoadCredits();
+		break;
+
+	case SceneID::SOUND:
+		LoadSounds();
+		break;
+
+	case SceneID::GRAFICS:
+		LoadGrafics();
+		break;
+
 	}
 }
 
@@ -163,6 +230,9 @@ void Scene::UnloadCurrentScene() {
 
 	switch (currentScene)
 	{
+	case SceneID::INTRO_SCREEN:
+		UnloadIntroScreen();
+		break;
 	case SceneID::MAIN_MENU:
 		UnloadMainMenu();
 		break;
@@ -174,8 +244,102 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
+	case SceneID::OPTIONS:
+		UnloadOptions();
+		break;
+
+	case SceneID::MULTIPLAYER:
+		UnloadMultiplayer();
+		break;
+
+	case SceneID::CREDITS:
+		UnloadCredits();
+		break;
+
+	case SceneID::SOUND:
+		UnloadSounds();
+		break;
+
+	case SceneID::GRAFICS:
+		UnloadGrafics();
+		break;
+	}
+	
+}
+
+// *********************************************
+// INTRO SCREEN functions
+// *********************************************
+
+
+void Scene::LoadIntroScreen()
+{
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
+	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+
+
+	if (logoImg == nullptr || teamImg == nullptr)
+	{
+		LOG("ERROR: no se pudo cargar imagen/es.png");
+		LOG("SDL error: %s", SDL_GetError());
 	}
 
+	splashTime = 0.0f;
+}
+
+void Scene::UpdateIntroScreen(float dt)
+{
+	
+	if (splashTime == 0.0f && !sfxLogoPlayed) {
+		Engine::GetInstance().audio->SetSFXVolume(0.2f);
+		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 0);
+		sfxLogoPlayed = true;
+	}
+
+	if (teamImg != nullptr && splashTime < logoGameTimer) {
+		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
+	}
+
+	splashTime += dt / 4000.0f;
+
+	if (splashTime >= logoGameTimer && logoImg != nullptr) {
+
+		if (!sfxTeamPlayed) {
+			Engine::GetInstance().audio->SetSFXVolume(0.6f);
+			Engine::GetInstance().audio->PlayFx(s_title_name, 0);
+			sfxTeamPlayed = true;
+		}
+		splashTime += dt / 1000.0f;
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	}
+
+	if (splashTime >= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
+		splashTime = 0;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+}
+
+void Scene::UnloadIntroScreen()
+{
+	if (logoImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(logoImg);
+		logoImg = nullptr;
+	}
+
+	if (teamImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(teamImg);
+		teamImg = nullptr;
+	}
 }
 
 // *********************************************
@@ -184,27 +348,66 @@ void Scene::UnloadCurrentScene() {
 
 void Scene::LoadMainMenu() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");
+	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
 
+	
+	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
 	// Instantiate a UIButton in the Scene
-	SDL_Rect btPos = { 520, 350, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Play", btPos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
+
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) - 10, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Options", bt2Pos, this));
+
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 20, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
+
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
+
 }
 
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
+
 }
 
-void Scene::UpdateMainMenu(float dt) {}
-
+void Scene::UpdateMainMenu(float dt)
+{
+	
+}
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
 	switch (uiElement->id)
 	{
-	case 1: // Button MyButton
-		LOG("Main Menu: MyButton clicked!");
+	case 1: 
+		LOG("Main Menu: Start clicked");
 		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 2: 
+		LOG("LvL2");
+		ChangeScene(SceneID::LEVEL2);
+		break;
+	case 3: 
+		LOG("Main Menu: Options clicked");
+		ChangeScene(SceneID::OPTIONS);
+		break;
+	case 4:
+		LOG("Main Menu: Multiplayer clicked");
+		ChangeScene(SceneID::MULTIPLAYER);
+		break;
+	case 5:
+		LOG("Main Menu: Credits clicked");
+		ChangeScene(SceneID::CREDITS);
+		break;
+	case 6:
+		LOG("Options: Sounds clicked");
+		ChangeScene(SceneID::SOUND);
+		break;
+	case 7:
+		LOG("Options: Grafics clicked");
+		ChangeScene(SceneID::GRAFICS);
 		break;
 	default:
 		break;
@@ -217,14 +420,15 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 
 void Scene::LoadLevel1() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
+	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
 
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+	//Call the function to load the map & music
+	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
+	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
-	const char* text = "Hello player! Move with WASD.sHello player! Move with WASD.sHello player! Move with WASD.s";
+	const char* text = "Hello player! Move with WASD.";
 	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
 	////Create a new item using the entity manager and set the position to (200, 672) to test
@@ -243,9 +447,17 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
 	}
-
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
+		Engine::GetInstance().window->SetFullSize();
+		Engine::GetInstance().render->UpdateScale();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
+		Engine::GetInstance().window->SetWindowed(2);
+		Engine::GetInstance().render->UpdateScale();
+	}
+	//ALWAYS USE UpdateScale() when changing window sizes
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		Engine::GetInstance().dialogueManager->ShowOptions(1);
+		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
 	}
 
 }
@@ -284,10 +496,10 @@ void  Scene::PostUpdateLevel1() {
 
 void Scene::LoadLevel2() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/that-8-bit-music-322062.wav");
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplateLevel2.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
@@ -312,5 +524,171 @@ void Scene::UnloadLevel2() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
+}
+
+
+// *********************************************
+// OPTIONS functions
+// *********************************************
+
+void Scene::LoadOptions()
+{
+
+	//UI Buttons
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
+
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
+
+
+}
+
+void Scene::UnloadOptions()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+void Scene::UpdateOptions(float dt)
+{
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+}
+
+void Scene::PostUpdateOptions()
+{
+}
+
+
+// *********************************************
+// MULTIPLAYER functions
+// *********************************************
+
+void Scene::LoadMultiplayer()
+{
+}
+
+void Scene::UnloadMultiplayer()
+{
+}
+
+void Scene::UpdateMultiplayer(float dt)
+{
+}
+
+void Scene::PostUpdateMultiplayer()
+{
+}
+
+
+// *********************************************
+// CREDITS functions
+// *********************************************
+
+void Scene::LoadCredits()
+{
+	
+
+
+	creditsText = {
+	"CRAZY SUPERMARKET",
+	"",
+	"",
+	"Developers:",
+	"",
+	"Erik Argemi - Adria Puerto - Biel Cadenas - Pau Gallego - Adam Molina",
+	"",
+	"",
+	"Art Producers & Organization:",
+	"",
+	"Pau Gallego - Biel Cadenas",
+	"",
+	"",
+	"Music Creator & Organization:",
+	"",
+	"Adam Molina",
+	"",
+	"",
+	"Thanks for playing aour crazy game!"
+	};
+
+	creditsY = WindowSize.getY();
+
+}
+
+void Scene::UnloadCredits()
+{
+}
+
+void Scene::UpdateCredits(float dt)
+{
+	
+	creditsY -= scrollSpeed * dt / 1000.0f;
+	if (creditsY <= creditsTimer) {
+
+		ChangeScene(SceneID::MAIN_MENU);
+		creditsY = WindowSize.getY();
+	}
+
+}
+
+void Scene::PostUpdateCredits()
+{
+	
+	for (int i = 0; i < creditsText.size(); ++i)
+	{
+
+		int y = creditsY + i * lineHeight;
+		SDL_Color color = { 255,0,255,255 };
+		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX() / 2.5, y, 450, 60, color);
+	}
+
+}
+
+
+// *********************************************
+// SOUNDS functions
+// *********************************************
+
+void Scene::LoadSounds()
+{
+}
+
+void Scene::UnloadSounds()
+{
+}
+
+void Scene::UpdateSounds(float dt)
+{
+}
+
+void Scene::PostUpdateSounds()
+{
+}
+
+
+// *********************************************
+// GRAFICS functions
+// *********************************************
+
+void Scene::LoadGrafics()
+{
+}
+
+void Scene::UnloadGrafics()
+{
+}
+
+void Scene::UpdateGrafics(float dt)
+{
+}
+
+void Scene::PostUpdateGrafics()
+{
 }
 

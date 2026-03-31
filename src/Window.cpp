@@ -39,6 +39,9 @@ bool Window::Awake()
 		height = configParameters.child("resolution").attribute("height").as_int();
 		scale = configParameters.child("resolution").attribute("scale").as_int();
 
+		baseWidth = width;
+		baseHeight = height;
+
 		if (fullscreen == true)        flags |= SDL_WINDOW_FULLSCREEN;
 		if (borderless == true)        flags |= SDL_WINDOW_BORDERLESS;
 		if (resizable == true)         flags |= SDL_WINDOW_RESIZABLE;
@@ -88,13 +91,79 @@ void Window::SetTitle(const char* new_title)
 	SDL_SetWindowTitle(window, new_title);
 }
 
-void Window::GetWindowSize(int& width, int& height) const
+void Window::SetWindowSize(int& width, int& height) const
 {
 	width = this->width;
 	height = this->height;
 }
 
-int Window::GetScale() const
-{
-	return scale;
+
+Vector2D Window::GetWindowSize() const{
+
+	int w, y;
+	SDL_GetWindowSizeInPixels(window, &w, &y);
+	/*
+	LOG("WINDOW SIZE: %d, %d", w, y);
+	*/
+	Vector2D Size;
+	Size.setX(w);
+	Size.setY(y);
+
+	return Size;
 }
+
+float Window::GetScale() const
+{
+	float windowW = GetWindowSize().getX();
+	float windowH = GetWindowSize().getY();
+
+	float scaleX = windowW / baseWidth;
+	float scaleY = windowH / baseHeight;
+
+	return std::min(scaleX, scaleY);
+}
+
+bool Window::SetFullSize() {
+
+	SDL_SetWindowFullscreenMode(window, nullptr); // use desktop resolution
+	SDL_SetWindowFullscreen(window, true);
+	
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_ShowWindow(window);
+
+	/*int w, y;
+	SDL_GetWindowSizeInPixels(window, &w, &y);
+	LOG("WINDOW SIZE: %d, %d", w, y);*/
+	return true;
+}
+
+bool Window::SetWindowed(int scaleFactor) {
+
+	SDL_SetWindowFullscreen(window, false);
+
+	int newWidth = baseWidth / scaleFactor;
+	int newHeight = baseHeight / scaleFactor;
+
+	SDL_SetWindowSize(window, newWidth, newHeight);
+
+	width = newWidth;
+	height = newHeight;
+
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_ShowWindow(window);
+	/*int w, y;
+	SDL_GetWindowSizeInPixels(window, &w, &y);
+	LOG("WINDOW SIZE: %d, %d", w, y);*/
+	return true;
+}
+/*
+
+Recommended SDL2 Functions
+
+SDL_GetDesktopDisplayMode(): Use this to get the native resolution of the desktop, even if your game is currently running in a different resolution fullscreen.
+
+SDL_GetCurrentDisplayMode(): Use this to get the resolution the display is currently using.
+
+SDL_GetDisplayBounds(): Use this to get the size (and position) of the display area, which is useful for multi-monitor setups.
+
+*/
