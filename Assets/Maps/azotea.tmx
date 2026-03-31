@@ -6447,7 +6447,12 @@
    </properties>
    <point/>
   </object>
-  <object id="2" name="Octopuss" type="aaaNPC" x="571.152" y="565.697">
+  <object id="2" name="Octopuss" type="NPC" x="571.152" y="565.697">
+   <properties>
+    <property name="NPC_ID" type="int" value="2"/>
+    <property name="active" type="bool" value="false"/>
+    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+   </properties>
    <point/>
   </object>
   <object id="3" name="Player" type="Player" x="294" y="1050">

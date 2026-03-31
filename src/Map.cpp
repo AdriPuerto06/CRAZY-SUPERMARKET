@@ -276,14 +276,36 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                     objectNode.attribute("x").set_value(playerPos.getX());
                     objectNode.attribute("y").set_value(playerPos.getY());
                 }
+
+                if (entityType == "NPC")
+                {
+                    int NPC_ID = objectNode.attribute("id").as_int();
+                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, NPC_ID));
+                    const char* texturePath = npc->texturePath;
+                    bool active = npc->active;
+
+                    //get NPC data
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "active")
+                            propertyNode.attribute("value").set_value(active);
+
+                        if (name == "texturePath")
+                            propertyNode.attribute("value").set_value(texturePath);
+                    }
+                }
             }
         }
+
+        //Important: save the modifications to the XML 
+        std::string mapPathName = mapPath + mapFileName;
+        mapFileXML.save_file(mapPathName.c_str());
+
     }
-
-    //Important: save the modifications to the XML 
-    std::string mapPathName = mapPath + mapFileName;
-    mapFileXML.save_file(mapPathName.c_str());
-
 }
 
 MapLayer* Map::GetLayer(const std::string& name) const
