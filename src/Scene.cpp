@@ -89,6 +89,9 @@ bool Scene::Update(float dt)
 	case SceneID::EXIT:
 		UpdateExit(dt);
 		break;
+	case SceneID::RESUME:
+		UpdateResume(dt);
+		break;
 
 	}
 
@@ -130,6 +133,9 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::EXIT:
 		PostUpdateExit();
+		break;
+	case SceneID::RESUME:
+		PostUpdateResume();
 		break;
 	default:
 		break;
@@ -178,6 +184,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::PAUSE:
 		break;
 	case SceneID::EXIT:
+		break;
+	case SceneID::RESUME:
 		break;
 	default:
 		break;
@@ -248,6 +256,8 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::EXIT:
 		LoadExit();
+	case SceneID::RESUME:
+		LoadResume();
 		break;
 
 	}
@@ -302,6 +312,8 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::EXIT:
 		UnloadExit();
+	case SceneID::RESUME:
+		UnloadResume();
 		break;
 	}
 	
@@ -452,6 +464,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 8:
 		LOG("Pause: Exit clicked");
 		ChangeScene(SceneID::EXIT);
+		break;
+	case 9:
+		LOG("Pause: Resume clicked");
+		ChangeScene(SceneID::LEVEL1);
 		break;
 	default:
 		break;
@@ -755,13 +771,16 @@ void Scene::LoadPause()
 
 	//UI Buttons
 
-	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	SDL_Rect bt8Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "Resume", bt8Pos, this));
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 +30, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
 
-	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
-	SDL_Rect bt7Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
+	SDL_Rect bt7Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt7Pos, this));
 
 }
@@ -808,6 +827,30 @@ void Scene::UpdateExit(float dt)
 }
 
 void Scene::PostUpdateExit()
+{
+}
+
+
+// *********************************************
+// RESUME functions
+// *********************************************
+
+void Scene::LoadResume()
+{
+}
+
+void Scene::UnloadResume()
+{
+}
+
+void Scene::UpdateResume(float dt)
+{
+
+
+
+}
+
+void Scene::PostUpdateResume()
 {
 }
 
