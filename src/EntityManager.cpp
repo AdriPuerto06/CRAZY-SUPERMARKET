@@ -9,8 +9,6 @@
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
 
-#include "Enemy.h"
-
 EntityManager::EntityManager() : Module()
 {
 	name = "entitymanager";
@@ -80,7 +78,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		entity = std::make_shared<Item>();
 		break;
 	case EntityType::ENEMY:
-		entity = std::make_shared<Enemy>();
+		entity = std::make_shared<BaseEnemy>();
 		break;
 	case EntityType::BASENPC:
 		entity = std::make_shared<BaseNPC>();
