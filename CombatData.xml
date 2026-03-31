@@ -1,0 +1,16 @@
+<combat>
+	<enemy id =" 1">
+		<attacks>
+			<attack id="1" name="Attack1" dmg ="5"></attack>
+			<attack id="2" name="Attack2" dmg ="3"></attack>
+		</attacks>
+	</enemy>
+	<enemy id =" 2">
+		<attacks>
+			<attack id="1" name="Attack1" dmg ="7"></attack>
+			<attack id="2" name="Attack2" dmg ="1"></attack>
+		</attacks>
+	</enemy>
+	
+	
+</combat>
