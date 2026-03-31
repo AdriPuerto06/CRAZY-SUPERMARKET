@@ -24,20 +24,12 @@ Audio::~Audio() {
 
 
 bool Audio::LoadWavFile(const char* path, SoundData& out) {
-
-    unsigned int ret = 0;
-    Mix_Chunk* chunk = Mix_LoadWAV(path);
     // SDL_LoadWAV fills spec + allocates buf; free with SDL_free() later.
     if (!SDL_LoadWAV(path, &out.spec, &out.buf, &out.len)) {
         SDL_Log("SDL_LoadWAV failed for %s: %s", path, SDL_GetError());
-        //return false;
+        return false;
     }
-    else {
-        fx.Add(chunk);
-        ret = fx.Count();
-        //return true;
-    }
-    return ret;
+    return true;
 }
 
 

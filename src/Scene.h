@@ -20,6 +20,7 @@ enum class SceneID
 	SOUND,
 	GRAFICS,
 
+
 };
 
 
@@ -118,6 +119,12 @@ private:
 	void UnloadGrafics();
 	void UpdateGrafics(float dt);
 	void PostUpdateGrafics();
+
+	//BACK
+	void LoadBack();
+	void UnloadBack();
+	void UpdateBack(float dt);
+	void PostUpdateBack();
 
 private:
 
