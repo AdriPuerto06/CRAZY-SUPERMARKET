@@ -32,33 +32,16 @@ bool BaseEnemy::Awake() {
 
 bool BaseEnemy::Start() {
 
-	// load
-	std::unordered_map<int, std::string> aliases = { {0,"idle"} };
-	anims.LoadFromTSX("Assets/Textures/enemy_Spritesheet.tsx", aliases);
-	anims.SetCurrent("idle");
-
-	//Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/enemy_spritesheet.png");
-	
-	//Add physics to the enemy - initialize physics body
-	texW = 32;
-	texH = 32;
-	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX()+texW/2, (int)position.getY()+texH/2, texW / 2, bodyType::DYNAMIC);
-
-	//Assign enemy class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
+	//texture
+	texture = Engine::GetInstance().textures->Load(texturePath);
+	texH = texture->h;
+	texW = texture->w;
+	//sensor
+	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::STATIC);
+	pbody->ctype = ColliderType::NPC;
 	pbody->listener = this;
-
-	//ssign collider type
-	pbody->ctype = ColliderType::ENEMY;
-
-	// Initialize pathfinding
-	pathfinding = std::make_shared<Pathfinding>();
-	//Get the position of the enemy
-	Vector2D pos = GetPosition();
-	//Convert to tile coordinates
-	Vector2D tilePos = Engine::GetInstance().map->WorldToMap((int)pos.getX(), (int)pos.getY()+1);
-	//Reset pathfinding
-	pathfinding->ResetPath(tilePos);
+	//bools
+	showingButton = false;
 
 	return true;
 }

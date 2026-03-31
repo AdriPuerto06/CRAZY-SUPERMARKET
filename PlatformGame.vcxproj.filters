@@ -23,6 +23,9 @@
     <Filter Include="Source Files\Game\NPCs">
       <UniqueIdentifier>{8ae3e3b8-d859-48b5-93f5-6312e70bcd90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Enemys">
+      <UniqueIdentifier>{c212443a-1728-4ea4-b0af-d6b5418c49dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -93,9 +96,6 @@
     <ClCompile Include="src\Pathfinding.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\Animation.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -108,8 +108,11 @@
     <ClCompile Include="src\DialogueManager.cpp">
       <Filter>Source Files\Engine\Dialogue</Filter>
     </ClCompile>
-    <ClCompile Include="src\NPC_Vagabundo.cpp">
+    <ClCompile Include="src\BaseNPC.cpp">
       <Filter>Source Files\Game\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseEnemy.cpp">
+      <Filter>Source Files\Game\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +173,6 @@
     <ClInclude Include="src\Pathfinding.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\Enemy.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\Animation.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
@@ -188,14 +188,11 @@
     <ClInclude Include="src\DialogueManager.h">
       <Filter>Source Files\Engine\Dialogue</Filter>
     </ClInclude>
-    <ClInclude Include="src\BaseEnemy.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\BaseNPC.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NPC_Vagabundo.h">
       <Filter>Source Files\Game\NPCs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseEnemy.h">
+      <Filter>Source Files\Game\Enemys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

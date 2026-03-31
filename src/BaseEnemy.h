@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseEnemy.h"
+#include "Entity.h"
 #include "Animation.h"
 #include <box2d/box2d.h>
 #include <SDL3/SDL.h>
@@ -8,13 +8,13 @@
 
 struct SDL_Texture;
 
-class Enemy : public BaseEnemy
+class BaseEnemy : public Entity
 {
 public:
 
-	Enemy();
-	Enemy(EntityType type, Vector2D position, int HP, int ID, SDL_Texture* texture);
-	virtual ~Enemy();
+	BaseEnemy();
+	~BaseEnemy();
+	void Init(EntityType type, Vector2D position, int HP, int ID, SDL_Texture* texture);
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
@@ -26,10 +26,30 @@ public:
 	bool Destroy();
 
 private:
-	void PerformPathfinding();
-	void GetPhysicsValues();
+
 	void Move();
-	void ApplyPhysics();
 	void Draw(float dt);
 
+protected:
+	EntityType type;
+	bool active;
+	bool renderable = true;
+
+	PhysBody* pbody;
+	Vector2D position;
+	SDL_Texture* texture = NULL;
+	int texW, texH;
+	AnimationSet anims;
+	const char* texturePath;
+
+	b2Vec2 velocity;
+	float speed;
+	std::shared_ptr<Pathfinding> pathfinding;
+
+	int HP;
+	std::vector<std::string> attack_names;
+	std::vector<int> attack_damage;
+
+	int ID;
+	bool showingButton;
 };

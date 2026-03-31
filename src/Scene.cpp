@@ -11,7 +11,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Item.h"
-#include "Enemy.h"
+#include "BaseEnemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
 
@@ -859,7 +859,7 @@ void Scene::UnloadResume()
 void Scene::UpdateResume(float dt)
 {
 
-		ChangeScene(timeScene);
+	ChangeScene(timeScene);
 
 }
 
