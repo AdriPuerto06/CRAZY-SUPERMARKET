@@ -19,8 +19,6 @@ enum class SceneID
 	MULTIPLAYER,
 	SOUND,
 	GRAFICS,
-	PAUSE,
-	EXIT
 
 };
 
@@ -67,7 +65,6 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
-
 private:
 
 	// Intro / Splash
@@ -122,18 +119,6 @@ private:
 	void UpdateGrafics(float dt);
 	void PostUpdateGrafics();
 
-	//PAUSE
-	void LoadPause();
-	void UnloadPause();
-	void UpdatePause(float dt);
-	void PostUpdatePause();
-
-	//EXIT
-	void LoadExit();
-	void UnloadExit();
-	void UpdateExit(float dt);
-	void PostUpdateExit();
-
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -159,6 +144,8 @@ private:
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+	bool sfxLogoPlayed = false;
+	bool sfxTeamPlayed = false;
 
 	//Creditos
 
@@ -169,7 +156,4 @@ private:
 	bool isCredits = false;
 	float creditsTimer = 5.f;
 
-
-	SceneID timeScene;
-	bool closeGame = false;
 };

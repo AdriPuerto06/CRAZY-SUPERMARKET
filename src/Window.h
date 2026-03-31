@@ -23,18 +23,24 @@ public:
 
 	// Retrive window size
 	void SetWindowSize(int& width, int& height) const;
-	Vector2D GetWindowSize();
+	Vector2D GetWindowSize() const;
 	// Retrieve window scale
-	int GetScale() const;
-
+	float GetScale() const;
+	float GetBaseWidth() const { return baseWidth; }
+	float GetBaseHeight() const { return baseHeight; }
 	bool SetFullSize();
-	bool SetWindowed();
+	bool SetWindowed(int scaleFactor);
 
 public:
 	// The window we'll be rendering to
 	SDL_Window* window;
 
 	std::string title;
+
+	//this is for keeping the originar resolution
+	int baseWidth;
+	int baseHeight;
+
 	int width = 0;
 	int height = 0;
 	int scale = 1;

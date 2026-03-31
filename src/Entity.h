@@ -10,6 +10,8 @@ enum class EntityType
 	PLAYER,
 	ITEM,
 	ENEMY,
+	NPC_VAGABUNDO,
+	BASENPC,
 	UNKNOWN
 };
 
@@ -84,4 +86,6 @@ public:
 	// want our Entity class, maybe it's not renderable...
 	Vector2D position;       
 	bool renderable = true;
+
+	int entity_ID;
 };
