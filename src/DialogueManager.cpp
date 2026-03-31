@@ -81,25 +81,12 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 		}
 		break;
 	case 3: // Button MyButton
-		if (dialogue->node_id == -1) return true;
-		if (can_be_clicked) {
-			ButtonAction(3);
-		}
-		break;
-	case 4: // Button MyButton
-		if (dialogue->node_id == -1) return true;
-		if (can_be_clicked) {
-			ButtonAction(4);
-		}
-		break;
-	case 5: // Button MyButton
-		/*if (dialogue->node_id == -1) return true;*/
 		UnloadDialogueUI();
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_conversation = false;
-		LOG("Dialogs: Choice 5. Cleaned dialogue UI.");
+		LOG("Cleaned dialogue UI.");
 		break;
-	case 6:
+	case 4: // Button MyButton
 		UnloadDialogueUI();
 		showingButtonStart = false;
 		StartDialogue(dialogue->dialogue_tree_ID, dialogue->dialogue_tree_NPC);
@@ -129,14 +116,14 @@ void DialogueManager::ButtonAction(int ID)
 	{
 		UnloadDialogueUI();
 		SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 35, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 100, 180,30 };
-		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Continue", bt5Pos, this));
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Continue", bt5Pos, this));
 		showing_continue = true;
 	}
 }
 
 void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, int npc_id)
 {
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start talk", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Start talk", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
 	
 	GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
@@ -172,12 +159,6 @@ bool DialogueManager::ShowOptions(int node_value) {
 
 	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
-
-	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, tree->choices_text[node_value][2], bt3Pos, this));
-
-	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, tree->choices_text[node_value][3], bt4Pos, this));
 
 	return true;
 }

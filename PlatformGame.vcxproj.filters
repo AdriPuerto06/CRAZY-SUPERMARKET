@@ -108,7 +108,7 @@
     <ClCompile Include="src\DialogueManager.cpp">
       <Filter>Source Files\Engine\Dialogue</Filter>
     </ClCompile>
-    <ClCompile Include="src\NPC_Vagabundo.cpp">
+    <ClCompile Include="src\BaseNPC.cpp">
       <Filter>Source Files\Game\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
@@ -192,9 +192,6 @@
       <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseNPC.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NPC_Vagabundo.h">
       <Filter>Source Files\Game\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
