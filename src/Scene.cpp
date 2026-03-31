@@ -635,6 +635,7 @@ void Scene::LoadMultiplayer()
 
 void Scene::UnloadMultiplayer()
 {
+
 	Engine::GetInstance().uiManager->CleanUp();
 
 }
@@ -730,6 +731,9 @@ void Scene::LoadSounds()
 
 void Scene::UnloadSounds()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateSounds(float dt)
@@ -751,6 +755,9 @@ void Scene::LoadGrafics()
 
 void Scene::UnloadGrafics()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateGrafics(float dt)
@@ -817,6 +824,9 @@ void Scene::LoadExit()
 
 void Scene::UnloadExit()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateExit(float dt)
@@ -841,12 +851,15 @@ void Scene::LoadResume()
 
 void Scene::UnloadResume()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateResume(float dt)
 {
 
-
+		ChangeScene(timeScene);
 
 }
 
