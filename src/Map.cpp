@@ -6,7 +6,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
-
+#include "BaseNPC.h"
 #include <math.h>
 
 Map::Map() : Module(), mapLoaded(false)
@@ -195,20 +195,61 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
 
                 //Get the entity type and position
                 std::string entityType = objectNode.attribute("type").as_string();
+                Vector2D pos = Vector2D(objectNode.attribute("x").as_float(), objectNode.attribute("y").as_float());
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
+                int ID = objectNode.attribute("id").as_int();
 
                 // Create entity based on type
-                if (entityType == "Player") {
+                if (entityType == "Player") 
+                {
                     // Create Player entity
                     if (player == nullptr) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
-                        player->position = Vector2D(x, y);
+                        player->position = Vector2D(pos.getX(), pos.getY());
                         player->Start(); //L17: Importan to call Start to initialize teh Entity
+                        LOG("Player created at %f, %f.", pos.getX(), pos.getY());
                     }
                     //If the player already exists, just set its position
                     else {
-                        player->SetPosition(Vector2D(x, y));
+                        player->SetPosition(Vector2D(pos.getX(), pos.getY()));
+                        LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
+                    }
+                }
+
+                if (entityType == "NPC")
+                {
+                    int NPC_ID = 0;
+                    const char* texturePath = nullptr;
+                    bool active = true;
+                    //get NPC data
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "NPC_ID")
+                            NPC_ID = propertyNode.attribute("value").as_int();
+
+                        if (name == "active")
+                            active = propertyNode.attribute("value").as_bool();
+
+                        if (name == "texturePath")
+                            texturePath = (const char*)propertyNode.attribute("value").as_string();
+                    }
+
+                    if (!active)
+                    {
+                        std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASENPC));
+                        npc->Init(EntityType::BASENPC, active, pos, texturePath, ID);
+                        LOG("NPC Vagabundo NPC_ID: %i, created at %f, %f.", NPC_ID, pos.getX(), pos.getY());
+                        npc->Start();
+                    }
+                    else {
+                        std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
+                        npc->Init(EntityType::BASENPC, active, pos, texturePath, ID);
+                        LOG("NPC Vagabundo ID: %i, positioned at %f, %f.",ID, pos.getX(), pos.getY());
                     }
                 }
             }

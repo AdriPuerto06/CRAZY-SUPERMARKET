@@ -11,7 +11,7 @@
 #define CHAR_LENGTH 10
 #define CHAR_HEIGHT 16
 #define TEXT_DISPLAY_X 200
-#define TEXT_DISPLAY_Y 1000
+#define TEXT_DISPLAY_Y 600
 
 #define MAX_CHARS_PER_LINE 75
 
@@ -46,14 +46,15 @@ bool Render::Awake()
 {
 	LOG("Create SDL rendering context");
 	bool ret = true;
-
-	int scale = Engine::GetInstance().window->GetScale();
+	float scale = Engine::GetInstance().window->GetScale();
 	SDL_Window* window = Engine::GetInstance().window->window;
 
 	//L05 TODO 5 - Load the configuration of the Render module
 	
 	// SDL3: no flags; create default renderer and set vsync separately
 	renderer = SDL_CreateRenderer(window, nullptr);
+	SDL_SetRenderScale(renderer, scale, scale);
+	
 
 	if (renderer == NULL)
 	{
@@ -74,8 +75,8 @@ bool Render::Awake()
 			}
 		}
 
-		camera.w = Engine::GetInstance().window->width * scale;
-		camera.h = Engine::GetInstance().window->height * scale;
+		camera.w = Engine::GetInstance().window->GetBaseWidth();
+		camera.h = Engine::GetInstance().window->GetBaseHeight();
 		camera.x = 0;
 		camera.y = 0;
 	}
@@ -171,21 +172,28 @@ void Render::ResetViewPort()
 	SDL_SetRenderViewport(renderer, &viewport);
 }
 
+void Render::UpdateScale()
+{
+	float scale = Engine::GetInstance().window->GetScale();
+
+	SDL_SetRenderScale(renderer, scale, scale);
+
+}
+
 // Blit to screen
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
-	int scale = Engine::GetInstance().window->GetScale();
-
+	//int scale = Engine::GetInstance().window->GetScale();
 	// SDL3 uses float rects for rendering
 	SDL_FRect rect;
-	rect.x = (float)((int)(camera.x * speed) + x * scale);
-	rect.y = (float)((int)(camera.y * speed) + y * scale);
+	rect.x = (float)((int)(camera.x) + x);
+	rect.y = (float)((int)(camera.y) + y);
 
 	if (section != NULL)
 	{
-		rect.w = (float)(section->w * scale);
-		rect.h = (float)(section->h * scale);
+		rect.w = (float)(section->w);
+		rect.h = (float)(section->h);
 	}
 	else
 	{
@@ -195,8 +203,8 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 			LOG("SDL_GetTextureSize failed: %s", SDL_GetError());
 			return false;
 		}
-		rect.w = tw * scale;
-		rect.h = th * scale;
+		rect.w = tw;
+		rect.h = th;
 	}
 
 	const SDL_FRect* src = NULL;
@@ -241,17 +249,17 @@ bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint
 	SDL_FRect rec;
 	if (use_camera)
 	{
-		rec.x = (float)((int)(camera.x + rect.x * scale));
-		rec.y = (float)((int)(camera.y + rect.y * scale));
-		rec.w = (float)(rect.w * scale);
-		rec.h = (float)(rect.h * scale);
+		rec.x = (float)((int)(camera.x + rect.x));
+		rec.y = (float)((int)(camera.y + rect.y));
+		rec.w = (float)(rect.w);
+		rec.h = (float)(rect.h);
 	}
 	else
 	{
-		rec.x = (float)(rect.x * scale);
-		rec.y = (float)(rect.y * scale);
-		rec.w = (float)(rect.w * scale);
-		rec.h = (float)(rect.h * scale);
+		rec.x = (float)(rect.x);
+		rec.y = (float)(rect.y);
+		rec.w = (float)(rect.w);
+		rec.h = (float)(rect.h);
 	}
 
 	int result = (filled ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderRect(renderer, &rec)) ? 0 : -1;
@@ -277,17 +285,17 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 	if (use_camera)
 	{
-		X1 = (float)(camera.x + x1 * scale);
-		Y1 = (float)(camera.y + y1 * scale);
-		X2 = (float)(camera.x + x2 * scale);
-		Y2 = (float)(camera.y + y2 * scale);
+		X1 = (float)(camera.x + x1);
+		Y1 = (float)(camera.y + y1);
+		X2 = (float)(camera.x + x2);
+		Y2 = (float)(camera.y + y2);
 	}
 	else
 	{
-		X1 = (float)(x1 * scale);
-		Y1 = (float)(y1 * scale);
-		X2 = (float)(x2 * scale);
-		Y2 = (float)(y2 * scale);
+		X1 = (float)(x1);
+		Y1 = (float)(y1);
+		X2 = (float)(x2);
+		Y2 = (float)(y2);
 	}
 
 	int result = SDL_RenderLine(renderer, X1, Y1, X2, Y2) ? 0 : -1;
@@ -304,7 +312,7 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
 {
 	bool ret = true;
-	int scale = Engine::GetInstance().window->GetScale();
+	//int scale = Engine::GetInstance().window->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -314,8 +322,8 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 
 	float factor = (float)M_PI / 180.0f;
 
-	float cx = (float)((use_camera ? camera.x : 0) + x * scale);
-	float cy = (float)((use_camera ? camera.y : 0) + y * scale);
+	float cx = (float)((use_camera ? camera.x : 0) + x);
+	float cy = (float)((use_camera ? camera.y : 0) + y);
 
 	for (int i = 0; i < 360; ++i)
 	{

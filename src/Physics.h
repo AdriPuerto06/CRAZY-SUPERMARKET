@@ -28,6 +28,7 @@ enum class ColliderType {
     PLAYER,
     ITEM,
     PLATFORM,
+    NPC,
     ENEMY,
     UNKNOWN
     // ..

@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Entity.h"
 #include "Engine.h"
 #include "Textures.h"
 #include "Audio.h"
@@ -11,6 +12,15 @@
 #include "Map.h"
 
 Enemy::Enemy() : BaseEnemy(EntityType::ENEMY) {}
+
+Enemy::Enemy(EntityType type, Vector2D position, int HP, int ID, SDL_Texture* texture) 
+{
+	this->type = type;
+	this->position = position;
+	this->HP = HP;
+	this->ID = ID;
+	this->texture = texture;
+}
 
 Enemy::~Enemy() {
 
@@ -29,7 +39,7 @@ bool Enemy::Start() {
 
 	//Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/enemy_spritesheet.png");
-
+	
 	//Add physics to the enemy - initialize physics body
 	texW = 32;
 	texH = 32;

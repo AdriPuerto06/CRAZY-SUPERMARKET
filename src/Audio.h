@@ -2,12 +2,30 @@
 
 #include "Module.h"
 #include <SDL3/SDL.h>
+#include "Defs.h"
+#include "List.h"
 #include <vector>
 #include <string>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
+#define Mix_LoadWAV(file)   Mix_LoadWAV_RW(SDL_RWFromFile(file, "rb"), 1)
+
 
 struct _Mix_Music;
+struct Mix_Chunk;
+
+
+enum Music {
+    m_OFF = 0,
+    m_title
+};
+
+enum Sfx {
+    s_OFF = 0,
+    s_title_name,
+    s_epic_reveal
+};
+
 
 class Audio : public Module
 {
@@ -25,19 +43,22 @@ public:
 	bool CleanUp();
 
 	// Play a music file
-	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(Music id, float fadeTime);
 
 	// Load a WAV in memory
 	int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(int fx, int repeat = 0);
+	bool PlayFx(Sfx id, int repeat);
+
+    //Change Music track
+    bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
 
 	// Volume control
     void SetMusicVolume(float volume); // 0.0f – 1.0f
     void SetSFXVolume(float volume);   // 0.0f – 1.0f
 
-    bool Update(float dt) override;
+
 
 private:
 
@@ -45,12 +66,6 @@ private:
         SDL_AudioSpec spec{};  // source format
         Uint8* buf{ nullptr };
         Uint32 len{ 0 };  // bytes
-    };
-
-    // Currently playing sound effect
-    struct PlayingSfx {
-        SDL_AudioStream* stream{ nullptr };
-        float timeLeft{ 0.0f };   // segundos restantes
     };
 
     // Device and default output format
@@ -64,7 +79,6 @@ private:
     // Loaded sounds
     SoundData music_data_{};
     std::vector<SoundData> sfx_; // 1-based indexing outwardly
-    std::vector<SDL_AudioStream*> active_sfx_streams_;
 
 	// Volume control
     float music_volume_ = 1.0f; // 0.0 = mute, 1.0 = full
@@ -75,4 +89,9 @@ private:
     void FreeSound(SoundData& s);
     bool EnsureDeviceOpen();
     bool EnsureStreams();
+
+    _Mix_Music* music;
+    List<Mix_Chunk*>	fx;
+
+    
 };

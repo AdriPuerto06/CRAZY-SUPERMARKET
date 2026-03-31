@@ -14,8 +14,6 @@
 #include "Enemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
-//test comment
-//erik test
 
 Scene::Scene() : Module()
 {
@@ -29,7 +27,7 @@ Scene::~Scene()
 // Called before render is available
 bool Scene::Awake()
 {
-	WindowSize = Engine::GetInstance().window->GetWindowSize();
+	WindowSize = { Engine::GetInstance().window->GetBaseWidth(),   Engine::GetInstance().window->GetBaseHeight() };
 
 	LOG("Loading Scene");
 	bool ret = true;
@@ -291,24 +289,39 @@ void Scene::LoadIntroScreen()
 
 void Scene::UpdateIntroScreen(float dt)
 {
-	if (logoImg != nullptr)
-	{
-		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	
+	if (splashTime == 0.0f && !sfxLogoPlayed) {
+		Engine::GetInstance().audio->SetSFXVolume(0.2f);
+		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 0);
+		sfxLogoPlayed = true;
 	}
 
-	splashTime += dt / 1000.0f;
-	if (splashTime >= logoGameTimer && teamImg != nullptr)
-	{
+	if (teamImg != nullptr && splashTime < logoGameTimer) {
 		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
 	}
 
-	if (splashTime >= logoTeamTimer)
-	{
+	splashTime += dt / 4000.0f;
+
+	if (splashTime >= logoGameTimer && logoImg != nullptr) {
+
+		if (!sfxTeamPlayed) {
+			Engine::GetInstance().audio->SetSFXVolume(0.6f);
+			Engine::GetInstance().audio->PlayFx(s_title_name, 0);
+			sfxTeamPlayed = true;
+		}
+		splashTime += dt / 1000.0f;
+		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+	}
+
+	if (splashTime >= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
-
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
 		splashTime = 0;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
@@ -335,10 +348,11 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	
+	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
 
+	
+	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
 	// Instantiate a UIButton in the Scene
-
 	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
 
@@ -406,14 +420,15 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 
 void Scene::LoadLevel1() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
+	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
 
-	//Call the function to load the map. 
+	//Call the function to load the map & music
 	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
+	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
-	const char* text = "Hello player! Move with WASD.sHello player! Move with WASD.sHello player! Move with WASD.s";
+	const char* text = "Hello player! Move with WASD.";
 	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
 	////Create a new item using the entity manager and set the position to (200, 672) to test
@@ -434,20 +449,15 @@ void Scene::UpdateLevel1(float dt) {
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		Engine::GetInstance().window->SetFullSize();
-		/*int window_w = Engine::GetInstance().window->width;
-		int window_y = Engine::GetInstance().window->height;
-		LOG("WINDOW SIZE: %d, %d", window_w, window_y);*/
+		Engine::GetInstance().render->UpdateScale();
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
-		Engine::GetInstance().window->SetWindowed();
-
-		/*int window_w = Engine::GetInstance().window->width;
-		int window_y = Engine::GetInstance().window->height;
-		LOG("WINDOW SIZE: %d, %d", window_w, window_y);*/
+		Engine::GetInstance().window->SetWindowed(2);
+		Engine::GetInstance().render->UpdateScale();
 	}
-	
+	//ALWAYS USE UpdateScale() when changing window sizes
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		Engine::GetInstance().dialogueManager->StartDialog(0, 1);
+		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
 	}
 
 }
@@ -486,7 +496,7 @@ void  Scene::PostUpdateLevel1() {
 
 void Scene::LoadLevel2() {
 
-	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/that-8-bit-music-322062.wav");
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");

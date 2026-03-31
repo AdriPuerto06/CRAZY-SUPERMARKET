@@ -32,6 +32,8 @@ public:
 
 	void AddEntity(std::shared_ptr<Entity> entity);
 
+	std::shared_ptr<Entity> GetEntity(EntityType type, int ID);
+
 public:
 
 	std::list<std::shared_ptr<Entity>> entities;

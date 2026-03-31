@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Entity.h"
 #include "Pathfinding.h"
 #include <vector>
@@ -6,6 +8,7 @@ class BaseEnemy : public Entity {
 public:
 	BaseEnemy() {}
 	BaseEnemy(EntityType type) : type(type), active(true) {}
+	
 
 	virtual bool Awake()
 	{
@@ -64,5 +67,7 @@ protected:
 	int HP;
 	std::vector<std::string> attack_names;
 	std::vector<int> attack_damage;
+
+	int ID;
 	
 };

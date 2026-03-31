@@ -65,7 +65,6 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
-
 private:
 
 	// Intro / Splash
@@ -145,6 +144,8 @@ private:
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+	bool sfxLogoPlayed = false;
+	bool sfxTeamPlayed = false;
 
 	//Creditos
 
@@ -154,4 +155,5 @@ private:
 	int lineHeight = 30;
 	bool isCredits = false;
 	float creditsTimer = 5.f;
+
 };

@@ -1,5 +1,18 @@
 #include "Audio.h"
 #include "Log.h"
+#include <map>
+
+//sounds to be added
+static std::map<Music, const char*> music_paths =
+{
+    { m_title, "Assets/Audio/Music/title music.wav" }
+};
+
+static std::map<Sfx, const char*> sfx_paths =
+{
+    { s_title_name, "Assets/Audio/Fx/crazy-supermarket.wav" },
+    { s_epic_reveal, "Assets/Audio/Fx/logo-epic-reveal.wav" },
+};
 
 Audio::Audio() {
     name = "audio";
@@ -9,6 +22,7 @@ Audio::~Audio() {
     // Make sure everything is freed in CleanUp
 }
 
+
 bool Audio::LoadWavFile(const char* path, SoundData& out) {
     // SDL_LoadWAV fills spec + allocates buf; free with SDL_free() later.
     if (!SDL_LoadWAV(path, &out.spec, &out.buf, &out.len)) {
@@ -17,6 +31,7 @@ bool Audio::LoadWavFile(const char* path, SoundData& out) {
     }
     return true;
 }
+
 
 void Audio::FreeSound(SoundData& s) {
     if (s.buf) {
@@ -154,35 +169,40 @@ bool Audio::CleanUp() {
     return true;
 }
 
-bool Audio::PlayMusic(const char* path, float fadeTime) {
+bool Audio::PlayMusic(Music id, float fadeTime) {
+
+    auto it = music_paths.find(id);
+
+    if (it == music_paths.end()) {
+        LOG("Music id not found");
+        return false;
+    }
+
+    const char* path = it->second;
+
     if (!active) return false;
     if (!EnsureStreams()) return false;
 
-    // Stop any existing music: clear stream + free buffer
-    if (music_stream_) {
-        SDL_ClearAudioStream(music_stream_);
-    }
+    if (music_stream_) SDL_ClearAudioStream(music_stream_);
+
     FreeSound(music_data_);
 
-    // Load WAV into memory
     if (!LoadWavFile(path, music_data_)) {
-        LOG("Audio: cannot load music %s: %s", path, SDL_GetError());
+        LOG("Audio: cannot load music %s", path);
         return false;
     }
 
-    // Set input format of the stream to match this file
     if (!SDL_SetAudioStreamFormat(music_stream_, &music_data_.spec, &device_spec_)) {
-        LOG("Audio: SDL_SetAudioStreamFormat(music) failed: %s", SDL_GetError());
+        LOG("Audio: stream format failed");
         return false;
     }
 
-    // Queue once (simple play). For looping, requeue when drained (TODO).
     if (!SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len)) {
-        LOG("Audio: SDL_PutAudioStreamData(music) failed: %s", SDL_GetError());
+        LOG("Audio: stream put failed");
         return false;
     }
 
-    LOG("Audio: playing music %s", path);
+    LOG("Playing music %s", path);
     return true;
 }
 
@@ -192,33 +212,39 @@ int Audio::LoadFx(const char* path) {
 
     SoundData s{};
     if (!LoadWavFile(path, s)) {
-        LOG("Audio: cannot load fx %s: %s", path, SDL_GetError());
+        LOG("Audio: cannot load fx %s", path);
         return 0;
     }
 
     sfx_.push_back(s);
-    return static_cast<int>(sfx_.size()); // 1-based outward index
+    return (int)sfx_.size(); // 1-based outward index
 }
 
-bool Audio::PlayFx(int id, int repeat) {
-    if (!active) return false;
-    if (id <= 0 || id > static_cast<int>(sfx_.size())) return false;
-    if (!EnsureStreams()) return false;
+bool Audio::PlayFx(Sfx id, int repeat) {
 
-    const SoundData& s = sfx_[static_cast<size_t>(id - 1)];
-
-    // Make sure the SFX stream input format matches this sound
-    if (!SDL_SetAudioStreamFormat(sfx_stream_, &s.spec, &device_spec_)) {
-        LOG("Audio: SDL_SetAudioStreamFormat(sfx) failed: %s", SDL_GetError());
+    auto it = sfx_paths.find(id);
+    if (it == sfx_paths.end()) {
+        LOG("SFX id not found");
         return false;
     }
 
-    // Queue sound 'repeat+1' times
-    for (int i = 0; i <= repeat; ++i) {
-        if (!SDL_PutAudioStreamData(sfx_stream_, s.buf, s.len)) {
-            LOG("Audio: SDL_PutAudioStreamData(sfx) failed: %s", SDL_GetError());
-            return false;
-        }
+    const char* path = it->second;
+
+    int fx = LoadFx(path);
+
+    if (fx == 0) return false;
+
+    const SoundData& s = sfx_[fx - 1];
+
+    if (!EnsureStreams()) return false;
+
+    if (!SDL_SetAudioStreamFormat(sfx_stream_, &s.spec, &device_spec_)) {
+        LOG("Audio: stream format failed");
+        return false;
+    }
+
+    for (int i = 0; i <= repeat; i++) {
+        SDL_PutAudioStreamData(sfx_stream_, s.buf, s.len);
     }
 
     return true;
@@ -248,44 +274,4 @@ void Audio::SetSFXVolume(float volume)
     if (sfx_stream_) {
         SDL_SetAudioStreamGain(sfx_stream_, sfx_volume_);
     }
-}
-
-bool Audio::Update(float dt)
-{
-
-    //If there's no music or it's not playing don't do nothing
-    if (!music_stream_ || !music_data_.buf) {
-        return true;
-    }
-
-    // If it's finished, replay
-    if (SDL_GetAudioStreamAvailable(music_stream_) == 0) {
-        SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
-    }
-
-
-    // Clean up finished sound effect streams
-    for (auto it = active_sfx_streams_.begin(); it != active_sfx_streams_.end(); )
-    {
-
-
-        SDL_AudioStream* stream = *it;
-        if (!stream) {
-            it = active_sfx_streams_.erase(it);
-            continue;
-        }
-
-        int queued = SDL_GetAudioStreamQueued(stream);
-        if (queued == 0) {
-            SDL_DestroyAudioStream(stream);
-            it = active_sfx_streams_.erase(it);
-        }
-        else {
-            ++it;
-        }
-    }
-
-
-
-    return true;
 }

@@ -1,43 +1,31 @@
+#pragma once
+
 #include "Entity.h"
 #include <vector>
 
-class BaseNPC : Entity {
+class BaseNPC : public Entity {
 public:
-	BaseNPC() {}
-	BaseNPC(EntityType type) : type(type), active(true) {}
+	BaseNPC();
+	~BaseNPC();
+	BaseNPC(EntityType type) : type(type), active(true) {};
 
-	virtual bool Awake()
-	{
-		return true;
-	}
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID);
 
-	virtual bool Start()
-	{
-		return true;
-	}
+	bool Awake();
 
-	virtual bool Update(float dt)
-	{
-		return true;
-	}
+	bool Start();
 
-	virtual bool CleanUp()
-	{
-		return true;
-	}
+	bool Update(float dt);
 
-	virtual bool Destroy()
-	{
-		return true;
-	}
+	void Draw(float dt);
 
-	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {
+	bool CleanUp();
 
-	};
+	bool Destroy();
 
-	virtual void OnCollisionEnd(PhysBody* physA, PhysBody* physB) {
+	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	};
+	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 
 public:
 	EntityType type;
@@ -47,8 +35,10 @@ public:
 	PhysBody* pbody;
 	Vector2D position;
 	SDL_Texture* texture = NULL;
+	const char* texturePath;
 	int texW, texH;
 
 	int ID;
-
+	
+	bool showingButton;
 };

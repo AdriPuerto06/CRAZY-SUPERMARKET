@@ -20,6 +20,9 @@
     <Filter Include="Source Files\Engine\Dialogue">
       <UniqueIdentifier>{daa022ca-9723-4661-910f-70743c0b28fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\NPCs">
+      <UniqueIdentifier>{8ae3e3b8-d859-48b5-93f5-6312e70bcd90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -29,6 +32,9 @@
       <Filter>Configuration FIles</Filter>
     </None>
     <None Include=".gitignore">
+      <Filter>Configuration FIles</Filter>
+    </None>
+    <None Include="Assets\Maps\azotea.tmx">
       <Filter>Configuration FIles</Filter>
     </None>
   </ItemGroup>
@@ -101,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="src\DialogueManager.cpp">
       <Filter>Source Files\Engine\Dialogue</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseNPC.cpp">
+      <Filter>Source Files\Game\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +192,7 @@
       <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseNPC.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source Files\Game\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

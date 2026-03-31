@@ -13,6 +13,7 @@ class Enemy : public BaseEnemy
 public:
 
 	Enemy();
+	Enemy(EntityType type, Vector2D position, int HP, int ID, SDL_Texture* texture);
 	virtual ~Enemy();
 	bool Awake();
 	bool Start();
