@@ -13,13 +13,13 @@
 
 BaseEnemy::BaseEnemy(){}
 
-void BaseEnemy::Init(EntityType type, Vector2D position, int HP, int ID, SDL_Texture* texture) 
+void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID)
 {
 	this->type = type;
 	this->position = position;
 	this->HP = HP;
 	this->ID = ID;
-	this->texture = texture;
+	this->texturePath = texturePath;
 }
 
 BaseEnemy::~BaseEnemy() {
