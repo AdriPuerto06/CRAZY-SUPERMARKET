@@ -7,6 +7,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 #include "BaseNPC.h"
+#include "BaseEnemy.h"
 #include <math.h>
 
 Map::Map() : Module(), mapLoaded(false)
@@ -252,6 +253,42 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                         LOG("NPC Vagabundo ID: %i, positioned at %f, %f.",ID, pos.getX(), pos.getY());
                     }
                 }
+                if (entityType == "ENEMY") 
+                {
+                    int ENEMY_ID = 0;
+                    const char* texturePath = nullptr;
+                    bool active = false;
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "ENEMY_ID")
+                            ENEMY_ID = propertyNode.attribute("value").as_int();
+
+                        if (name == "active")
+                            active = propertyNode.attribute("value").as_bool();
+
+                        if (name == "texturePath")
+                            texturePath = (const char*)propertyNode.attribute("value").as_string();
+                    }
+
+                    if (active) 
+                    {
+                        std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
+                        enemy->Init(EntityType::ENEMY, active, pos, texturePath, ID);
+                        enemy->Start();
+                        LOG("ENEMY ENEMY_ID : % i, created at % f, % f.", ENEMY_ID, x, y);
+                    }
+                    else {
+                        //poner png de enemy muerto o lo que sea
+                        LOG("Enemy inactive");
+                    }
+
+                }
+                
+
             }
         }
     }
