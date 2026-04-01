@@ -1,16 +1,25 @@
 <combat>
+
+	<player id="1">
+		<attack name="Attack1" dmg ="1"></attack>
+		<attack name="Attack2" dmg ="2"></attack>
+		<attack name="Attack3" dmg ="3"></attack>
+		<attack name="Attack4" dmg ="4"></attack>
+	</player>
+	<player id="2">
+		<attack name="Attack1" dmg ="1"></attack>
+		<attack name="Attack2" dmg ="2"></attack>
+		<attack name="Attack3" dmg ="3"></attack>
+		<attack name="Attack4" dmg ="4"></attack>
+	</player>
+
 	<enemy id =" 1">
-		<attacks>
-			<attack id="1" name="Attack1" dmg ="5"></attack>
-			<attack id="2" name="Attack2" dmg ="3"></attack>
-		</attacks>
+		<attack name="Attack1" dmg ="5"></attack>
+		<attack name="Attack2" dmg ="3"></attack>
 	</enemy>
 	<enemy id =" 2">
-		<attacks>
-			<attack id="1" name="Attack1" dmg ="7"></attack>
-			<attack id="2" name="Attack2" dmg ="1"></attack>
-		</attacks>
+		<attack name="Attack1" dmg ="7"></attack>
+		<attack name="Attack2" dmg ="1"></attack>
 	</enemy>
-	
-	
+
 </combat>
