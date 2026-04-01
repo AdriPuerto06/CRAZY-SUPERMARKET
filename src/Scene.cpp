@@ -92,6 +92,9 @@ bool Scene::Update(float dt)
 	case SceneID::RESUME:
 		UpdateResume(dt);
 		break;
+	case SceneID::BACK:
+		UpdateBack(dt);
+		break;
 
 	}
 
@@ -137,6 +140,9 @@ bool Scene::PostUpdate()
 	case SceneID::RESUME:
 		PostUpdateResume();
 		break;
+	case SceneID::BACK:
+		PostUpdateBack();
+		break;
 	default:
 		break;
 	}
@@ -151,7 +157,7 @@ bool Scene::PostUpdate()
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL1)) {
 
-		timeScene = currentScene;
+		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
 	}
 
@@ -172,20 +178,26 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::LEVEL2:
 		break;
 	case SceneID::OPTIONS: 
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::MULTIPLAYER:
 		break;
 	case SceneID::CREDITS:
 		break;
 	case SceneID::SOUND:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::GRAFICS:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::PAUSE:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::EXIT:
 		break;
 	case SceneID::RESUME:
+		break;
+	case SceneID::BACK:
 		break;
 	default:
 		break;
@@ -223,31 +235,24 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::MAIN_MENU:
 		LoadMainMenu();
 		break;
-
 	case SceneID::LEVEL1:
 		LoadLevel1();
 		break;
-
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
-
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
-
 	case SceneID::MULTIPLAYER:
 		LoadMultiplayer();
 		break;
-
 	case SceneID::CREDITS:
 		LoadCredits();
 		break;
-
 	case SceneID::SOUND:
 		LoadSounds();
 		break;
-
 	case SceneID::GRAFICS:
 		LoadGrafics();
 		break;
@@ -256,8 +261,12 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::EXIT:
 		LoadExit();
+		break;
 	case SceneID::RESUME:
 		LoadResume();
+		break;
+	case SceneID::BACK:
+		LoadBack();
 		break;
 
 	}
@@ -312,8 +321,12 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::EXIT:
 		UnloadExit();
+		break;
 	case SceneID::RESUME:
 		UnloadResume();
+		break;
+	case SceneID::BACK:
+		UnloadBack();
 		break;
 	}
 	
@@ -443,6 +456,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 3: 
 		LOG("Main Menu: Options clicked");
+		timeScene = currentScene;
 		ChangeScene(SceneID::OPTIONS);
 		break;
 	case 4:
@@ -455,10 +469,12 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
+		timeScene = currentScene;
 		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
+		timeScene = currentScene;
 		ChangeScene(SceneID::GRAFICS);
 		break;
 	case 8:
@@ -468,6 +484,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 9:
 		LOG("Pause: Resume clicked");
 		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 10:
+		LOG("Back clicked");
+		ChangeScene(SceneID::BACK);
 		break;
 	default:
 		break;
@@ -602,6 +622,8 @@ void Scene::LoadOptions()
 	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
+	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
 
 }
 
@@ -727,6 +749,12 @@ void Scene::PostUpdateCredits()
 
 void Scene::LoadSounds()
 {
+
+	//UI Button
+
+	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+
 }
 
 void Scene::UnloadSounds()
@@ -751,6 +779,13 @@ void Scene::PostUpdateSounds()
 
 void Scene::LoadGrafics()
 {
+
+	//UI Button
+
+	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+
+
 }
 
 void Scene::UnloadGrafics()
@@ -801,12 +836,6 @@ void Scene::UnloadPause()
 
 void Scene::UpdatePause(float dt)
 {
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		
-		ChangeScene(timeScene);
-	}
-
 }
 
 void Scene::PostUpdatePause()
@@ -859,7 +888,7 @@ void Scene::UnloadResume()
 void Scene::UpdateResume(float dt)
 {
 
-	ChangeScene(timeScene);
+	ChangeScene(gameScene);
 
 }
 
@@ -868,3 +897,28 @@ void Scene::PostUpdateResume()
 }
 
 
+// *********************************************
+// BACK functions
+// *********************************************
+
+void Scene::LoadBack()
+{
+}
+
+void Scene::UnloadBack()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdateBack(float dt)
+{
+
+	ChangeScene(timeScene);
+
+}
+
+void Scene::PostUpdateBack()
+{
+}

@@ -21,7 +21,8 @@ enum class SceneID
 	GRAFICS,
 	PAUSE,
 	EXIT,
-	RESUME
+	RESUME,
+	BACK
 
 };
 
@@ -140,6 +141,12 @@ private:
 	void UpdateResume(float dt);
 	void PostUpdateResume();
 
+	//BACK
+	void LoadBack();
+	void UnloadBack();
+	void UpdateBack(float dt);
+	void PostUpdateBack();
+
 
 private:
 
@@ -157,6 +164,7 @@ private:
 	//SceneID currentScene = SceneID::MAIN_MENU;
 	SceneID currentScene = SceneID::INTRO_SCREEN;
 	Vector2D WindowSize;
+	SceneID gameScene;
 	SceneID timeScene;
 
 
