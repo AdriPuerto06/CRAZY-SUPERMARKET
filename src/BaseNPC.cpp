@@ -64,13 +64,7 @@ void BaseNPC::OnCollision(PhysBody* physA, PhysBody* physB)
 	if (Engine::GetInstance().dialogueManager->in_conversation) return;
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 
-	float WindowW = Engine::GetInstance().window->GetWindowSize().getX();
-	float WindowY = Engine::GetInstance().window->GetWindowSize().getY();
-
-	float scaleX = WindowW / Engine::GetInstance().window->GetBaseWidth();
-	float scaleY = WindowY / Engine::GetInstance().window->GetBaseHeight();
-
-	Vector2D buttonPos = Vector2D((position.getX() + texW / 2) / scaleX, (position.getY() + texH * 1.5) / scaleY);
+	Vector2D buttonPos = Vector2D((position.getX() + texW / 2), (position.getY() + texH * 1.5));
 	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, ID);
 	Engine::GetInstance().dialogueManager->showingButtonStart = true;
 }
