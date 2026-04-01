@@ -17,6 +17,7 @@ void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char
 {
 	this->type = type;
 	this->position = position;
+	this->active = active;
 	this->HP = HP;
 	this->ID = ID;
 	this->texturePath = texturePath;
@@ -72,10 +73,10 @@ void BaseEnemy::Draw(float dt) {
 	position.setY((float)y);
 
 	// Draw pathfinding debug
-	pathfinding->DrawPath();
+	//pathfinding->DrawPath();
 
 	//Draw the player using the texture and the current animation frame
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2);
 }
 
 bool BaseEnemy::CleanUp()
