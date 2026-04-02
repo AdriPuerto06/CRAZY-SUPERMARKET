@@ -11,7 +11,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Item.h"
-#include "Enemy.h"
+#include "BaseEnemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
 
@@ -83,6 +83,16 @@ bool Scene::Update(float dt)
 	case SceneID::GRAFICS:
 		UpdateGrafics(dt);
 		break;
+	case SceneID::PAUSE:
+		UpdatePause(dt);
+		break;
+	case SceneID::EXIT:
+		UpdateExit(dt);
+		break;
+	case SceneID::RESUME:
+		UpdateResume(dt);
+		break;
+
 	}
 
 	return true;
@@ -118,12 +128,32 @@ bool Scene::PostUpdate()
 	case SceneID::GRAFICS:
 		PostUpdateGrafics();
 		break;
+	case SceneID::PAUSE:
+		PostUpdatePause();
+		break;
+	case SceneID::EXIT:
+		PostUpdateExit();
+		break;
+	case SceneID::RESUME:
+		PostUpdateResume();
+		break;
 	default:
 		break;
 	}
 
-	if(Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && Engine::GetInstance().input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		ret = false;
+	}
+
+	if (closeGame) {
+		ret = false;
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL1)) {
+
+		timeScene = currentScene;
+		ChangeScene(SceneID::PAUSE);
+	}
 
 	return ret;
 }
@@ -141,7 +171,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL2:
 		break;
-	case SceneID::OPTIONS:
+	case SceneID::OPTIONS: 
 		break;
 	case SceneID::MULTIPLAYER:
 		break;
@@ -150,6 +180,12 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::SOUND:
 		break;
 	case SceneID::GRAFICS:
+		break;
+	case SceneID::PAUSE:
+		break;
+	case SceneID::EXIT:
+		break;
+	case SceneID::RESUME:
 		break;
 	default:
 		break;
@@ -215,6 +251,14 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::GRAFICS:
 		LoadGrafics();
 		break;
+	case SceneID::PAUSE:
+		LoadPause();
+		break;
+	case SceneID::EXIT:
+		LoadExit();
+	case SceneID::RESUME:
+		LoadResume();
+		break;
 
 	}
 }
@@ -262,6 +306,14 @@ void Scene::UnloadCurrentScene() {
 
 	case SceneID::GRAFICS:
 		UnloadGrafics();
+		break;
+	case SceneID::PAUSE:
+		UnloadPause();
+		break;
+	case SceneID::EXIT:
+		UnloadExit();
+	case SceneID::RESUME:
+		UnloadResume();
 		break;
 	}
 	
@@ -402,12 +454,20 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
-		LOG("Options: Sounds clicked");
+		LOG("Options/Pause: Sounds clicked");
 		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
-		LOG("Options: Grafics clicked");
+		LOG("Options/Pause: Grafics clicked");
 		ChangeScene(SceneID::GRAFICS);
+		break;
+	case 8:
+		LOG("Pause: Exit clicked");
+		ChangeScene(SceneID::EXIT);
+		break;
+	case 9:
+		LOG("Pause: Resume clicked");
+		ChangeScene(SceneID::LEVEL1);
 		break;
 	default:
 		break;
@@ -539,7 +599,7 @@ void Scene::LoadOptions()
 	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
 
-	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
 
@@ -575,10 +635,16 @@ void Scene::LoadMultiplayer()
 
 void Scene::UnloadMultiplayer()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateMultiplayer(float dt)
 {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		ChangeScene(SceneID::MAIN_MENU);
+	}
 }
 
 void Scene::PostUpdateMultiplayer()
@@ -592,8 +658,6 @@ void Scene::PostUpdateMultiplayer()
 
 void Scene::LoadCredits()
 {
-	
-
 
 	creditsText = {
 	"CRAZY SUPERMARKET",
@@ -634,6 +698,12 @@ void Scene::UpdateCredits(float dt)
 		ChangeScene(SceneID::MAIN_MENU);
 		creditsY = WindowSize.getY();
 	}
+	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
+
+
+		ChangeScene(SceneID::MAIN_MENU);
+		creditsY = WindowSize.getY();
+	}
 
 }
 
@@ -661,6 +731,9 @@ void Scene::LoadSounds()
 
 void Scene::UnloadSounds()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateSounds(float dt)
@@ -682,6 +755,9 @@ void Scene::LoadGrafics()
 
 void Scene::UnloadGrafics()
 {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
 }
 
 void Scene::UpdateGrafics(float dt)
@@ -691,4 +767,104 @@ void Scene::UpdateGrafics(float dt)
 void Scene::PostUpdateGrafics()
 {
 }
+
+
+// *********************************************
+// PAUSE functions
+// *********************************************
+
+void Scene::LoadPause()
+{
+
+	//UI Buttons
+
+	SDL_Rect bt8Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "Resume", bt8Pos, this));
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 +30, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
+
+	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
+
+	SDL_Rect bt7Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt7Pos, this));
+
+}
+
+void Scene::UnloadPause()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdatePause(float dt)
+{
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		
+		ChangeScene(timeScene);
+	}
+
+}
+
+void Scene::PostUpdatePause()
+{
+}
+
+
+// *********************************************
+// EXIT functions
+// *********************************************
+
+void Scene::LoadExit()
+{
+}
+
+void Scene::UnloadExit()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdateExit(float dt)
+{
+
+	closeGame = true;
+
+}
+
+void Scene::PostUpdateExit()
+{
+}
+
+
+// *********************************************
+// RESUME functions
+// *********************************************
+
+void Scene::LoadResume()
+{
+}
+
+void Scene::UnloadResume()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdateResume(float dt)
+{
+
+	ChangeScene(timeScene);
+
+}
+
+void Scene::PostUpdateResume()
+{
+}
+
 
