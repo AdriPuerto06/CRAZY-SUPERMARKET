@@ -6,7 +6,7 @@
 
 CombatManager::CombatManager() : Module()
 {
-	name = "DialogueManager";
+	name = "CombatManagerManager";
 }
 
 CombatManager::~CombatManager() {}
@@ -53,7 +53,7 @@ bool CombatManager::LoadCombatData(std::string path, std::string fileName)
 		LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
 		return false;
 	}
-	LOG("Dialogs.xml loaded successfully.");
+	LOG("CombatData.xml loaded successfully.");
 	return true;
 }
 
@@ -109,12 +109,12 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void CombatManager::ButtonAction(int ID)
 {
-	
+	//get damage from the attack id and apply it to the enemy selected
 }
 
 void CombatManager::ShowButtonStart(Vector2D position)
 {
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Start talk", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start combat", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
 	
 	GetTreeAttributes(); //get dialogue_tree from xml
@@ -126,10 +126,13 @@ bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> en
 {
 	in_conversation = true;
 	GetTreeAttributes(); //get combatData from xml
-	//set current data for the start of the combat?
+	//set current data for the start of the combat
+	combatState->HPs.push_back(combatData->players_id);
+	combatState->HPs.push_back(combatData->enemies_id);
+	combatState->player_id_selected = combatData->players_id[0]; //hardcoded. if we have 2 players at the same time, get the id from the players themselves
 	
 	showing_continue = false;
-	//ShowOptions(/*specific player id*/);
+	ShowOptions(combatState->player_id_selected);
 	return true;
 }
 

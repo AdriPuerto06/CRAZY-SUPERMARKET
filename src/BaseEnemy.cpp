@@ -108,7 +108,7 @@ Vector2D BaseEnemy::GetPosition() {
 
 //Define OnCollision function for the enemy. 
 void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
-
+	//if we want to make that when aproaching an enemy we get the opportunity to battle him, we use this function
 }
 
 void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

@@ -16,7 +16,10 @@ struct CombatData {
 };
 
 struct CombatState {
-	std::vector<int> HPs;
+	std::vector<std::vector<int>> HPs;
+	int enemy_id_targeted;
+	int player_id_targeted;
+	int player_id_selected;
 };
 
 class CombatManager : public Module {
@@ -54,7 +57,6 @@ public:
 
 	std::string combatFileName;
 	std::string combatPath;
-
 
 	CombatData* combatData;
 	CombatState* combatState;
