@@ -109,6 +109,9 @@ Vector2D BaseEnemy::GetPosition() {
 //Define OnCollision function for the enemy. 
 void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 
+	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
+
+
 }
 
 void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)

@@ -95,6 +95,9 @@ bool Scene::Update(float dt)
 	case SceneID::BACK:
 		UpdateBack(dt);
 		break;
+	case SceneID::BATTLE:
+		UpdateBattle(dt);
+		break;
 
 	}
 
@@ -142,6 +145,9 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::BACK:
 		PostUpdateBack();
+		break;
+	case SceneID::BATTLE:
+		PostUpdateBattle();
 		break;
 	default:
 		break;
@@ -198,6 +204,9 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::RESUME:
 		break;
 	case SceneID::BACK:
+		break;
+	case SceneID::BATTLE:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	default:
 		break;
@@ -268,6 +277,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::BACK:
 		LoadBack();
 		break;
+	case SceneID::BATTLE:
+		LoadBattle();
+		break;
 
 	}
 }
@@ -327,6 +339,9 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::BACK:
 		UnloadBack();
+		break;
+	case SceneID::BATTLE:
+		UnloadBattle();
 		break;
 	}
 	
@@ -489,6 +504,8 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		LOG("Back clicked");
 		ChangeScene(SceneID::BACK);
 		break;
+	case 11:
+		break;
 	default:
 		break;
 	}
@@ -616,14 +633,14 @@ void Scene::LoadOptions()
 
 	//UI Buttons
 
-	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt1Pos, this));
 
-	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt2Pos, this));
 
-	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt3Pos, this));
 
 }
 
@@ -752,8 +769,8 @@ void Scene::LoadSounds()
 
 	//UI Button
 
-	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
 
 }
 
@@ -782,8 +799,8 @@ void Scene::LoadGrafics()
 
 	//UI Button
 
-	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
 
 
 }
@@ -813,17 +830,17 @@ void Scene::LoadPause()
 
 	//UI Buttons
 
-	SDL_Rect bt8Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "Resume", bt8Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "Resume", bt1Pos, this));
 
-	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 +30, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt5Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 +30, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt2Pos, this));
 
-	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt3Pos, this));
 
-	SDL_Rect bt7Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt7Pos, this));
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt4Pos, this));
 
 }
 
@@ -920,5 +937,44 @@ void Scene::UpdateBack(float dt)
 }
 
 void Scene::PostUpdateBack()
+{
+}
+
+
+// *********************************************
+// BATTLE functions
+// *********************************************
+
+void Scene::LoadBattle()
+{
+
+	//UI Buttons
+
+	SDL_Rect bt1Pos = { WindowSize.getX() / 4, WindowSize.getY() / 4, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
+
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Items", bt2Pos, this));
+
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "GET CRAZY", bt3Pos, this));
+
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Scape", bt4Pos, this));
+
+}
+
+void Scene::UnloadBattle()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdateBattle(float dt)
+{
+}
+
+void Scene::PostUpdateBattle()
 {
 }

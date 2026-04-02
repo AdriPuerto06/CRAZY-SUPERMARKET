@@ -22,7 +22,8 @@ enum class SceneID
 	PAUSE,
 	EXIT,
 	RESUME,
-	BACK
+	BACK,
+	BATTLE
 
 };
 
@@ -146,6 +147,12 @@ private:
 	void UnloadBack();
 	void UpdateBack(float dt);
 	void PostUpdateBack();
+
+	//BATTLE
+	void LoadBattle();
+	void UnloadBattle();
+	void UpdateBattle(float dt);
+	void PostUpdateBattle();
 
 
 private:
