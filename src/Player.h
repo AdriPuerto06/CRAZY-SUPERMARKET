@@ -58,6 +58,8 @@ public:
 
 	int HP = MAX_HP;
 
+	std::string pendingMapLoad = "";
+
 
 private:
 	b2Vec2 velocity;

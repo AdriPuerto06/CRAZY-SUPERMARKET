@@ -14,6 +14,7 @@ enum class SceneID
 	MAIN_MENU,
 	LEVEL1,
 	LEVEL2,
+	LEVEL3,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -91,6 +92,13 @@ private:
 	void LoadLevel2();
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
+	void PostUpdateLevel2();
+
+	//Level 3
+	void LoadLevel3();
+	void UpdateLevel3(float dt);
+	void UnloadLevel3();
+	void PostUpdateLevel3();
 
 	//OPTIONS
 	void LoadOptions();

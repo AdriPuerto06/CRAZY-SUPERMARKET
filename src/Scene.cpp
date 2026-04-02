@@ -68,6 +68,9 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
 		break;
+	case SceneID::LEVEL3:
+		UpdateLevel3(dt);
+		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -112,6 +115,10 @@ bool Scene::PostUpdate()
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
+		PostUpdateLevel2();
+		break;
+	case SceneID::LEVEL3:
+		PostUpdateLevel3();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -232,6 +239,10 @@ void Scene::LoadScene(SceneID newScene)
 		LoadLevel2();
 		break;
 
+	case SceneID::LEVEL3:
+		LoadLevel3();
+		break;
+
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
@@ -288,6 +299,11 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
+
+	case SceneID::LEVEL3:
+		UnloadLevel3();
+		break;
+
 	case SceneID::OPTIONS:
 		UnloadOptions();
 		break;
@@ -504,6 +520,17 @@ void Scene::LoadLevel1() {
 
 void Scene::UpdateLevel1(float dt) {
 
+	// Comprobar si el jugador quiere cambiar de mapa
+	if (player != nullptr && !player->pendingMapLoad.empty())
+	{
+		std::string targetMap = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		Engine::GetInstance().map->CleanUp();
+		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+	
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
 	}
@@ -586,6 +613,67 @@ void Scene::UnloadLevel2() {
 
 }
 
+void  Scene::PostUpdateLevel2() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player);
+	}
+}
+
+// *********************************************
+// Level 3 functions
+// *********************************************
+
+void Scene::LoadLevel3() {
+
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player);
+}
+
+void Scene::UpdateLevel3(float dt) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+}
+
+void Scene::UnloadLevel3() {
+
+	// Clean up UI elements related to the Level2
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	// Reset player reference (sets the shared_ptr to nullptr)
+	player.reset();
+
+	// Clean up map and entities
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
+
+void  Scene::PostUpdateLevel3() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player);
+	}
+}
 
 // *********************************************
 // OPTIONS functions

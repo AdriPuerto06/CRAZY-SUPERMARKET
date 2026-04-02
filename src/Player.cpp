@@ -107,6 +107,20 @@ void Player::Teleport() {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
 		pbody->SetPosition(96, 96);
 	}
+
+	// Comprobar zonas de teleporte del mapa
+	int x, y;
+	pbody->GetPosition(x, y);
+
+	for (const auto& zone : Engine::GetInstance().map->teleportZones)
+	{
+		if (x >= zone.x && x <= zone.x + zone.width &&
+			y >= zone.y && y <= zone.y + zone.height)
+		{
+			pendingMapLoad = zone.targetMap;
+			break;
+		}
+	}
 }
 
 void Player::GetPhysicsValues() {

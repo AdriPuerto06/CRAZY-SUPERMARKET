@@ -408,6 +408,9 @@ bool Map::CleanUp()
     }
 	colliderList.clear();
 
+	//Clean up teleport zones
+    teleportZones.clear();
+
     return true;
 }
 
@@ -557,7 +560,7 @@ bool Map::Load(std::string path, std::string fileName)
                 mapData.tilesets.push_back(tileSet);
             }
 
-            //-------------------------------Colliders, Killers, Respawns, Damage-------------------------------------
+            //---------------------------------------Colliders, Teleports-------------------------------------
             for (pugi::xml_node objectGroup = mapFileXML.child("map").child("objectgroup");
                 objectGroup;
                 objectGroup = objectGroup.next_sibling("objectgroup"))
@@ -586,13 +589,41 @@ bool Map::Load(std::string path, std::string fileName)
                             collider->ctype = ColliderType::PLATFORM;
                             colliderList.push_back(collider);
                         }
+                        //--------------------------------------------Colliders End--------------------------------------------
+                        //--------------------------------------------Teleport Start--------------------------------------------
+                        else if (groupName == "Teleport")
+                        {
+                            for (pugi::xml_node object = objectGroup.child("object");
+                                object; object = object.next_sibling("object"))
+                            {
+                                TeleportZone zone;
+                                zone.x = object.attribute("x").as_float();
+                                zone.y = object.attribute("y").as_float();
+                                zone.width = object.attribute("width").as_float();
+                                zone.height = object.attribute("height").as_float();
+
+                                // Leer propiedades custom
+                                for (pugi::xml_node prop = object.child("properties").child("property");
+                                    prop; prop = prop.next_sibling("property"))
+                                {
+                                    std::string propName = prop.attribute("name").as_string();
+
+                                    if (propName == "targetMap")
+                                        zone.targetMap = prop.attribute("value").as_string();
+                                }
+
+                                teleportZones.push_back(zone);
+                                LOG("TeleportZone loaded -> map:%s at (%.0f,%.0f)",
+                                    zone.targetMap.c_str());
+                            }
+                        }
                         else
                         {
                             std::cerr << "Invalid collider dimensions: width=" << width << ", height=" << height << std::endl;
                         }
                     }
                 }
-                //--------------------------------------------Colliders End--------------------------------------------
+                //--------------------------------------------Teleport End--------------------------------------------
 
 
                 ret = true;
