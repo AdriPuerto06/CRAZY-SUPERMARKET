@@ -33,7 +33,6 @@ public:
 	void AddEntity(std::shared_ptr<Entity> entity);
 
 	std::shared_ptr<Entity> GetEntity(EntityType type, int ID);
-	std::shared_ptr<Entity> GetNPC(int ID);
 
 public:
 

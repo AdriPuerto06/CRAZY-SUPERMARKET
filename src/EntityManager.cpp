@@ -115,20 +115,6 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 	return nullptr;
 }
 
-std::shared_ptr<Entity> EntityManager::GetNPC(int ID)
-{
-	for (std::shared_ptr<Entity> entity : entities)
-	{
-		if (entity->type == EntityType::BASENPC)
-		{
-			std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(entity);
-			if (npc->ID == ID)
-			return npc;
-		}
-	}
-	return nullptr;
-}
-
 bool EntityManager::Update(float dt)
 {
 	bool ret = true;
