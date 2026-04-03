@@ -211,7 +211,7 @@
     <Xml Include="src\Dialogs.xml">
       <Filter>Source Files\Engine\Dialogue</Filter>
     </Xml>
-    <Xml Include="CombatData.xml">
+    <Xml Include="src\CombatData.xml">
       <Filter>Source Files\Engine\Combat</Filter>
     </Xml>
   </ItemGroup>

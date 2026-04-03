@@ -91,7 +91,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 5: // Button MyButton
 		UnloadCombatUI();
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
-		in_conversation = false;
+		in_combat = false;
 		LOG("Cleaned combat UI.");
 		break;
 	case 6: // Button MyButton
@@ -124,7 +124,7 @@ void CombatManager::ShowButtonStart(Vector2D position)
 
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
-	in_conversation = true;
+	in_combat = true;
 	GetTreeAttributes(); //get combatData from xml
 	//set current data for the start of the combat
 	combatState->HPs.push_back(combatData->players_id);
