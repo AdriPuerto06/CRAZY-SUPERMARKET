@@ -390,7 +390,7 @@ void Scene::UpdateIntroScreen(float dt)
 			sfxTeamPlayed = true;
 		}
 		splashTime += dt / 1000.0f;
-		Engine::GetInstance().render->DrawTexture(logoImg, 0, 0);
+		Engine::GetInstance().render->DrawTexture(logoImg, WindowSize.getX()/2 - 560, WindowSize.getY()/2 - 360);
 	}
 
 	if (splashTime >= logoTeamTimer) {
