@@ -253,6 +253,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                         LOG("NPC Vagabundo ID: %i, positioned at %f, %f.",ID, pos.getX(), pos.getY());
                     }
                 }
+
+
                 if (entityType == "ENEMY") 
                 {
                     int ENEMY_ID = 0;
@@ -274,15 +276,17 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
                     }
 
-                    if (active) 
+                    if (!active) 
                     {
-                        std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
-                        enemy->Init(EntityType::ENEMY, active, pos, texturePath, ID);
+                        std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASEENEMY));
+                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
                         enemy->Start();
                         LOG("ENEMY ENEMY_ID : % i, created at % f, % f.", ENEMY_ID, x, y);
                     }
                     else {
                         //poner png de enemy muerto o lo que sea
+                        std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
+                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
                         LOG("Enemy inactive");
                     }
 
@@ -307,6 +311,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 std::string entityType = objectNode.attribute("type").as_string();
                 // Modify entity based on type
+                int ID = objectNode.attribute("id").as_int();
                 if (entityType == "Player") {
                     // Modify the Player entity values
                     Vector2D playerPos = player->GetPosition();
@@ -317,7 +322,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                 if (entityType == "NPC")
                 {
                     int NPC_ID = objectNode.attribute("id").as_int();
-                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, NPC_ID));
+                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
                     const char* texturePath = npc->texturePath;
                     bool active = npc->active;
 
@@ -327,6 +332,34 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                         propertyNode = propertyNode.next_sibling("property"))
                     {
                         std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "NPC_ID")
+                            propertyNode.attribute("value").set_value(NPC_ID);
+
+                        if (name == "active")
+                            propertyNode.attribute("value").set_value(active);
+
+                        if (name == "texturePath")
+                            propertyNode.attribute("value").set_value(texturePath);
+                    }
+                }
+
+                if (entityType == "ENEMY")
+                {
+                    int ENEMY_ID = objectNode.attribute("id").as_int();
+                    std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
+                    const char* texturePath = enemy->texturePath;
+                    bool active = enemy->active;
+
+                    //get NPC data
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "ENEMY_ID")
+                            propertyNode.attribute("value").set_value(ENEMY_ID);
 
                         if (name == "active")
                             propertyNode.attribute("value").set_value(active);

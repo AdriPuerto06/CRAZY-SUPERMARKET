@@ -77,7 +77,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::ITEM:
 		entity = std::make_shared<Item>();
 		break;
-	case EntityType::ENEMY:
+	case EntityType::BASEENEMY:
 		entity = std::make_shared<BaseEnemy>();
 		break;
 	case EntityType::BASENPC:
@@ -110,6 +110,20 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 		if (entity->entity_ID == ID && entity->type == type)
 		{
 			return entity;
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<Entity> EntityManager::GetNPC(int ID)
+{
+	for (std::shared_ptr<Entity> entity : entities)
+	{
+		if (entity->type == EntityType::BASENPC)
+		{
+			std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(entity);
+			if (npc->ID == ID)
+			return npc;
 		}
 	}
 	return nullptr;
