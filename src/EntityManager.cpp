@@ -115,6 +115,24 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 	return nullptr;
 }
 
+std::shared_ptr<Entity> EntityManager::GetEnemy(int id) {
+	for (auto& entity : entities) {
+		auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
+		if (enemy && enemy->ID == id)
+			return enemy;
+	}
+	return nullptr;
+}
+
+std::shared_ptr<Entity> EntityManager::GetNPC(int id) {
+	for (auto& entity : entities) {
+		auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
+		if (enemy && enemy->ID == id)
+			return enemy;
+	}
+	return nullptr;
+}
+
 bool EntityManager::Update(float dt)
 {
 	bool ret = true;

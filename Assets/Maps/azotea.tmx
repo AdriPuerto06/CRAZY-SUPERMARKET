@@ -6455,12 +6455,12 @@
 			</properties>
 			<point />
 		</object>
-		<object id="3" name="Player" type="Player" x="294" y="1050">
+		<object id="3" name="Player" type="Player" x="397" y="1030">
 			<point />
 		</object>
 		<object id="15" name="Enemy1" type="ENEMY" x="878" y="978">
 			<properties>
-				<property name="ENEMY_ID" type="int" value="1" />
+				<property name="ENEMY_ID" type="int" value="15" />
 				<property name="active" type="bool" value="false" />
 				<property name="texturePath" value="Assets/Maps/x.png" />
 			</properties>

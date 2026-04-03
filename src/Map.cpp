@@ -322,7 +322,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                 if (entityType == "NPC")
                 {
                     int NPC_ID = objectNode.attribute("id").as_int();
-                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
+                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetNPC(ID));
                     const char* texturePath = npc->texturePath;
                     bool active = npc->active;
 
@@ -347,7 +347,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                 if (entityType == "ENEMY")
                 {
                     int ENEMY_ID = objectNode.attribute("id").as_int();
-                    std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
+                    std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEnemy(ID));
                     const char* texturePath = enemy->texturePath;
                     bool active = enemy->active;
 
