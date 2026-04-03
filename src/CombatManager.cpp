@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "Window.h"
+#include "Scene.h"
 
 CombatManager::CombatManager() : Module()
 {
@@ -97,7 +98,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 6: // Button MyButton
 		UnloadCombatUI();
 		showingButtonStart = false;
-		//StartCombat();
+		StartCombat();
 		LOG("Combat starts.");
 		break;
 	default:
@@ -124,6 +125,8 @@ void CombatManager::ShowButtonStart(Vector2D position)
 
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
+
+	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 	in_combat = true;
 	GetTreeAttributes(); //get combatData from xml
 	//set current data for the start of the combat
