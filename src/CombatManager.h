@@ -13,6 +13,8 @@ struct CombatData {
 
 	std::vector<int> enemies_id;
 	std::vector<std::vector<Attack>> enemies_attacks;
+
+	int possible_enemy_ID;
 };
 
 struct CombatState {
@@ -48,7 +50,7 @@ public:
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	void ButtonAction(int ID);
-	void ShowButtonStart(Vector2D position);
+	void ShowButtonStart(Vector2D position, int enemy_ID);
 	bool StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs);
 	bool ShowOptions(int player_ID);
 	
