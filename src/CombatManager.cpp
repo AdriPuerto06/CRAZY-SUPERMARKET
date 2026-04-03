@@ -97,7 +97,10 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 6: // Button MyButton
 		UnloadCombatUI();
 		showingButtonStart = false;
-		//StartCombat();
+		//load the ids
+		combatData->enemies_id.push_back(combatData->possible_enemy_ID);
+		combatData->players_id.push_back(1);
+		StartCombat(combatData->players_id, combatData->enemies_id);
 		LOG("Combat starts.");
 		break;
 	default:
@@ -112,12 +115,13 @@ void CombatManager::ButtonAction(int ID)
 	//get damage from the attack id and apply it to the enemy selected
 }
 
-void CombatManager::ShowButtonStart(Vector2D position)
+void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
 {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start combat", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
 	
 	GetTreeAttributes(); //get dialogue_tree from xml
+	combatData->possible_enemy_ID = enemy_ID;
 	
 	showingButtonStart = true;
 }
@@ -129,9 +133,12 @@ bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> en
 	//set current data for the start of the combat
 	combatState->HPs.push_back(combatData->players_id);
 	combatState->HPs.push_back(combatData->enemies_id);
+	
 	combatState->player_id_selected = combatData->players_id[0]; //hardcoded. if we have 2 players at the same time, get the id from the players themselves
 	
 	showing_continue = false;
+	
+	
 	ShowOptions(combatState->player_id_selected);
 	return true;
 }
@@ -146,10 +153,10 @@ bool CombatManager::ShowOptions(int player_ID) {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
 
 	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 35, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, combatData->players_attacks[player_ID - 1][0].name, bt3Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, combatData->players_attacks[player_ID - 1][2].name, bt3Pos, this));
 
 	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 35, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, combatData->players_attacks[player_ID - 1][1].name, bt4Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, combatData->players_attacks[player_ID - 1][3].name, bt4Pos, this));
 
 	return true;
 }
