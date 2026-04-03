@@ -20,6 +20,7 @@ class Map;
 class Physics;
 class UIManager;
 class DialogueManager;
+class CombatManager;
 
 class Engine
 {
@@ -104,6 +105,7 @@ public:
 	std::shared_ptr<Physics> physics;
 	std::shared_ptr<UIManager> uiManager;
 	std::shared_ptr<DialogueManager> dialogueManager;
+	std::shared_ptr<CombatManager> combatManager;
 
 private: 
 

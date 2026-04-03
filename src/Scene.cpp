@@ -14,6 +14,7 @@
 #include "BaseEnemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
+#include "CombatManager.h"
 
 Scene::Scene() : Module()
 {
@@ -29,6 +30,9 @@ bool Scene::Awake()
 {
 	WindowSize = { Engine::GetInstance().window->GetBaseWidth(),   Engine::GetInstance().window->GetBaseHeight() };
 
+	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
+	Engine::GetInstance().combatManager->LoadCombatData("src/", "CombatData.xml");
+
 	LOG("Loading Scene");
 	bool ret = true;
 	return ret;
@@ -40,7 +44,7 @@ bool Scene::Start()
 	
 	LoadScene(currentScene); // empieza en Intro Screen
 
-	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
+	
 	
 	return true;
 }
