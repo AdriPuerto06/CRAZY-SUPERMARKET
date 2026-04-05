@@ -280,6 +280,8 @@ void Scene::LoadScene(SceneID newScene)
 
 void Scene::ChangeScene(SceneID newScene)
 {
+	if (newScene == SceneID::LEVEL1Combat || newScene == SceneID::LEVEL2Combat)
+		Engine::GetInstance().map->SaveEntities(player); //save before entering combat
 	UnloadCurrentScene();
 	currentScene = newScene;
 	LoadScene(currentScene);
@@ -508,7 +510,8 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 void Scene::LoadCombatScene(SceneID sceneid) {
 	switch (sceneid) {
 	case SceneID::LEVEL1Combat:
-		//Load the background of the combat scene
+		//Load the background of the combat scene (players, enemies and background png)
+
 		break;
 	default:
 		break;

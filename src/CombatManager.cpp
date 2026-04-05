@@ -145,6 +145,8 @@ void CombatManager::ButtonAction(int ID)
 
 void CombatManager::ApplyCombatLogic()
 {
+	//if(combatState->player_Wins) end combat
+	//if (combatState->enemy_Wins) end combat and player dies (and goes back in file save?)
 	if (combatState->turn == "Player")
 	{
 		combatState->HPs[1][combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
@@ -315,4 +317,20 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 			combatState->alive[1][i] = false;
 		}
 	}
+
+	//check if enemy wins
+	int deadCounter = 0;
+	for (int i = 0; i < combatState->HPs[0].size(); ++i)
+	{
+		deadCounter += combatState->alive[0][i];
+	}
+	if (!deadCounter) combatState->enemy_Wins = true;
+
+	//check if player wins
+	deadCounter = 0;
+	for (int i = 0; i < combatState->HPs[1].size(); ++i)
+	{
+		deadCounter += combatState->alive[1][i];
+	}
+	if (!deadCounter) combatState->player_Wins = true;
 }

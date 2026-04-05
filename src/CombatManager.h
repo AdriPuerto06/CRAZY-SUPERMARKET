@@ -28,6 +28,9 @@ struct CombatState {
 	int player_id_selected;
 	int player_attack_dmg_selected;
 	int enemy_attack_dmg_selected;
+
+	bool player_Wins;
+	bool enemy_Wins;
 	
 };
 
