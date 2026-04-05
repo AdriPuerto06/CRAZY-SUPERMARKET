@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "Window.h"
+#include "Scene.h"
 
 CombatManager::CombatManager() : Module()
 {
@@ -128,6 +129,8 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
 
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
+	Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1Combat);
+
 	in_combat = true;
 	GetTreeAttributes(); //get combatData from xml
 	//set current data for the start of the combat
