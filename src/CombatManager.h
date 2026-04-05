@@ -38,16 +38,13 @@ struct CombatState {
 
 	void Init()
 	{
-		std::vector<bool> newVec;
-		alive.push_back(newVec);
-		alive.push_back(newVec);
-		for (int i = 0; i < HPs[0].size(); ++i)
+		for (int i = 0; i < current_players_HP.size(); ++i)
 		{
-			alive[0].push_back(true);
+			players_alive.push_back(true);
 		}
-		for (int i = 0; i < HPs[1].size(); ++i)
+		for (int i = 0; i < current_enemies_HP.size(); ++i)
 		{
-			alive[1].push_back(true);
+			enemies_alive.push_back(true);
 		} //set all to alive
 		turn = "Player";
 		player_Wins = false;

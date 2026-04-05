@@ -280,8 +280,6 @@ void Scene::LoadScene(SceneID newScene)
 
 void Scene::ChangeScene(SceneID newScene)
 {
-	if (newScene == SceneID::LEVEL1Combat || newScene == SceneID::LEVEL2Combat)
-		Engine::GetInstance().map->SaveEntities(player); //save before entering combat
 	UnloadCurrentScene();
 	currentScene = newScene;
 	LoadScene(currentScene);
@@ -517,7 +515,7 @@ void Scene::LoadCombatScene(SceneID sceneid) {
 		break;
 	}
 
-	Engine::GetInstance().map->LoadEntities(player);
+	/*Engine::GetInstance().map->LoadEntities(player);*/ //move the players and enemies to the combat position after loading them
 
 
 }
