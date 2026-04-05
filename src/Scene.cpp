@@ -538,13 +538,14 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 void Scene::LoadCombatScene(SceneID sceneid) {
 	switch (sceneid) {
 	case SceneID::LEVEL1Combat:
-		//Load the background of the combat scene
+		//Load the background of the combat scene (players, enemies and background png)
+
 		break;
 	default:
 		break;
 	}
 
-	Engine::GetInstance().map->LoadEntities(player);
+	/*Engine::GetInstance().map->LoadEntities(player);*/ //move the players and enemies to the combat position after loading them
 
 
 }
