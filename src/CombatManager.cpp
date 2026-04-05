@@ -119,21 +119,15 @@ void CombatManager::ButtonAction(int ID)
 	LOG("player_id_selected: %d", combatState->player_id_selected);
 	LOG("players_attacks size: %d", combatData->players_attacks.size());
 
-	int playerIndex = combatState->player_id_selected - 1;
+	int playerIndex = combatState->player_id_selected;
 	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
 
 	//get damage from the attack id and apply it to the enemy selected
 	switch (ID) {
 	case 1:
-		
-		/*
-		combatState->player_attack_dmg_selected = attacks[0].dmg;
-		combatState->enemy_id_targeted = 0;
-		LOG("Attack 1: Damage: %i, name: %s", attacks[0].dmg, attacks[0].name);
-		*/
-		combatState->player_attack_dmg_selected = 1;
+		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
 		combatState->enemy_id_targeted = 1;
-
+		LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 		ApplyCombatLogic();
 		break;
 	case 4:
@@ -147,8 +141,6 @@ void CombatManager::ButtonAction(int ID)
 	default:
 		break;
 	}
-
-
 }
 
 void CombatManager::ApplyCombatLogic()
