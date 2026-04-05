@@ -9,9 +9,11 @@ struct Attack {
 
 struct CombatData {
 	std::vector<int> players_id;
+	std::vector<int> players_HP;
 	std::vector<std::vector<Attack>> players_attacks;
 
 	std::vector<int> enemies_id;
+	std::vector<int> enemies_HP;
 	std::vector<std::vector<Attack>> enemies_attacks;
 
 	int possible_enemy_ID;
@@ -20,8 +22,10 @@ struct CombatData {
 struct CombatState {
 	std::string turn;
 
-	std::vector<std::vector<int>> HPs;
-	std::vector<std::vector<bool>> alive;
+	std::vector<int> current_players_HP;
+	std::vector<int> current_enemies_HP;
+	std::vector<bool> players_alive;
+	std::vector<bool> enemies_alive;
 
 	int enemy_id_targeted;
 	int player_id_targeted;
@@ -31,6 +35,24 @@ struct CombatState {
 
 	bool player_Wins;
 	bool enemy_Wins;
+
+	void Init()
+	{
+		std::vector<bool> newVec;
+		alive.push_back(newVec);
+		alive.push_back(newVec);
+		for (int i = 0; i < HPs[0].size(); ++i)
+		{
+			alive[0].push_back(true);
+		}
+		for (int i = 0; i < HPs[1].size(); ++i)
+		{
+			alive[1].push_back(true);
+		} //set all to alive
+		turn = "Player";
+		player_Wins = false;
+		enemy_Wins = false;
+	}
 	
 };
 

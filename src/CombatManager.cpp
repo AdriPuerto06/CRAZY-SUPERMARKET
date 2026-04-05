@@ -149,13 +149,13 @@ void CombatManager::ApplyCombatLogic()
 	//if (combatState->enemy_Wins) end combat and player dies (and goes back in file save?)
 	if (combatState->turn == "Player")
 	{
-		combatState->HPs[1][combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
+		combatState->current_enemies_HP[combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
 		CheckAlive();
 		combatState->turn = "Enemy";
 	}
 	if (combatState->turn == "Enemy")
 	{
-		combatState->HPs[0][0/*combatState->player_id_targeted*/] -= combatState->enemy_attack_dmg_selected;
+		combatState->current_players_HP[0/*combatState->player_id_targeted*/] -= combatState->enemy_attack_dmg_selected;
 		CheckAlive();
 		EnemyAI();
 		combatState->turn = "Player";
@@ -202,21 +202,10 @@ bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> en
 	in_combat = true;
 	GetTreeAttributes(); //get combatData from xml
 	//set current data for the start of the combat
-	combatState->HPs.push_back(combatData->players_id);
-	combatState->HPs.push_back(combatData->enemies_id);
+	combatState->current_players_HP = combatData->players_HP;
+	combatState->current_enemies_HP = combatData->enemies_HP;
 	
-	std::vector<bool> newVec;
-	combatState->alive.push_back(newVec);
-	combatState->alive.push_back(newVec);
-	for (int i = 0; i < combatState->HPs[0].size(); ++i)
-	{
-		combatState->alive[0].push_back(true);
-	}
-	for (int i = 0; i < combatState->HPs[1].size(); ++i)
-	{
-		combatState->alive[1].push_back(true);
-	} //set all to alive
-	combatState->turn = "Player";
+	combatState->Init(); //prepares its members to be used
 	
 	combatState->player_id_selected = combatData->players_id[0]; //hardcoded. if we have 2 players at the same time, get the id from the players themselves
 	
@@ -267,6 +256,7 @@ void CombatManager::GetTreeAttributes()
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
 	{
 		combatData->players_id.push_back(combat_tree_node.attribute("id").as_int());
+		combatData->players_HP.push_back(combat_tree_node.attribute("HP").as_int());
 		for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
 		{
 			
@@ -281,9 +271,10 @@ void CombatManager::GetTreeAttributes()
 	}
 
 	//enemies data
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
+	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("enemy"))
 	{
 		combatData->enemies_id.push_back(combat_tree_node.attribute("id").as_int());
+		combatData->enemies_HP.push_back(combat_tree_node.attribute("HP").as_int());
 		for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
 		{
 
@@ -298,39 +289,37 @@ void CombatManager::GetTreeAttributes()
 	}
 }
 
-
-
 void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 {
-	for (int i = 0; i < combatState->HPs[0].size(); ++i)
+	for (int i = 0; i < combatState->current_enemies_HP.size(); ++i)
 	{
-		if (combatState->HPs[0][i] <= 0)
+		if (combatState->current_enemies_HP[i] <= 0)
 		{
-			combatState->alive[0][i] = false;
+			combatState->enemies_alive[i] = false;
 		}
 	}
 
-	for (int i = 0; i < combatState->HPs[1].size(); ++i)
+	for (int i = 0; i < combatState->current_players_HP.size(); ++i)
 	{
-		if (combatState->HPs[1][i] <= 0)
+		if (combatState->current_players_HP[i] <= 0)
 		{
-			combatState->alive[1][i] = false;
+			combatState->players_alive[i] = false;
 		}
 	}
 
 	//check if enemy wins
 	int deadCounter = 0;
-	for (int i = 0; i < combatState->HPs[0].size(); ++i)
+	for (int i = 0; i < combatState->players_alive.size(); ++i)
 	{
-		deadCounter += combatState->alive[0][i];
+		deadCounter += combatState->players_alive[i];
 	}
 	if (!deadCounter) combatState->enemy_Wins = true;
 
 	//check if player wins
 	deadCounter = 0;
-	for (int i = 0; i < combatState->HPs[1].size(); ++i)
+	for (int i = 0; i < combatState->enemies_alive.size(); ++i)
 	{
-		deadCounter += combatState->alive[1][i];
+		deadCounter += combatState->enemies_alive[i];
 	}
 	if (!deadCounter) combatState->player_Wins = true;
 }
