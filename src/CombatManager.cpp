@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "Window.h"
+#include "Scene.h"
 
 CombatManager::CombatManager() : Module()
 {
@@ -128,6 +129,8 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
 
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
+	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
+
 	in_combat = true;
 	GetTreeAttributes(); //get combatData from xml
 	//set current data for the start of the combat
@@ -138,16 +141,50 @@ bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> en
 	
 	showing_continue = false;
 	
-	
-	ShowOptions(combatState->player_id_selected);
 	return true;
 }
 
-bool CombatManager::ShowOptions(int player_ID) {
-	LOG("ShowOptions called");
+bool CombatManager::ShowAttackOptions(int player_ID) {
+	LOG("ShowAttackOptions called");
 	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX()*2/4-65, Engine::GetInstance().window->GetWindowSize().getY()*2/4-15, 120,20 };
+	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() /4 - 65, Engine::GetInstance().window->GetWindowSize().getY()*2/4-15, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID-1][0].name, bt1Pos, this));
+
+	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
+
+	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 35, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, combatData->players_attacks[player_ID - 1][2].name, bt3Pos, this));
+
+	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 35, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, combatData->players_attacks[player_ID - 1][3].name, bt4Pos, this));
+
+	return true;
+}
+
+bool CombatManager::ShowItemOptions(int player_ID) {
+	LOG("ShowAttackOptions called");
+	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
+	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
+
+	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
+
+	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 35, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, combatData->players_attacks[player_ID - 1][2].name, bt3Pos, this));
+
+	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 35, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, combatData->players_attacks[player_ID - 1][3].name, bt4Pos, this));
+
+	return true;
+}
+
+bool CombatManager::ShowCrazyOptions(int player_ID) {
+	LOG("ShowAttackOptions called");
+	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
+	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
 
 	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));

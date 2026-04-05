@@ -509,6 +509,17 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::BACK);
 		break;
 	case 11:
+		LOG("Attack clicked");
+		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		break;
+	case 12:
+		LOG("Item clicked");
+		break;
+	case 13:
+		LOG("Crazy clicked");
+		break;
+	case 14:
+		LOG("Attack clicked");
 		break;
 	default:
 		break;
