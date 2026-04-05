@@ -63,6 +63,8 @@ public:
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes();
+	//right now this is just a choose randomn
+	void EnemyAI();
 
 	void ApplyCombatLogic();
 	void CheckAlive();

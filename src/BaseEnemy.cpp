@@ -109,6 +109,7 @@ Vector2D BaseEnemy::GetPosition() {
 
 //Define OnCollision function for the enemy. 
 void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
+
 	if (Engine::GetInstance().combatManager->in_combat) return;
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 
@@ -125,3 +126,6 @@ void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		Engine::GetInstance().combatManager->in_combat = false;
 	}
 }
+
+
+

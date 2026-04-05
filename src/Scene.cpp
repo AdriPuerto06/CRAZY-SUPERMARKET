@@ -271,6 +271,8 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::BACK:
 		LoadBack();
+	case SceneID::LEVEL1Combat:
+		LoadCombatScene(SceneID::LEVEL1Combat);
 		break;
 
 	}
@@ -331,6 +333,8 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::BACK:
 		UnloadBack();
+	case SceneID::LEVEL1Combat:
+		UnloadCombatScene();
 		break;
 	}
 	
@@ -496,6 +500,38 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	default:
 		break;
 	}
+}
+
+// *********************************************
+// Combat functions
+// *********************************************
+void Scene::LoadCombatScene(SceneID sceneid) {
+	switch (sceneid) {
+	case SceneID::LEVEL1Combat:
+		//Load the background of the combat scene
+		break;
+	default:
+		break;
+	}
+
+	Engine::GetInstance().map->LoadEntities(player);
+
+
+}
+void Scene::UnloadCombatScene() {
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+	player.reset();
+
+	Engine::GetInstance().entityManager->CleanUp();
+}
+void Scene::UpdateCombatScene(float dt) {
+
+
+}
+void Scene::PostUpdateCombatScene() {
+
 }
 
 // *********************************************

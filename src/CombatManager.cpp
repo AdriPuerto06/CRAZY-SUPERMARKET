@@ -3,6 +3,9 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "Window.h"
+#include "Scene.h"
+#include<iostream>
+#include<cstdlib>
 
 CombatManager::CombatManager() : Module()
 {
@@ -93,6 +96,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_combat = false;
 		LOG("Cleaned combat UI.");
+		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 		break;
 	case 6: // Button MyButton
 		UnloadCombatUI();
@@ -112,7 +116,70 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void CombatManager::ButtonAction(int ID)
 {
+	LOG("player_id_selected: %d", combatState->player_id_selected);
+	LOG("players_attacks size: %d", combatData->players_attacks.size());
+
+	int playerIndex = combatState->player_id_selected;
+	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
+
 	//get damage from the attack id and apply it to the enemy selected
+	switch (ID) {
+	case 1:
+		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+		combatState->enemy_id_targeted = 1;
+		LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+		ApplyCombatLogic();
+		break;
+	case 4:
+		LOG("Attack 4");
+		UnloadCombatUI();
+		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
+		in_combat = false;
+		LOG("Cleaned combat UI.");
+		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
+		break;
+	default:
+		break;
+	}
+}
+
+void CombatManager::ApplyCombatLogic()
+{
+	if (combatState->turn == "Player")
+	{
+		combatState->HPs[1][combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
+		CheckAlive();
+		combatState->turn = "Enemy";
+	}
+	if (combatState->turn == "Enemy")
+	{
+		combatState->HPs[0][0/*combatState->player_id_targeted*/] -= combatState->enemy_attack_dmg_selected;
+		CheckAlive();
+		EnemyAI();
+		combatState->turn = "Player";
+	}
+}
+
+void CombatManager::EnemyAI() {
+	combatData->enemies_attacks;
+
+	srand((unsigned)time(NULL));
+	int random = 0 + (rand() % 4);
+	
+	switch (random) {
+	case 1:
+		combatState->enemy_attack_dmg_selected = 4; //hardcode
+		LOG("Enemy Does Attack 1");
+		break;
+	case 2:
+		LOG("Enemy Does Attack 2");
+	case 3:
+		LOG("Enemy Does Attack 3");
+	case 4:
+		LOG("Enemy Does Attack 4");
+	default:
+		break;
+	}
 }
 
 void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
@@ -128,6 +195,8 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
 
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
+	Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1Combat);
+
 	in_combat = true;
 	GetTreeAttributes(); //get combatData from xml
 	//set current data for the start of the combat
@@ -227,21 +296,7 @@ void CombatManager::GetTreeAttributes()
 	}
 }
 
-void CombatManager::ApplyCombatLogic() 
-{
-	if (combatState->turn == "Player") 
-	{
-		combatState->HPs[1][combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
-		CheckAlive();
-		combatState->turn = "Enemy";
-	}
-	if (combatState->turn == "Enemy")
-	{
-		combatState->HPs[0][combatState->player_id_targeted] -= combatState->enemy_attack_dmg_selected;
-		CheckAlive();
-		combatState->turn = "Player";
-	}
-}
+
 
 void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 {
