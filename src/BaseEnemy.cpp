@@ -126,3 +126,6 @@ void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		Engine::GetInstance().combatManager->in_combat = false;
 	}
 }
+
+
+

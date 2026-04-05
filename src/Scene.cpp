@@ -506,12 +506,28 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 // Combat functions
 // *********************************************
 void Scene::LoadCombatScene(SceneID sceneid) {
-	
+	switch (sceneid) {
+	case SceneID::LEVEL1Combat:
+		//Load the background of the combat scene
+		break;
+	default:
+		break;
+	}
+
+	Engine::GetInstance().map->LoadEntities(player);
+
+
 }
 void Scene::UnloadCombatScene() {
 
+	Engine::GetInstance().uiManager->CleanUp();
+
+	player.reset();
+
+	Engine::GetInstance().entityManager->CleanUp();
 }
 void Scene::UpdateCombatScene(float dt) {
+
 
 }
 void Scene::PostUpdateCombatScene() {
