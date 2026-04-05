@@ -514,9 +514,11 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 12:
 		LOG("Item clicked");
+		Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 13:
 		LOG("Crazy clicked");
+		Engine::GetInstance().combatManager->ShowCrazyOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 14:
 		LOG("Attack clicked");
@@ -567,7 +569,6 @@ void Scene::UpdateLevel1(float dt) {
 		Engine::GetInstance().window->SetWindowed(2);
 		Engine::GetInstance().render->UpdateScale();
 	}
-	//ALWAYS USE UpdateScale() when changing window sizes
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
 		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
 	}

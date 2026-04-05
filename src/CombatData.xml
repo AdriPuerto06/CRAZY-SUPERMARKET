@@ -5,12 +5,18 @@
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
 		<attack name="Attack4" dmg ="4"></attack>
+
+		<item name="Item1" heal="5"></item>
+		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="2" HP="50">
 		<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
 		<attack name="Attack4" dmg ="4"></attack>
+
+		<item name="Item1" heal="5"></item>
+		<item name="Item2" dmg="15"></item>
 	</player>
 
 	<enemy id =" 1" HP="35">
