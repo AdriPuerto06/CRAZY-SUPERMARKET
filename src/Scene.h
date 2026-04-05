@@ -13,7 +13,9 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
+	LEVEL1Combat,
 	LEVEL2,
+	LEVEL2Combat,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -153,6 +155,14 @@ private:
 	void UnloadBattle();
 	void UpdateBattle(float dt);
 	void PostUpdateBattle();
+
+
+
+	//Combat scenes
+	void LoadCombatScene(SceneID sceneid);
+	void UnloadCombatScene();
+	void UpdateCombatScene(float dt);
+	void PostUpdateCombatScene();
 
 
 private:

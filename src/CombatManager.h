@@ -18,10 +18,17 @@ struct CombatData {
 };
 
 struct CombatState {
+	std::string turn;
+
 	std::vector<std::vector<int>> HPs;
+	std::vector<std::vector<bool>> alive;
+
 	int enemy_id_targeted;
 	int player_id_targeted;
 	int player_id_selected;
+	int player_attack_dmg_selected;
+	int enemy_attack_dmg_selected;
+	
 };
 
 class CombatManager : public Module {
@@ -59,6 +66,11 @@ public:
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes();
+	//right now this is just a choose randomn
+	void EnemyAI();
+
+	void ApplyCombatLogic();
+	void CheckAlive();
 
 	std::string combatFileName;
 	std::string combatPath;
