@@ -1,5 +1,6 @@
 #pragma once
 #include "UIButton.h"
+#include "Scene.h"
 #include <vector>
 
 struct Attack {
@@ -35,6 +36,7 @@ struct CombatState {
 
 	bool player_Wins;
 	bool enemy_Wins;
+	bool selecting_target;
 
 	void Init()
 	{
@@ -49,8 +51,9 @@ struct CombatState {
 		turn = "Player";
 		player_Wins = false;
 		enemy_Wins = false;
+		bool selecting_target = false;
 	}
-	
+
 };
 
 class CombatManager : public Module {
@@ -83,14 +86,15 @@ public:
 	bool StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs);
 	bool ShowAttackOptions(int player_ID);
 	bool ShowItemOptions(int player_ID);
-	bool ShowCrazyOptions(int player_ID);
+	bool ChangePlayer();
 	bool ShowOptions(int player_ID);
-	
+
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes();
 	//right now this is just a choose randomn
 	void EnemyAI();
 
+	void HandleTargetSelection();
 	void ApplyCombatLogic();
 	void CheckAlive();
 
@@ -105,7 +109,13 @@ public:
 	bool showingButtonStart = false;
 	bool in_combat = false;
 
+	bool godMode;
+	bool choosingAtk;
+
 private:
 	pugi::xml_document combatFileXML;
+
+	SceneID timeScene;
+	SceneID currentScene;
 
 };
