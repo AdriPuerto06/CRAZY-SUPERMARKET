@@ -79,7 +79,7 @@ In this release, the following features and improvements have been implemented:
 
 ## 🐞 Known Issues
 
-> - To get the info about the combat, use the console
+  - To get the info about the combat, use the console
   - We had difficulties at last time beacouse of a corrupt merge with the main
 
 ---
