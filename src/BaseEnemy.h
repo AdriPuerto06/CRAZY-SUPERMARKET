@@ -30,7 +30,7 @@ private:
 	void Move();
 	void Draw(float dt);
 
-public:
+protected:
 	EntityType type;
 	bool active;
 	bool renderable = true;

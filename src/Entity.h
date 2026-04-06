@@ -9,7 +9,8 @@ enum class EntityType
 {
 	PLAYER,
 	ITEM,
-	BASEENEMY,
+	ENEMY,
+	NPC_VAGABUNDO,
 	BASENPC,
 	UNKNOWN
 };

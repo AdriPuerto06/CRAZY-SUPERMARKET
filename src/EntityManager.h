@@ -34,10 +34,6 @@ public:
 
 	std::shared_ptr<Entity> GetEntity(EntityType type, int ID);
 
-	std::shared_ptr<Entity> GetEnemy(int id);
-
-	std::shared_ptr<Entity> GetNPC(int id);
-
 public:
 
 	std::list<std::shared_ptr<Entity>> entities;

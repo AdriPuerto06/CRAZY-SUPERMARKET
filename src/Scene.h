@@ -13,13 +13,8 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
-	LEVEL1Combat,
 	LEVEL2,
-
 	LEVEL3,
-
-	LEVEL2Combat,
-
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -28,9 +23,7 @@ enum class SceneID
 	PAUSE,
 	EXIT,
 	RESUME,
-	BACK,
-	BATTLE,
-	NULLSCENE
+	BACK
 
 };
 
@@ -77,12 +70,6 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
-
-
-	//Getter
-	SceneID GetCurrentScene();
-	SceneID GetTimeScene();
-
 private:
 
 	// Intro / Splash
@@ -137,9 +124,6 @@ private:
 	void UnloadSounds();
 	void UpdateSounds(float dt);
 	void PostUpdateSounds();
-	float musicVolume = 1.0f;
-	float sfxVolume = 1.0f;
-	bool  isAudioMuted = false;
 
 	//GRAFICS
 	void LoadGrafics();
@@ -170,18 +154,6 @@ private:
 	void UnloadBack();
 	void UpdateBack(float dt);
 	void PostUpdateBack();
-
-	//BATTLE
-	void LoadBattle();
-	void UnloadBattle();
-	void UpdateBattle(float dt);
-	void PostUpdateBattle();
-
-	//Combat scenes
-	void LoadCombatScene(SceneID sceneid);
-	void UnloadCombatScene();
-	void UpdateCombatScene(float dt);
-	void PostUpdateCombatScene();
 
 
 private:
@@ -225,7 +197,6 @@ private:
 
 
 	bool closeGame = false;
-	bool fromSG = false;
 	
 
 };

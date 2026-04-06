@@ -15,7 +15,6 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
-#include "CombatManager.h"
 
 
 
@@ -46,7 +45,6 @@ Engine::Engine() {
     entityManager = std::make_shared<EntityManager>();
 	uiManager = std::make_shared<UIManager>(); 
     dialogueManager = std::make_shared<DialogueManager>();
-    combatManager = std::make_shared<CombatManager>();
 
     // Ordered for awake / Start / Update
     // Reverse order of CleanUp
@@ -60,7 +58,6 @@ Engine::Engine() {
     AddModule(std::static_pointer_cast<Module>(scene));
     AddModule(std::static_pointer_cast<Module>(entityManager));
     AddModule(std::static_pointer_cast<Module>(dialogueManager));
-    AddModule(std::static_pointer_cast<Module>(combatManager));
 	// UI Manager on top of the other modules
 	AddModule(std::static_pointer_cast<Module>(uiManager)); 
 

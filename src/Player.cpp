@@ -10,7 +10,6 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "Window.h"
-#include "CombatManager.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -176,10 +175,10 @@ void Player::ApplyPhysics() {
 
 void Player::GodMode() {
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
-		LOG("God mode switched: %i", godMode);
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+		LOG("God mode switched");
 		godMode = !godMode;
-		Engine::GetInstance().combatManager->godMode = godMode;
+
 		//ideas provisionalse para el GodMode
 		//desactivar colisiones
 
