@@ -122,36 +122,39 @@ void CombatManager::ButtonAction(int ID)
 
 	int playerIndex = combatState->player_id_selected-1;
 	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
-
-	//get damage from the attack id and apply it to the enemy selected
-	switch (ID) {
-	case 1:
-		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
-		LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-		ApplyCombatLogic();
-		break;
-	case 2:
-		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
-		LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-		ApplyCombatLogic();
-		break;
-	case 3:
-		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
-		LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-		ApplyCombatLogic();
-		break;
-	case 4:
-		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
-		LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-		ApplyCombatLogic();
-		break;
-	default:
-		break;
+	if (godMode)
+	{
+		combatState->player_attack_dmg_selected = 999;
+		combatState->enemy_id_targeted = 1;
 	}
+	else {
+		//get damage from the attack id and apply it to the enemy selected
+		switch (ID) {
+		case 1:
+			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+			LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+			break;
+		case 2:
+			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+			LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+			break;
+		case 3:
+			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+			LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+			break;
+		case 4:
+			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+			LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+			break;
+		default:
+			break;
+		}
+	}
+	ApplyCombatLogic();
 }
 
 void CombatManager::ApplyCombatLogic()
