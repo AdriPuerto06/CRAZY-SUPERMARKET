@@ -107,6 +107,7 @@ public:
 	bool in_combat = false;
 
 	bool godMode;
+	bool choosingAtk;
 
 private:
 	pugi::xml_document combatFileXML;

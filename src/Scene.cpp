@@ -540,7 +540,8 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		//Engine::GetInstance().combatManager->ShowCrazyOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 14:
-		LOG("Attack clicked");
+		LOG("Scape clicked");
+		ChangeScene(SceneID::LEVEL1);
 		break;
 	case 100:
 		if (!isAudioMuted)
@@ -1092,9 +1093,14 @@ void Scene::UnloadBack()
 void Scene::UpdateBack(float dt)
 {
 	
-	if (fromSG = true) { 
+	if (fromSG == true) { 
 		ChangeScene(SceneID::MAIN_MENU);
 		fromSG = false;
+	}
+	if(Engine::GetInstance().combatManager->choosingAtk == true)
+	{
+		ChangeScene(SceneID::BATTLE);
+		Engine::GetInstance().combatManager->choosingAtk == false;
 	}
 	else {
 		ChangeScene(timeScene);
@@ -1129,8 +1135,7 @@ void Scene::LoadBattle()
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 14, "Scape", bt4Pos, this));
 
-	SDL_Rect bt5Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt5Pos, this));
+
 
 }
 
