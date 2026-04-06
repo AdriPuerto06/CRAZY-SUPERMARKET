@@ -578,7 +578,7 @@ void Scene::LoadLevel1() {
 	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
 
 	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player);
+	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
 	const char* text = "Hello player! Move with WASD.";
 	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
 
@@ -610,6 +610,16 @@ void Scene::UpdateLevel1(float dt) {
 		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
 	}
 
+
+	//provisional para bajar y subir la vida del player
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+		player->HP --;
+		LOG("TAKE DAMAGE --> player HP: %d", player->HP);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
+		player->HP++;
+		LOG("HEAL --> player HP: %d", player->HP);
+	}
 }
 
 void Scene::UnloadLevel1() {
@@ -631,12 +641,12 @@ void  Scene::PostUpdateLevel1() {
 
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player);
+		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
 	}
 
 	//L15 TODO 4: Call the function to save entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player);
+		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL1);
 	}
 }
 
@@ -652,7 +662,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player);
+	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
 }
 
 void Scene::UpdateLevel2(float dt) {

@@ -144,7 +144,7 @@ void Player::ApplyPhysics() {
 
 void Player::GodMode() {
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN) {
 		LOG("God mode switched");
 		godMode = !godMode;
 
