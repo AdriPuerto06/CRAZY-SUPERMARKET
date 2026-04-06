@@ -69,9 +69,16 @@ void Player::CenterCamera() {
 	int x, y;
 	pbody->GetPosition(x, y);
 
+	LOG("CenterCamera: pbody pos = %d, %d", x, y);
+
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	int mapWidth = mapSize.getX();
 	int mapHeight = mapSize.getY();
+
+	LOG("Player pos: %d,%d | Map size: %d,%d | Cam size: %d,%d",
+		x, y, mapWidth, mapHeight,
+		Engine::GetInstance().render->camera.w,
+		Engine::GetInstance().render->camera.h);
 
 	int camX = x - Engine::GetInstance().render->camera.w / 2;
 	int camY = y - Engine::GetInstance().render->camera.h / 2;
@@ -108,15 +115,25 @@ void Player::Teleport() {
 		pbody->SetPosition(96, 96);
 	}
 
-	// Comprobar zonas de teleporte del mapa
+	if (teleportCooldown > 0) {
+		teleportCooldown--;
+		LOG("Cooldown activo: %d", teleportCooldown);
+		return;
+	}
+
+	
 	int x, y;
 	pbody->GetPosition(x, y);
+	LOG("Comprobando teleport en %d, %d | zonas: %d", x, y,
+		(int)Engine::GetInstance().map->teleportZones.size());
 
 	for (const auto& zone : Engine::GetInstance().map->teleportZones)
 	{
+
 		if (x >= zone.x && x <= zone.x + zone.width &&
 			y >= zone.y && y <= zone.y + zone.height)
 		{
+			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
 			pendingMapLoad = zone.targetMap;
 			break;
 		}

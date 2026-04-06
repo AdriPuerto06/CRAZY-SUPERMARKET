@@ -68,6 +68,9 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
 		break;
+	case SceneID::LEVEL3:
+		UpdateLevel3(dt);
+		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -115,6 +118,10 @@ bool Scene::PostUpdate()
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
+		PostUpdateLevel2();
+		break;
+	case SceneID::LEVEL3:
+		PostUpdateLevel3();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -176,6 +183,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::LEVEL1:
 		break;
 	case SceneID::LEVEL2:
+		break;
+	case SceneID::LEVEL3:
 		break;
 	case SceneID::OPTIONS: 
 		HandleMainMenuUIEvents(uiElement);
@@ -241,6 +250,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
+	case SceneID::LEVEL3:
+		LoadLevel3();
+		break;
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
@@ -275,6 +287,9 @@ void Scene::LoadScene(SceneID newScene)
 void Scene::ChangeScene(SceneID newScene)
 {
 	UnloadCurrentScene();
+	// Reset camera position when changing scene
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
 	currentScene = newScene;
 	LoadScene(currentScene);
 }
@@ -297,6 +312,11 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
+
+	case SceneID::LEVEL3:
+		UnloadLevel3();
+		break;
+
 	case SceneID::OPTIONS:
 		UnloadOptions();
 		break;
@@ -524,8 +544,24 @@ void Scene::LoadLevel1() {
 
 void Scene::UpdateLevel1(float dt) {
 
+	if (player != nullptr && !player->pendingMapLoad.empty())
+	{
+		std::string targetMap = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		Engine::GetInstance().map->CleanUp();
+		player.reset();
+		Engine::GetInstance().entityManager->CleanUp();
+		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+	
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL3);
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		Engine::GetInstance().window->SetFullSize();
@@ -581,13 +617,40 @@ void Scene::LoadLevel2() {
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
 
+	LOG("Antes de LoadEntities, player es: %s", player == nullptr ? "nullptr" : "valido");
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player);
+	LOG("Despues de LoadEntities, player es: %s", player == nullptr ? "nullptr" : "valido");
+
+	if (player != nullptr)
+		LOG("Player cargado en LoadLevel2 en pos: %f, %f",
+			player->GetPosition().getX(), player->GetPosition().getY());
+	else
+		LOG("ERROR: player es nullptr en LoadLevel2");
 }
 
 void Scene::UpdateLevel2(float dt) {
+	
+	if (player != nullptr && !player->pendingMapLoad.empty())
+	{
+		std::string targetMap = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		Engine::GetInstance().map->CleanUp();
+
+		player.reset();
+
+		Engine::GetInstance().entityManager->CleanUp();
+		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+
+	
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL3);
 	}
 }
 
@@ -604,6 +667,88 @@ void Scene::UnloadLevel2() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
+}
+
+void  Scene::PostUpdateLevel2() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player);
+	}
+}
+
+
+// *********************************************
+// Level 3 functions
+// *********************************************
+
+void Scene::LoadLevel3() {
+
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player);
+}
+
+void Scene::UpdateLevel3(float dt) {
+
+	if (player != nullptr && !player->pendingMapLoad.empty())
+	{
+		std::string targetMap = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		Engine::GetInstance().map->CleanUp();
+		player.reset();
+		Engine::GetInstance().entityManager->CleanUp();
+		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+
+	if (player != nullptr)
+		player->teleportCooldown = 120;
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL2);
+	}
+}
+
+void Scene::UnloadLevel3() {
+
+	// Clean up UI elements related to the Level2
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	// Reset player reference (sets the shared_ptr to nullptr)
+	player.reset();
+
+	// Clean up map and entities
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
+
+void  Scene::PostUpdateLevel3() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player);
+	}
 }
 
 
@@ -876,6 +1021,7 @@ void Scene::PostUpdateExit()
 
 void Scene::LoadResume()
 {
+	ChangeScene(gameScene);
 }
 
 void Scene::UnloadResume()
@@ -887,9 +1033,6 @@ void Scene::UnloadResume()
 
 void Scene::UpdateResume(float dt)
 {
-
-	ChangeScene(gameScene);
-
 }
 
 void Scene::PostUpdateResume()
@@ -903,6 +1046,7 @@ void Scene::PostUpdateResume()
 
 void Scene::LoadBack()
 {
+	ChangeScene(timeScene);
 }
 
 void Scene::UnloadBack()
@@ -914,9 +1058,6 @@ void Scene::UnloadBack()
 
 void Scene::UpdateBack(float dt)
 {
-
-	ChangeScene(timeScene);
-
 }
 
 void Scene::PostUpdateBack()

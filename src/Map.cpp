@@ -55,6 +55,8 @@ bool Map::Update(float dt)
 
                         // L07 TODO 9: Complete the draw function
 
+                        //Comprueba qye i,j rstán dentro de la layer
+                        if (i < 0 || j < 0 || i >= mapLayer->width || j >= mapLayer->height) continue;
                         //Get the gid from tile
                         int gid = mapLayer->Get(i, j);
 
@@ -185,17 +187,24 @@ MapLayer* Map::GetNavigationLayer() {
 
 //L15 TODO 2: Define a method to load entities from the map XML
 void Map::LoadEntities(std::shared_ptr<Player>& player) {
-
+    LOG("LoadEntities llamado");
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
         //Check if the object group is "Entities"
+        
+        LOG("Grupo encontrado: %s", objectGroupNode.attribute("name").as_string());
         if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
+            LOG("Grupo Entities encontrado!");
 
             //Iterate the objects
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
 
                 //Get the entity type and position
                 std::string entityType = objectNode.attribute("type").as_string();
+                LOG("Objeto encontrado: type=%s name=%s",
+                    entityType.c_str(),
+                    objectNode.attribute("name").as_string());
+
                 Vector2D pos = Vector2D(objectNode.attribute("x").as_float(), objectNode.attribute("y").as_float());
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
@@ -209,14 +218,17 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
                         player->position = Vector2D(pos.getX(), pos.getY());
                         player->Start(); //L17: Importan to call Start to initialize teh Entity
+                        player->teleportCooldown = 120;
                         LOG("Player created at %f, %f.", pos.getX(), pos.getY());
                     }
                     //If the player already exists, just set its position
                     else {
                         player->SetPosition(Vector2D(pos.getX(), pos.getY()));
+                        player->teleportCooldown = 120;
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
                     }
                 }
+
 
                 if (entityType == "NPC")
                 {
@@ -375,6 +387,9 @@ void Map::DrawLayers(bool aboveEntities)
 
         for (int i = 0; i < mapData.width; ++i) {
             for (int j = 0; j < mapData.height; ++j) {
+                
+                if (i >= mapLayer->width || j >= mapLayer->height) continue;
+                
                 unsigned int gidWithFlags = mapLayer->Get(i, j);
                 unsigned int gid = gidWithFlags & ~FLIPPED_MASK; // quitar flags de flip
                 if (gid == 0) continue;
@@ -436,7 +451,7 @@ Vector2D Map::GetCameraLimitsInTiles(Vector2D camPosTile) {
     Vector2D camSizeTile = WorldToMap(camSize.getX(), camSize.getY());
 
     // Computes the tile range to draw
-    Vector2D limits = Vector2D(camPosTile.getX() + camSizeTile.getX(), camPosTile.getY() + camSizeTile.getY());
+    Vector2D limits = Vector2D(camPosTile.getX() + camSizeTile.getX() +2, camPosTile.getY() + camSizeTile.getY() +2);
     if (limits.getX() > mapData.width) limits.setX(mapData.width);
     if (limits.getY() > mapData.height) limits.setY(mapData.height);
 
@@ -476,6 +491,8 @@ bool Map::CleanUp()
 // Load new map
 bool Map::Load(std::string path, std::string fileName)
 {
+    teleportZones.clear();
+
     bool ret = false;
 
     // Assigns the name of the map file and the path
@@ -648,82 +665,83 @@ bool Map::Load(std::string path, std::string fileName)
                             collider->ctype = ColliderType::PLATFORM;
                             colliderList.push_back(collider);
                         }
-                        //--------------------------------------------Colliders End--------------------------------------------
-                        //--------------------------------------------Teleport Start--------------------------------------------
-                        else if (groupName == "Teleport")
-                        {
-                            for (pugi::xml_node object = objectGroup.child("object");
-                                object; object = object.next_sibling("object"))
-                            {
-                                TeleportZone zone;
-                                zone.x = object.attribute("x").as_float();
-                                zone.y = object.attribute("y").as_float();
-                                zone.width = object.attribute("width").as_float();
-                                zone.height = object.attribute("height").as_float();
-
-                                // Leer propiedades custom
-                                for (pugi::xml_node prop = object.child("properties").child("property");
-                                    prop; prop = prop.next_sibling("property"))
-                                {
-                                    std::string propName = prop.attribute("name").as_string();
-
-                                    if (propName == "targetMap")
-                                        zone.targetMap = prop.attribute("value").as_string();
-                                }
-
-                                teleportZones.push_back(zone);
-                                LOG("TeleportZone loaded -> map:%s at (%.0f,%.0f)",
-                                    zone.targetMap.c_str());
-                            }
-                        }
                         else
                         {
                             std::cerr << "Invalid collider dimensions: width=" << width << ", height=" << height << std::endl;
                         }
                     }
                 }
-                //--------------------------------------------Teleport End--------------------------------------------
-
-
-                ret = true;
-
-                // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
-                if (ret == true)
+                //--------------------------------------------Colliders End--------------------------------------------
+                //--------------------------------------------Teleport Start--------------------------------------------
+                else if (groupName == "Teleport")
                 {
-                    LOG("Successfully parsed map XML file :%s", fileName.c_str());
-                    LOG("width : %d height : %d", mapData.width, mapData.height);
-                    LOG("tile_width : %d tile_height : %d", mapData.tileWidth, mapData.tileHeight);
-                    LOG("Tilesets----");
+                    for (pugi::xml_node object = objectGroup.child("object");
+                        object; object = object.next_sibling("object"))
+                    {
+                        TeleportZone zone;
+                        zone.x = object.attribute("x").as_float();
+                        zone.y = object.attribute("y").as_float();
+                        zone.width = object.attribute("width").as_float();
+                        zone.height = object.attribute("height").as_float();
 
-                    //iterate the tilesets
-                    for (const auto& tileset : mapData.tilesets) {
-                        LOG("name : %s firstgid : %d", tileset->name.c_str(), tileset->firstGid);
-                        LOG("tile width : %d tile height : %d", tileset->tileWidth, tileset->tileHeight);
-                        LOG("spacing : %d margin : %d", tileset->spacing, tileset->margin);
-                    }
+                        // Leer propiedades custom
+                        for (pugi::xml_node prop = object.child("properties").child("property");
+                            prop; prop = prop.next_sibling("property"))
+                        {
+                            std::string propName = prop.attribute("name").as_string();
 
-                    LOG("Layers----");
+                            if (propName == "targetMap")
+                                zone.targetMap = prop.attribute("value").as_string();
+                        }
 
-                    for (const auto& layer : mapData.layers) {
-                        LOG("id : %d name : %s", layer->id, layer->name.c_str());
-                        LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
+                        teleportZones.push_back(zone);
+                        LOG("TeleportZone loaded -> map:%s at (%.0f,%.0f)",
+                            zone.targetMap.c_str());
                     }
                 }
-                else {
-                    LOG("Error while parsing map file: %s", mapPathName.c_str());
-                }
+            }
+        }
+        //--------------------------------------------Teleport End--------------------------------------------
 
-                //L15 TODO 2: Remove mapFileXML.reset(); we want keep a reference to the XML
 
+        ret = true;
+
+        // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
+        if (ret == true)
+        {
+            LOG("Successfully parsed map XML file :%s", fileName.c_str());
+            LOG("width : %d height : %d", mapData.width, mapData.height);
+            LOG("tile_width : %d tile_height : %d", mapData.tileWidth, mapData.tileHeight);
+            LOG("Tilesets----");
+
+            //iterate the tilesets
+            for (const auto& tileset : mapData.tilesets) {
+                LOG("name : %s firstgid : %d", tileset->name.c_str(), tileset->firstGid);
+                LOG("tile width : %d tile height : %d", tileset->tileWidth, tileset->tileHeight);
+                LOG("spacing : %d margin : %d", tileset->spacing, tileset->margin);
             }
 
-            mapLoaded = ret;
-            return ret;
+            LOG("Layers----");
+
+            for (const auto& layer : mapData.layers) {
+                LOG("id : %d name : %s", layer->id, layer->name.c_str());
+                LOG("Layer width : %d Layer height : %d", layer->width, layer->height);
+            }
         }
+        else {
+            LOG("Error while parsing map file: %s", mapPathName.c_str());
+        }
+
+        //L15 TODO 2: Remove mapFileXML.reset(); we want keep a reference to the XML
+
+    }
+
+    mapLoaded = ret;
+    return ret;
+}
 
         // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
 
 
         // L09: TODO 6: Load a group of properties from a node and fill a list with it
-    }
-}
+    
