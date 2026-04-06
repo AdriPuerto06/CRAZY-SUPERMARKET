@@ -24,7 +24,7 @@ Explain what your game is about:
 
 - **Team Members:**
 
-  - _**Main Developer - QA - Technical team leader**:_ _Erik Argemí_ 
+ _**Main Developer - QA - Technical team leader**:_ _Erik Argemí_ 
 * Github: [erik-argemi](https://github.com/ErikArgemi)
 
 _**Game & Lvl Designer - Sub Dev - QA - 2D Artist**:_ _Biel Cadenas_ 
@@ -33,7 +33,7 @@ _**Game & Lvl Designer - Sub Dev - QA - 2D Artist**:_ _Biel Cadenas_
 _**Game & Lvl Designer - Sub Dev - QA - Technical artist - 2D Artist**:_ _Pau Gallego_ 
 * Github: [pau-gallego](http://github.com/pauot16)
 
-_**Main Developer - QA - Audio**:_ _David Garcia_ 
+_**Trapped in Backrooms**:_ _David Garcia_ 
 * Github: [david-garcia](https://github.com/chamardo)
 
 _**QA - Audio - Technical Documents writer - Sub Dev**:_ _Adam Molina_ 
