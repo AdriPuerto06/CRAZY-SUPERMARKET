@@ -375,7 +375,7 @@ void Scene::UnloadCurrentScene() {
 
 void Scene::LoadIntroScreen()
 {
-	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/provisional.png");
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/YieldToTheAcorn.png");
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
 
 
@@ -398,7 +398,7 @@ void Scene::UpdateIntroScreen(float dt)
 	}
 
 	if (teamImg != nullptr && splashTime < logoGameTimer) {
-		Engine::GetInstance().render->DrawTexture(teamImg, 0, 0);
+		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX()/2 - 360, 0);
 	}
 
 	splashTime += dt / 4000.0f;
@@ -411,7 +411,7 @@ void Scene::UpdateIntroScreen(float dt)
 			sfxTeamPlayed = true;
 		}
 		splashTime += dt / 1000.0f;
-		Engine::GetInstance().render->DrawTexture(logoImg, WindowSize.getX()/2 - 560, WindowSize.getY()/2 - 360);
+		Engine::GetInstance().render->DrawTexture(logoImg, WindowSize.getX()/2 - 530, WindowSize.getY()/2 - 360);
 	}
 
 	if (splashTime >= logoTeamTimer) {
