@@ -6455,7 +6455,7 @@
 			</properties>
 			<point />
 		</object>
-		<object id="3" name="Player" type="Player" x="282" y="1050">
+		<object id="3" name="Player" type="Player" x="842" y="977">
 			<point />
 		</object>
 		<object id="15" name="Enemy1" type="ENEMY" x="878" y="978">
