@@ -40,6 +40,7 @@ struct CombatState {
 
 	void Init()
 	{
+		enemy_id_targeted = 1;
 		for (int i = 0; i < current_players_HP.size(); ++i)
 		{
 			players_alive.push_back(true);
@@ -109,7 +110,7 @@ public:
 	bool showingButtonStart = false;
 	bool in_combat = false;
 
-	bool godMode;
+	bool godMode = false;
 	bool choosingAtk;
 
 private:
