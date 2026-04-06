@@ -1,5 +1,6 @@
 #pragma once
 #include "UIButton.h"
+#include "Scene.h"
 #include <vector>
 
 struct Attack {
@@ -107,5 +108,8 @@ public:
 
 private:
 	pugi::xml_document combatFileXML;
+
+	SceneID timeScene;
+	SceneID currentScene;
 
 };

@@ -201,6 +201,9 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
 	if (in_combat) return true;
+	timeScene = Engine::GetInstance().scene->GetCurrentScene();
+	currentScene = Engine::GetInstance().scene->GetTimeScene();
+	timeScene = currentScene;
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 
 	in_combat = true;
@@ -307,6 +310,7 @@ void CombatManager::GetTreeAttributes()
 			newVec.push_back(attack);
 			
 		}
+
 		combatData->players_attacks.push_back(newVec);
 		newVec.clear();
 	}

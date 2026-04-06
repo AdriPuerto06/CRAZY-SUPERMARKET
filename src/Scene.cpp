@@ -174,6 +174,19 @@ bool Scene::PostUpdate()
 	return ret;
 }
 
+
+SceneID Scene::GetCurrentScene() {
+
+	return currentScene;
+}
+
+SceneID Scene::GetTimeScene() {
+
+	return timeScene;
+}
+
+
+
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
 	switch (currentScene)
@@ -484,7 +497,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 4:
 		LOG("Main Menu: Multiplayer clicked");
-		ChangeScene(SceneID::MULTIPLAYER);
+		//ChangeScene(SceneID::MULTIPLAYER);
 		break;
 	case 5:
 		LOG("Main Menu: Credits clicked");
@@ -510,7 +523,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 10:
 		LOG("Back clicked");
-		ChangeScene(SceneID::BACK);
+		BackScene();
 		break;
 	case 11:
 		LOG("Attack clicked");
@@ -518,11 +531,11 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 12:
 		LOG("Item clicked");
-		Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		//Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 13:
 		LOG("Crazy clicked");
-		Engine::GetInstance().combatManager->ShowCrazyOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		//Engine::GetInstance().combatManager->ShowCrazyOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 14:
 		LOG("Attack clicked");
@@ -1076,13 +1089,21 @@ void Scene::UnloadBack()
 
 void Scene::UpdateBack(float dt)
 {
-
-	ChangeScene(timeScene);
+	
+	if (currentScene == SceneID::OPTIONS) ChangeScene(SceneID::MAIN_MENU);
+	
+	else {
+		ChangeScene(timeScene);
+	}
 
 }
 
 void Scene::PostUpdateBack()
 {
+}
+
+void Scene::BackScene() {
+	ChangeScene(timeScene);
 }
 
 
@@ -1106,6 +1127,9 @@ void Scene::LoadBattle()
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 14, "Scape", bt4Pos, this));
+
+	SDL_Rect bt5Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt5Pos, this));
 
 }
 

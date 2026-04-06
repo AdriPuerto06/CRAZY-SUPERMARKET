@@ -51,7 +51,9 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(Sfx id, int repeat);
 
-    //Change Music track
+    //
+    // 
+    // Music track
     bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
 
 	// Volume control

@@ -72,6 +72,12 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
+
+
+	//Getter
+	SceneID GetCurrentScene();
+	SceneID GetTimeScene();
+
 private:
 
 	// Intro / Splash
@@ -158,8 +164,6 @@ private:
 	void UnloadBattle();
 	void UpdateBattle(float dt);
 	void PostUpdateBattle();
-
-
 
 	//Combat scenes
 	void LoadCombatScene(SceneID sceneid);
