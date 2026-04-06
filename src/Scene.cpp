@@ -1100,11 +1100,11 @@ void Scene::UpdateBack(float dt)
 	if(Engine::GetInstance().combatManager->choosingAtk == true)
 	{
 		ChangeScene(SceneID::BATTLE);
-		Engine::GetInstance().combatManager->choosingAtk == false;
+		Engine::GetInstance().combatManager->choosingAtk = false;
 	}
 	else {
 		ChangeScene(timeScene);
-		timeScene = SceneID::NULLSCENE;
+		timeScene = SceneID::MAIN_MENU;
 	}
 
 }
