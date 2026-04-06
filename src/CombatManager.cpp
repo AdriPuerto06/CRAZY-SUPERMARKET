@@ -167,7 +167,7 @@ void CombatManager::ApplyCombatLogic()
 void CombatManager::EnemyAI() {
 
 	srand((unsigned)time(NULL));
-	int random_ID = rand() % (combatData->enemies_id.size()+1); //get a random ID of an enemy. Will need to check if the enemy is alive
+	int random_ID = rand() % (combatData->enemies_id.size()); //get a random ID of an enemy. Will need to check if the enemy is alive
 	int random = rand() % (combatData->enemies_attacks[random_ID].size());
 	if (!combatState->enemies_alive[random_ID]) random_ID= combatState->enemy_id_targeted; //if enemy random is not alive, make the one you currently target attack you
 
