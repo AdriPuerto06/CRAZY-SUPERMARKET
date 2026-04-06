@@ -167,9 +167,8 @@ void CombatManager::ApplyCombatLogic()
 	if (combatState->turn == "Enemy")
 	{
 		EnemyAI();
-		combatState->current_players_HP[combatState->player_id_selected] -= combatState->enemy_attack_dmg_selected;
 		CheckAlive();
-		LOG("Player ID: %i now has %i HP.", combatState->player_id_selected, combatState->current_players_HP[combatState->player_id_selected]);
+		LOG("Player ID: %i now has %i HP.", combatState->player_id_selected-1, combatState->current_players_HP[combatState->player_id_selected-1]);
 		combatState->turn = "Player";
 	}
 }
@@ -182,8 +181,9 @@ void CombatManager::EnemyAI() {
 	if (!combatState->enemies_alive[random_ID]) random_ID= combatState->enemy_id_targeted; //if enemy random is not alive, make the one you currently target attack you
 
 	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random].dmg;
+	combatState->current_players_HP[combatState->player_id_selected-1] -= combatState->enemy_attack_dmg_selected;
 	/*combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[0][0].dmg;*/
-	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID, combatData->enemies_attacks[random_ID][random].dmg, combatState->player_id_selected); //we can set the targeted player to be the one you have selected to make things easier
+	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID, combatData->enemies_attacks[random_ID][random].dmg, combatState->player_id_selected-1); //we can set the targeted player to be the one you have selected to make things easier
 	/*LOG("Enemy ID: %i Does %i dmg to Player ID: %i", 0, combatData->enemies_attacks[0][0].dmg, combatState->player_id_selected);*/
 }
 
