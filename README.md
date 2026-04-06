@@ -67,7 +67,7 @@ In this release, the following features and improvements have been implemented:
 | Pause Game | ESC |
 | ... | ... |
 
-### 🧑‍💻 Debug Controls (optional)
+### 🧑‍💻 Debug Controls
 | Action | Key |
 |:--------|:----|
 | God Mode | G |
