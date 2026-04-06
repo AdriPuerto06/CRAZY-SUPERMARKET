@@ -60,8 +60,6 @@ bool EntityManager::CleanUp()
 		ret = entity->Destroy();
 	}
 
-	entities.clear();
-
 	return ret;
 }
 

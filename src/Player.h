@@ -60,7 +60,6 @@ public:
 
 	std::string pendingMapLoad = "";
 
-	int teleportCooldown = 0;
 
 private:
 	b2Vec2 velocity;
