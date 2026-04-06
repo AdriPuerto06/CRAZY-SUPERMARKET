@@ -130,29 +130,24 @@ void CombatManager::ButtonAction(int ID)
 	if (godMode)
 	{
 		combatState->player_attack_dmg_selected = 999;
-		combatState->enemy_id_targeted = 1;
 	}
 	else {
 		//get damage from the attack id and apply it to the enemy selected
 		switch (ID) {
 		case 1:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		case 2:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		case 3:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		case 4:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		default:
@@ -169,9 +164,6 @@ void CombatManager::ApplyCombatLogic()
 {
 	if (combatState->turn == "Player")
 	{
-
-
-
 		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
 		CheckAlive();
 		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted - 1], combatState->current_enemies_HP[combatState->enemy_id_targeted - 1]);
