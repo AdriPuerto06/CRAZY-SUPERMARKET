@@ -256,20 +256,18 @@ bool CombatManager::ShowItemOptions(int player_ID) {
 	return true;
 }
 
-bool CombatManager::ShowCrazyOptions(int player_ID) {
-	LOG("ShowCrazyOptions called");
-	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
-
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
-
-	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, combatData->players_attacks[player_ID - 1][2].name, bt3Pos, this));
-
-	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 +15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, combatData->players_attacks[player_ID - 1][3].name, bt4Pos, this));
+bool CombatManager::ChangePlayer() {
+	if (combatState->player_id_selected == 1 && combatState->players_alive[combatState->player_id_selected - 1])
+	{
+		combatState->player_id_selected = 2;
+		LOG("Changed player to Player ID: 2");
+	}
+	else
+	if (combatState->player_id_selected == 2 && combatState->players_alive[combatState->player_id_selected - 1])
+	{
+		combatState->player_id_selected = 1;
+		LOG("Changed player to Player ID: 1");
+	}
 
 	return true;
 }

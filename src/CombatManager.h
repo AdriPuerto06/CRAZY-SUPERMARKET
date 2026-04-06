@@ -84,7 +84,7 @@ public:
 	bool StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs);
 	bool ShowAttackOptions(int player_ID);
 	bool ShowItemOptions(int player_ID);
-	bool ShowCrazyOptions(int player_ID);
+	bool ChangePlayer();
 	bool ShowOptions(int player_ID);
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
