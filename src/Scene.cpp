@@ -537,7 +537,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 13:
 		LOG("Crazy clicked");
-		//Engine::GetInstance().combatManager->ShowCrazyOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ChangePlayer();
 		break;
 	case 14:
 		LOG("Scape clicked");
@@ -652,9 +652,9 @@ void Scene::LoadLevel1() {
 
 void Scene::UpdateLevel1(float dt) {
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
-	}
+	}*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		Engine::GetInstance().window->SetFullSize();
 		Engine::GetInstance().render->UpdateScale();
@@ -663,9 +663,9 @@ void Scene::UpdateLevel1(float dt) {
 		Engine::GetInstance().window->SetWindowed(2);
 		Engine::GetInstance().render->UpdateScale();
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
 		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
-	}
+	}*/
 
 
 	//provisional para bajar y subir la vida del player
@@ -1130,7 +1130,7 @@ void Scene::LoadBattle()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 12, "Items", bt2Pos, this));
 
 	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 13, "GET CRAZY", bt3Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 13, "Change player", bt3Pos, this));
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 14, "Scape", bt4Pos, this));
