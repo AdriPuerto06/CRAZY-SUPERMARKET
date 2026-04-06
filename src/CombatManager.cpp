@@ -120,7 +120,7 @@ void CombatManager::ButtonAction(int ID)
 	/*LOG("player_id_selected: %d", combatState->player_id_selected);
 	LOG("players_attacks size: %d", combatData->players_attacks.size());*/
 
-	int playerIndex = combatState->player_id_selected;
+	int playerIndex = combatState->player_id_selected-1;
 	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
 
 	//get damage from the attack id and apply it to the enemy selected
@@ -148,9 +148,9 @@ void CombatManager::ApplyCombatLogic()
 {
 	if (combatState->turn == "Player")
 	{
-		combatState->current_enemies_HP[combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
+		combatState->current_enemies_HP[combatState->enemy_id_targeted-1] -= combatState->player_attack_dmg_selected;
 		CheckAlive();
-		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted], combatState->current_enemies_HP[combatState->enemy_id_targeted]);
+		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted-1], combatState->current_enemies_HP[combatState->enemy_id_targeted-1]);
 		//UpdateCombatUI(): we need visual info (numbers, bars...)
 		combatState->turn = "Enemy";
 	}
@@ -167,12 +167,14 @@ void CombatManager::ApplyCombatLogic()
 void CombatManager::EnemyAI() {
 
 	srand((unsigned)time(NULL));
-	int random = 0 + (rand() % 4);
-	int random_ID = rand() % combatData->enemies_id.size(); //get a random ID of an enemy. Will need to check if the enemy is alive
+	int random_ID = rand() % (combatData->enemies_id.size()+1); //get a random ID of an enemy. Will need to check if the enemy is alive
+	int random = rand() % (combatData->enemies_attacks[random_ID].size());
 	if (!combatState->enemies_alive[random_ID]) random_ID= combatState->enemy_id_targeted; //if enemy random is not alive, make the one you currently target attack you
 
-	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random - 1].dmg;
-	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID, combatData->enemies_attacks[random_ID][random - 1].dmg, combatState->player_id_selected); //we can set the targeted player to be the one you have selected to make things easier
+	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random].dmg;
+	/*combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[0][0].dmg;*/
+	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID, combatData->enemies_attacks[random_ID][random].dmg, combatState->player_id_selected); //we can set the targeted player to be the one you have selected to make things easier
+	/*LOG("Enemy ID: %i Does %i dmg to Player ID: %i", 0, combatData->enemies_attacks[0][0].dmg, combatState->player_id_selected);*/
 }
 
 void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
@@ -272,6 +274,14 @@ bool CombatManager::ShowCrazyOptions(int player_ID) {
 void CombatManager::GetTreeAttributes()
 {
 	if (in_combat) return;
+
+	combatData->players_attacks.clear();
+	combatData->enemies_attacks.clear();
+	combatData->players_id.clear();
+	combatData->enemies_id.clear();
+	combatData->players_HP.clear();
+	combatData->enemies_HP.clear();
+
 	//players data
 	std::vector<Attack> newVec;
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
@@ -344,6 +354,7 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 	}
 	if (deadCounter == 0) combatState->player_Wins = true;
 
-	//if(combatState->player_Wins) end combat
+	if (combatState->player_Wins || combatState->enemy_Wins)
+		Engine::GetInstance().scene->LoadScene(SceneID::LEVEL1); //current_Level
 	//if (combatState->enemy_Wins) end combat and player dies (and goes back in file save?)
 }
