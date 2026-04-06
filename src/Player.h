@@ -56,7 +56,7 @@ public:
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	int HP = MAX_HP;
+	int HP;
 
 	std::string pendingMapLoad = "";
 

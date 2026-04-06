@@ -26,6 +26,9 @@
     <Filter Include="Source Files\Game\Enemys">
       <UniqueIdentifier>{c212443a-1728-4ea4-b0af-d6b5418c49dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Combat">
+      <UniqueIdentifier>{92befddc-29e6-42a9-b982-19027b17120f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -114,6 +117,9 @@
     <ClCompile Include="src\BaseEnemy.cpp">
       <Filter>Source Files\Game\Enemys</Filter>
     </ClCompile>
+    <ClCompile Include="src\CombatManager.cpp">
+      <Filter>Source Files\Engine\Combat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -194,6 +200,9 @@
     <ClInclude Include="src\BaseEnemy.h">
       <Filter>Source Files\Game\Enemys</Filter>
     </ClInclude>
+    <ClInclude Include="src\CombatManager.h">
+      <Filter>Source Files\Engine\Combat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml">
@@ -201,6 +210,9 @@
     </Xml>
     <Xml Include="src\Dialogs.xml">
       <Filter>Source Files\Engine\Dialogue</Filter>
+    </Xml>
+    <Xml Include="src\CombatData.xml">
+      <Filter>Source Files\Engine\Combat</Filter>
     </Xml>
   </ItemGroup>
 </Project>
