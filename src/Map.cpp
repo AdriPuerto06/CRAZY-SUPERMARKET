@@ -184,7 +184,7 @@ MapLayer* Map::GetNavigationLayer() {
 }
 
 //L15 TODO 2: Define a method to load entities from the map XML
-void Map::LoadEntities(std::shared_ptr<Player>& player) {
+void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
@@ -215,6 +215,17 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                     else {
                         player->SetPosition(Vector2D(pos.getX(), pos.getY()));
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
+                    }
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        int HP = propertyNode.attribute("value").as_int();
+
+                        if (HP > 0) {
+                            player->HP =  propertyNode.attribute("value").as_int();
+                            LOG("player HP: %d", player->HP);
+                        }
                     }
                 }
 
@@ -289,17 +300,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                         enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
                         LOG("Enemy inactive");
                     }
-
                 }
-                
-
             }
         }
     }
 }
 
 //L15 TODO 4: Define a method to save entities to the map XML
-void Map::SaveEntities(std::shared_ptr<Player> player) {
+void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
@@ -317,6 +325,17 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
                     Vector2D playerPos = player->GetPosition();
                     objectNode.attribute("x").set_value(playerPos.getX());
                     objectNode.attribute("y").set_value(playerPos.getY());
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        int HP = propertyNode.attribute("value").as_int();
+
+                        if (HP > 0) {
+                            propertyNode.attribute("value").set_value(player->HP);
+                        }
+                    }
+
                 }
 
                 if (entityType == "NPC")
