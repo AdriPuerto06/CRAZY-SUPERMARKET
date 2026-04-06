@@ -106,7 +106,7 @@ public:
 	bool showingButtonStart = false;
 	bool in_combat = false;
 
-	bool godMode;
+	bool godMode = false;
 
 private:
 	pugi::xml_document combatFileXML;
