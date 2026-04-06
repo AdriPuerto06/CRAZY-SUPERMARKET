@@ -68,9 +68,6 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
 		break;
-	case SceneID::LEVEL3:
-		UpdateLevel3(dt);
-		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -95,6 +92,9 @@ bool Scene::Update(float dt)
 	case SceneID::RESUME:
 		UpdateResume(dt);
 		break;
+	case SceneID::BACK:
+		UpdateBack(dt);
+		break;
 
 	}
 
@@ -115,10 +115,6 @@ bool Scene::PostUpdate()
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
-		PostUpdateLevel2();
-		break;
-	case SceneID::LEVEL3:
-		PostUpdateLevel3();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -144,6 +140,9 @@ bool Scene::PostUpdate()
 	case SceneID::RESUME:
 		PostUpdateResume();
 		break;
+	case SceneID::BACK:
+		PostUpdateBack();
+		break;
 	default:
 		break;
 	}
@@ -158,7 +157,7 @@ bool Scene::PostUpdate()
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL1)) {
 
-		timeScene = currentScene;
+		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
 	}
 
@@ -179,20 +178,26 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::LEVEL2:
 		break;
 	case SceneID::OPTIONS: 
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::MULTIPLAYER:
 		break;
 	case SceneID::CREDITS:
 		break;
 	case SceneID::SOUND:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::GRAFICS:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::PAUSE:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::EXIT:
 		break;
 	case SceneID::RESUME:
+		break;
+	case SceneID::BACK:
 		break;
 	default:
 		break;
@@ -230,35 +235,24 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::MAIN_MENU:
 		LoadMainMenu();
 		break;
-
 	case SceneID::LEVEL1:
 		LoadLevel1();
 		break;
-
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
-
-	case SceneID::LEVEL3:
-		LoadLevel3();
-		break;
-
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
-
 	case SceneID::MULTIPLAYER:
 		LoadMultiplayer();
 		break;
-
 	case SceneID::CREDITS:
 		LoadCredits();
 		break;
-
 	case SceneID::SOUND:
 		LoadSounds();
 		break;
-
 	case SceneID::GRAFICS:
 		LoadGrafics();
 		break;
@@ -267,8 +261,12 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::EXIT:
 		LoadExit();
+		break;
 	case SceneID::RESUME:
 		LoadResume();
+		break;
+	case SceneID::BACK:
+		LoadBack();
 		break;
 
 	}
@@ -299,11 +297,6 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
-
-	case SceneID::LEVEL3:
-		UnloadLevel3();
-		break;
-
 	case SceneID::OPTIONS:
 		UnloadOptions();
 		break;
@@ -328,8 +321,12 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::EXIT:
 		UnloadExit();
+		break;
 	case SceneID::RESUME:
 		UnloadResume();
+		break;
+	case SceneID::BACK:
+		UnloadBack();
 		break;
 	}
 	
@@ -459,6 +456,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 3: 
 		LOG("Main Menu: Options clicked");
+		timeScene = currentScene;
 		ChangeScene(SceneID::OPTIONS);
 		break;
 	case 4:
@@ -471,10 +469,12 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
+		timeScene = currentScene;
 		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
+		timeScene = currentScene;
 		ChangeScene(SceneID::GRAFICS);
 		break;
 	case 8:
@@ -484,6 +484,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 9:
 		LOG("Pause: Resume clicked");
 		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 10:
+		LOG("Back clicked");
+		ChangeScene(SceneID::BACK);
 		break;
 	default:
 		break;
@@ -520,17 +524,6 @@ void Scene::LoadLevel1() {
 
 void Scene::UpdateLevel1(float dt) {
 
-	// Comprobar si el jugador quiere cambiar de mapa
-	if (player != nullptr && !player->pendingMapLoad.empty())
-	{
-		std::string targetMap = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		Engine::GetInstance().map->CleanUp();
-		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
-		Engine::GetInstance().map->LoadEntities(player);
-	}
-	
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
 	}
@@ -613,67 +606,6 @@ void Scene::UnloadLevel2() {
 
 }
 
-void  Scene::PostUpdateLevel2() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player);
-	}
-}
-
-// *********************************************
-// Level 3 functions
-// *********************************************
-
-void Scene::LoadLevel3() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player);
-}
-
-void Scene::UpdateLevel3(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-}
-
-void Scene::UnloadLevel3() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel3() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player);
-	}
-}
 
 // *********************************************
 // OPTIONS functions
@@ -690,6 +622,8 @@ void Scene::LoadOptions()
 	SDL_Rect bt6Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt6Pos, this));
 
+	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
 
 }
 
@@ -815,6 +749,12 @@ void Scene::PostUpdateCredits()
 
 void Scene::LoadSounds()
 {
+
+	//UI Button
+
+	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+
 }
 
 void Scene::UnloadSounds()
@@ -839,6 +779,13 @@ void Scene::PostUpdateSounds()
 
 void Scene::LoadGrafics()
 {
+
+	//UI Button
+
+	SDL_Rect bt10Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt10Pos, this));
+
+
 }
 
 void Scene::UnloadGrafics()
@@ -889,12 +836,6 @@ void Scene::UnloadPause()
 
 void Scene::UpdatePause(float dt)
 {
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		
-		ChangeScene(timeScene);
-	}
-
 }
 
 void Scene::PostUpdatePause()
@@ -947,7 +888,7 @@ void Scene::UnloadResume()
 void Scene::UpdateResume(float dt)
 {
 
-	ChangeScene(timeScene);
+	ChangeScene(gameScene);
 
 }
 
@@ -956,3 +897,28 @@ void Scene::PostUpdateResume()
 }
 
 
+// *********************************************
+// BACK functions
+// *********************************************
+
+void Scene::LoadBack()
+{
+}
+
+void Scene::UnloadBack()
+{
+
+	Engine::GetInstance().uiManager->CleanUp();
+
+}
+
+void Scene::UpdateBack(float dt)
+{
+
+	ChangeScene(timeScene);
+
+}
+
+void Scene::PostUpdateBack()
+{
+}
