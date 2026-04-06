@@ -73,7 +73,6 @@ In this release, the following features and improvements have been implemented:
 | Action | Key |
 |:--------|:----|
 | God Mode | G |
-| Toggle Level | No1, No2, No3 |
 | Skip Intro / Credits | SPACE |
 | Close Game | Q + P |
 | ... | ... |
