@@ -103,8 +103,8 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 		UnloadCombatUI();
 		showingButtonStart = false;
 		//load the ids
-		combatData->enemies_id.push_back(combatData->possible_enemy_ID);
-		combatData->players_id.push_back(1);
+		/*combatData->enemies_id.push_back(combatData->possible_enemy_ID);
+		combatData->players_id.push_back(1);*/
 		StartCombat(combatData->players_id, combatData->enemies_id);
 		LOG("Combat starts.");
 		break;
@@ -117,8 +117,8 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void CombatManager::ButtonAction(int ID)
 {
-	LOG("player_id_selected: %d", combatState->player_id_selected);
-	LOG("players_attacks size: %d", combatData->players_attacks.size());
+	/*LOG("player_id_selected: %d", combatState->player_id_selected);
+	LOG("players_attacks size: %d", combatData->players_attacks.size());*/
 
 	int playerIndex = combatState->player_id_selected;
 	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
@@ -150,14 +150,16 @@ void CombatManager::ApplyCombatLogic()
 	{
 		combatState->current_enemies_HP[combatState->enemy_id_targeted] -= combatState->player_attack_dmg_selected;
 		CheckAlive();
+		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted], combatState->current_enemies_HP[combatState->enemy_id_targeted]);
 		//UpdateCombatUI(): we need visual info (numbers, bars...)
 		combatState->turn = "Enemy";
 	}
 	if (combatState->turn == "Enemy")
 	{
-		combatState->current_players_HP[0/*combatState->player_id_targeted*/] -= combatState->enemy_attack_dmg_selected;
-		CheckAlive();
 		EnemyAI();
+		combatState->current_players_HP[0/*combatState->player_id_targeted*/] -= combatState->enemy_attack_dmg_selected;
+		LOG("Player ID: %i now has %i HP.", combatData->players_id[0], combatState->current_players_HP[0]);
+		CheckAlive();
 		combatState->turn = "Player";
 	}
 }
@@ -169,23 +171,8 @@ void CombatManager::EnemyAI() {
 	int random_ID = rand() % combatData->enemies_id.size(); //get a random ID of an enemy. Will need to check if the enemy is alive
 	if (!combatState->enemies_alive[random_ID]) random_ID= combatState->enemy_id_targeted; //if enemy random is not alive, make the one you currently target attack you
 
-	switch (random) {
-	case 1:
-		combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID/*get the ID of the enemy of the attack*/][random - 1].dmg; //hardcode
-		LOG("Enemy Does Attack 1");
-		break;
-	case 2:
-		combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random - 1].dmg;
-		LOG("Enemy Does Attack 2");
-	case 3:
-		combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random - 1].dmg;
-		LOG("Enemy Does Attack 3");
-	case 4:
-		combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random - 1].dmg;
-		LOG("Enemy Does Attack 4");
-	default:
-		break;
-	}
+	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random - 1].dmg;
+	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID, combatData->enemies_attacks[random_ID][random - 1].dmg, combatState->player_id_selected); //we can set the targeted player to be the one you have selected to make things easier
 }
 
 void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
@@ -201,6 +188,7 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
 
 bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
 {
+	if (in_combat) return true;
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 
 	in_combat = true;
@@ -237,7 +225,7 @@ bool CombatManager::ShowAttackOptions(int player_ID) {
 }
 
 bool CombatManager::ShowItemOptions(int player_ID) {
-	LOG("ShowAttackOptions called");
+	LOG("ShowItemOptions called");
 	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
 	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
@@ -249,7 +237,7 @@ bool CombatManager::ShowItemOptions(int player_ID) {
 }
 
 bool CombatManager::ShowCrazyOptions(int player_ID) {
-	LOG("ShowAttackOptions called");
+	LOG("ShowCrazyOptions called");
 	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
 	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
@@ -283,6 +271,7 @@ bool CombatManager::ShowCrazyOptions(int player_ID) {
 
 void CombatManager::GetTreeAttributes()
 {
+	if (in_combat) return;
 	//players data
 	std::vector<Attack> newVec;
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
@@ -294,7 +283,7 @@ void CombatManager::GetTreeAttributes()
 			
 			Attack attack;
 			attack.name = (const char*)current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("damage").as_int();
+			attack.dmg = current_node.attribute("dmg").as_int();
 			newVec.push_back(attack);
 			
 		}
@@ -312,7 +301,7 @@ void CombatManager::GetTreeAttributes()
 
 			Attack attack;
 			attack.name = (const char*)current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("damage").as_int();
+			attack.dmg = current_node.attribute("dmg").as_int();
 			newVec.push_back(attack);
 
 		}
