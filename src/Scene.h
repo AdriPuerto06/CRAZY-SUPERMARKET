@@ -119,6 +119,9 @@ private:
 	void UnloadSounds();
 	void UpdateSounds(float dt);
 	void PostUpdateSounds();
+	float musicVolume = 1.0f;
+	float sfxVolume = 1.0f;
+	bool  isAudioMuted = false;
 
 	//GRAFICS
 	void LoadGrafics();

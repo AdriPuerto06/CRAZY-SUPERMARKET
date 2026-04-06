@@ -527,6 +527,47 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 14:
 		LOG("Attack clicked");
 		break;
+	case 100:
+		if (!isAudioMuted)
+		{
+			musicVolume = 0.0f;
+			sfxVolume = 0.0f;
+			Engine::GetInstance().audio->SetMusicVolume(0.0f);
+			Engine::GetInstance().audio->SetSFXVolume(0.0f);
+			LOG("All audio muted");
+		}
+		else
+		{
+			musicVolume = 1.0f;
+			sfxVolume = 1.0f;
+			Engine::GetInstance().audio->SetMusicVolume(1.0f);
+			Engine::GetInstance().audio->SetSFXVolume(1.0f);
+			LOG("All audio restored");
+		}
+
+		isAudioMuted = !isAudioMuted;
+		break;
+
+	case 202: //less volume music
+		musicVolume = std::max(0.0f, musicVolume - 0.1f);
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+
+	case 203: // more volume music
+		musicVolume = std::min(1.0f, musicVolume + 0.1f);
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+
+	case 212: // less volume sfx
+		sfxVolume = std::max(0.0f, sfxVolume - 0.1f);
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+
+	case 213: // more volume sfx
+		sfxVolume = std::min(1.0f, sfxVolume + 0.1f);
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+
 	default:
 		break;
 	}
@@ -829,12 +870,53 @@ void Scene::PostUpdateCredits()
 
 void Scene::LoadSounds()
 {
-
+	Engine::GetInstance().uiManager->CleanUp();
 	//UI Button
 
 	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
 
+	//MUSIC
+	SDL_Rect musicTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 4 - 30, 240, 30 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 200, "MUSIC", musicTitlePos, this));
+
+	SDL_Rect musicVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 5, 200, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string(static_cast<int>(musicVolume * 100)) + "%").c_str(),
+		musicVolPos, this));
+
+	SDL_Rect musicMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 4 + 45, 45, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 202, " - ", musicMinusPos, this));
+
+	SDL_Rect musicPlusPos = { WindowSize.getX() / 2 + 65, WindowSize.getY() / 4 + 45, 45, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 203, "+", musicPlusPos, this));
+
+	//SFX
+	SDL_Rect sfxTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 2 - 45, 230, 30 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 210, " SFX ", sfxTitlePos, this));
+
+	SDL_Rect sfxVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 2 + 0, 200, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 211, ("Volumen: " + std::to_string(static_cast<int>(sfxVolume * 100)) + "%").c_str(),
+		sfxVolPos, this));
+
+	SDL_Rect sfxMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 2 + 40, 45, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 212, " - ", sfxMinusPos, this));
+
+	SDL_Rect sfxPlus = { WindowSize.getX()/2 + 75, WindowSize.getY()/2 + 40, 40, 24 };
+    std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+        UIElementType::BUTTON, 213, "+", sfxPlus, this));
+
+	//MUTE ALL
+	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
+	const char* muteText = isAudioMuted ? "Unmute All" : "Mute All";
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 100, muteText, mutePos, this));
 }
 
 void Scene::UnloadSounds()
