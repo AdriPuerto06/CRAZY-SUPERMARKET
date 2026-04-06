@@ -681,7 +681,7 @@ void Scene::UpdateLevel1(float dt) {
 		player.reset();
 		Engine::GetInstance().entityManager->CleanUp();
 		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
+		Engine::GetInstance().map->LoadEntities(player);
 	}
 	
 
@@ -757,7 +757,7 @@ void Scene::LoadLevel2() {
 	LOG("Antes de LoadEntities, player es: %s", player == nullptr ? "nullptr" : "valido");
 	//Call the function to load entities from the map
 
-	Engine::GetInstance().map->LoadEntities(player, currentScene);
+	Engine::GetInstance().map->LoadEntities(player);
 	LOG("Despues de LoadEntities, player es: %s", player == nullptr ? "nullptr" : "valido");
 
 	if (player != nullptr)
@@ -783,7 +783,7 @@ void Scene::UpdateLevel2(float dt) {
 
 		Engine::GetInstance().entityManager->CleanUp();
 		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
+		Engine::GetInstance().map->LoadEntities(player);
 	}
 
 	
@@ -814,12 +814,12 @@ void  Scene::PostUpdateLevel2() {
 
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
+		Engine::GetInstance().map->LoadEntities(player);
 	}
 
 	//L15 TODO 4: Call the function to save entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, currentScene);
+		Engine::GetInstance().map->SaveEntities(player);
 	}
 }
 
@@ -836,7 +836,7 @@ void Scene::LoadLevel3() {
 	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
 
 	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, currentScene);
+	Engine::GetInstance().map->LoadEntities(player);
 }
 
 void Scene::UpdateLevel3(float dt) {
@@ -850,7 +850,7 @@ void Scene::UpdateLevel3(float dt) {
 		player.reset();
 		Engine::GetInstance().entityManager->CleanUp();
 		Engine::GetInstance().map->Load("Assets/Maps/", targetMap);
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
+		Engine::GetInstance().map->LoadEntities(player);
 	}
 
 	if (player != nullptr)
@@ -883,12 +883,12 @@ void  Scene::PostUpdateLevel3() {
 
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
+		Engine::GetInstance().map->LoadEntities(player);
 	}
 
 	//L15 TODO 4: Call the function to save entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, currentScene);
+		Engine::GetInstance().map->SaveEntities(player);
 	}
 }
 
