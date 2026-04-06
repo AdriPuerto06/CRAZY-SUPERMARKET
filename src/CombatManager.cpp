@@ -131,13 +131,23 @@ void CombatManager::ButtonAction(int ID)
 		LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 		ApplyCombatLogic();
 		break;
+	case 2:
+		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+		LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+		ApplyCombatLogic();
+		break;
+	case 3:
+		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+		LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+		ApplyCombatLogic();
+		break;
 	case 4:
-		LOG("Attack 4");
-		UnloadCombatUI();
-		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
-		in_combat = false;
-		LOG("Cleaned combat UI.");
-		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
+		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+		combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
+		LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+		ApplyCombatLogic();
 		break;
 	default:
 		break;
@@ -157,9 +167,9 @@ void CombatManager::ApplyCombatLogic()
 	if (combatState->turn == "Enemy")
 	{
 		EnemyAI();
-		combatState->current_players_HP[0/*combatState->player_id_targeted*/] -= combatState->enemy_attack_dmg_selected;
-		LOG("Player ID: %i now has %i HP.", combatData->players_id[0], combatState->current_players_HP[0]);
+		combatState->current_players_HP[combatState->player_id_selected] -= combatState->enemy_attack_dmg_selected;
 		CheckAlive();
+		LOG("Player ID: %i now has %i HP.", combatState->player_id_selected, combatState->current_players_HP[combatState->player_id_selected]);
 		combatState->turn = "Player";
 	}
 }
@@ -335,6 +345,15 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 		if (combatState->current_players_HP[i] <= 0)
 		{
 			combatState->players_alive[i] = false;
+			for (int i = 0; i < combatData->players_id.size(); ++i) //change the selected player to one that is alive
+			{
+				if (combatState->players_alive[i])
+				{
+					combatState->player_id_selected = combatData->players_id[i];
+					break;
+				}
+			}
+			
 		}
 	}
 
@@ -355,6 +374,12 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 	if (deadCounter == 0) combatState->player_Wins = true;
 
 	if (combatState->player_Wins || combatState->enemy_Wins)
-		Engine::GetInstance().scene->LoadScene(SceneID::LEVEL1); //current_Level
+	{
+		UnloadCombatUI();
+		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
+		in_combat = false;
+		LOG("Cleaned combat UI.");
+		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1); //current_Level
+	}
 	//if (combatState->enemy_Wins) end combat and player dies (and goes back in file save?)
 }
