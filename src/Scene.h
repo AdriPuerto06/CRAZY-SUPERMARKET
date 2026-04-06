@@ -25,7 +25,8 @@ enum class SceneID
 	EXIT,
 	RESUME,
 	BACK,
-	BATTLE
+	BATTLE,
+	NULLSCENE
 
 };
 
@@ -213,6 +214,7 @@ private:
 
 
 	bool closeGame = false;
+	bool fromSG = false;
 	
 
 };

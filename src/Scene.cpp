@@ -507,11 +507,13 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		LOG("Options/Pause: Sounds clicked");
 		timeScene = currentScene;
 		ChangeScene(SceneID::SOUND);
+		fromSG = true;
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
 		timeScene = currentScene;
 		ChangeScene(SceneID::GRAFICS);
+		fromSG = true;
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
@@ -523,7 +525,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 10:
 		LOG("Back clicked");
-		BackScene();
+		ChangeScene(SceneID::BACK);
 		break;
 	case 11:
 		LOG("Attack clicked");
@@ -1090,20 +1092,19 @@ void Scene::UnloadBack()
 void Scene::UpdateBack(float dt)
 {
 	
-	if (currentScene == SceneID::OPTIONS) ChangeScene(SceneID::MAIN_MENU);
-	
+	if (fromSG = true) { 
+		ChangeScene(SceneID::MAIN_MENU);
+		fromSG = false;
+	}
 	else {
 		ChangeScene(timeScene);
+		timeScene = SceneID::NULLSCENE;
 	}
 
 }
 
 void Scene::PostUpdateBack()
 {
-}
-
-void Scene::BackScene() {
-	ChangeScene(timeScene);
 }
 
 
