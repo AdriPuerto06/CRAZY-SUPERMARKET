@@ -65,6 +65,8 @@ In this release, the following features and improvements have been implemented:
 | Move Up | W |
 | Move Down | S |
 | Pause Game | ESC |
+| Load | F5 |
+| Save | F6 |
 | ... | ... |
 
 ### 🧑‍💻 Debug Controls
