@@ -165,7 +165,7 @@ bool Scene::PostUpdate()
 		ret = false;
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL1)) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2)) {
 
 		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
@@ -293,6 +293,7 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::BACK:
 		LoadBack();
+		break;
 	case SceneID::LEVEL1Combat:
 		LoadCombatScene(SceneID::LEVEL1Combat);
 		break;
@@ -358,6 +359,7 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::BACK:
 		UnloadBack();
+		break;
 	case SceneID::LEVEL1Combat:
 		UnloadCombatScene();
 		break;
@@ -466,6 +468,9 @@ void Scene::LoadMainMenu() {
 	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
 
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt5Pos, this));
+
 }
 
 void Scene::UnloadMainMenu() {
@@ -542,6 +547,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 14:
 		LOG("Scape clicked");
 		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 15:
+		LOG("Main Menu clicked");
+		ChangeScene(SceneID::MAIN_MENU);
 		break;
 	case 100:
 		if (!isAudioMuted)
@@ -1001,7 +1010,10 @@ void Scene::LoadPause()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt3Pos, this));
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt4Pos, this));
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Main Menu", bt4Pos, this));
+
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 120, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt5Pos, this));
 
 }
 
