@@ -359,12 +359,7 @@ void CombatManager::GetTreeAttributes()
 {
 	if (in_combat) return;
 
-	combatData->players_attacks.clear();
-	combatData->enemies_attacks.clear();
-	combatData->players_id.clear();
-	combatData->enemies_id.clear();
-	combatData->players_HP.clear();
-	combatData->enemies_HP.clear();
+	combatData->Clear();
 
 	//players data
 	std::vector<Attack> newVec;
@@ -451,6 +446,8 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 	if (combatState->player_Wins || combatState->enemy_Wins)
 	{
 		UnloadCombatUI();
+		combatData->Clear();
+		combatState->Clear();
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_combat = false;
 		LOG("Cleaned combat UI.");
