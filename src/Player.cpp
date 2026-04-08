@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Window.h"
 #include "CombatManager.h"
+#include "DialogueManager.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -60,6 +61,7 @@ bool Player::Update(float dt)
 	Teleport();
 	ApplyPhysics();
 	GodMode();
+	CheckDialogueAndCombatLogic();
 	Draw(dt);
 	CenterCamera();
 	return true;
@@ -103,6 +105,12 @@ void Player::CenterCamera() {
 	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
 }
 
+void Player::CheckDialogueAndCombatLogic()
+{
+	if (Engine::GetInstance().dialogueManager->in_conversation) can_Move = false;
+	else can_Move = true;
+}
+
 void Player::Teleport() {
 	// Teleport the player to a specific position for testing purposes
 	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
@@ -117,7 +125,7 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-
+	if (!can_Move) return;
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed;
