@@ -3660,11 +3660,6 @@
     <property name="targetMap" value="azotea.tmx"/>
    </properties>
   </object>
-  <object id="40" x="224" y="352" width="64" height="96">
-   <properties>
-    <property name="targetMap" value="Sala1.tmx"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="4" name="Entities">
   <object id="1" name="Enemy1" type="Enemy" x="429.333" y="1037.33">
