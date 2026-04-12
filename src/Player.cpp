@@ -125,8 +125,6 @@ void Player::Teleport() {
 	
 	int x, y;
 	pbody->GetPosition(x, y);
-	LOG("Comprobando teleport en %d, %d | zonas: %d", x, y,
-		(int)Engine::GetInstance().map->teleportZones.size());
 
 	for (const auto& zone : Engine::GetInstance().map->teleportZones)
 	{
@@ -136,7 +134,8 @@ void Player::Teleport() {
 		{
 			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
 			pendingMapLoad = zone.targetMap;
-			break;
+			teleportCooldown = 120;
+			return;
 		}
 	}
 }

@@ -698,6 +698,15 @@ void Scene::UpdateLevel1(float dt) {
 		player->HP++;
 		LOG("HEAL --> player HP: %d", player->HP);
 	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		else if (target == "Sala1.tmx")      ChangeScene(SceneID::LEVEL3);
+	}
 }
 
 void Scene::UnloadLevel1() {
@@ -750,6 +759,16 @@ void Scene::UpdateLevel2(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL3);
 	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
+	}
+
 }
 
 void Scene::UnloadLevel2() {
@@ -801,6 +820,14 @@ void Scene::UpdateLevel3(float dt) {
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
 	}
 }
 
