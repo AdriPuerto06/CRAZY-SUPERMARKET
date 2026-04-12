@@ -358,8 +358,15 @@ bool CombatManager::ChangePlayer() {
 void CombatManager::GetTreeAttributes()
 {
 	if (in_combat) return;
+	combatData->players_attacks.clear();
+	combatData->enemies_attacks.clear();
+	combatData->players_id.clear();
+	combatData->enemies_id.clear();
+	combatData->players_HP.clear();
+	combatData->enemies_HP.clear();
 
-	combatData->Clear();
+	//esto no compilaba
+	//combatData->Clear();
 
 	//players data
 	std::vector<Attack> newVec;
@@ -446,8 +453,23 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 	if (combatState->player_Wins || combatState->enemy_Wins)
 	{
 		UnloadCombatUI();
-		combatData->Clear();
-		combatState->Clear();
+
+		combatData->players_attacks.clear();
+		combatData->enemies_attacks.clear();
+		combatData->players_id.clear();
+		combatData->enemies_id.clear();
+		combatData->players_HP.clear();
+		combatData->enemies_HP.clear();
+
+		combatState->current_players_HP.clear();
+		combatState->current_enemies_HP.clear();
+		combatState->players_alive.clear();
+		combatState->enemies_alive.clear();
+
+		//esto no compilaba
+		//combatData->Clear();
+		//combatState->Clear();
+
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_combat = false;
 		LOG("Cleaned combat UI.");
