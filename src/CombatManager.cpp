@@ -46,6 +46,8 @@ bool CombatManager::PostUpdate() {
 bool CombatManager::CleanUp()
 {
 	combatFileXML.empty();
+	combatData->Clear();
+	combatState->Clear();
 	return true;
 }
 
@@ -358,15 +360,7 @@ bool CombatManager::ChangePlayer() {
 void CombatManager::GetTreeAttributes()
 {
 	if (in_combat) return;
-	combatData->players_attacks.clear();
-	combatData->enemies_attacks.clear();
-	combatData->players_id.clear();
-	combatData->enemies_id.clear();
-	combatData->players_HP.clear();
-	combatData->enemies_HP.clear();
-
-	//esto no compilaba
-	//combatData->Clear();
+	combatData->Clear();
 
 	//players data
 	std::vector<Attack> newVec;
