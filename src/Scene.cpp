@@ -770,6 +770,10 @@ void Scene::UpdateLevel2(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL3);
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+		Engine::GetInstance().entityManager->CleanUp();
+	}
+	
 
 	if (player && !player->pendingMapLoad.empty())
 	{

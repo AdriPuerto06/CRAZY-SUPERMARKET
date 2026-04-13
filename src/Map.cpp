@@ -231,6 +231,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                 if (entityType == "NPC")
                 {
+         
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = true;
@@ -255,6 +256,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASENPC));
                         npc->Init(EntityType::BASENPC, active, pos, texturePath, ID);
+                        npc->entity_ID = ID;
                         LOG("NPC Vagabundo NPC_ID: %i, created at %f, %f.", NPC_ID, pos.getX(), pos.getY());
                         npc->Start();
                     }
@@ -291,6 +293,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASEENEMY));
                         enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
+                        enemy->entity_ID = ID;
                         enemy->Start();
                         LOG("ENEMY ENEMY_ID : % i, created at % f, % f.", ENEMY_ID, x, y);
                     }
