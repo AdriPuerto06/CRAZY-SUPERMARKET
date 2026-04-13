@@ -60,10 +60,12 @@ public:
 
 	int HP;
 
+	std::string pendingMapLoad;
 
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;
+	int teleportCooldown = 120;
 
 	bool godMode = false;
 

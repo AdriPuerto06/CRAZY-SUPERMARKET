@@ -72,6 +72,9 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL2:
 		UpdateLevel2(dt);
 		break;
+	case SceneID::LEVEL3:
+		UpdateLevel3(dt);
+		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -122,6 +125,10 @@ bool Scene::PostUpdate()
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
+		PostUpdateLevel2();
+		break;
+	case SceneID::LEVEL3:
+		PostUpdateLevel3();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -200,6 +207,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL2:
 		break;
+	case SceneID::LEVEL3:
+		break;
 	case SceneID::OPTIONS: 
 		HandleMainMenuUIEvents(uiElement);
 		break;
@@ -267,6 +276,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL2:
 		LoadLevel2();
 		break;
+	case SceneID::LEVEL3:
+		LoadLevel3();
+		break;
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
@@ -328,6 +340,11 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
+
+	case SceneID::LEVEL3:
+		UnloadLevel2();
+		break;
+
 	case SceneID::OPTIONS:
 		UnloadOptions();
 		break;
@@ -652,9 +669,13 @@ void Scene::LoadLevel1() {
 
 void Scene::UpdateLevel1(float dt) {
 
-	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
-	}*/
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL3);
+	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
 		Engine::GetInstance().window->SetFullSize();
 		Engine::GetInstance().render->UpdateScale();
@@ -676,6 +697,15 @@ void Scene::UpdateLevel1(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
 		player->HP++;
 		LOG("HEAL --> player HP: %d", player->HP);
+	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		else if (target == "Sala1.tmx")      ChangeScene(SceneID::LEVEL3);
 	}
 }
 
@@ -726,6 +756,19 @@ void Scene::UpdateLevel2(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL1);
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL3);
+	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
+	}
+
 }
 
 void Scene::UnloadLevel2() {
@@ -742,6 +785,80 @@ void Scene::UnloadLevel2() {
 	Engine::GetInstance().entityManager->CleanUp();
 
 }
+
+void  Scene::PostUpdateLevel2() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL2);
+	}
+}
+
+// *********************************************
+// Level 3 functions
+// *********************************************
+
+void Scene::LoadLevel3() {
+
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
+}
+
+void Scene::UpdateLevel3(float dt) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL2);
+	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+	}
+}
+
+void Scene::UnloadLevel3() {
+
+	// Clean up UI elements related to the Level2
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	// Reset player reference (sets the shared_ptr to nullptr)
+	player.reset();
+
+	// Clean up map and entities
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
+
+void  Scene::PostUpdateLevel3() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL3);
+	}
+}
+
 
 
 // *********************************************

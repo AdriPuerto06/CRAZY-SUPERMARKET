@@ -16,6 +16,7 @@ enum class SceneID
 	LEVEL1Combat,
 	LEVEL2,
 	LEVEL2Combat,
+	LEVEL3,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -102,6 +103,13 @@ private:
 	void LoadLevel2();
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
+	void PostUpdateLevel2();
+
+	//Level3 functions
+	void LoadLevel3();
+	void UpdateLevel3(float dt);
+	void UnloadLevel3();
+	void PostUpdateLevel3();
 
 	//OPTIONS
 	void LoadOptions();
