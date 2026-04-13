@@ -1009,10 +1009,7 @@ void Scene::LoadPause()
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt3Pos, this));
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Main Menu", bt4Pos, this));
-
-	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 120, 120,20 };
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt5Pos, this));
 
 }
