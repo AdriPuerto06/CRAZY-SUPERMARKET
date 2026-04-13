@@ -223,6 +223,5 @@ private:
 
 	bool closeGame = false;
 	bool fromSG = false;
-	
 
 };

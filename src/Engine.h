@@ -129,6 +129,7 @@ private:
 
 	//Maximun frame duration in miliseconds.
 	int targetFrameRate = 60;
+	bool vsync_Active = true;
 
 	std::string gameTitle = "Platformer Game";
 
