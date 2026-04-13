@@ -180,7 +180,6 @@ private:
 	void UpdateCombatScene(float dt);
 	void PostUpdateCombatScene();
 
-
 private:
 
 	//L03: TODO 3b: Declare a Player attribute

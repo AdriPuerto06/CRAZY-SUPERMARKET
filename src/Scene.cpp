@@ -591,6 +591,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 			fullScreen = false;
 		}
 		break;
+	case 17:
+		LOG("Main Menu clicked");
+		
+		break;
 	case 100:
 		if (!isAudioMuted)
 		{
@@ -1091,8 +1095,11 @@ void Scene::LoadGrafics()
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 16, "Full Screen", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt2Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 17, "VSync", bt2Pos, this));
+
+	SDL_Rect bt5Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt5Pos, this));
 
 
 }
