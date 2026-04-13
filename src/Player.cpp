@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "Window.h"
 #include "CombatManager.h"
+#include "DialogueManager.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -60,6 +61,7 @@ bool Player::Update(float dt)
 	Teleport();
 	ApplyPhysics();
 	GodMode();
+	CheckDialogueAndCombatLogic();
 	Draw(dt);
 	CenterCamera();
 	return true;
@@ -76,13 +78,8 @@ void Player::CenterCamera() {
 	int mapWidth = mapSize.getX();
 	int mapHeight = mapSize.getY();
 
-	LOG("Player pos: %d,%d | Map size: %d,%d | Cam size: %d,%d",
-		x, y, mapWidth, mapHeight,
-		Engine::GetInstance().render->camera.w,
-		Engine::GetInstance().render->camera.h);
-
-	int camX = x - Engine::GetInstance().render->camera.w / 2;
-	int camY = y - Engine::GetInstance().render->camera.h / 2;
+	float camX = x - Engine::GetInstance().render->camera.w / 2;
+	float camY = y - Engine::GetInstance().render->camera.h / 2;
 
 	int limitRight = mapWidth - Engine::GetInstance().render->camera.w;
 	int limitDown = mapHeight - Engine::GetInstance().render->camera.h;
@@ -104,10 +101,16 @@ void Player::CenterCamera() {
 
 
 	// Apply
-	Engine::GetInstance().render->camera.x = -(int)camX;
-	Engine::GetInstance().render->camera.y = -(int)camY;
+	Engine::GetInstance().render->camera.x = -(float)camX;
+	Engine::GetInstance().render->camera.y = -(float)camY;
 	/*LOG("map: %d x %d", mapWidth, mapHeight);
 	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
+}
+
+void Player::CheckDialogueAndCombatLogic()
+{
+	if (Engine::GetInstance().dialogueManager->in_conversation) can_Move = false;
+	else can_Move = true;
 }
 
 void Player::Teleport() {
@@ -147,7 +150,7 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-
+	if (!can_Move) return;
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed;

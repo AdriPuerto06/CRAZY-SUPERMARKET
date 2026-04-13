@@ -8,6 +8,15 @@ struct DialogueTree {
 	std::vector<std::vector<int>> choices_id;
 	std::vector<std::vector<const char*>> choices_text;
 	std::vector<std::vector<int>> choices_next_node;
+
+	void Clear()
+	{
+		nodes_text.clear();
+		nodes_id.clear();
+		choices_id.clear();
+		choices_text.clear();
+		choices_next_node.clear();
+	}
 };
 
 struct CurrentDialogue {

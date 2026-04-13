@@ -23,11 +23,11 @@
     <Filter Include="Source Files\Game\NPCs">
       <UniqueIdentifier>{8ae3e3b8-d859-48b5-93f5-6312e70bcd90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Enemys">
-      <UniqueIdentifier>{c212443a-1728-4ea4-b0af-d6b5418c49dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Engine\Combat">
       <UniqueIdentifier>{92befddc-29e6-42a9-b982-19027b17120f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Enemies">
+      <UniqueIdentifier>{c212443a-1728-4ea4-b0af-d6b5418c49dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,7 +115,7 @@
       <Filter>Source Files\Game\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseEnemy.cpp">
-      <Filter>Source Files\Game\Enemys</Filter>
+      <Filter>Source Files\Game\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="src\CombatManager.cpp">
       <Filter>Source Files\Engine\Combat</Filter>
@@ -198,7 +198,7 @@
       <Filter>Source Files\Game\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseEnemy.h">
-      <Filter>Source Files\Game\Enemys</Filter>
+      <Filter>Source Files\Game\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="src\CombatManager.h">
       <Filter>Source Files\Engine\Combat</Filter>
