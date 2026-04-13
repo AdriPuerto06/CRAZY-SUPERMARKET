@@ -41,11 +41,13 @@ private:
 	void Draw(float dt);
 	void GodMode();
 	void CenterCamera();
+	void CheckDialogueAndCombatLogic();
 
 public:
 
 	//Declare player parameters
 	float speed = 4.0f;
+	bool can_Move = true;
 	SDL_Texture* texture = NULL;
 
 	int texW, texH;
