@@ -224,5 +224,4 @@ private:
 	bool fromSG = false;
 	bool fullScreen = true;
 	
-
 };
