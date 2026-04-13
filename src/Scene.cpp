@@ -579,7 +579,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::MAIN_MENU);
 		break;
 	case 16:
-		LOG("Grafics: Full Screen");
+		LOG("Grafics: Full Screen clicked");
 		if (fullScreen == false) {
 			Engine::GetInstance().window->SetFullSize();
 			Engine::GetInstance().render->UpdateScale();
@@ -592,7 +592,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		}
 		break;
 	case 17:
-		LOG("Main Menu clicked");
+		
+		Engine::GetInstance().vsync_Active = !Engine::GetInstance().vsync_Active;
+		LOG("Grafics: VSync %i", Engine::GetInstance().vsync_Active);
 		
 		break;
 	case 100:
