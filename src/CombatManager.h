@@ -18,6 +18,16 @@ struct CombatData {
 	std::vector<std::vector<Attack>> enemies_attacks;
 
 	int possible_enemy_ID;
+
+	void Clear()
+	{
+		players_attacks.clear();
+		enemies_attacks.clear();
+		players_id.clear();
+		enemies_id.clear();
+		players_HP.clear();
+		enemies_HP.clear();
+	}
 };
 
 struct CombatState {
@@ -53,6 +63,14 @@ struct CombatState {
 		player_Wins = false;
 		enemy_Wins = false;
 		bool selecting_target = false;
+	}
+
+	void Clear()
+	{
+		current_players_HP.clear();
+		current_enemies_HP.clear();
+		players_alive.clear();
+		enemies_alive.clear();
 	}
 
 };
