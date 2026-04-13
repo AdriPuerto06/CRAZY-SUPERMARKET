@@ -105,6 +105,15 @@ bool Scene::Update(float dt)
 
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
+		Engine::GetInstance().window->SetFullSize();
+		Engine::GetInstance().render->UpdateScale();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
+		Engine::GetInstance().window->SetWindowed(2);
+		Engine::GetInstance().render->UpdateScale();
+	}
+
 	return true;
 }
 
@@ -552,6 +561,19 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		LOG("Main Menu clicked");
 		ChangeScene(SceneID::MAIN_MENU);
 		break;
+	case 16:
+		LOG("Grafics: Full Screen");
+		if (fullScreen == false) {
+			Engine::GetInstance().window->SetFullSize();
+			Engine::GetInstance().render->UpdateScale();
+			fullScreen = true;
+		}
+		else if (fullScreen == true) {
+			Engine::GetInstance().window->SetWindowed(2);
+			Engine::GetInstance().render->UpdateScale();
+			fullScreen = false;
+		}
+		break;
 	case 100:
 		if (!isAudioMuted)
 		{
@@ -661,21 +683,8 @@ void Scene::LoadLevel1() {
 
 void Scene::UpdateLevel1(float dt) {
 
-	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}*/
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
-		Engine::GetInstance().window->SetFullSize();
-		Engine::GetInstance().render->UpdateScale();
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
-		Engine::GetInstance().window->SetWindowed(2);
-		Engine::GetInstance().render->UpdateScale();
-	}
-	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
-	}*/
 
+	 
 
 	//provisional para bajar y subir la vida del player
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -969,8 +978,11 @@ void Scene::LoadGrafics()
 
 	//UI Button
 
-	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 16, "Full Screen", bt1Pos, this));
+
+	SDL_Rect bt2Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt2Pos, this));
 
 
 }
