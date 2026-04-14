@@ -78,8 +78,8 @@ void Player::CenterCamera() {
 	int mapWidth = mapSize.getX();
 	int mapHeight = mapSize.getY();
 
-	float camX = x - Engine::GetInstance().render->camera.w / 2;
-	float camY = y - Engine::GetInstance().render->camera.h / 2;
+	int camX = x - Engine::GetInstance().render->camera.w / 2;
+	int camY = y - Engine::GetInstance().render->camera.h / 2;
 
 	int limitRight = mapWidth - Engine::GetInstance().render->camera.w;
 	int limitDown = mapHeight - Engine::GetInstance().render->camera.h;
@@ -87,10 +87,11 @@ void Player::CenterCamera() {
 	if (camX < 0) {
 		camX = 0;
 	}
+
 	if (camX > limitRight) {
 		camX = limitRight;
 	}
-
+	
 	if (camY < 0) {
 		camY = 0;
 	}
@@ -101,8 +102,8 @@ void Player::CenterCamera() {
 
 
 	// Apply
-	Engine::GetInstance().render->camera.x = -(float)camX;
-	Engine::GetInstance().render->camera.y = -(float)camY;
+	Engine::GetInstance().render->camera.x = -(int)camX;
+	Engine::GetInstance().render->camera.y = -(int)camY;
 	/*LOG("map: %d x %d", mapWidth, mapHeight);
 	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
 }
