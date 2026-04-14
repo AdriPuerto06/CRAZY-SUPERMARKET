@@ -45,12 +45,16 @@ bool BaseNPC::Update(float dt) {
 }
 
 bool BaseNPC::CleanUp() {
-
+	LOG("Cleanup NPC");
+	Engine::GetInstance().textures->UnLoad(texture);
+	Engine::GetInstance().physics->DeletePhysBody(pbody);
 	return true;
 }
 
 bool BaseNPC::Destroy() {
-
+	LOG("Destroying NPC");
+	active = false;
+	pendingToDelete = true;
 	return true;
 }
 

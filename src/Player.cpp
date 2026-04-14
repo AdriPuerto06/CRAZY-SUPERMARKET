@@ -72,7 +72,7 @@ void Player::CenterCamera() {
 	int x, y;
 	pbody->GetPosition(x, y);
 
-	LOG("CenterCamera: pbody pos = %d, %d", x, y);
+	/*LOG("CenterCamera: pbody pos = %d, %d", x, y);*/
 
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	int mapWidth = mapSize.getX();
@@ -121,7 +121,7 @@ void Player::Teleport() {
 
 	if (teleportCooldown > 0) {
 		teleportCooldown--;
-		LOG("Cooldown activo: %d", teleportCooldown);
+		/*LOG("Cooldown activo: %d", teleportCooldown);*/
 		return;
 	}
 

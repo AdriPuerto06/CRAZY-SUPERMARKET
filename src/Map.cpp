@@ -255,14 +255,14 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     if (!active)
                     {
                         std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASENPC));
-                        npc->Init(EntityType::BASENPC, active, pos, texturePath, ID);
+                        npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID);
                         npc->entity_ID = ID;
-                        LOG("NPC Vagabundo NPC_ID: %i, created at %f, %f.", NPC_ID, pos.getX(), pos.getY());
+                        LOG("NPC Vagabundo NPC_ID: %i, entity_ID: %i, created at %f, %f.", NPC_ID, ID, pos.getX(), pos.getY());
                         npc->Start();
                     }
                     else {
                         std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
-                        npc->Init(EntityType::BASENPC, active, pos, texturePath, ID);
+                        npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID);
                         LOG("NPC Vagabundo ID: %i, positioned at %f, %f.",ID, pos.getX(), pos.getY());
                     }
                 }
@@ -292,10 +292,10 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     if (!active) 
                     {
                         std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASEENEMY));
-                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
+                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ENEMY_ID);
                         enemy->entity_ID = ID;
                         enemy->Start();
-                        LOG("ENEMY ENEMY_ID : % i, created at % f, % f.", ENEMY_ID, x, y);
+                        LOG("ENEMY ENEMY_ID : % i, entity_ID: %i, created at % f, % f.", ENEMY_ID, ID, x, y);
                     }
                     else {
                         //poner png de enemy muerto o lo que sea

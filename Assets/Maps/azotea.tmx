@@ -6446,6 +6446,12 @@
   </object>
  </objectgroup>
  <objectgroup id="4" name="Entities">
+  <object id="3" name="Player" type="Player" x="1504" y="960">
+   <properties>
+    <property name="HP" type="int" value="10"/>
+   </properties>
+   <point/>
+  </object>
   <object id="1" name="Vagabundo" type="NPC" x="874.061" y="708.056">
    <properties>
     <property name="NPC_ID" type="int" value="1"/>
@@ -6462,15 +6468,9 @@
    </properties>
    <point/>
   </object>
-  <object id="3" name="Player" type="Player" x="1504" y="960">
-   <properties>
-    <property name="HP" type="int" value="10"/>
-   </properties>
-   <point/>
-  </object>
   <object id="15" name="Enemy1" type="ENEMY" x="878" y="978">
    <properties>
-    <property name="ENEMY_ID" type="int" value="15"/>
+    <property name="ENEMY_ID" type="int" value="1"/>
     <property name="active" type="bool" value="false"/>
     <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
