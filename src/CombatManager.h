@@ -18,6 +18,16 @@ struct CombatData {
 	std::vector<std::vector<Attack>> enemies_attacks;
 
 	int possible_enemy_ID;
+
+	void Clear()
+	{
+		players_attacks.clear();
+		enemies_attacks.clear();
+		players_id.clear();
+		enemies_id.clear();
+		players_HP.clear();
+		enemies_HP.clear();
+	}
 };
 
 struct CombatState {
@@ -40,6 +50,7 @@ struct CombatState {
 
 	void Init()
 	{
+		enemy_id_targeted = 1;
 		for (int i = 0; i < current_players_HP.size(); ++i)
 		{
 			players_alive.push_back(true);
@@ -52,6 +63,14 @@ struct CombatState {
 		player_Wins = false;
 		enemy_Wins = false;
 		bool selecting_target = false;
+	}
+
+	void Clear()
+	{
+		current_players_HP.clear();
+		current_enemies_HP.clear();
+		players_alive.clear();
+		enemies_alive.clear();
 	}
 
 };
@@ -109,7 +128,7 @@ public:
 	bool showingButtonStart = false;
 	bool in_combat = false;
 
-	bool godMode;
+	bool godMode = false;
 	bool choosingAtk;
 
 private:

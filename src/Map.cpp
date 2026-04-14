@@ -231,6 +231,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                 if (entityType == "NPC")
                 {
+         
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = true;
@@ -255,6 +256,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASENPC));
                         npc->Init(EntityType::BASENPC, active, pos, texturePath, ID);
+                        npc->entity_ID = ID;
                         LOG("NPC Vagabundo NPC_ID: %i, created at %f, %f.", NPC_ID, pos.getX(), pos.getY());
                         npc->Start();
                     }
@@ -291,6 +293,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASEENEMY));
                         enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
+                        enemy->entity_ID = ID;
                         enemy->Start();
                         LOG("ENEMY ENEMY_ID : % i, created at % f, % f.", ENEMY_ID, x, y);
                     }
@@ -427,6 +430,8 @@ void Map::DrawLayers(bool aboveEntities)
 
         for (int i = 0; i < mapData.width; ++i) {
             for (int j = 0; j < mapData.height; ++j) {
+                if (i >= mapLayer->width || j >= mapLayer->height) continue;
+                
                 unsigned int gidWithFlags = mapLayer->Get(i, j);
                 unsigned int gid = gidWithFlags & ~FLIPPED_MASK; // quitar flags de flip
                 if (gid == 0) continue;
@@ -518,6 +523,9 @@ bool Map::CleanUp()
 		Engine::GetInstance().physics->DeletePhysBody(collider);
     }
 	colliderList.clear();
+
+    //Cleanup teleports
+    teleportZones.clear();
 
     return true;
 }
@@ -668,10 +676,8 @@ bool Map::Load(std::string path, std::string fileName)
                 mapData.tilesets.push_back(tileSet);
             }
 
-            //-------------------------------Colliders, Killers, Respawns, Damage-------------------------------------
-            for (pugi::xml_node objectGroup = mapFileXML.child("map").child("objectgroup");
-                objectGroup;
-                objectGroup = objectGroup.next_sibling("objectgroup"))
+            //-------------------------------Colliders, Teleport-------------------------------------
+            for (pugi::xml_node objectGroup = mapFileXML.child("map").child("objectgroup"); objectGroup;objectGroup = objectGroup.next_sibling("objectgroup"))
             {
                 std::string groupName = objectGroup.attribute("name").as_string();
 
@@ -704,7 +710,33 @@ bool Map::Load(std::string path, std::string fileName)
                     }
                 }
                 //--------------------------------------------Colliders End--------------------------------------------
+                //-------------------------------------------Teleports Start-------------------------------------------
+                
+                else if (groupName == "Teleport")
+                {
+                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+                    {
+                        TeleportZone zone;
+                        zone.x = object.attribute("x").as_float();
+                        zone.y = object.attribute("y").as_float();
+                        zone.width = object.attribute("width").as_float();
+                        zone.height = object.attribute("height").as_float();
 
+                        // Leer propiedades custom
+                        for (pugi::xml_node prop = object.child("properties").child("property"); prop; prop = prop.next_sibling("property"))
+                        {
+                            std::string propName = prop.attribute("name").as_string();
+
+                            if (propName == "targetMap")
+                                zone.targetMap = prop.attribute("value").as_string();
+                        }
+
+                        teleportZones.push_back(zone);
+                        LOG("TeleportZone loaded -> map:%s at (%.0f,%.0f)", zone.targetMap.c_str());
+                    }
+                }
+                
+                //--------------------------------------------Teleports End----------------------------------------------
 
                 ret = true;
 

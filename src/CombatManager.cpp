@@ -46,6 +46,8 @@ bool CombatManager::PostUpdate() {
 bool CombatManager::CleanUp()
 {
 	combatFileXML.empty();
+	combatData->Clear();
+	combatState->Clear();
 	return true;
 }
 
@@ -130,29 +132,24 @@ void CombatManager::ButtonAction(int ID)
 	if (godMode)
 	{
 		combatState->player_attack_dmg_selected = 999;
-		combatState->enemy_id_targeted = 1;
 	}
 	else {
 		//get damage from the attack id and apply it to the enemy selected
 		switch (ID) {
 		case 1:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		case 2:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		case 3:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		case 4:
 			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			combatState->enemy_id_targeted = 1; //need to make an option to choose the enemy targeted
 			LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
 			break;
 		default:
@@ -169,9 +166,6 @@ void CombatManager::ApplyCombatLogic()
 {
 	if (combatState->turn == "Player")
 	{
-
-
-
 		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
 		CheckAlive();
 		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted - 1], combatState->current_enemies_HP[combatState->enemy_id_targeted - 1]);
@@ -366,13 +360,7 @@ bool CombatManager::ChangePlayer() {
 void CombatManager::GetTreeAttributes()
 {
 	if (in_combat) return;
-
-	combatData->players_attacks.clear();
-	combatData->enemies_attacks.clear();
-	combatData->players_id.clear();
-	combatData->enemies_id.clear();
-	combatData->players_HP.clear();
-	combatData->enemies_HP.clear();
+	combatData->Clear();
 
 	//players data
 	std::vector<Attack> newVec;
@@ -459,6 +447,23 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 	if (combatState->player_Wins || combatState->enemy_Wins)
 	{
 		UnloadCombatUI();
+
+		combatData->players_attacks.clear();
+		combatData->enemies_attacks.clear();
+		combatData->players_id.clear();
+		combatData->enemies_id.clear();
+		combatData->players_HP.clear();
+		combatData->enemies_HP.clear();
+
+		combatState->current_players_HP.clear();
+		combatState->current_enemies_HP.clear();
+		combatState->players_alive.clear();
+		combatState->enemies_alive.clear();
+
+		//esto no compilaba
+		//combatData->Clear();
+		//combatState->Clear();
+
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_combat = false;
 		LOG("Cleaned combat UI.");

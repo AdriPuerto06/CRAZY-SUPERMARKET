@@ -128,6 +128,11 @@ struct MapData
     std::list<MapLayer*> layers;
 };
 
+struct TeleportZone {
+    float x, y, width, height;   // área en píxeles
+    std::string targetMap;
+};
+
 class Map : public Module
 {
 public:
@@ -192,6 +197,7 @@ public:
 public: 
     std::string mapFileName;
     std::string mapPath;
+    std::vector<TeleportZone> teleportZones;
 
 private:
     bool mapLoaded;

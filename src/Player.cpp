@@ -10,6 +10,8 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "Window.h"
+#include "CombatManager.h"
+#include "DialogueManager.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -59,6 +61,7 @@ bool Player::Update(float dt)
 	Teleport();
 	ApplyPhysics();
 	GodMode();
+	CheckDialogueAndCombatLogic();
 	Draw(dt);
 	CenterCamera();
 	return true;
@@ -68,6 +71,8 @@ void Player::CenterCamera() {
 
 	int x, y;
 	pbody->GetPosition(x, y);
+
+	LOG("CenterCamera: pbody pos = %d, %d", x, y);
 
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	int mapWidth = mapSize.getX();
@@ -82,10 +87,11 @@ void Player::CenterCamera() {
 	if (camX < 0) {
 		camX = 0;
 	}
+
 	if (camX > limitRight) {
 		camX = limitRight;
 	}
-
+	
 	if (camY < 0) {
 		camY = 0;
 	}
@@ -102,10 +108,39 @@ void Player::CenterCamera() {
 	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
 }
 
+void Player::CheckDialogueAndCombatLogic()
+{
+	if (Engine::GetInstance().dialogueManager->in_conversation) can_Move = false;
+	else can_Move = true;
+}
+
 void Player::Teleport() {
 	// Teleport the player to a specific position for testing purposes
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
 		pbody->SetPosition(96, 96);
+	}
+
+	if (teleportCooldown > 0) {
+		teleportCooldown--;
+		LOG("Cooldown activo: %d", teleportCooldown);
+		return;
+	}
+
+	
+	int x, y;
+	pbody->GetPosition(x, y);
+
+	for (const auto& zone : Engine::GetInstance().map->teleportZones)
+	{
+
+		if (x >= zone.x && x <= zone.x + zone.width &&
+			y >= zone.y && y <= zone.y + zone.height)
+		{
+			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
+			pendingMapLoad = zone.targetMap;
+			teleportCooldown = 120;
+			return;
+		}
 	}
 }
 
@@ -116,7 +151,7 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-
+	if (!can_Move) return;
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed;
@@ -144,10 +179,10 @@ void Player::ApplyPhysics() {
 
 void Player::GodMode() {
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN) {
-		LOG("God mode switched");
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+		LOG("God mode switched: %i", godMode);
 		godMode = !godMode;
-
+		Engine::GetInstance().combatManager->godMode = godMode;
 		//ideas provisionalse para el GodMode
 		//desactivar colisiones
 
