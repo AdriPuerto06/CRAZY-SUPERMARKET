@@ -20,6 +20,9 @@ private:
 
 	bool canClick = true;
 	bool drawBasic = false;
+	int normalTex;
+	int focusTex;
+	int pressedTex;
 };
 
 #pragma once

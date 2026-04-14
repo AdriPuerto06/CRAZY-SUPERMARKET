@@ -46,6 +46,7 @@ bool UIButton::Update(float dt)
 		{
 		case UIElementState::DISABLED:
 			Engine::GetInstance().render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
+			Engine::GetInstance().render->DrawTexture();
 			break;
 		case UIElementState::NORMAL:
 			Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);

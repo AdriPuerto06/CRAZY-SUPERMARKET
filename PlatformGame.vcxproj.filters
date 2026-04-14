@@ -29,6 +29,9 @@
     <Filter Include="Source Files\Game\Enemies">
       <UniqueIdentifier>{c212443a-1728-4ea4-b0af-d6b5418c49dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\UI">
+      <UniqueIdentifier>{183dbbee-d47a-488e-869a-733fc23a08b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -102,12 +105,6 @@
     <ClCompile Include="src\Animation.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\UIManager.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIButton.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\DialogueManager.cpp">
       <Filter>Source Files\Engine\Dialogue</Filter>
     </ClCompile>
@@ -119,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="src\CombatManager.cpp">
       <Filter>Source Files\Engine\Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIManager.cpp">
+      <Filter>Source Files\Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIButton.cpp">
+      <Filter>Source Files\Engine\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,15 +185,6 @@
     <ClInclude Include="src\Animation.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\UIManager.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIButton.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIElement.h">
-      <Filter>Source Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\DialogueManager.h">
       <Filter>Source Files\Engine\Dialogue</Filter>
     </ClInclude>
@@ -202,6 +196,15 @@
     </ClInclude>
     <ClInclude Include="src\CombatManager.h">
       <Filter>Source Files\Engine\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIManager.h">
+      <Filter>Source Files\Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIElement.h">
+      <Filter>Source Files\Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIButton.h">
+      <Filter>Source Files\Engine\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
