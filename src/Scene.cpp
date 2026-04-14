@@ -419,6 +419,7 @@ void Scene::LoadIntroScreen()
 void Scene::UpdateIntroScreen(float dt)
 {
 	
+
 	if (splashTime == 0.0f && !sfxLogoPlayed) {
 		Engine::GetInstance().audio->SetSFXVolume(0.2f);
 		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 0);
@@ -528,7 +529,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 4:
 		LOG("Main Menu: Multiplayer clicked");
-		//ChangeScene(SceneID::MULTIPLAYER);
+		ChangeScene(SceneID::MULTIPLAYER);
 		break;
 	case 5:
 		LOG("Main Menu: Credits clicked");
@@ -635,6 +636,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	default:
 		break;
 	}
+
 }
 
 // *********************************************
@@ -922,20 +924,56 @@ void Scene::PostUpdateOptions()
 
 void Scene::LoadMultiplayer()
 {
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/images (2).png");
+	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+
+
+	if (logoImg == nullptr || teamImg == nullptr)
+	{
+		LOG("ERROR: no se pudo cargar imagen/es.png");
+		LOG("SDL error: %s", SDL_GetError());
+	}
+
+	splashTime = 0.0f;
 }
 
 void Scene::UnloadMultiplayer()
 {
-
+	
 	Engine::GetInstance().uiManager->CleanUp();
 
 }
 
 void Scene::UpdateMultiplayer(float dt)
 {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+	if (splashTime == 0.0f && !sfxLogoPlayed) {
+		Engine::GetInstance().audio->SetSFXVolume(1.0f);
+		Engine::GetInstance().audio->PlayFx(jumpscare, 0);
+		sfxLogoPlayed = true;
+	}
+
+	if (teamImg != nullptr && splashTime < logoGameTimer) {
+		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 50, 30);
+	}
+
+	splashTime += dt / 4000.0f;
+
+
+
+	if (splashTime >= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && splashTime <= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
+		splashTime = 0;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+
 }
 
 void Scene::PostUpdateMultiplayer()
