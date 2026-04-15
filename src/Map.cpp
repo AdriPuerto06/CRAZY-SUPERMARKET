@@ -252,25 +252,31 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
                     }
 
-                    if (!active)
+                    if (active)
                     {
-                        std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASENPC));
+                        std::shared_ptr<BaseNPC> npc;
+                        if (Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID) == nullptr)
+                        {
+                            npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASENPC));
+                        }
+                        else
+                        {
+                            npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
+                        }
                         npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID);
                         npc->entity_ID = ID;
-                        LOG("NPC Vagabundo NPC_ID: %i, entity_ID: %i, created at %f, %f.", NPC_ID, ID, pos.getX(), pos.getY());
+                        LOG("NPC -> NPC_ID: %i, entity_ID: %i, at %f, %f.", NPC_ID, ID, pos.getX(), pos.getY());
                         npc->Start();
                     }
                     else {
-                        std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
-                        npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID);
-                        LOG("NPC Vagabundo ID: %i, positioned at %f, %f.",ID, pos.getX(), pos.getY());
+                        LOG("NPC inactive");
                     }
                 }
 
 
-                if (entityType == "ENEMY") 
+                if (entityType == "Enemy") 
                 {
-                    int ENEMY_ID = 0;
+                    int Enemy_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
@@ -279,8 +285,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        if (name == "ENEMY_ID")
-                            ENEMY_ID = propertyNode.attribute("value").as_int();
+                        if (name == "Enemy_ID")
+                            Enemy_ID = propertyNode.attribute("value").as_int();
 
                         if (name == "active")
                             active = propertyNode.attribute("value").as_bool();
@@ -289,18 +295,23 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
                     }
 
-                    if (!active) 
+                    if (active)
                     {
-                        std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASEENEMY));
-                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ENEMY_ID);
+                        std::shared_ptr<BaseEnemy> enemy;
+                        if (Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID) == nullptr)
+                        {
+                            enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASEENEMY));
+                        }
+                        else
+                        {
+                            enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
+                        }
+                        enemy->Init(EntityType::BASENPC, active, pos, texturePath, Enemy_ID);
                         enemy->entity_ID = ID;
+                        LOG("Enemy -> Enemy_ID: %i, entity_ID: %i, at %f, %f.", Enemy_ID, ID, pos.getX(), pos.getY());
                         enemy->Start();
-                        LOG("ENEMY ENEMY_ID : % i, entity_ID: %i, created at % f, % f.", ENEMY_ID, ID, x, y);
                     }
                     else {
-                        //poner png de enemy muerto o lo que sea
-                        std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
-                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, ID);
                         LOG("Enemy inactive");
                     }
                 }
@@ -343,7 +354,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                 if (entityType == "NPC")
                 {
-                    int NPC_ID = objectNode.attribute("id").as_int();
+                    /*int NPC_ID = objectNode.attribute("id").as_int();*/
                     std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetNPC(ID));
                     const char* texturePath = npc->texturePath;
                     bool active = npc->active;
@@ -355,8 +366,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        if (name == "NPC_ID")
-                            propertyNode.attribute("value").set_value(NPC_ID);
+                        /*if (name == "NPC_ID")
+                            propertyNode.attribute("value").set_value(NPC_ID);*/
 
                         if (name == "active")
                             propertyNode.attribute("value").set_value(active);
@@ -366,9 +377,9 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     }
                 }
 
-                if (entityType == "ENEMY")
+                if (entityType == "Enemy")
                 {
-                    int ENEMY_ID = objectNode.attribute("id").as_int();
+                    /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
                     std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEnemy(ID));
                     const char* texturePath = enemy->texturePath;
                     bool active = enemy->active;
@@ -380,8 +391,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        if (name == "ENEMY_ID")
-                            propertyNode.attribute("value").set_value(ENEMY_ID);
+                        /*if (name == "ENEMY_ID")
+                            propertyNode.attribute("value").set_value(ENEMY_ID);*/
 
                         if (name == "active")
                             propertyNode.attribute("value").set_value(active);
