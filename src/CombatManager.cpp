@@ -13,9 +13,10 @@ std::vector<int> GetIDs(std::string str)
 	std::vector<int> IDs;
 	bool lastValNum = true;
 	int num = str.at(0) - '0';
+	
 	for (int l = 1; l < str.size(); ++l)
 	{
-		if (!(str.at(l) == (char)","))
+		if (!(str[l] == ','))
 		{
 			/*if (lastValNum) */num = num * 10 + (str.at(l) - '0');
 			lastValNum = true;
@@ -29,6 +30,7 @@ std::vector<int> GetIDs(std::string str)
 			
 	}
 
+	IDs.push_back(num);
 	return IDs;
 }
 
@@ -288,7 +290,7 @@ void CombatManager::EnemyAI() {
 	srand((unsigned)time(NULL));
 	int random_ID = rand() % (combatData->enemies_id.size()); //get a random ID of an enemy. Will need to check if the enemy is alive
 	int random = rand() % (combatData->enemies_attacks[random_ID].size());
-	if (!combatState->enemies_alive[random_ID]) random_ID = combatState->enemy_id_targeted; //if enemy random is not alive, make the one you currently target attack you
+	if (!combatState->enemies_alive[random_ID]) random_ID = combatState->enemy_id_targeted-1/*-1 is a test, wasn't here previously*/; //if enemy random is not alive, make the one you currently target attack you
 
 	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random].dmg;
 	combatState->current_players_HP[combatState->player_id_selected - 1] -= combatState->enemy_attack_dmg_selected;
@@ -314,7 +316,7 @@ bool CombatManager::StartCombat(/*std::vector<int> player_IDs, std::vector<int> 
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 
 	in_combat = true;
-	GetTreeAttributes(combatData->fight_ID); //get combatData from xml
+	/*GetTreeAttributes(combatData->fight_ID);*/ //get combatData from xml
 	//set current data for the start of the combat
 	combatState->current_players_HP = combatData->players_HP;
 	combatState->current_enemies_HP = combatData->enemies_HP;
@@ -364,7 +366,24 @@ bool CombatManager::ShowItemOptions(int player_ID) {
 }
 
 bool CombatManager::ChangePlayer() {
-	if (combatState->player_id_selected == 1 && combatState->players_alive[combatState->player_id_selected - 1])
+	int current_player_index = combatState->player_id_selected-1;
+	for (int i = current_player_index+1; i < combatState->players_alive.size(); ++i)
+	{
+		if (combatState->players_alive[i])
+		{
+			combatState->player_id_selected = i + 1;
+			return true;
+		}
+	}
+	for (int i = 0; i < current_player_index; ++i)
+	{
+		if (combatState->players_alive[i])
+		{
+			combatState->player_id_selected = i + 1;
+			return true;
+		}
+	}
+	/*if (combatState->player_id_selected == 1 && combatState->players_alive[combatState->player_id_selected - 1])
 	{
 		combatState->player_id_selected = 2;
 		LOG("Changed player to Player ID: 2");
@@ -374,7 +393,7 @@ bool CombatManager::ChangePlayer() {
 		{
 			combatState->player_id_selected = 1;
 			LOG("Changed player to Player ID: 1");
-		}
+		}*/
 
 	return true;
 }
@@ -407,51 +426,56 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 		if (fight_tree_node.attribute("id").as_int() == fight_ID)
 		{
 			std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
-			std::string enemies_id_str = fight_tree_node.attribute("players_id").as_string();
+			std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
 			combatData->players_id = GetIDs(players_id_str);
 			combatData->enemies_id = GetIDs(enemies_id_str);
+			break;
 		}
 	}
 	//players data
 	std::vector<Attack> newVec;
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
 	{
-		if (!Contains(combatData->players_id, combat_tree_node.attribute("id").as_int())) break;
-
-		combatData->players_id.push_back(combat_tree_node.attribute("id").as_int());
-		combatData->players_HP.push_back(combat_tree_node.attribute("HP").as_int());
-		for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
+		if (Contains(combatData->players_id, combat_tree_node.attribute("id").as_int()))
 		{
 
-			Attack attack;
-			attack.name = (const char*)current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("dmg").as_int();
-			newVec.push_back(attack);
+			combatData->players_HP.push_back(combat_tree_node.attribute("HP").as_int());
+			for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
+			{
+
+				Attack attack;
+				attack.name = (const char*)current_node.attribute("name").as_string();
+				attack.dmg = current_node.attribute("dmg").as_int();
+				newVec.push_back(attack);
+
+			}
+
+			combatData->players_attacks.push_back(newVec);
+			newVec.clear();
 
 		}
-
-		combatData->players_attacks.push_back(newVec);
-		newVec.clear();
 	}
 
 	//enemies data
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("enemy"))
 	{
-		if (!Contains(combatData->enemies_id, combat_tree_node.attribute("id").as_int())) break;
-
-		combatData->enemies_id.push_back(combat_tree_node.attribute("id").as_int());
-		combatData->enemies_HP.push_back(combat_tree_node.attribute("HP").as_int());
-		for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
+		if (Contains(combatData->enemies_id, combat_tree_node.attribute("id").as_int()))
 		{
 
-			Attack attack;
-			attack.name = (const char*)current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("dmg").as_int();
-			newVec.push_back(attack);
+			combatData->enemies_HP.push_back(combat_tree_node.attribute("HP").as_int());
+			for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
+			{
+
+				Attack attack;
+				attack.name = (const char*)current_node.attribute("name").as_string();
+				attack.dmg = current_node.attribute("dmg").as_int();
+				newVec.push_back(attack);
+
+			}
+			combatData->enemies_attacks.push_back(newVec);
+			newVec.clear();
 
 		}
-		combatData->enemies_attacks.push_back(newVec);
-		newVec.clear();
 	}
 }
 
@@ -500,20 +524,18 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 
 	if (combatState->player_Wins || combatState->enemy_Wins)
 	{
-		UnloadCombatUI();
+		//UnloadCombatUI();
 
-		combatData->Clear();
-
-		combatState->Clear();
-
-		//esto no compilaba
 		//combatData->Clear();
+
 		//combatState->Clear();
 
-		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
+		//Engine::GetInstance().render->StartTextDisplay("", 0.0f);
+		//in_combat = false;
+		//LOG("Cleaned combat UI.");
+		//Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1); //current_Level
+		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 		in_combat = false;
-		LOG("Cleaned combat UI.");
-		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1); //current_Level
 	}
-	//if (combatState->enemy_Wins) end combat and player dies (and goes back in file save?)
+	
 }

@@ -39,5 +39,11 @@
 		<attack name ="Attack3" dmg="2"></attack>
 		<attack name="Attack4" dmg="1"></attack>
 	</enemy>
+	<enemy id =" 4" HP="5">
+		<attack name="Attack1" dmg ="3"></attack>
+		<attack name="Attack2" dmg ="9"></attack>
+		<attack name ="Attack3" dmg="2"></attack>
+		<attack name="Attack4" dmg="1"></attack>
+	</enemy>
 
 </combat>
