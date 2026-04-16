@@ -3677,6 +3677,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="2"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="2"/>
     <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
    <point/>
@@ -3685,6 +3686,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="3"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="2"/>
     <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
    <point/>
@@ -3693,6 +3695,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="4"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="2"/>
     <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
    <point/>

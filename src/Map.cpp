@@ -234,7 +234,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
          
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
-                    bool active = true;
+                    bool active = false;
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -250,6 +250,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
+
+                        
                     }
 
                     if (active)
@@ -279,6 +281,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     int Enemy_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
+                    int fight_ID = 0;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
@@ -293,6 +296,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
+
+                        if (name == "fight_ID")
+                            fight_ID = propertyNode.attribute("value").as_int();
                     }
 
                     if (active)
@@ -306,7 +312,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
                         }
-                        enemy->Init(EntityType::BASENPC, active, pos, texturePath, Enemy_ID);
+                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, Enemy_ID, fight_ID);
                         enemy->entity_ID = ID;
                         LOG("Enemy -> Enemy_ID: %i, entity_ID: %i, at %f, %f.", Enemy_ID, ID, pos.getX(), pos.getY());
                         enemy->Start();

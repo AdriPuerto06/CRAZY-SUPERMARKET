@@ -1,5 +1,7 @@
 <combat>
-
+	<fight id="1" players_id="1" enemies_id="1"></fight>
+	<fight id="2" players_id="1" enemies_id="2,3,4"></fight>
+	
 	<player id="1" HP="25">
 		<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
@@ -30,6 +32,12 @@
 		<attack name="Attack2" dmg ="1"></attack>
 		<attack name ="Attack3" dmg="2"></attack>
 		<attack name="Attack4" dmg="6"></attack>
+	</enemy>
+	<enemy id =" 3" HP="10">
+		<attack name="Attack1" dmg ="5"></attack>
+		<attack name="Attack2" dmg ="3"></attack>
+		<attack name ="Attack3" dmg="2"></attack>
+		<attack name="Attack4" dmg="1"></attack>
 	</enemy>
 
 </combat>

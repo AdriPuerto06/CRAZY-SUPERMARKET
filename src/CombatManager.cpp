@@ -7,6 +7,43 @@
 #include<iostream>
 #include<cstdlib>
 
+//helpers
+std::vector<int> GetIDs(std::string str)
+{
+	std::vector<int> IDs;
+	bool lastValNum = true;
+	int num = str.at(0) - '0';
+	for (int l = 1; l < str.size(); ++l)
+	{
+		if (!(str.at(l) == (char)","))
+		{
+			/*if (lastValNum) */num = num * 10 + (str.at(l) - '0');
+			lastValNum = true;
+		}
+		else 
+		{ 
+			lastValNum = false; 
+			IDs.push_back(num);
+			num = 0;
+		}
+			
+	}
+
+	return IDs;
+}
+
+bool Contains(std::vector<int> vec, int val)
+{
+	for (int i = 0; i < vec.size(); ++i)
+	{
+		if (vec[i] == val)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
 
 CombatManager::CombatManager() : Module()
 {
@@ -112,7 +149,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 		//load the ids
 		/*combatData->enemies_id.push_back(combatData->possible_enemy_ID);
 		combatData->players_id.push_back(1);*/
-		StartCombat(combatData->players_id, combatData->enemies_id);
+		StartCombat(/*combatData->players_id, combatData->enemies_id*/);
 		LOG("Combat starts.");
 		break;
 	default:
@@ -260,24 +297,24 @@ void CombatManager::EnemyAI() {
 	/*LOG("Enemy ID: %i Does %i dmg to Player ID: %i", 0, combatData->enemies_attacks[0][0].dmg, combatState->player_id_selected);*/
 }
 
-void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID)
+void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID)
 {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start combat", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
 
-	GetTreeAttributes(); //get dialogue_tree from xml
+	GetTreeAttributes(fight_ID); //get dialogue_tree from xml
 	combatData->possible_enemy_ID = enemy_ID;
 
 	showingButtonStart = true;
 }
 
-bool CombatManager::StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs)
+bool CombatManager::StartCombat(/*std::vector<int> player_IDs, std::vector<int> enemies_IDs*/)
 {
 	if (in_combat) return true;
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 
 	in_combat = true;
-	GetTreeAttributes(); //get combatData from xml
+	GetTreeAttributes(combatData->fight_ID); //get combatData from xml
 	//set current data for the start of the combat
 	combatState->current_players_HP = combatData->players_HP;
 	combatState->current_enemies_HP = combatData->enemies_HP;
@@ -357,15 +394,30 @@ bool CombatManager::ChangePlayer() {
 //	return ret;
 //}
 
-void CombatManager::GetTreeAttributes()
+void CombatManager::GetTreeAttributes(int fight_ID)
 {
 	if (in_combat) return;
 	combatData->Clear();
 
+	combatData->fight_ID = fight_ID;
+	//get the ids of players and enemies and add them in combatData
+
+	for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight"); fight_tree_node != NULL; fight_tree_node = fight_tree_node.next_sibling("fight"))
+	{
+		if (fight_tree_node.attribute("id").as_int() == fight_ID)
+		{
+			std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
+			std::string enemies_id_str = fight_tree_node.attribute("players_id").as_string();
+			combatData->players_id = GetIDs(players_id_str);
+			combatData->enemies_id = GetIDs(enemies_id_str);
+		}
+	}
 	//players data
 	std::vector<Attack> newVec;
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
 	{
+		if (!Contains(combatData->players_id, combat_tree_node.attribute("id").as_int())) break;
+
 		combatData->players_id.push_back(combat_tree_node.attribute("id").as_int());
 		combatData->players_HP.push_back(combat_tree_node.attribute("HP").as_int());
 		for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
@@ -385,6 +437,8 @@ void CombatManager::GetTreeAttributes()
 	//enemies data
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("enemy"))
 	{
+		if (!Contains(combatData->enemies_id, combat_tree_node.attribute("id").as_int())) break;
+
 		combatData->enemies_id.push_back(combat_tree_node.attribute("id").as_int());
 		combatData->enemies_HP.push_back(combat_tree_node.attribute("HP").as_int());
 		for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
@@ -448,17 +502,9 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 	{
 		UnloadCombatUI();
 
-		combatData->players_attacks.clear();
-		combatData->enemies_attacks.clear();
-		combatData->players_id.clear();
-		combatData->enemies_id.clear();
-		combatData->players_HP.clear();
-		combatData->enemies_HP.clear();
+		combatData->Clear();
 
-		combatState->current_players_HP.clear();
-		combatState->current_enemies_HP.clear();
-		combatState->players_alive.clear();
-		combatState->enemies_alive.clear();
+		combatState->Clear();
 
 		//esto no compilaba
 		//combatData->Clear();
