@@ -203,7 +203,7 @@ void CombatManager::ButtonAction(int ID)
 
 void CombatManager::ApplyCombatLogic()
 {
-	if (combatState->turn == "Player")
+	if (combatState->turn == "Player") //add here a switch that depending on the name of the attack does something
 	{
 		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
 		CheckAlive();
