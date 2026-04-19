@@ -13,16 +13,18 @@ public:
 
 	// Called each loop iteration
 	bool Update(float dt);
-
 	bool CleanUp() override;
+
+	void SetTextures(SDL_Texture* normal, SDL_Texture* focused = nullptr, SDL_Texture* pressed = nullptr);
 
 private:
 
 	bool canClick = true;
 	bool drawBasic = false;
-	int normalTex;
-	int focusTex;
-	int pressedTex;
+
+	SDL_Texture* normalTex = nullptr;
+	SDL_Texture* focusTex = nullptr;
+	SDL_Texture* pressedTex = nullptr;
 };
 
 #pragma once

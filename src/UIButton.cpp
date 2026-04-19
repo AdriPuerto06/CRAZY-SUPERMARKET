@@ -46,16 +46,24 @@ bool UIButton::Update(float dt)
 		{
 		case UIElementState::DISABLED:
 			Engine::GetInstance().render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
-			Engine::GetInstance().render->DrawTexture();
 			break;
 		case UIElementState::NORMAL:
-			Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+			if (normalTex)
+				Engine::GetInstance().render->DrawTexture(normalTex, bounds.x, bounds.y, &bounds);
+			else
+				Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
 			break;
 		case UIElementState::FOCUSED:
-			Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+			if (focusTex)
+				Engine::GetInstance().render->DrawTexture(focusTex, bounds.x, bounds.y, &bounds);
+			else
+				Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
 			break;
 		case UIElementState::PRESSED:
-			Engine::GetInstance().render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+			if (pressedTex)
+				Engine::GetInstance().render->DrawTexture(pressedTex, bounds.x, bounds.y, &bounds);
+			else
+				Engine::GetInstance().render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
 			break;
 		}
 
@@ -69,4 +77,11 @@ bool UIButton::CleanUp()
 {
 	pendingToDelete = true;
 	return true;
+}
+
+void UIButton::SetTextures(SDL_Texture* normal, SDL_Texture* focused, SDL_Texture* pressed)
+{
+	normalTex = normal;
+	focusTex = focused ? focused : normal; 
+	pressedTex = pressed ? pressed : normal;
 }
