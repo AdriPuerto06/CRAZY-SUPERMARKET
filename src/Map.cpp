@@ -202,7 +202,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 int ID = objectNode.attribute("id").as_int();
 
                 // Create entity based on type
-                if (entityType == "Player") 
+                if (entityType == "Player") //we will have to change the logic to add more players, this code asumes there's only 1
                 {
                     // Create Player entity
                     if (player == nullptr) {
@@ -221,6 +221,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         propertyNode = propertyNode.next_sibling("property"))
                     {
                         int HP = propertyNode.attribute("value").as_int();
+                        magicPoints = propertyNode.attribute("magicPoints").as_int(); //map has magicPoints
 
                         if (HP > 0) {
                             player->HP =  propertyNode.attribute("value").as_int();

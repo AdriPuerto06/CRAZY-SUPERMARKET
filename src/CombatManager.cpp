@@ -6,6 +6,8 @@
 #include "Scene.h"
 #include<iostream>
 #include<cstdlib>
+#include "Player.h"
+#include "Map.h"
 
 //helpers
 std::vector<int> GetIDs(std::string str)
@@ -56,13 +58,14 @@ CombatManager::~CombatManager() {}
 
 bool CombatManager::Awake()
 {
+	combatData = new CombatData;
+	combatState = new CombatState;
 	return true;
 }
 
 bool CombatManager::Start()
 {
-	combatData = new CombatData;
-	combatState = new CombatState;
+	
 	return true;
 }
 
@@ -206,6 +209,7 @@ void CombatManager::ApplyCombatLogic()
 	if (combatState->turn == "Player") //add here a switch that depending on the name of the attack does something
 	{
 		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
+		combatState->magicPoints -= combatState->;
 		CheckAlive();
 		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted - 1], combatState->current_enemies_HP[combatState->enemy_id_targeted - 1]);
 		//UpdateCombatUI(): we need visual info (numbers, bars...)
@@ -419,8 +423,8 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 	combatData->Clear();
 
 	combatData->fight_ID = fight_ID;
+	combatState->magicPoints = Engine::GetInstance().map->magicPoints; //get magicPoints from map
 	//get the ids of players and enemies and add them in combatData
-
 	for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight"); fight_tree_node != NULL; fight_tree_node = fight_tree_node.next_sibling("fight"))
 	{
 		if (fight_tree_node.attribute("id").as_int() == fight_ID)
@@ -446,6 +450,8 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 				Attack attack;
 				attack.name = (const char*)current_node.attribute("name").as_string();
 				attack.dmg = current_node.attribute("dmg").as_int();
+				attack.magicPoints = current_node.attribute("magicPoints").as_int();
+				attack.effect = current_node.attribute("effect").as_string();
 				newVec.push_back(attack);
 
 			}

@@ -3,9 +3,12 @@
 #include "Scene.h"
 #include <vector>
 
+
 struct Attack {
 	const char* name;
 	int dmg;
+	int magicPoints;
+	std::string effect;
 };
 
 struct CombatData {
@@ -49,6 +52,8 @@ struct CombatState {
 	bool player_Wins;
 	bool enemy_Wins;
 	bool selecting_target;
+
+	int magicPoints;
 
 	void Init()
 	{
