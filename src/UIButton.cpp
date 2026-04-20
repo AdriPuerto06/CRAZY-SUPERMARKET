@@ -49,19 +49,19 @@ bool UIButton::Update(float dt)
 			break;
 		case UIElementState::NORMAL:
 			if (normalTex)
-				Engine::GetInstance().render->DrawTexture(normalTex, bounds.x, bounds.y, &bounds);
+				Engine::GetInstance().render->DrawTexture(normalTex, bounds.x, bounds.y);
 			else
 				Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
 			break;
 		case UIElementState::FOCUSED:
 			if (focusTex)
-				Engine::GetInstance().render->DrawTexture(focusTex, bounds.x, bounds.y, &bounds);
+				Engine::GetInstance().render->DrawTexture(focusTex, bounds.x, bounds.y);
 			else
 				Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
 			break;
 		case UIElementState::PRESSED:
 			if (pressedTex)
-				Engine::GetInstance().render->DrawTexture(pressedTex, bounds.x, bounds.y, &bounds);
+				Engine::GetInstance().render->DrawTexture(pressedTex, bounds.x, bounds.y);
 			else
 				Engine::GetInstance().render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
 			break;

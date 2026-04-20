@@ -32,6 +32,9 @@
     <Filter Include="Source Files\Engine\UI">
       <UniqueIdentifier>{183dbbee-d47a-488e-869a-733fc23a08b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Items">
+      <UniqueIdentifier>{9d3ff855-9a63-4078-9d20-56fe4b43a48b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -96,9 +99,6 @@
     <ClCompile Include="src\Physics.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\Item.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="src\Pathfinding.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -122,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="src\UIButton.cpp">
       <Filter>Source Files\Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Item.cpp">
+      <Filter>Source Files\Game\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +179,6 @@
     <ClInclude Include="src\Physics.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\Item.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="src\Pathfinding.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
@@ -205,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="src\UIButton.h">
       <Filter>Source Files\Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Item.h">
+      <Filter>Source Files\Game\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

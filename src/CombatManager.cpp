@@ -56,6 +56,7 @@ CombatManager::~CombatManager() {}
 
 bool CombatManager::Awake()
 {
+	/*itemVector.push_back(false);*/
 	return true;
 }
 

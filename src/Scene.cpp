@@ -187,6 +187,16 @@ bool Scene::PostUpdate()
 		ChangeScene(SceneID::PAUSE);
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
+		LOG("LoadMainMenu");
+		LoadMainMenu();
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X)) {
+		LOG("Change MainMenu");
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
 	return ret;
 }
 
@@ -480,25 +490,42 @@ void Scene::LoadMainMenu() {
 	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
 	SDL_Texture* btnStartPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Pressed.png");
+
+	SDL_Texture* btnOptTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Options_Normal.png");
+	SDL_Texture* btnOptPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Options_Pressed.png");
+
+	SDL_Texture* btnCredTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Normal.png");
+	SDL_Texture* btnCredPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Pressed.png");
+		
+	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
+	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 	
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
 	// Instantiate a UIButton in the Scene
-	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
+	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 92,33};
 	auto btn1 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
-	if (btn1) btn1->SetTextures(btnStartTex, btnStartPressedTex);
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, " ", bt1Pos, this));
+	if (btn1) btn1->SetTextures(btnStartTex, btnStartPressedTex, btnStartPressedTex);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) - 10, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Options", bt2Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) - 10, 109,31 };
+	auto btn2 = std::dynamic_pointer_cast<UIButton>(
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, " ", bt2Pos, this));
+	if (btn2) btn2->SetTextures(btnOptTex, btnOptPressedTex, btnOptPressedTex);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 20, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
+	auto btn3 = std::dynamic_pointer_cast<UIButton>(
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
+	if (btn3) btn3->SetTextures(NULL, NULL, NULL);
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 104,34 };
+	auto btn4 = std::dynamic_pointer_cast<UIButton>(
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, " ", bt4Pos, this));
+	if (btn4) btn4->SetTextures(btnCredTex, btnCredPressedTex, btnCredPressedTex);
 
-	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt5Pos, this));
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 68,34 };
+	auto btn5 = std::dynamic_pointer_cast<UIButton>(
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, " ", bt5Pos, this));
+	if (btn5) btn5->SetTextures(btnExitTex, btnExitPressedTex, btnExitPressedTex);
 
 }
 
