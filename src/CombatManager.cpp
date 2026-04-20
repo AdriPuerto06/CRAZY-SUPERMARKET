@@ -171,33 +171,42 @@ void CombatManager::ButtonAction(int ID)
 
 	int playerIndex = combatState->player_id_selected - 1;
 	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
-	if (godMode)
+	
+	if (combatState->magicPoints <= 0)
 	{
-		combatState->player_attack_dmg_selected = 999;
+		LOG("No magic points left!");
+		return;
 	}
-	else {
-		//get damage from the attack id and apply it to the enemy selected
-		switch (ID) {
-		case 1:
-			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-			break;
-		case 2:
-			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-			break;
-		case 3:
-			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-			break;
-		case 4:
-			combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-			LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-			break;
-		default:
-			break;
-		}
-	}
+	combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+	if (godMode) combatState->player_attack_dmg_selected = 999;
+		
+	combatState->player_attack_id_selected = ID;
+	LOG("Attack %i: Damage: %i, name: %s", ID, combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+	//break;
+	//else {
+	//	//get damage from the attack id and apply it to the enemy selected
+	//	switch (ID) {
+	//	case 1:
+	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+	//		combatState->player_attack_id_selected = ID - 1;
+	//		LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+	//		break;
+	//	case 2:
+	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+	//		LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+	//		break;
+	//	case 3:
+	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+	//		LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+	//		break;
+	//	case 4:
+	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+	//		LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
 	//ApplyCombatLogic();
 	combatState->selecting_target = true;
 	LOG("Select enemy with LEFT/RIGHT \t Press ENTER to confirm.");
@@ -209,7 +218,7 @@ void CombatManager::ApplyCombatLogic()
 	if (combatState->turn == "Player") //add here a switch that depending on the name of the attack does something
 	{
 		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
-		combatState->magicPoints -= combatState->;
+		combatState->magicPoints -= combatData->players_attacks[combatState->player_id_targeted-1][combatState->player_attack_id_selected-1].magicPoints;
 		CheckAlive();
 		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted - 1], combatState->current_enemies_HP[combatState->enemy_id_targeted - 1]);
 		//UpdateCombatUI(): we need visual info (numbers, bars...)

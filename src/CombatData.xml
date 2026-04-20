@@ -3,95 +3,95 @@
 	<fight id="2" players_id="1" enemies_id="2,3,4"></fight>
 	
 	<player id="1" HP="25">
-		<attack name="Attack1" dmg ="1"></attack>
+		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
-		<attack name="Attack4" dmg ="4"></attack>
+		<attack name="Attack4" dmg ="4"></attack>-->
 
-		<!--Protagonist - Fighter--><!--
+		<!--Protagonist - Fighter-->
 		<attack_stats name="Jet Punch" magicPoints="3" dmg="10" effect="none"></attack_stats>
 		<attack_stats name="Fidget Dance" magicPoints="2" dmg="7" effect="none"></attack_stats>
 		<attack_stats name="Low kick chill" magicPoints="0" dmg="3" effect="none"></attack_stats>
-		<attack_stats name="Punch extorsion" magicPoints="5" dmg="15" effect="none"></attack_stats>-->
+		<attack_stats name="Punch extorsion" magicPoints="5" dmg="15" effect="none"></attack_stats>
 		
 		<item name="Item1" heal="5"></item>
 		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="2" HP="25">
-		<attack name="Attack1" dmg ="1"></attack>
+		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
-		<attack name="Attack4" dmg ="4"></attack>
+		<attack name="Attack4" dmg ="4"></attack>-->
 
-		<!--Mary Nancy - Wizard--><!--
+		<!--Mary Nancy - Wizard-->
 		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none"></attack_stats>
 		<attack_stats name="Slutty branches" magicPoints="2" dmg="5" effect="none"></attack_stats>
 		<attack_stats name="Poisonous kiss" magicPoints="1" dmg="0" effect="poisoned"></attack_stats>
-		<attack_stats name="Golden rain" magicPoints="5" dmg="3" effect="paralize"></attack_stats>-->
+		<attack_stats name="Golden rain" magicPoints="5" dmg="3" effect="paralize"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>
 		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="3" HP="25">
-		<attack name="Attack1" dmg ="1"></attack>
+		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
-		<attack name="Attack4" dmg ="4"></attack>
+		<attack name="Attack4" dmg ="4"></attack>-->
 
-		<!--Cornelius - Healer--><!--
+		<!--Cornelius - Healer-->
 		<attack_stats name="Delightful bomb" magicPoints="4" dmg="8" effect="none"></attack_stats>
 		<attack_stats name="Reminiscence" magicPoints="3" dmg="-10" effect="heal"></attack_stats>
 		<attack_stats name="Confusing perfume" magicPoints="2" dmg="0" effect="confused"></attack_stats>
-		<attack_stats name="Sacrifice" magicPoints="5" dmg="999" effect="selfKO"></attack_stats>-->
+		<attack_stats name="Sacrifice" magicPoints="5" dmg="999" effect="selfKO"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>
 		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="4" HP="25">
-		<attack name="Attack1" dmg ="1"></attack>
+		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
-		<attack name="Attack4" dmg ="4"></attack>
+		<attack name="Attack4" dmg ="4"></attack>-->
 
-		<!--Xobi - Tank--><!--
+		<!--Xobi - Tank-->
 		<attack_stats name="Tears canon" magicPoints="3" dmg="6" effect="none"></attack_stats>
 		<attack_stats name="Blocking" magicPoints="2" dmg="0" effect="shield"></attack_stats>
 		<attack_stats name="Headache" magicPoints="2" dmg="5" effect="confused"></attack_stats>
-		<attack_stats name="Radioactive eruption" magicPoints="4" dmg="0" effect="poisoned"></attack_stats>-->
+		<attack_stats name="Radioactive eruption" magicPoints="4" dmg="0" effect="poisoned"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>
 		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="5" HP="25">
-		<attack name="Attack1" dmg ="1"></attack>
+		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
-		<attack name="Attack4" dmg ="4"></attack>
+		<attack name="Attack4" dmg ="4"></attack>-->
 
-		<!--WarroBo-t - Warrior--><!--
+		<!--WarroBo-t - Warrior-->
 		<attack_stats name="Lighting Thrust" magicPoints="3" dmg="9" effect="paralize"></attack_stats>
 		<attack_stats name="Bits explosion" magicPoints="4" dmg="7" effect="none"></attack_stats>
 		<attack_stats name="Rage the Bait" magicPoints="5" dmg="0" effect="escape"></attack_stats>
-		<attack_stats name="Motivational speech" magicPoints="3" dmg="0" effect="buff"></attack_stats>-->
+		<attack_stats name="Motivational speech" magicPoints="3" dmg="0" effect="buff"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>
 		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="6" HP="25">
-		<attack name="Attack1" dmg ="1"></attack>
+		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
-		<attack name="Attack4" dmg ="4"></attack>
+		<attack name="Attack4" dmg ="4"></attack>-->
 
-		<!--Big Dom - Rogue--><!--
+		<!--Big Dom - Rogue-->
 		<attack_stats name="Hit a Nada" magicPoints="1" dmg="6" effect="none"></attack_stats>
 		<attack_stats name="Shoeless Dance" magicPoints="3" dmg="4" effect="confused"></attack_stats>
 		<attack_stats name="Bum bum" magicPoints="4" dmg="12" effect="none"></attack_stats>
-		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralize"></attack_stats>-->
+		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralize"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>

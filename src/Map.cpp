@@ -216,17 +216,21 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         player->SetPosition(Vector2D(pos.getX(), pos.getY()));
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
                     }
+                    int HP;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
                     {
-                        int HP = propertyNode.attribute("value").as_int();
-                        magicPoints = propertyNode.attribute("magicPoints").as_int(); //map has magicPoints
-
-                        if (HP > 0) {
-                            player->HP =  propertyNode.attribute("value").as_int();
+                        std::string name = propertyNode.attribute("name").as_string();
+                        if (name == "HP")
+                        {
+                            HP = propertyNode.attribute("value").as_int();
                             LOG("player HP: %d", player->HP);
                         }
+                        if (name == "magicPoints")
+                            magicPoints = propertyNode.attribute("value").as_int(); //map has magicPoints
+
+                        
                     }
                 }
 
