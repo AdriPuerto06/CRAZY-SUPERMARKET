@@ -6449,7 +6449,7 @@
   <object id="1" name="Vagabundo" type="NPC" x="874.061" y="708.056">
    <properties>
     <property name="NPC_ID" type="int" value="1"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
@@ -6457,7 +6457,7 @@
   <object id="2" name="Octopuss" type="NPC" x="571.152" y="565.697">
    <properties>
     <property name="NPC_ID" type="int" value="2"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
@@ -6468,10 +6468,11 @@
    </properties>
    <point/>
   </object>
-  <object id="15" name="Enemy1" type="ENEMY" x="878" y="978">
+  <object id="15" name="Enemy1" type="Enemy" x="878" y="978">
    <properties>
-    <property name="ENEMY_ID" type="int" value="15"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="Enemy_ID" type="int" value="1"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="1"/>
     <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
    <point/>

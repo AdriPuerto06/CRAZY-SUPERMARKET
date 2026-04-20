@@ -17,6 +17,8 @@ struct CombatData {
 	std::vector<int> enemies_HP;
 	std::vector<std::vector<Attack>> enemies_attacks;
 
+	int fight_ID;
+
 	int possible_enemy_ID;
 
 	void Clear()
@@ -101,15 +103,15 @@ public:
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	void ButtonAction(int ID);
-	void ShowButtonStart(Vector2D position, int enemy_ID);
-	bool StartCombat(std::vector<int> player_IDs, std::vector<int> enemies_IDs);
+	void ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID);
+	bool StartCombat(/*std::vector<int> player_IDs, std::vector<int> enemies_IDs*/);
 	bool ShowAttackOptions(int player_ID);
 	bool ShowItemOptions(int player_ID);
 	bool ChangePlayer();
 	bool ShowOptions(int player_ID);
 
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
-	void GetTreeAttributes();
+	void GetTreeAttributes(int fight_ID);
 	//right now this is just a choose randomn
 	void EnemyAI();
 

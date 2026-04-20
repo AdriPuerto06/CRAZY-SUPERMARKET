@@ -14,7 +14,7 @@
 
 BaseEnemy::BaseEnemy(){}
 
-void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID)
+void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int fight_ID)
 {
 	this->type = type;
 	this->position = position;
@@ -22,6 +22,7 @@ void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char
 	this->HP = HP;
 	this->ID = ID;
 	this->texturePath = texturePath;
+	this->fight_ID = fight_ID;
 }
 
 BaseEnemy::~BaseEnemy() {
@@ -114,7 +115,7 @@ void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 
 	Vector2D buttonPos = Vector2D{ 500,500 };
-	Engine::GetInstance().combatManager->ShowButtonStart(buttonPos, this->ID);
+	Engine::GetInstance().combatManager->ShowButtonStart(buttonPos, this->ID, fight_ID);
 	Engine::GetInstance().combatManager->showingButtonStart = true;
 }
 
