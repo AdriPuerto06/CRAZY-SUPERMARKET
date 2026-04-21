@@ -88,6 +88,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	}
 
 	entities.push_back(entity);
+	LOG("Created entity with entity_ID: %i", entity->entity_ID);
 
 	return entity;
 }
@@ -100,7 +101,11 @@ void EntityManager::DestroyEntity(std::shared_ptr<Entity> entity)
 
 void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
 {
-	if ( entity != nullptr) entities.push_back(entity);
+	if (entity != nullptr)
+	{
+		entities.push_back(entity);
+		LOG("Created entity with entity_ID: %i", entity->entity_ID);
+	}
 }
 
 std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)

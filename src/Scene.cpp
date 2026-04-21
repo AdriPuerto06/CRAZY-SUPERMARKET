@@ -568,8 +568,8 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		//Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 13:
-		LOG("Crazy clicked");
 		Engine::GetInstance().combatManager->ChangePlayer();
+		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatState->player_id_selected);
 		break;
 	case 14:
 		LOG("Scape clicked");
