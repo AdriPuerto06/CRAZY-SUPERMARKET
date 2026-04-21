@@ -564,6 +564,8 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 
 	if (combatState->player_Wins || combatState->enemy_Wins)
 	{
+		if (combatState->player_Wins) LOG("Player wins the combat.");
+		else LOG("Enemies win the combat.");
 		//UnloadCombatUI();
 
 		//combatData->Clear();
