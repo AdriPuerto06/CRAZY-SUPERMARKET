@@ -65,7 +65,7 @@ bool CombatManager::Awake()
 
 bool CombatManager::Start()
 {
-	
+	srand((unsigned)time(NULL));
 	return true;
 }
 
@@ -299,29 +299,29 @@ void CombatManager::HandleTargetSelection() {
 
 }
 
-void CombatManager::EnemyAI() {
-	
-	srand((unsigned)time(NULL));
-	int random_ID = rand() % (combatData->enemies_id.size()); //get a random ID of an enemy. Will need to check if the enemy is alive
-	int random = rand() % (combatData->enemies_attacks[random_ID].size());
-	
-	if (!combatState->enemies_alive[random_ID]) //if the enemy going to attack is dead, change the enemy that is going to attack
+void CombatManager::EnemyAI()
+{
+	std::vector<int> alive;
+	for (int i = 0; i < combatState->enemies_alive.size(); ++i)
 	{
-		for (int i = 0; i < combatData->enemies_id.size(); ++i)
-		{
-			if (combatState->enemies_alive[i])
-			{
-				random_ID = i;
-				break;
-			}
-			if (i == combatData->enemies_id.size() - 1) return;
-		}
+		if (combatState->enemies_alive[i])
+			alive.push_back(i);
 	}
-	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random].dmg;
-	combatState->current_players_HP[combatState->player_id_selected - 1] -= combatState->enemy_attack_dmg_selected;
-	/*combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[0][0].dmg;*/
-	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID+1, combatData->enemies_attacks[random_ID][random].dmg, combatState->player_id_selected - 1); //we can set the targeted player to be the one you have selected to make things easier
-	/*LOG("Enemy ID: %i Does %i dmg to Player ID: %i", 0, combatData->enemies_attacks[0][0].dmg, combatState->player_id_selected);*/
+
+	if (alive.empty()) return;
+
+	int random_index_ID = alive[rand() % alive.size()];
+
+	int random_index_attack = rand() % combatData->enemies_attacks[random_index_ID].size();
+
+	int dmg = combatData->enemies_attacks[random_index_ID][random_index_attack].dmg;
+	combatState->enemy_attack_dmg_selected = dmg;
+	combatState->current_players_HP[combatState->player_id_selected - 1] -= dmg;
+
+	LOG("Enemy ID: %i does %i dmg to Player ID: %i",
+		combatData->enemies_id[random_index_ID],
+		dmg,
+		combatState->player_id_selected);
 }
 
 void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID)
@@ -518,8 +518,8 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 			{
 				if (combatState->enemies_alive[j])
 				{
-					combatState->enemy_id_targeted = combatData->enemies_id[j];
-					LOG("Now targeting enemy ID: %i", combatData->enemies_id[j]);
+					combatState->enemy_id_targeted = j+1;
+					LOG("Now targeting enemy ID: %i", combatData->enemies_id[combatState->enemy_id_targeted-1]);
 					break;
 				}
 			}
