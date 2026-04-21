@@ -25,6 +25,9 @@ private:
 	SDL_Texture* normalTex = nullptr;
 	SDL_Texture* focusTex = nullptr;
 	SDL_Texture* pressedTex = nullptr;
+
+	float animTimer = 0.0f;
+	float animSpeed = 3.0f;
 };
 
 #pragma once
