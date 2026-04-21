@@ -27,7 +27,7 @@ private:
 	SDL_Texture* pressedTex = nullptr;
 
 	float animTimer = 0.0f;
-	float animSpeed = 3.0f;
+	float animSpeed = 10.0f;
 };
 
 #pragma once
