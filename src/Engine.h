@@ -107,6 +107,9 @@ public:
 	std::shared_ptr<DialogueManager> dialogueManager;
 	std::shared_ptr<CombatManager> combatManager;
 
+
+	bool vsync_Active = true;
+
 private: 
 
 	// Delta time
@@ -129,7 +132,7 @@ private:
 
 	//Maximun frame duration in miliseconds.
 	int targetFrameRate = 60;
-	bool vsync_Active = true;
+	
 
 	std::string gameTitle = "Platformer Game";
 

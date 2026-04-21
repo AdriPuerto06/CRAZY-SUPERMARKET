@@ -23,7 +23,8 @@ enum Music {
 enum Sfx {
     s_OFF = 0,
     s_title_name,
-    s_epic_reveal
+    s_epic_reveal,
+    jumpscare
 };
 
 

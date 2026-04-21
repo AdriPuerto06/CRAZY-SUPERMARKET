@@ -60,6 +60,7 @@ bool CombatManager::Awake()
 {
 	combatData = new CombatData;
 	combatState = new CombatState;
+	/*itemVector.push_back(false);*/
 	return true;
 }
 

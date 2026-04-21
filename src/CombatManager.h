@@ -142,6 +142,8 @@ public:
 	void ApplyCombatLogic();
 	void CheckAlive();
 
+	std::vector<bool> itemVector;
+
 	std::string combatFileName;
 	std::string combatPath;
 
