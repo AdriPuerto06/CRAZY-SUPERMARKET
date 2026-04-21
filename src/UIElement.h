@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Module.h"
 #include "Vector2D.h"
+#include "Engine.h"
 
 enum class UIElementType
 {
@@ -27,6 +28,8 @@ enum class UIElementState
 	PRESSED,
 	SELECTED
 };
+
+
 
 class UIElement : public std::enable_shared_from_this<UIElement>
 {
@@ -66,6 +69,7 @@ public:
 	{
 		observer = module;
 	}
+	
 
 	// 
 	void NotifyObserver()
@@ -83,6 +87,7 @@ public:
 		return true;
 	}
 
+
 public:
 
 	int id;
@@ -99,4 +104,59 @@ public:
 	Module* observer;        // Observer 
 
 	bool pendingToDelete = false;
+};
+
+class UISlider : public UIElement
+{
+public:
+	UISlider(int id, SDL_Rect bounds, float min, float max, float value)
+		: UIElement(UIElementType::SLIDER, id),
+		minValue(min), maxValue(max), value(value)
+	{
+		this->bounds = bounds;
+	}
+
+	bool Update(float dt) override;
+
+	float GetValue() const { return value; }
+
+private:
+	float minValue = 0.0f;
+	float maxValue = 1.0f;
+	float value = 0.5f;
+
+	bool dragging = false;
+
+	//Vector2D mousepos = Engine::GetInstance().input->GetMousePosition();
+
+
+	
+
+	bool Slider() {
+		int mouseX, mouseY;
+		mouseX = Engine::GetInstance().input->GetMousePosition().getX();
+		mouseY = Engine::GetInstance().input->GetMousePosition().getY();
+
+		bool mousePressed = Engine::GetInstance().input->GetMouseButtonDown(1);
+
+		if ((mousePressed && mouseX >= bounds.x) && (mouseX <= bounds.x + bounds.w) && (mouseY >= bounds.y) && (mouseY <= bounds.y + bounds.h))
+		{
+			dragging = true;
+		}
+
+		if (!mousePressed)
+			dragging = false;
+
+		if (dragging)
+		{
+			float relativeX = (float)(mouseX - bounds.x) / bounds.w;
+			if (relativeX < 0.0f) relativeX = 0.0f;
+			if (relativeX > 1.0f) relativeX = 1.0f;
+
+			value = minValue + relativeX * (maxValue - minValue);
+
+			NotifyObserver();
+		}
+		return true;
+	};
 };

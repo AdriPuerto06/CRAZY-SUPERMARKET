@@ -27,7 +27,9 @@ std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id
 	case UIElementType::BUTTON:
 		uiElement = std::make_shared<UIButton>(id, bounds, text);
 		break;
-	}
+	case UIElementType::SLIDER:
+		return std::make_shared<UISlider>(id, bounds, 0.0f, 1.0f, 0.5f);
+	};
 
 	//Set the observer
 	uiElement->observer = observer;

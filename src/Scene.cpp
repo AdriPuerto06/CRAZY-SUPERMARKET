@@ -423,10 +423,58 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		Engine::GetInstance().audio->SetMusicVolume(0.5f);
 		Engine::GetInstance().audio->SetSFXVolume(0.5f);
 		break;
+<<<<<<< Updated upstream
 	case 102:
 		LOG("Audio: 100%");
 		Engine::GetInstance().audio->SetMusicVolume(1.0f);
 		Engine::GetInstance().audio->SetSFXVolume(1.0f);
+=======
+
+	case 203: // more volume music
+		musicVolume = std::min(1.0f, musicVolume + 0.1f);
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+
+	case 212: // less volume sfx
+		sfxVolume = std::max(0.0f, sfxVolume - 0.1f);
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+
+	case 213: // more volume sfx
+		sfxVolume = std::min(1.0f, sfxVolume + 0.1f);
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+
+	case 300: // Music slider
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		musicVolume = slider->GetValue();
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+	}
+
+	case 301: // SFX slider
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		sfxVolume = slider->GetValue();
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+	}
+	default:
+		break;
+	}
+
+}
+
+// *********************************************
+// Combat functions
+// *********************************************
+void Scene::LoadCombatScene(SceneID sceneid) {
+	switch (sceneid) {
+	case SceneID::LEVEL1Combat:
+		//Load the background of the combat scene (players, enemies and background png)
+
+>>>>>>> Stashed changes
 		break;
 	default:
 		break;
@@ -678,6 +726,7 @@ void Scene::PostUpdateCredits()
 // *********************************************
 
 void Scene::LoadSounds()
+<<<<<<< Updated upstream
 {	//mute button
 	SDL_Rect bt8Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 100, "Mute", bt8Pos, this));
@@ -685,13 +734,72 @@ void Scene::LoadSounds()
 	//50% volume button
 	SDL_Rect bt9Pos = { WindowSize.getX() / 2, WindowSize.getY() / 3, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 101, "50% Volume", bt9Pos, this));
+=======
+{
+	Engine::GetInstance().uiManager->CleanUp();
+	//BACK Button
+>>>>>>> Stashed changes
 
 	//100% volume button
 	SDL_Rect bt10Pos = { WindowSize.getX() / 2, WindowSize.getY() / 4, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 102, "Full Volume", bt10Pos, this));
 
+<<<<<<< Updated upstream
 	SDL_Rect bt11Pos = { WindowSize.getX() / 2, WindowSize.getY() / 1, 120, 20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Back", bt11Pos, this));
+=======
+	//MUSIC
+	SDL_Rect musicTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 4 - 30, 240, 30 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 200, "MUSIC", musicTitlePos, this));
+
+	SDL_Rect musicVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 5, 200, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string(static_cast<int>(musicVolume * 100)) + "%").c_str(),
+		musicVolPos, this));
+
+	SDL_Rect musicMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 4 + 45, 45, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 202, " - ", musicMinusPos, this));
+
+	SDL_Rect musicPlusPos = { WindowSize.getX() / 2 + 65, WindowSize.getY() / 4 + 45, 45, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 203, "+", musicPlusPos, this));
+
+	SDL_Rect musicSliderPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 80, 200, 20 };
+	auto musicSlider = std::dynamic_pointer_cast<UISlider>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::SLIDER, 300, "", musicSliderPos, this));
+
+	//SFX
+	SDL_Rect sfxTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 2 - 45, 230, 30 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 210, " SFX ", sfxTitlePos, this));
+
+	SDL_Rect sfxVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 2 + 0, 200, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 211, ("Volumen: " + std::to_string(static_cast<int>(sfxVolume * 100)) + "%").c_str(),
+		sfxVolPos, this));
+
+	SDL_Rect sfxMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 2 + 40, 45, 25 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 212, " - ", sfxMinusPos, this));
+
+	SDL_Rect sfxPlus = { WindowSize.getX()/2 + 75, WindowSize.getY()/2 + 40, 40, 24 };
+    std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+        UIElementType::BUTTON, 213, "+", sfxPlus, this));
+
+	SDL_Rect sfxSliderPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 2 + 80, 200, 20 };
+	auto sfxSlider = std::dynamic_pointer_cast<UISlider>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::SLIDER, 301, "", sfxSliderPos, this));
+
+	//MUTE ALL
+	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
+	const char* muteText = isAudioMuted ? "Unmute All" : "Mute All";
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 100, muteText, mutePos, this));
+>>>>>>> Stashed changes
 }
 
 void Scene::UnloadSounds()
