@@ -12,7 +12,7 @@ static std::map<Sfx, const char*> sfx_paths =
 {
     { s_title_name, "Assets/Audio/Fx/crazy-supermarket.wav" },
     { s_epic_reveal, "Assets/Audio/Fx/logo-epic-reveal.wav" },
-    {jumpscare, "arcade craniacs jumpscare sound effect - Converted with FlexClip.wav"}
+    {jumpscare, "Assets/Audio/Fx/arcade craniacs jumpscare sound effect - Converted with FlexClip.wav"}
 };
 
 Audio::Audio() {
