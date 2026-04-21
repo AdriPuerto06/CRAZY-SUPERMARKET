@@ -487,15 +487,15 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 
-	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
+	//Load Buttos tex
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
 	SDL_Texture* btnStartPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Pressed.png");
 
 	SDL_Texture* btnOptTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Options_Normal.png");
 	SDL_Texture* btnOptPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Options_Pressed.png");
 
-	SDL_Texture* btnMltTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Normal.png");
-	SDL_Texture* btnMltPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Pressed.png");
+	SDL_Texture* btnMltTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Multi_Normal.png");
+	SDL_Texture* btnMltPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Multi_Pressed.png");
 
 	SDL_Texture* btnCredTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Normal.png");
 	SDL_Texture* btnCredPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Pressed.png");
@@ -504,6 +504,7 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 	
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
+
 	// Instantiate a UIButton in the Scene
 	SDL_Rect bt1Pos = { WindowSize.getX()/2 - 46, (WindowSize.getY() / 2) - 60, 92,33};
 	auto btn1 = std::dynamic_pointer_cast<UIButton>(
@@ -515,17 +516,17 @@ void Scene::LoadMainMenu() {
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, " ", bt2Pos, this));
 	if (btn2) btn2->SetTextures(btnOptTex, btnOptPressedTex, btnOptPressedTex);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 60, (WindowSize.getY() / 2) + 24, 120,20 };
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 64, (WindowSize.getY() / 2) + 24, 128,34 };
 	auto btn3 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
-	if (btn3) btn3->SetTextures(NULL, NULL, NULL);
+	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, " ", bt3Pos, this));
+	if (btn3) btn3->SetTextures(btnMltTex, btnMltPressedTex, btnMltPressedTex);
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 52, (WindowSize.getY() / 2) + 54, 104,34 };
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 52, (WindowSize.getY() / 2) + 68, 104,34 };
 	auto btn4 = std::dynamic_pointer_cast<UIButton>(
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, " ", bt4Pos, this));
 	if (btn4) btn4->SetTextures(btnCredTex, btnCredPressedTex, btnCredPressedTex);
 
-	SDL_Rect bt5Pos = { WindowSize.getX() / 2 - 34, WindowSize.getY() / 2 + 98, 68,34 };
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2 - 34, WindowSize.getY() / 2 + 112, 68,34 };
 	auto btn5 = std::dynamic_pointer_cast<UIButton>(
 	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, " ", bt5Pos, this));
 	if (btn5) btn5->SetTextures(btnExitTex, btnExitPressedTex, btnExitPressedTex);
