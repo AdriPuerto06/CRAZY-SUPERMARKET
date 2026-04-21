@@ -217,17 +217,18 @@ void CombatManager::ApplyCombatLogic()
 {
 	if (combatState->turn == "Player") //add here a switch that depending on the name of the attack does something
 	{
-		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
-		combatState->magicPoints -= combatData->players_attacks[combatState->player_id_targeted-1][combatState->player_attack_id_selected-1].magicPoints;
 		CheckAlive();
+		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
+		combatState->magicPoints -= combatData->players_attacks[combatState->player_id_selected-1][combatState->player_attack_id_selected-1].magicPoints;
 		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted - 1], combatState->current_enemies_HP[combatState->enemy_id_targeted - 1]);
 		//UpdateCombatUI(): we need visual info (numbers, bars...)
 		combatState->turn = "Enemy";
+		CheckAlive();
 	}
 	if (combatState->turn == "Enemy")
 	{
-		EnemyAI();
 		CheckAlive();
+		EnemyAI();
 		LOG("Player ID: %i now has %i HP.", combatState->player_id_selected - 1, combatState->current_players_HP[combatState->player_id_selected - 1]);
 		combatState->turn = "Player";
 	}
@@ -299,16 +300,27 @@ void CombatManager::HandleTargetSelection() {
 }
 
 void CombatManager::EnemyAI() {
-
+	
 	srand((unsigned)time(NULL));
 	int random_ID = rand() % (combatData->enemies_id.size()); //get a random ID of an enemy. Will need to check if the enemy is alive
 	int random = rand() % (combatData->enemies_attacks[random_ID].size());
-	if (!combatState->enemies_alive[random_ID]) random_ID = combatState->enemy_id_targeted-1/*-1 is a test, wasn't here previously*/; //if enemy random is not alive, make the one you currently target attack you
-
+	
+	if (!combatState->enemies_alive[random_ID]) //if the enemy going to attack is dead, change the enemy that is going to attack
+	{
+		for (int i = 0; i < combatData->enemies_id.size(); ++i)
+		{
+			if (combatState->enemies_alive[i])
+			{
+				random_ID = i;
+				break;
+			}
+			if (i == combatData->enemies_id.size() - 1) return;
+		}
+	}
 	combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[random_ID][random].dmg;
 	combatState->current_players_HP[combatState->player_id_selected - 1] -= combatState->enemy_attack_dmg_selected;
 	/*combatState->enemy_attack_dmg_selected = combatData->enemies_attacks[0][0].dmg;*/
-	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID, combatData->enemies_attacks[random_ID][random].dmg, combatState->player_id_selected - 1); //we can set the targeted player to be the one you have selected to make things easier
+	LOG("Enemy ID: %i Does %i dmg to Player ID: %i", random_ID+1, combatData->enemies_attacks[random_ID][random].dmg, combatState->player_id_selected - 1); //we can set the targeted player to be the one you have selected to make things easier
 	/*LOG("Enemy ID: %i Does %i dmg to Player ID: %i", 0, combatData->enemies_attacks[0][0].dmg, combatState->player_id_selected);*/
 }
 
@@ -453,7 +465,7 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 		{
 
 			combatData->players_HP.push_back(combat_tree_node.attribute("HP").as_int());
-			for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
+			for (pugi::xml_node current_node = combat_tree_node.child("attack_stats"); current_node != NULL; current_node = current_node.next_sibling("attack_stats"))
 			{
 
 				Attack attack;
@@ -498,10 +510,22 @@ void CombatManager::CheckAlive() // if hp >= 0, alive -> false
 {
 	for (int i = 0; i < combatState->current_enemies_HP.size(); ++i)
 	{
-		if (combatState->current_enemies_HP[i] <= 0)
+		if (combatState->current_enemies_HP[i] <= 0 && combatState->enemies_alive[i])
 		{
 			combatState->enemies_alive[i] = false;
+			LOG("Enemy ID: %i has been killed.", combatData->enemies_id[i]);
+			for (int j = 0; j < combatData->enemies_id.size(); ++j) //change the selected enemy to one that is alive
+			{
+				if (combatState->enemies_alive[j])
+				{
+					combatState->enemy_id_targeted = combatData->enemies_id[j];
+					LOG("Now targeting enemy ID: %i", combatData->enemies_id[j]);
+					break;
+				}
+			}
 		}
+
+
 	}
 
 	for (int i = 0; i < combatState->current_players_HP.size(); ++i)
