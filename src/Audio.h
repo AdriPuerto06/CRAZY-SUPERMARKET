@@ -23,7 +23,8 @@ enum Music {
 enum Sfx {
     s_OFF = 0,
     s_title_name,
-    s_epic_reveal
+    s_epic_reveal,
+    jumpscare
 };
 
 
@@ -51,7 +52,9 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(Sfx id, int repeat);
 
-    //Change Music track
+    //
+    // 
+    // Music track
     bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
 
 	// Volume control

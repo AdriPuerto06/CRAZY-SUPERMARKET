@@ -4,6 +4,7 @@
 #include <list>
 #include <vector>
 #include "Player.h"
+#include "Scene.h"
 // L09: TODO 5: Add attributes to the property structure
 struct Properties
 {
@@ -127,6 +128,11 @@ struct MapData
     std::list<MapLayer*> layers;
 };
 
+struct TeleportZone {
+    float x, y, width, height;   // área en píxeles
+    std::string targetMap;
+};
+
 class Map : public Module
 {
 public:
@@ -176,9 +182,9 @@ public:
     }
 
     //L15 TODO 2: Define a method to load entities from the map XML
-    void LoadEntities(std::shared_ptr<Player>& player);
+    void LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID);
 	//L15 TODO 4: Define a method to save entities to the map XML
-    void SaveEntities(std::shared_ptr<Player> player);
+    void SaveEntities(std::shared_ptr<Player> player, SceneID sceneID);
 
     //Get the layers in order to draw them correctly
     MapLayer* GetLayer(const std::string& name) const;
@@ -191,6 +197,7 @@ public:
 public: 
     std::string mapFileName;
     std::string mapPath;
+    std::vector<TeleportZone> teleportZones;
 
 private:
     bool mapLoaded;

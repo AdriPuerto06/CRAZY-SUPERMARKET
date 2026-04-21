@@ -121,7 +121,8 @@ bool AnimationSet::LoadFromTSX(const char* tsxPath,
 }
 
 void AnimationSet::SetCurrent(const std::string& name) {
-    if (currentName_ == name) return; // no change
+    if (currentName_ == name) return; // no 
+
     if (!Has(name)) return;           // unknown name
     currentName_ = name;
     clips_[currentName_].Reset();

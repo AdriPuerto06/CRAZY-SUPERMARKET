@@ -48,13 +48,14 @@ bool Render::Awake()
 	bool ret = true;
 	float scale = Engine::GetInstance().window->GetScale();
 	SDL_Window* window = Engine::GetInstance().window->window;
-
+	int baseW = Engine::GetInstance().window->GetBaseWidth();
+	int baseH = Engine::GetInstance().window->GetBaseHeight();
 	//L05 TODO 5 - Load the configuration of the Render module
 	
 	// SDL3: no flags; create default renderer and set vsync separately
 	renderer = SDL_CreateRenderer(window, nullptr);
 	SDL_SetRenderScale(renderer, scale, scale);
-	
+
 
 	if (renderer == NULL)
 	{

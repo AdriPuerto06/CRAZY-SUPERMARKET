@@ -15,6 +15,7 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
+#include "CombatManager.h"
 
 
 
@@ -45,6 +46,7 @@ Engine::Engine() {
     entityManager = std::make_shared<EntityManager>();
 	uiManager = std::make_shared<UIManager>(); 
     dialogueManager = std::make_shared<DialogueManager>();
+    combatManager = std::make_shared<CombatManager>();
 
     // Ordered for awake / Start / Update
     // Reverse order of CleanUp
@@ -58,6 +60,7 @@ Engine::Engine() {
     AddModule(std::static_pointer_cast<Module>(scene));
     AddModule(std::static_pointer_cast<Module>(entityManager));
     AddModule(std::static_pointer_cast<Module>(dialogueManager));
+    AddModule(std::static_pointer_cast<Module>(combatManager));
 	// UI Manager on top of the other modules
 	AddModule(std::static_pointer_cast<Module>(uiManager)); 
 
@@ -189,16 +192,19 @@ void Engine::PrepareUpdate()
 void Engine::FinishUpdate()
 {
     // L03: TODO 1: Cap the framerate of the gameloop
-    double currentDt = frameTime.ReadMs();
-	float maxFrameDuration = 1000.0f / targetFrameRate;
-    if (targetFrameRate > 0 && currentDt < maxFrameDuration) {
-        Uint32 delay = (Uint32)(maxFrameDuration - currentDt);
+    if (vsync_Active)
+    {
+        double currentDt = frameTime.ReadMs();
+        float maxFrameDuration = 1000.0f / targetFrameRate;
+        if (targetFrameRate > 0 && currentDt < maxFrameDuration) {
+            Uint32 delay = (Uint32)(maxFrameDuration - currentDt);
 
-        // L03: TODO 2: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
-        PerfTimer delayTimer = PerfTimer();
-        SDL_Delay(delay);
-        //Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
-        //LOG("We waited for %I32u ms and got back in %f ms",delay,delayTimer.ReadMs()); // Uncomment this line to see the results
+            // L03: TODO 2: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+            PerfTimer delayTimer = PerfTimer();
+            SDL_Delay(delay);
+            //Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
+            //LOG("We waited for %I32u ms and got back in %f ms",delay,delayTimer.ReadMs()); // Uncomment this line to see the results
+        }
     }
 
 	// L2: TODO 4: Calculate:

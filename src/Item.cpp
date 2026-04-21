@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "CombatManager.h"
 
 Item::Item() : Entity(EntityType::ITEM)
 {
@@ -67,3 +68,5 @@ bool Item::Destroy()
 	pendingToDelete = true;
 	return true;
 }
+
+

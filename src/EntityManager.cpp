@@ -9,8 +9,6 @@
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
 
-#include "Enemy.h"
-
 EntityManager::EntityManager() : Module()
 {
 	name = "entitymanager";
@@ -79,8 +77,8 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::ITEM:
 		entity = std::make_shared<Item>();
 		break;
-	case EntityType::ENEMY:
-		entity = std::make_shared<Enemy>();
+	case EntityType::BASEENEMY:
+		entity = std::make_shared<BaseEnemy>();
 		break;
 	case EntityType::BASENPC:
 		entity = std::make_shared<BaseNPC>();
@@ -90,6 +88,7 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	}
 
 	entities.push_back(entity);
+	LOG("Created entity with entity_ID: %i", entity->entity_ID);
 
 	return entity;
 }
@@ -102,7 +101,11 @@ void EntityManager::DestroyEntity(std::shared_ptr<Entity> entity)
 
 void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
 {
-	if ( entity != nullptr) entities.push_back(entity);
+	if (entity != nullptr)
+	{
+		entities.push_back(entity);
+		LOG("Created entity with entity_ID: %i", entity->entity_ID);
+	}
 }
 
 std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
@@ -113,6 +116,24 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 		{
 			return entity;
 		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<Entity> EntityManager::GetEnemy(int id) {
+	for (auto& entity : entities) {
+		auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
+		if (enemy && enemy->ID == id)
+			return enemy;
+	}
+	return nullptr;
+}
+
+std::shared_ptr<Entity> EntityManager::GetNPC(int id) {
+	for (auto& entity : entities) {
+		auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
+		if (enemy && enemy->ID == id)
+			return enemy;
 	}
 	return nullptr;
 }
