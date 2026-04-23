@@ -3,165 +3,123 @@
 #include "Scene.h"
 #include <vector>
 
-
 struct Attack {
-	const char* name;
-	int dmg;
-	int magicPoints;
-	std::string effect;
+    const char* name;
+    int dmg;
+    int magicPoints;
+    std::string effect;
 };
 
-enum class  Status
-{
-	NONE,
-	POISONED,
-	PARALIZED,
-	CONFUSED,
-	HEAL,
-	SHIELD,
-	SELFKO
+struct Combatant {
+    int id = -1;
+    int hp = 0;
+    bool alive = true;
+    std::string status = "NONE";
+    std::vector<Attack> attacks;
 };
 
 struct CombatData {
-	std::vector<int> players_id;
-	std::vector<int> players_HP;
-	std::vector<std::vector<Attack>> players_attacks;
-	
-	std::vector<int> enemies_id;
-	std::vector<int> enemies_HP;
-	std::vector<std::vector<Attack>> enemies_attacks;
-	
-	int fight_ID;
+    std::vector<Combatant> players;
+    std::vector<Combatant> enemies;
 
-	int possible_enemy_ID;
+    int fight_ID = -1;
+    int possible_enemy_ID = -1;
 
-	void Clear()
-	{
-		players_attacks.clear();
-		enemies_attacks.clear();
-		players_id.clear();
-		enemies_id.clear();
-		players_HP.clear();
-		enemies_HP.clear();
-	}
+    void Clear()
+    {
+        players.clear();
+        enemies.clear();
+    }
 };
 
 struct CombatState {
-	std::string turn;
+    std::string turn = "Player";
 
-	std::vector<int> current_players_HP;
-	std::vector<int> current_enemies_HP;
-	std::vector<bool> players_alive;
-	std::vector<bool> enemies_alive;
-	std::vector<Status> players_status;
-	std::vector<Status> enemies_status;
+    int enemy_index_targeted = 0;        // index of CombatData::enemies
+    int player_index_selected = 0;       // index of CombatData::players
+    int player_attack_index_selected = 0;
 
-	int enemy_id_targeted;
-	int player_id_targeted;
-	int player_id_selected;
-	int player_attack_dmg_selected;
-	int player_attack_id_selected;
-	int enemy_attack_dmg_selected;
+    int player_attack_dmg_selected = 0;
+    int enemy_attack_dmg_selected = 0;
 
-	bool player_Wins;
-	bool enemy_Wins;
-	bool selecting_target;
+    bool player_Wins = false;
+    bool enemy_Wins = false;
+    bool selecting_target = false;
 
-	int magicPoints;
+    int magicPoints = 0;
 
-	void Init()
-	{
-		enemy_id_targeted = 1;
-		for (int i = 0; i < current_players_HP.size(); ++i)
-		{
-			players_alive.push_back(true);
-			players_status.push_back(Status::NONE);
-		}
-		for (int i = 0; i < current_enemies_HP.size(); ++i)
-		{
-			enemies_alive.push_back(true);
-			enemies_status.push_back(Status::NONE);
-		} //set all to alive
-		turn = "Player";
-		player_Wins = false;
-		enemy_Wins = false;
-		bool selecting_target = false;
-	}
+    void Init(const CombatData& data)
+    {
+        enemy_index_targeted = 0;
+        player_index_selected = 0;
+        player_attack_index_selected = 0;
 
-	void Clear()
-	{
-		current_players_HP.clear();
-		current_enemies_HP.clear();
-		players_alive.clear();
-		enemies_alive.clear();
-		players_status.clear();
-		enemies_status.clear();
-	}
+        turn = "Player";
+        player_Wins = false;
+        enemy_Wins = false;
+        selecting_target = false;
 
+        for (auto& p : const_cast<std::vector<Combatant>&>(data.players)) {
+            p.alive = true;
+            p.status = "NONE";
+        }
+        for (auto& e : const_cast<std::vector<Combatant>&>(data.enemies)) {
+            e.alive = true;
+            e.status = "NONE";
+        }
+    }
 };
 
 class CombatManager : public Module {
 public:
-	CombatManager();
+    CombatManager();
+    virtual ~CombatManager();
 
-	// Destructor
-	virtual ~CombatManager();
+    bool Awake();
+    bool Start();
+    bool Update(float dt);
+    bool PostUpdate();
+    bool CleanUp();
 
-	// Called before render is available
-	bool Awake();
+    bool LoadCombatData(std::string path, std::string fileName);
+    void UnloadCombatUI();
 
-	// Called after Awake
-	bool Start();
+    bool OnUIMouseClickEvent(UIElement* uiElement);
+    void ButtonAction(int ID);
+    void ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID);
+    bool StartCombat();
+    bool ShowAttackOptions(int player_ID);
+    bool ShowItemOptions(int player_ID);
+    bool ChangePlayer();
+    bool ShowOptions(int player_ID);
 
-	// Called every frame
-	bool Update(float dt);
+    void GetTreeAttributes(int fight_ID);
+    void EnemyAI();
 
-	bool PostUpdate();
+    void HandleTargetSelection();
+    void ApplyCombatLogic();
+    void CheckAlive();
+    void MakeAttack(Combatant& target, int damage, const std::string& effect);
 
-	// Called before quitting
-	bool CleanUp();
+    std::vector<bool> itemVector;
 
-	bool LoadCombatData(std::string path, std::string fileName);
-	void UnloadCombatUI();
+    std::string combatFileName;
+    std::string combatPath;
 
-	bool OnUIMouseClickEvent(UIElement* uiElement);
-	void ButtonAction(int ID);
-	void ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID);
-	bool StartCombat(/*std::vector<int> player_IDs, std::vector<int> enemies_IDs*/);
-	bool ShowAttackOptions(int player_ID);
-	bool ShowItemOptions(int player_ID);
-	bool ChangePlayer();
-	bool ShowOptions(int player_ID);
+    CombatData* combatData;
+    CombatState* combatState;
 
-	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
-	void GetTreeAttributes(int fight_ID);
-	//right now this is just a choose randomn
-	void EnemyAI();
+    bool showing_continue = false;
+    bool can_be_clicked = true;
+    bool showingButtonStart = false;
+    bool in_combat = false;
 
-	void HandleTargetSelection();
-	void ApplyCombatLogic();
-	void CheckAlive();
-
-	std::vector<bool> itemVector;
-
-	std::string combatFileName;
-	std::string combatPath;
-
-	CombatData* combatData;
-	CombatState* combatState;
-
-	bool showing_continue;
-	bool can_be_clicked = true;
-	bool showingButtonStart = false;
-	bool in_combat = false;
-
-	bool godMode = false;
-	bool choosingAtk;
+    bool godMode = false;
+    bool choosingAtk = false;
 
 private:
-	pugi::xml_document combatFileXML;
+    pugi::xml_document combatFileXML;
 
-	SceneID timeScene;
-	SceneID currentScene;
-
+    SceneID timeScene;
+    SceneID currentScene;
 };

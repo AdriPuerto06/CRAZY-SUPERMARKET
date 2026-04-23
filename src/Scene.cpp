@@ -595,7 +595,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 11:
 		LOG("Attack clicked");
-		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_index_selected);
 		break;
 	case 12:
 		LOG("Item clicked");
@@ -603,7 +603,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 13:
 		Engine::GetInstance().combatManager->ChangePlayer();
-		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatState->player_id_selected);
+		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);
 		break;
 	case 14:
 		LOG("Scape clicked");
