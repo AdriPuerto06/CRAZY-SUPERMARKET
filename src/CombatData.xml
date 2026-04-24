@@ -74,7 +74,7 @@
 		<!--WarroBo-t - Warrior-->
 		<attack_stats name="Lighting Thrust" magicPoints="3" dmg="9" effect="paralize"></attack_stats>
 		<attack_stats name="Bits explosion" magicPoints="4" dmg="7" effect="none"></attack_stats>
-		<attack_stats name="Rage the Bait" magicPoints="5" dmg="0" effect="escape"></attack_stats>
+		<attack_stats name="Rage the Bait" magicPoints="5" dmg="0" effect="ragebait"></attack_stats>
 		<attack_stats name="Motivational speech" magicPoints="3" dmg="0" effect="buff"></attack_stats>
 
 

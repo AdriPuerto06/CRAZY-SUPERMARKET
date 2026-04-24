@@ -49,10 +49,45 @@ bool Contains(std::vector<int> vec, int val)
 	return false;
 }
 
-void CombatManager::MakeAttack(Combatant& target, int damage, const std::string& effect)
+void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
-	target.hp -= damage;
-	target.status = effect;
+	//effects from the attacker
+	if (attack.effect == "Heal")
+	{
+		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
+									   else { LOG("Enemy ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); };
+	}
+	else if (attack.effect == "SelfKO")
+	{
+		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id); 
+									else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
+	}
+	else if (attack.effect == "Shield")
+	{
+
+	}
+	else if (attack.effect == "Ragebait")
+	{
+		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i failed for the ragebait.", attacker.id);
+		else { LOG("Enemy ID: %i failed for the ragebait.", attacker.id); }
+	}
+	else
+	{
+		target.status = attack.effect;
+	}
+
+	//effects from the target
+	int dmg_reduction = 0;
+	if (target.status == "Shield")
+	{
+		dmg_reduction += SHIELD_DMG_REDUCTION;
+	}
+
+	int dmg_applied = attack.dmg - dmg_reduction;
+	if (dmg_applied < 0) dmg_applied = 0;
+
+	target.hp -= dmg_applied;
+	
 }
 
 CombatManager::CombatManager() : Module()
@@ -212,11 +247,28 @@ void CombatManager::ApplyCombatLogic()
 		Combatant& enemy = combatData->enemies[combatState->enemy_index_targeted];
 		Attack& attack = player.attacks[combatState->player_attack_index_selected];
 
-		MakeAttack(enemy, combatState->player_attack_dmg_selected, attack.effect);
+		if (!(player.status == "Paralized"))
+		{
+			if (player.status == "Confused") //50% chance
+			{
+				bool can_attack = rand() % 2;
+				if (can_attack)
+				{
+					LOG("Player attacked while being confused.");
+					MakeAttack(enemy, combatData->players[combatState->player_attack_index_selected], attack);
+				}
+				else { LOG("Player didn't attack while being confused."); }
+			}
+			else { MakeAttack(enemy, combatData->players[combatState->player_attack_index_selected], attack); }
+		}
+		else { LOG("Player is paralized! Choose another one. Skip turn if all are."); return; }
+		
 
 		combatState->magicPoints -= attack.magicPoints;
 
 		LOG("Enemy ID: %i now has %i HP.", enemy.id, enemy.hp);
+
+		ApplyEffects();
 
 		combatState->turn = "Enemy";
 		CheckAlive();
@@ -232,6 +284,22 @@ void CombatManager::ApplyCombatLogic()
 
 		combatState->turn = "Player";
 	}
+}
+
+void CombatManager::ApplyEffects()
+{
+	for (auto& enemy : combatData->enemies)
+	{
+		std::string effect = enemy.status;
+
+		if (effect == "None") {}
+		if (effect == "Poisoned") { enemy.hp -= POISON_DAMAGE; LOG("Enemy takes poison damage. HP: %i", enemy.hp); }
+		if (effect == "Paralized") {}
+		if (effect == "Heal") {}
+		if (effect == "SeflKO") { enemy.hp -= enemy.hp; enemy.alive = false; LOG("Player Self KOed."); }
+		if (effect == "Shield") {}
+	}
+
 }
 
 
@@ -288,16 +356,16 @@ void CombatManager::HandleTargetSelection()
 
 void CombatManager::EnemyAI()
 {
-    std::vector<int> aliveIndices;
+    std::vector<int> possibleIndices;
     for (int i = 0; i < (int)combatData->enemies.size(); ++i)
     {
-        if (combatData->enemies[i].alive)
-            aliveIndices.push_back(i);
+        if (combatData->enemies[i].alive && !(combatData->enemies[i].status == "Paralized"))
+			possibleIndices.push_back(i);
     }
 
-    if (aliveIndices.empty()) return;
+    if (possibleIndices.empty()) return;
 
-    int random_index_ID = aliveIndices[rand() % aliveIndices.size()];
+    int random_index_ID = possibleIndices[rand() % possibleIndices.size()];
     Combatant& enemy = combatData->enemies[random_index_ID];
 
     if (enemy.attacks.empty()) return;
@@ -305,8 +373,23 @@ void CombatManager::EnemyAI()
     int random_index_attack = rand() % enemy.attacks.size();
     Attack& atk = enemy.attacks[random_index_attack];
 
-    int dmg = atk.dmg;
-    combatState->enemy_attack_dmg_selected = dmg;
+	int dmg;
+	if (enemy.status == "Confused")
+	{
+		bool can_attack = rand() % 2;
+		if (can_attack)
+		{
+			LOG("Enemy attack while being confused.");
+			dmg = atk.dmg;
+			combatState->enemy_attack_dmg_selected = dmg;
+		}
+		else { LOG("Enemy didn't attack while being confused."); return; }
+	}
+	else 
+	{
+		dmg = atk.dmg;
+		combatState->enemy_attack_dmg_selected = dmg;
+	}
 
     Combatant& player = combatData->players[combatState->player_index_selected];
     player.hp -= dmg;
@@ -471,6 +554,7 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 		Combatant player;
 		player.id = id;
 		player.hp = combat_tree_node.attribute("HP").as_int();
+		player.type = EntityType::PLAYER;
 
 		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
 			current_node != NULL;
@@ -498,6 +582,7 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 		Combatant enemy;
 		enemy.id = id;
 		enemy.hp = combat_tree_node.attribute("HP").as_int();
+		enemy.type = EntityType::BASEENEMY;
 
 		for (pugi::xml_node current_node = combat_tree_node.child("attack");
 			current_node != NULL;

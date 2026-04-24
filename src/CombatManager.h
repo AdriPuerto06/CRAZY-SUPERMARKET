@@ -3,6 +3,11 @@
 #include "Scene.h"
 #include <vector>
 
+//Effects
+#define POISON_DAMAGE 2
+#define HEAL_HITPOINTS 5
+#define SHIELD_DMG_REDUCTION 5
+
 struct Attack {
     const char* name;
     int dmg;
@@ -16,6 +21,7 @@ struct Combatant {
     bool alive = true;
     std::string status = "NONE";
     std::vector<Attack> attacks;
+    EntityType type = EntityType::UNKNOWN;
 };
 
 struct CombatData {
@@ -98,8 +104,9 @@ public:
 
     void HandleTargetSelection();
     void ApplyCombatLogic();
+    void ApplyEffects();
     void CheckAlive();
-    void MakeAttack(Combatant& target, int damage, const std::string& effect);
+    void MakeAttack(Combatant& target, Combatant& attacker, Attack attack);
 
     std::vector<bool> itemVector;
 
