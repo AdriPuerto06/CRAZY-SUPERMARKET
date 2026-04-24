@@ -7,6 +7,7 @@
 #define POISON_DAMAGE 2
 #define HEAL_HITPOINTS 5
 #define SHIELD_DMG_REDUCTION 5
+#define BUFF_DMG_INCREASE 3
 
 struct Attack {
     const char* name;
@@ -20,6 +21,7 @@ struct Combatant {
     int hp = 0;
     bool alive = true;
     std::string status = "NONE";
+    int status_duration = -1;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
 };

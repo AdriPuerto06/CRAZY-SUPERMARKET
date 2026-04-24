@@ -51,7 +51,7 @@ bool Contains(std::vector<int> vec, int val)
 
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
-	//effects from the attacker
+	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "Heal")
 	{
 		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
@@ -62,32 +62,43 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id); 
 									else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
 	}
-	else if (attack.effect == "Shield")
-	{
-
-	}
 	else if (attack.effect == "Ragebait")
 	{
-		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i failed for the ragebait.", attacker.id);
-		else { LOG("Enemy ID: %i failed for the ragebait.", attacker.id); }
+		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
+		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
+	}
+	else if (attack.effect == "Shield")
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); attacker.status = "Shield"; }
+		else { LOG("Enemy ID: %i activates shield.", attacker.id); attacker.status = "Shield"; };
+	}
+	else if (attack.effect == "Buff") 
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
+		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
 	}
 	else
 	{
 		target.status = attack.effect;
 	}
 
-	//effects from the target
+	//effects of the target that affect the attacker
 	int dmg_reduction = 0;
 	if (target.status == "Shield")
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
 	}
+	if (attacker.status == "Buff")
+	{
+		dmg_reduction -= BUFF_DMG_INCREASE;
+	}
 
 	int dmg_applied = attack.dmg - dmg_reduction;
-	if (dmg_applied < 0) dmg_applied = 0;
+	if (dmg_applied < 0) dmg_applied = 0; //clamp
 
 	target.hp -= dmg_applied;
-	
+	if (attacker.type == EntityType::PLAYER) { LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
+	else { LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
 }
 
 CombatManager::CombatManager() : Module()
@@ -255,18 +266,18 @@ void CombatManager::ApplyCombatLogic()
 				if (can_attack)
 				{
 					LOG("Player attacked while being confused.");
-					MakeAttack(enemy, combatData->players[combatState->player_attack_index_selected], attack);
+					MakeAttack(enemy, combatData->players[combatState->player_index_selected], attack);
 				}
 				else { LOG("Player didn't attack while being confused."); }
 			}
-			else { MakeAttack(enemy, combatData->players[combatState->player_attack_index_selected], attack); }
+			else { MakeAttack(enemy, combatData->players[combatState->player_index_selected], attack); }
 		}
 		else { LOG("Player is paralized! Choose another one. Skip turn if all are."); return; }
 		
 
 		combatState->magicPoints -= attack.magicPoints;
 
-		LOG("Enemy ID: %i now has %i HP.", enemy.id, enemy.hp);
+		LOG("Magic Points: %i.", combatState->magicPoints);
 
 		ApplyEffects();
 
@@ -279,10 +290,12 @@ void CombatManager::ApplyCombatLogic()
 		CheckAlive();
 		EnemyAI();
 
-		Combatant& player = combatData->players[combatState->player_index_selected];
-		LOG("Player ID: %i now has %i HP.", player.id, player.hp);
+		/*Combatant& player = combatData->players[combatState->player_index_selected];
+		LOG("Player ID: %i now has %i HP.", player.id, player.hp);*/
 
+		ApplyEffects();
 		combatState->turn = "Player";
+
 	}
 }
 
@@ -293,12 +306,33 @@ void CombatManager::ApplyEffects()
 		std::string effect = enemy.status;
 
 		if (effect == "None") {}
-		if (effect == "Poisoned") { enemy.hp -= POISON_DAMAGE; LOG("Enemy takes poison damage. HP: %i", enemy.hp); }
-		if (effect == "Paralized") {}
-		if (effect == "Heal") {}
-		if (effect == "SeflKO") { enemy.hp -= enemy.hp; enemy.alive = false; LOG("Player Self KOed."); }
-		if (effect == "Shield") {}
+		if (effect == "poisoned") { enemy.hp -= POISON_DAMAGE; LOG("Enemy ID: %i takes poison damage. HP: %i", enemy.id ,enemy.hp); }
+		if (effect == "paralized")
+		{
+			if (enemy.status_duration = 1) enemy.status = "None";
+		}
+		if (effect == "heal") {}
+		if (effect == "sield") 
+		{
+			if (enemy.status_duration = 1) enemy.status = "None";
+		}
+
+		
 	}
+	for (auto& player : combatData->players)
+	{
+		std::string effect = player.status;
+
+		if (effect == "None") {}
+		if (effect == "poisoned") { player.hp -= POISON_DAMAGE; LOG("Player ID: %i takes poison damage. HP: %i", player.id, player.hp); }
+		if (effect == "paralized") 
+		{
+			if (player.status_duration = 1) player.status = "None";
+		}
+		if (effect == "heal") {}
+		if (effect == "shield") {}
+	}
+	
 
 }
 
@@ -367,37 +401,29 @@ void CombatManager::EnemyAI()
 
     int random_index_ID = possibleIndices[rand() % possibleIndices.size()];
     Combatant& enemy = combatData->enemies[random_index_ID];
+	Combatant& player = combatData->players[combatState->player_index_selected];
 
     if (enemy.attacks.empty()) return;
 
     int random_index_attack = rand() % enemy.attacks.size();
-    Attack& atk = enemy.attacks[random_index_attack];
+    Attack& attack = enemy.attacks[random_index_attack];
 
-	int dmg;
 	if (enemy.status == "Confused")
 	{
 		bool can_attack = rand() % 2;
 		if (can_attack)
 		{
 			LOG("Enemy attack while being confused.");
-			dmg = atk.dmg;
-			combatState->enemy_attack_dmg_selected = dmg;
+			MakeAttack(player, enemy, attack);
 		}
 		else { LOG("Enemy didn't attack while being confused."); return; }
 	}
 	else 
 	{
-		dmg = atk.dmg;
-		combatState->enemy_attack_dmg_selected = dmg;
+		MakeAttack(player, enemy, attack);
 	}
 
-    Combatant& player = combatData->players[combatState->player_index_selected];
-    player.hp -= dmg;
-
-    LOG("Enemy ID: %i does %i dmg to Player ID: %i",
-        enemy.id,
-        dmg,
-        player.id);
+	ApplyEffects();
 }
 
 

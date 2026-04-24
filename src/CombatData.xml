@@ -11,7 +11,7 @@
 		<!--Protagonist - Fighter-->
 		<attack_stats name="Jet Punch" magicPoints="3" dmg="10" effect="none"></attack_stats>
 		<attack_stats name="Fidget Dance" magicPoints="2" dmg="7" effect="none"></attack_stats>
-		<attack_stats name="Low kick chill" magicPoints="0" dmg="3" effect="none"></attack_stats>
+		<attack_stats name="Low kick chill" magicPoints="0" dmg="3" effect="poisoned"></attack_stats>
 		<attack_stats name="Punch extorsion" magicPoints="5" dmg="15" effect="none"></attack_stats>
 		
 		<item name="Item1" heal="5"></item>
@@ -27,7 +27,7 @@
 		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none"></attack_stats>
 		<attack_stats name="Slutty branches" magicPoints="2" dmg="5" effect="none"></attack_stats>
 		<attack_stats name="Poisonous kiss" magicPoints="1" dmg="0" effect="poisoned"></attack_stats>
-		<attack_stats name="Golden rain" magicPoints="5" dmg="3" effect="paralize"></attack_stats>
+		<attack_stats name="Golden rain" magicPoints="5" dmg="3" effect="paralized"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>
@@ -72,7 +72,7 @@
 		<attack name="Attack4" dmg ="4"></attack>-->
 
 		<!--WarroBo-t - Warrior-->
-		<attack_stats name="Lighting Thrust" magicPoints="3" dmg="9" effect="paralize"></attack_stats>
+		<attack_stats name="Lighting Thrust" magicPoints="3" dmg="9" effect="paralized"></attack_stats>
 		<attack_stats name="Bits explosion" magicPoints="4" dmg="7" effect="none"></attack_stats>
 		<attack_stats name="Rage the Bait" magicPoints="5" dmg="0" effect="ragebait"></attack_stats>
 		<attack_stats name="Motivational speech" magicPoints="3" dmg="0" effect="buff"></attack_stats>
@@ -91,7 +91,7 @@
 		<attack_stats name="Hit a Nada" magicPoints="1" dmg="6" effect="none"></attack_stats>
 		<attack_stats name="Shoeless Dance" magicPoints="3" dmg="4" effect="confused"></attack_stats>
 		<attack_stats name="Bum bum" magicPoints="4" dmg="12" effect="none"></attack_stats>
-		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralize"></attack_stats>
+		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralized"></attack_stats>
 
 
 		<item name="Item1" heal="5"></item>
