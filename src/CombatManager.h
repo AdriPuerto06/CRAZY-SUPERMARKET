@@ -3,20 +3,34 @@
 #include "Scene.h"
 #include <vector>
 
+
 struct Attack {
 	const char* name;
 	int dmg;
+	int magicPoints;
+	std::string effect;
+};
+
+enum class  Status
+{
+	NONE,
+	POISONED,
+	PARALIZED,
+	CONFUSED,
+	HEAL,
+	SHIELD,
+	SELFKO
 };
 
 struct CombatData {
 	std::vector<int> players_id;
 	std::vector<int> players_HP;
 	std::vector<std::vector<Attack>> players_attacks;
-
+	
 	std::vector<int> enemies_id;
 	std::vector<int> enemies_HP;
 	std::vector<std::vector<Attack>> enemies_attacks;
-
+	
 	int fight_ID;
 
 	int possible_enemy_ID;
@@ -39,16 +53,21 @@ struct CombatState {
 	std::vector<int> current_enemies_HP;
 	std::vector<bool> players_alive;
 	std::vector<bool> enemies_alive;
+	std::vector<Status> players_status;
+	std::vector<Status> enemies_status;
 
 	int enemy_id_targeted;
 	int player_id_targeted;
 	int player_id_selected;
 	int player_attack_dmg_selected;
+	int player_attack_id_selected;
 	int enemy_attack_dmg_selected;
 
 	bool player_Wins;
 	bool enemy_Wins;
 	bool selecting_target;
+
+	int magicPoints;
 
 	void Init()
 	{
@@ -56,10 +75,12 @@ struct CombatState {
 		for (int i = 0; i < current_players_HP.size(); ++i)
 		{
 			players_alive.push_back(true);
+			players_status.push_back(Status::NONE);
 		}
 		for (int i = 0; i < current_enemies_HP.size(); ++i)
 		{
 			enemies_alive.push_back(true);
+			enemies_status.push_back(Status::NONE);
 		} //set all to alive
 		turn = "Player";
 		player_Wins = false;
@@ -73,6 +94,8 @@ struct CombatState {
 		current_enemies_HP.clear();
 		players_alive.clear();
 		enemies_alive.clear();
+		players_status.clear();
+		enemies_status.clear();
 	}
 
 };

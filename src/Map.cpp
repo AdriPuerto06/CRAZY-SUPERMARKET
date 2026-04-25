@@ -202,7 +202,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 int ID = objectNode.attribute("id").as_int();
 
                 // Create entity based on type
-                if (entityType == "Player") 
+                if (entityType == "Player") //we will have to change the logic to add more players, this code asumes there's only 1
                 {
                     // Create Player entity
                     if (player == nullptr) {
@@ -216,16 +216,21 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         player->SetPosition(Vector2D(pos.getX(), pos.getY()));
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
                     }
+                    int HP;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
                     {
-                        int HP = propertyNode.attribute("value").as_int();
-
-                        if (HP > 0) {
-                            player->HP =  propertyNode.attribute("value").as_int();
+                        std::string name = propertyNode.attribute("name").as_string();
+                        if (name == "HP")
+                        {
+                            HP = propertyNode.attribute("value").as_int();
                             LOG("player HP: %d", player->HP);
                         }
+                        if (name == "magicPoints")
+                            magicPoints = propertyNode.attribute("value").as_int(); //map has magicPoints
+
+                        
                     }
                 }
 
