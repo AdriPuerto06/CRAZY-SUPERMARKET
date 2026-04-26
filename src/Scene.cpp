@@ -117,6 +117,26 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render->UpdateScale();
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		if (!isAudioMuted)
+		{
+			musicVolume = 0.0f;
+			sfxVolume = 0.0f;
+			Engine::GetInstance().audio->SetMusicVolume(0.0f);
+			Engine::GetInstance().audio->SetSFXVolume(0.0f);
+			LOG("All audio muted");
+		}
+		else
+		{
+			musicVolume = 1.0f;
+			sfxVolume = 1.0f;
+			Engine::GetInstance().audio->SetMusicVolume(1.0f);
+			Engine::GetInstance().audio->SetSFXVolume(1.0f);
+			LOG("All audio restored");
+		}
+	}
+
 	return true;
 }
 
