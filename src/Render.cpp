@@ -182,14 +182,22 @@ void Render::UpdateScale()
 }
 
 // Blit to screen
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivotX, int pivotY, bool use_camera) const
 {
 	bool ret = true;
-	//int scale = Engine::GetInstance().window->GetScale();
-	// SDL3 uses float rects for rendering
+
 	SDL_FRect rect;
-	rect.x = (float)((int)(camera.x) + x);
-	rect.y = (float)((int)(camera.y) + y);
+
+	if (use_camera)
+	{
+		rect.x = (float)((int)camera.x + x);
+		rect.y = (float)((int)camera.y + y);
+	}
+	else
+	{
+		rect.x = (float)x;
+		rect.y = (float)y;
+	}
 
 	if (section != NULL)
 	{
@@ -228,7 +236,6 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 		p = &pivot;
 	}
 
-	// SDL3: returns bool; map to int-style check
 	int rc = SDL_RenderTextureRotated(renderer, texture, src, &rect, angle, p, SDL_FLIP_NONE) ? 0 : -1;
 	if (rc != 0)
 	{
@@ -238,7 +245,6 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	return ret;
 }
-
 bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
