@@ -52,27 +52,30 @@ bool Contains(std::vector<int> vec, int val)
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
 	//effects that affect the attacker (heal itself, buff itself...)
-	if (attack.effect == "Heal")
+	if (attack.effect == "none")
+	{
+	}
+	else if (attack.effect == "heal")
 	{
 		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
 									   else { LOG("Enemy ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); };
 	}
-	else if (attack.effect == "SelfKO")
+	else if (attack.effect == "selfKO")
 	{
 		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id); 
 									else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
 	}
-	else if (attack.effect == "Ragebait")
+	else if (attack.effect == "ragebait")
 	{
 		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
 		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
 	}
-	else if (attack.effect == "Shield")
+	else if (attack.effect == "shield")
 	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); attacker.status = "Shield"; }
-		else { LOG("Enemy ID: %i activates shield.", attacker.id); attacker.status = "Shield"; };
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); attacker.status = "shield"; }
+		else { LOG("Enemy ID: %i activates shield.", attacker.id); attacker.status = "shield"; };
 	}
-	else if (attack.effect == "Buff") 
+	else if (attack.effect == "buff") 
 	{
 		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
 		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
@@ -84,13 +87,13 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 
 	//effects of the target that affect the attacker
 	int dmg_reduction = 0;
-	if (target.status == "Shield")
+	if (target.status == "shield")
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
 		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", attacker.id, SHIELD_DMG_REDUCTION);}
 		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", attacker.id, SHIELD_DMG_REDUCTION);}
 	}
-	if (attacker.status == "Buff")
+	if (attacker.status == "buff")
 	{
 		dmg_reduction -= BUFF_DMG_INCREASE;
 		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
@@ -101,8 +104,8 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	if (dmg_applied < 0) dmg_applied = 0; //clamp
 
 	target.hp -= dmg_applied;
-	if (attacker.type == EntityType::PLAYER) { LOG("Player makes attack: %s", attack.name); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
-	else { LOG("Enemy makes attack: %s", attack.name); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
+	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
+	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
 }
 
 CombatManager::CombatManager() : Module()
@@ -240,12 +243,12 @@ void CombatManager::ButtonAction(int ID)
 
 	combatState->player_attack_index_selected = attackIndex;
 
-	LOG("Attack %i: Damage: %i, name: %s, effect: %s",
+	LOG("Attack ID: %i: Damage: %i, name: %s, effect: %s",
 		ID,
 		combatState->player_attack_dmg_selected,
-		attacks[attackIndex].name),
-		attacks[attackIndex].effect;
-
+		attacks[attackIndex].name,
+		attacks[attackIndex].effect.c_str());
+		
 	combatState->selecting_target = true;
 	LOG("Select enemy with LEFT/RIGHT \t Press ENTER to confirm.");
 
@@ -318,18 +321,18 @@ void CombatManager::ApplyEffects()
 			if (effect == "poisoned") { enemy.hp -= POISON_DAMAGE; LOG("Enemy ID: %i takes poison damage. HP: %i", enemy.id, enemy.hp); }
 			if (effect == "paralized")
 			{
-				if (enemy.status_duration = 1)
+				if (enemy.status_duration == 2)
 				{
 					enemy.status = "none";
 					LOG("Enemy ID: %i is no longer paralized.", enemy.id);
 					enemy.status_duration = 0;
 				}
-				else { enemy.status_duration++; }
+				else { enemy.status_duration++; LOG("Enemy ID: %i remains paralized. Remaining turns: %i", enemy.id, 3-enemy.status_duration); /*When status_duration is 0, the next turn will not attack.*/ } 
 			}
 			if (effect == "heal") {}
 			if (effect == "shield")
 			{
-				if (enemy.status_duration = 1)
+				if (enemy.status_duration == 1)
 				{
 					enemy.status = "none";
 					LOG("Enemy ID: %i has no longer a shield.", enemy.id);
@@ -349,18 +352,18 @@ void CombatManager::ApplyEffects()
 			if (effect == "poisoned") { player.hp -= POISON_DAMAGE; LOG("Player ID: %i takes poison damage. HP: %i", player.id, player.hp); }
 			if (effect == "paralized")
 			{
-				if (player.status_duration = 1)
+				if (player.status_duration == 2)
 				{
 					player.status = "none";
 					LOG("Player ID: %i is no longer paralized.", player.id);
 					player.status_duration = 0;
 				}
-				else { player.status_duration++; }
+				else { player.status_duration++; LOG("Player ID: %i remains paralized. Remaining turns: %i", player.id, 3 - player.status_duration);}
 			}
 			if (effect == "heal") {}
 			if (effect == "shield") 
 			{
-				if (player.status_duration = 1)
+				if (player.status_duration == 1)
 				{
 					player.status = "none";
 					LOG("Enemy ID: %i has no longer a shield.", player.id);
@@ -431,7 +434,7 @@ void CombatManager::EnemyAI()
     std::vector<int> possibleIndices;
     for (int i = 0; i < (int)combatData->enemies.size(); ++i)
     {
-        if (combatData->enemies[i].alive && !(combatData->enemies[i].status == "Paralized"))
+        if (combatData->enemies[i].alive && !(combatData->enemies[i].status == "paralized"))
 			possibleIndices.push_back(i);
     }
 
@@ -659,6 +662,7 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 			Attack attack;
 			attack.name = current_node.attribute("name").as_string();
 			attack.dmg = current_node.attribute("dmg").as_int();
+			attack.effect = current_node.attribute("effect").as_string();
 			enemy.attacks.push_back(attack);
 		}
 

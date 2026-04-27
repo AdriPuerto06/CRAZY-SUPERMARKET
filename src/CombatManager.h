@@ -6,7 +6,7 @@
 //Effects
 #define POISON_DAMAGE 2
 #define HEAL_HITPOINTS 5
-#define SHIELD_DMG_REDUCTION 5
+#define SHIELD_DMG_REDUCTION 3
 #define BUFF_DMG_INCREASE 3
 
 struct Attack {
@@ -20,7 +20,7 @@ struct Combatant {
     int id = -1;
     int hp = 0;
     bool alive = true;
-    std::string status = "NONE";
+    std::string status = "none";
     int status_duration = -1;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
@@ -69,11 +69,11 @@ struct CombatState {
 
         for (auto& p : const_cast<std::vector<Combatant>&>(data.players)) {
             p.alive = true;
-            p.status = "NONE";
+            p.status = "none";
         }
         for (auto& e : const_cast<std::vector<Combatant>&>(data.enemies)) {
             e.alive = true;
-            e.status = "NONE";
+            e.status = "none";
         }
     }
 };

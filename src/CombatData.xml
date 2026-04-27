@@ -9,7 +9,7 @@
 		<attack name="Attack4" dmg ="4"></attack>-->
 
 		<!--Protagonist - Fighter-->
-		<attack_stats name="Jet Punch" magicPoints="3" dmg="4" effect="none"></attack_stats>
+		<attack_stats name="Jet Punch" magicPoints="3" dmg="4" effect="shield"></attack_stats>
 		<attack_stats name="Fidget Dance" magicPoints="2" dmg="7" effect="none"></attack_stats>
 		<attack_stats name="Low kick chill" magicPoints="0" dmg="3" effect="poisoned"></attack_stats>
 		<attack_stats name="Punch extorsion" magicPoints="5" dmg="3" effect="paralized"></attack_stats>
@@ -99,28 +99,28 @@
 	</player>
 	
 	<enemy id =" 1" HP="15">
-		<attack name="Attack1" dmg ="5"></attack>
-		<attack name="Attack2" dmg ="3"></attack>
-		<attack name ="Attack3" dmg="4"></attack>
-		<attack name="Attack4" dmg="7"></attack>
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="7" effect="none"></attack>
 	</enemy>
 	<enemy id =" 2" HP="15">
-		<attack name="Attack1" dmg ="7"></attack>
-		<attack name="Attack2" dmg ="1"></attack>
-		<attack name ="Attack3" dmg="2"></attack>
-		<attack name="Attack4" dmg="6"></attack>
+		<attack name="Attack1" dmg ="7" effect="none"></attack>
+		<attack name="Attack2" dmg ="1" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
 	</enemy>
 	<enemy id =" 3" HP="10">
-		<attack name="Attack1" dmg ="5"></attack>
-		<attack name="Attack2" dmg ="3"></attack>
-		<attack name ="Attack3" dmg="2"></attack>
-		<attack name="Attack4" dmg="1"></attack>
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
 	<enemy id =" 4" HP="5">
-		<attack name="Attack1" dmg ="3"></attack>
-		<attack name="Attack2" dmg ="9"></attack>
-		<attack name ="Attack3" dmg="2"></attack>
-		<attack name="Attack4" dmg="1"></attack>
+		<attack name="Attack1" dmg ="3" effect="none"></attack>
+		<attack name="Attack2" dmg ="9" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
 
 </combat>
