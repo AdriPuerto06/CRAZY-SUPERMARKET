@@ -90,8 +90,8 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	if (target.status == "shield")
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", attacker.id, SHIELD_DMG_REDUCTION);}
-		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", attacker.id, SHIELD_DMG_REDUCTION);}
+		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
+		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
 	}
 	if (attacker.status == "buff")
 	{
@@ -366,7 +366,7 @@ void CombatManager::ApplyEffects()
 				if (player.status_duration == 1)
 				{
 					player.status = "none";
-					LOG("Enemy ID: %i has no longer a shield.", player.id);
+					LOG("Player ID: %i has no longer a shield.", player.id);
 					player.status_duration = 0;
 				}
 				else { player.status_duration++; }
