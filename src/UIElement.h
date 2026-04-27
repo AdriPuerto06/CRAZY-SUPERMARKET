@@ -116,7 +116,36 @@ public:
 		this->bounds = bounds;
 	}
 
-	bool Update(float dt) override;
+	bool Update(float dt) override
+	{
+		Slider();
+		SDL_Renderer* renderer = Engine::GetInstance().render->renderer;
+		
+		//barra
+		SDL_FRect rectF = {
+		(float)bounds.x,
+		(float)bounds.y,
+		(float)bounds.w,
+		(float)bounds.h
+		};
+
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+		SDL_RenderFillRect(renderer, &rectF);
+		//knob
+		float t = (value - minValue) / (maxValue - minValue);
+		float knobX = bounds.x + t * bounds.w;
+
+		SDL_FRect knobF = {
+			knobX - 5.0f,
+			(float)bounds.y,
+			10.0f,
+			(float)bounds.h
+		};
+
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderFillRect(renderer, &knobF);
+		return true;
+	}
 
 	float GetValue() const { return value; }
 

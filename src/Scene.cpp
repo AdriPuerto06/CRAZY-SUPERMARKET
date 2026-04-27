@@ -15,6 +15,8 @@
 #include "UIManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
+#include "UIElement.h"
+#include "UISlider.cpp"
 
 Scene::Scene() : Module()
 {
@@ -23,7 +25,8 @@ Scene::Scene() : Module()
 
 // Destructor
 Scene::~Scene()
-{}
+{
+}
 
 // Called before render is available
 bool Scene::Awake()
@@ -41,11 +44,11 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	
+
 	LoadScene(currentScene); // empieza en Intro Screen
 
-	
-	
+
+
 	return true;
 }
 
@@ -228,7 +231,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL3:
 		break;
-	case SceneID::OPTIONS: 
+	case SceneID::OPTIONS:
 		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::MULTIPLAYER:
@@ -403,7 +406,7 @@ void Scene::UnloadCurrentScene() {
 		UnloadBattle();
 		break;
 	}
-	
+
 }
 
 // *********************************************
@@ -428,7 +431,7 @@ void Scene::LoadIntroScreen()
 
 void Scene::UpdateIntroScreen(float dt)
 {
-	
+
 
 	if (splashTime == 0.0f && !sfxLogoPlayed) {
 		Engine::GetInstance().audio->SetSFXVolume(0.2f);
@@ -437,7 +440,7 @@ void Scene::UpdateIntroScreen(float dt)
 	}
 
 	if (teamImg != nullptr && splashTime < logoGameTimer) {
-		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX()/2 - 360, 0);
+		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 360, 0);
 	}
 
 	splashTime += dt / 4000.0f;
@@ -450,7 +453,7 @@ void Scene::UpdateIntroScreen(float dt)
 			sfxTeamPlayed = true;
 		}
 		splashTime += dt / 1000.0f;
-		Engine::GetInstance().render->DrawTexture(logoImg, WindowSize.getX()/2 - 530, WindowSize.getY()/2 - 360);
+		Engine::GetInstance().render->DrawTexture(logoImg, WindowSize.getX() / 2 - 530, WindowSize.getY() / 2 - 360);
 	}
 
 	if (splashTime >= logoTeamTimer) {
@@ -500,63 +503,63 @@ void Scene::LoadMainMenu() {
 
 	SDL_Texture* btnCredTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Normal.png");
 	SDL_Texture* btnCredPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Pressed.png");
-		
+
 	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
 	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
-	
+
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
 
 	// Instantiate a UIButton in the Scene
-	SDL_Rect bt1Pos = { WindowSize.getX()/2 - 115, (WindowSize.getY() / 2) - 200, 229,90};
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 115, (WindowSize.getY() / 2) - 200, 229,90 };
 	auto btn1 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, " ", bt1Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, " ", bt1Pos, this));
 	if (btn1) btn1->SetTextures(btnStartTex, btnStartPressedTex, btnStartPressedTex);
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 132, (WindowSize.getY() / 2) - 100, 264,85 };
 	auto btn2 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, " ", bt2Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, " ", bt2Pos, this));
 	if (btn2) btn2->SetTextures(btnOptTex, btnOptPressedTex, btnOptPressedTex);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 160, (WindowSize.getY() / 2), 320,85 };
 	auto btn3 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, " ", bt3Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, " ", bt3Pos, this));
 	if (btn3) btn3->SetTextures(btnMltTex, btnMltPressedTex, btnMltPressedTex);
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 130, (WindowSize.getY() / 2) + 100, 260,85 };
 	auto btn4 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, " ", bt4Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, " ", bt4Pos, this));
 	if (btn4) btn4->SetTextures(btnCredTex, btnCredPressedTex, btnCredPressedTex);
 
 	SDL_Rect bt5Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 200, 170,85 };
 	auto btn5 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, " ", bt5Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, " ", bt5Pos, this));
 	if (btn5) btn5->SetTextures(btnExitTex, btnExitPressedTex, btnExitPressedTex);
 
 }
 
 void Scene::UnloadMainMenu() {
 	// Clean up UI elements related to the main menu
-	Engine::GetInstance().uiManager->CleanUp();	
+	Engine::GetInstance().uiManager->CleanUp();
 
 }
 
 void Scene::UpdateMainMenu(float dt)
 {
-	
+
 }
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
 	switch (uiElement->id)
 	{
-	case 1: 
+	case 1:
 		LOG("Main Menu: Start clicked");
 		ChangeScene(SceneID::LEVEL1);
 		break;
-	case 2: 
+	case 2:
 		LOG("LvL2");
 		ChangeScene(SceneID::LEVEL2);
 		break;
-	case 3: 
+	case 3:
 		LOG("Main Menu: Options clicked");
 		timeScene = currentScene;
 		ChangeScene(SceneID::OPTIONS);
@@ -627,10 +630,10 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		}
 		break;
 	case 17:
-		
+
 		Engine::GetInstance().vsync_Active = !Engine::GetInstance().vsync_Active;
 		LOG("Grafics: VSync %i", Engine::GetInstance().vsync_Active);
-		
+
 		break;
 	case 100:
 		if (!isAudioMuted)
@@ -662,23 +665,6 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		musicVolume = std::min(1.0f, musicVolume + 0.1f);
 		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
 		break;
-	case 18:
-		LOG("Options: Back clicked");
-		
-		ChangeScene(SceneID::MAIN_MENU);
-		break;
-	case 101:
-		LOG("Audio: 50%");
-		Engine::GetInstance().audio->SetMusicVolume(0.5f);
-		Engine::GetInstance().audio->SetSFXVolume(0.5f);
-		break;
-
-	case 102:
-		LOG("Audio: 100%");
-		Engine::GetInstance().audio->SetMusicVolume(1.0f);
-		Engine::GetInstance().audio->SetSFXVolume(1.0f);
-
-
 
 	case 212: // less volume sfx
 		sfxVolume = std::max(0.0f, sfxVolume - 0.1f);
@@ -690,21 +676,6 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
 		break;
 
-	case 300: // Music slider
-	{
-		UISlider* slider = (UISlider*)uiElement;
-		musicVolume = slider->GetValue();
-		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
-		break;
-	}
-
-	case 301: // SFX slider
-	{
-		UISlider* slider = (UISlider*)uiElement;
-		sfxVolume = slider->GetValue();
-		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
-		break;
-	}
 	default:
 		break;
 	}
@@ -776,7 +747,7 @@ void Scene::UpdateLevel1(float dt) {
 
 	//provisional para bajar y subir la vida del player
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
-		player->HP --;
+		player->HP--;
 		LOG("TAKE DAMAGE --> player HP: %d", player->HP);
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
@@ -847,7 +818,7 @@ void Scene::UpdateLevel2(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
 		Engine::GetInstance().entityManager->CleanUp();
 	}
-	
+
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -968,17 +939,16 @@ void Scene::LoadOptions()
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 315, WindowSize.getY() / 2, 215,85 };
 	auto btn1 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, " ", bt1Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, " ", bt1Pos, this));
 	if (btn1) btn1->SetTextures(btnSndTex, btnSndPressedTex, btnSndPressedTex);
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 + 80, WindowSize.getY() / 2, 280,85 };
 	auto btn2 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, " ", bt2Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, " ", bt2Pos, this));
 	if (btn2) btn2->SetTextures(btnGfcTex, btnGfcPressedTex, btnGfcPressedTex);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt3Pos, this));
-
 
 }
 
@@ -1023,7 +993,7 @@ void Scene::LoadMultiplayer()
 
 void Scene::UnloadMultiplayer()
 {
-	
+
 	Engine::GetInstance().uiManager->CleanUp();
 
 }
@@ -1104,7 +1074,7 @@ void Scene::UnloadCredits()
 
 void Scene::UpdateCredits(float dt)
 {
-	
+
 	creditsY -= scrollSpeed * dt / 1000.0f;
 	if (creditsY <= creditsTimer) {
 
@@ -1122,7 +1092,7 @@ void Scene::UpdateCredits(float dt)
 
 void Scene::PostUpdateCredits()
 {
-	
+
 	for (int i = 0; i < creditsText.size(); ++i)
 	{
 
@@ -1139,22 +1109,13 @@ void Scene::PostUpdateCredits()
 // *********************************************
 
 void Scene::LoadSounds()
-{	//mute button
-	SDL_Rect bt8Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 100, "Mute", bt8Pos, this));
-	
-
+{
 	Engine::GetInstance().uiManager->CleanUp();
-	//BACK Button
-	SDL_Rect bt11Pos = { WindowSize.getX() / 2, WindowSize.getY() / 43, 120, 20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 18, "Back", bt11Pos, this));
+	//UI Button
 
-	//100% volume button
-	SDL_Rect bt10Pos = { WindowSize.getX() / 2, WindowSize.getY() / 4, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 102, "Full Volume", bt10Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
 
-
-	
 	//MUSIC
 	SDL_Rect musicTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 4 - 30, 240, 30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
@@ -1173,10 +1134,9 @@ void Scene::LoadSounds()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 203, "+", musicPlusPos, this));
 
-	SDL_Rect musicSliderPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 80, 200, 20 };
-	auto musicSlider = std::dynamic_pointer_cast<UISlider>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::SLIDER, 300, "", musicSliderPos, this));
+	SDL_Rect Slider = { WindowSize.getX() / 2, WindowSize.getY() / 4 + 75, 85, 45 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::SLIDER, 301,"", Slider, this));
 
 	//SFX
 	SDL_Rect sfxTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 2 - 45, 230, 30 };
@@ -1192,21 +1152,15 @@ void Scene::LoadSounds()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 212, " - ", sfxMinusPos, this));
 
-	SDL_Rect sfxPlus = { WindowSize.getX()/2 + 75, WindowSize.getY()/2 + 40, 40, 24 };
-    std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-        UIElementType::BUTTON, 213, "+", sfxPlus, this));
-
-	SDL_Rect sfxSliderPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 2 + 80, 200, 20 };
-	auto sfxSlider = std::dynamic_pointer_cast<UISlider>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::SLIDER, 301, "", sfxSliderPos, this));
+	SDL_Rect sfxPlus = { WindowSize.getX() / 2 + 75, WindowSize.getY() / 2 + 40, 40, 24 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 213, "+", sfxPlus, this));
 
 	//MUTE ALL
 	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
 	const char* muteText = isAudioMuted ? "Unmute All" : "Mute All";
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 100, muteText, mutePos, this));
-
 }
 
 void Scene::UnloadSounds()
@@ -1218,7 +1172,6 @@ void Scene::UnloadSounds()
 
 void Scene::UpdateSounds(float dt)
 {
-
 }
 
 void Scene::PostUpdateSounds()
@@ -1281,12 +1234,12 @@ void Scene::LoadPause()
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
 	auto btn1 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, " ", bt1Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, " ", bt1Pos, this));
 	if (btn1) btn1->SetTextures(btnResTex, btnResPressedTex, btnResPressedTex);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 +30, 120,20 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
 	auto btn2 = std::dynamic_pointer_cast<UIButton>(
-	Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt2Pos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt2Pos, this));
 	if (btn2) btn2->SetTextures(btnSndTex, btnSndPressedTex, btnSndPressedTex);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
@@ -1384,12 +1337,12 @@ void Scene::UnloadBack()
 
 void Scene::UpdateBack(float dt)
 {
-	
-	if (fromSG == true) { 
+
+	if (fromSG == true) {
 		ChangeScene(SceneID::MAIN_MENU);
 		fromSG = false;
 	}
-	if(Engine::GetInstance().combatManager->choosingAtk == true)
+	if (Engine::GetInstance().combatManager->choosingAtk == true)
 	{
 		ChangeScene(SceneID::BATTLE);
 		Engine::GetInstance().combatManager->choosingAtk = false;
