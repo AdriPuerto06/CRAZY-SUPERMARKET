@@ -594,6 +594,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 10:
 		LOG("Back clicked");
+		Engine::GetInstance().uiManager->CleanUp();
 		ChangeScene(SceneID::BACK);
 		break;
 	case 11:
@@ -675,6 +676,24 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		sfxVolume = std::min(1.0f, sfxVolume + 0.1f);
 		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
 		break;
+
+	case 301: //slider music
+	{
+		UISlider* slider = (UISlider*)uiElement;
+
+		musicVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+	}
+	case 302: //slider vfx
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		sfxVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+	}
 
 	default:
 		break;
@@ -1123,7 +1142,7 @@ void Scene::LoadSounds()
 
 	SDL_Rect musicVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 5, 200, 25 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string(static_cast<int>(musicVolume * 100)) + "%").c_str(),
+		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string((int)(musicVolume * 100)) + "%").c_str(),
 		musicVolPos, this));
 
 	SDL_Rect musicMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 4 + 45, 45, 25 };
@@ -1134,7 +1153,8 @@ void Scene::LoadSounds()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 203, "+", musicPlusPos, this));
 
-	SDL_Rect Slider = { WindowSize.getX() / 2, WindowSize.getY() / 4 + 75, 85, 45 };
+	//SLIDER
+	SDL_Rect Slider = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 75, 125, 35 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::SLIDER, 301,"", Slider, this));
 
@@ -1155,6 +1175,11 @@ void Scene::LoadSounds()
 	SDL_Rect sfxPlus = { WindowSize.getX() / 2 + 75, WindowSize.getY() / 2 + 40, 40, 24 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 213, "+", sfxPlus, this));
+
+	//SLIDER
+	SDL_Rect Slider2 = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 255, 125, 35 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::SLIDER, 302, "", Slider2, this));
 
 	//MUTE ALL
 	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };

@@ -156,8 +156,6 @@ private:
 
 	bool dragging = false;
 
-	//Vector2D mousepos = Engine::GetInstance().input->GetMousePosition();
-
 
 	
 
