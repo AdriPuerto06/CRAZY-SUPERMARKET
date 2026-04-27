@@ -89,7 +89,7 @@ private:
 
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
-	void createButtnon(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int x);
+	void createButtnon(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	void UnloadMainMenu();
 	void UpdateMainMenu(float dt);
 	void HandleMainMenuUIEvents(UIElement* uiElement);

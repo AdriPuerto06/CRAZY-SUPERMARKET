@@ -1217,16 +1217,16 @@ void Scene::LoadPause()
 
 	//UI Buttons
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 128, WindowSize.getY() / 2 - 100, 257,85 };
 	createButtnon(btnResTex, btnResPressedTex, bt1Pos, 9);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 107, WindowSize.getY() / 2, 215,85 };
 	createButtnon(btnSndTex, btnSndPressedTex, bt2Pos, 6);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 140, WindowSize.getY() / 2 + 100, 280,85 };
 	createButtnon(btnGfcTex, btnGfcPressedTex, bt3Pos, 7);
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 200, 170,85 };
 	createButtnon(btnExitTex, btnExitPressedTex, bt4Pos, 8);
 
 }
