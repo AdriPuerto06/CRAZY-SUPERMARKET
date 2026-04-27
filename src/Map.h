@@ -199,6 +199,8 @@ public:
     std::string mapPath;
     std::vector<TeleportZone> teleportZones;
 
+    int magicPoints;
+
 private:
     bool mapLoaded;
     // L06: DONE 1: Declare a variable data of the struct MapData
