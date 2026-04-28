@@ -49,6 +49,65 @@ bool Contains(std::vector<int> vec, int val)
 	return false;
 }
 
+void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
+{
+	//effects that affect the attacker (heal itself, buff itself...)
+	if (attack.effect == "none")
+	{
+	}
+	else if (attack.effect == "heal")
+	{
+		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
+									   else { LOG("Enemy ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); };
+	}
+	else if (attack.effect == "selfKO")
+	{
+		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id); 
+									else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
+	}
+	else if (attack.effect == "ragebait")
+	{
+		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
+		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
+	}
+	else if (attack.effect == "shield")
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); attacker.status = "shield"; }
+		else { LOG("Enemy ID: %i activates shield.", attacker.id); attacker.status = "shield"; };
+	}
+	else if (attack.effect == "buff") 
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
+		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
+	}
+	else
+	{
+		target.status = attack.effect;
+	}
+
+	//effects of the target that affect the attacker
+	int dmg_reduction = 0;
+	if (target.status == "shield")
+	{
+		dmg_reduction += SHIELD_DMG_REDUCTION;
+		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
+		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
+	}
+	if (attacker.status == "buff")
+	{
+		dmg_reduction -= BUFF_DMG_INCREASE;
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
+		else { LOG("Enemy ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
+	}
+
+	int dmg_applied = attack.dmg - dmg_reduction;
+	if (dmg_applied < 0) dmg_applied = 0; //clamp
+
+	target.hp -= dmg_applied;
+	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
+	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
+}
+
 CombatManager::CombatManager() : Module()
 {
 	name = "CombatManagerManager";
@@ -90,7 +149,6 @@ bool CombatManager::CleanUp()
 {
 	combatFileXML.empty();
 	combatData->Clear();
-	combatState->Clear();
 	return true;
 }
 
@@ -167,97 +225,176 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void CombatManager::ButtonAction(int ID)
 {
-	/*LOG("player_id_selected: %d", combatState->player_id_selected);
-	LOG("players_attacks size: %d", combatData->players_attacks.size());*/
+	int playerIndex = combatState->player_index_selected;
+	std::vector<Attack>& attacks = combatData->players[playerIndex].attacks;
 
-	int playerIndex = combatState->player_id_selected - 1;
-	std::vector<Attack>& attacks = combatData->players_attacks[playerIndex];
-	
 	if (combatState->magicPoints <= 0)
 	{
 		LOG("No magic points left!");
 		return;
 	}
-	combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
+
+	int attackIndex = ID - 1;
+	if (attackIndex < 0 || attackIndex >= (int)attacks.size())
+		return;
+
+	combatState->player_attack_dmg_selected = attacks[attackIndex].dmg;
 	if (godMode) combatState->player_attack_dmg_selected = 999;
+
+	combatState->player_attack_index_selected = attackIndex;
+
+	LOG("Attack ID: %i: Damage: %i, name: %s, effect: %s",
+		ID,
+		combatState->player_attack_dmg_selected,
+		attacks[attackIndex].name,
+		attacks[attackIndex].effect.c_str());
 		
-	combatState->player_attack_id_selected = ID;
-	LOG("Attack %i: Damage: %i, name: %s", ID, combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-	//break;
-	//else {
-	//	//get damage from the attack id and apply it to the enemy selected
-	//	switch (ID) {
-	//	case 1:
-	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-	//		combatState->player_attack_id_selected = ID - 1;
-	//		LOG("Attack 1: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-	//		break;
-	//	case 2:
-	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-	//		LOG("Attack 2: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-	//		break;
-	//	case 3:
-	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-	//		LOG("Attack 3: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-	//		break;
-	//	case 4:
-	//		combatState->player_attack_dmg_selected = attacks[ID - 1].dmg;
-	//		LOG("Attack 4: Damage: %i, name: %s", combatState->player_attack_dmg_selected, attacks[ID - 1].name);
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
-	//ApplyCombatLogic();
 	combatState->selecting_target = true;
 	LOG("Select enemy with LEFT/RIGHT \t Press ENTER to confirm.");
-	LOG("Currently targeting Enemy ID: %i", combatData->enemies_id[combatState->enemy_id_targeted - 1]);
+
+	int enemyIdx = combatState->enemy_index_targeted;
+	LOG("Currently targeting Enemy ID: %i", combatData->enemies[enemyIdx].id);
 }
 
 void CombatManager::ApplyCombatLogic()
 {
-	if (combatState->turn == "Player") //add here a switch that depending on the name of the attack does something
+	if (combatState->turn == "Player")
 	{
 		CheckAlive();
-		combatState->current_enemies_HP[combatState->enemy_id_targeted - 1] -= combatState->player_attack_dmg_selected;
-		combatState->magicPoints -= combatData->players_attacks[combatState->player_id_selected-1][combatState->player_attack_id_selected-1].magicPoints;
-		LOG("Enemy ID: %i now has %i HP.", combatData->enemies_id[combatState->enemy_id_targeted - 1], combatState->current_enemies_HP[combatState->enemy_id_targeted - 1]);
-		//UpdateCombatUI(): we need visual info (numbers, bars...)
+
+		Combatant& player = combatData->players[combatState->player_index_selected];
+		Combatant& enemy = combatData->enemies[combatState->enemy_index_targeted];
+		Attack& attack = player.attacks[combatState->player_attack_index_selected];
+
+		if (!(player.status == "Paralized"))
+		{
+			if (player.status == "Confused") //50% chance
+			{
+				bool can_attack = rand() % 2;
+				if (can_attack)
+				{
+					LOG("Player attacked while being confused.");
+					MakeAttack(enemy, combatData->players[combatState->player_index_selected], attack);
+				}
+				else { LOG("Player didn't attack while being confused."); }
+			}
+			else { MakeAttack(enemy, combatData->players[combatState->player_index_selected], attack); }
+		}
+		else { LOG("Player is paralized! Choose another one. Skip turn if all are."); return; }
+		
+
+		combatState->magicPoints -= attack.magicPoints;
+
+		LOG("Magic Points: %i.", combatState->magicPoints);
+
+
 		combatState->turn = "Enemy";
 		CheckAlive();
 	}
+
 	if (combatState->turn == "Enemy")
 	{
 		CheckAlive();
 		EnemyAI();
-		LOG("Player ID: %i now has %i HP.", combatState->player_id_selected - 1, combatState->current_players_HP[combatState->player_id_selected - 1]);
+
+		/*Combatant& player = combatData->players[combatState->player_index_selected];
+		LOG("Player ID: %i now has %i HP.", player.id, player.hp);*/
+
+		
 		combatState->turn = "Player";
+
 	}
+
+	ApplyEffects();
+	CheckAlive();
 }
 
-void CombatManager::HandleTargetSelection() {
-	int maxEnemies = combatData->enemies_id.size();
+void CombatManager::ApplyEffects()
+{
+	for (auto& enemy : combatData->enemies)
+	{
+		if (enemy.alive)
+		{
+			std::string effect = enemy.status;
+
+			if (effect == "none") {}
+			if (effect == "poisoned") { enemy.hp -= POISON_DAMAGE; LOG("Enemy ID: %i takes poison damage. HP: %i", enemy.id, enemy.hp); }
+			if (effect == "paralized")
+			{
+				if (enemy.status_duration == 2)
+				{
+					enemy.status = "none";
+					LOG("Enemy ID: %i is no longer paralized.", enemy.id);
+					enemy.status_duration = 0;
+				}
+				else { enemy.status_duration++; LOG("Enemy ID: %i remains paralized. Remaining turns: %i", enemy.id, 3-enemy.status_duration); /*When status_duration is 0, the next turn will not attack.*/ } 
+			}
+			if (effect == "heal") {}
+			if (effect == "shield")
+			{
+				if (enemy.status_duration == 1)
+				{
+					enemy.status = "none";
+					LOG("Enemy ID: %i has no longer a shield.", enemy.id);
+					enemy.status_duration = 0;
+				}
+				else{ enemy.status_duration++; }
+			}
+		}
+	}
+	for (auto& player : combatData->players)
+	{
+		if (player.alive)
+		{
+			std::string effect = player.status;
+
+			if (effect == "none") {}
+			if (effect == "poisoned") { player.hp -= POISON_DAMAGE; LOG("Player ID: %i takes poison damage. HP: %i", player.id, player.hp); }
+			if (effect == "paralized")
+			{
+				if (player.status_duration == 2)
+				{
+					player.status = "none";
+					LOG("Player ID: %i is no longer paralized.", player.id);
+					player.status_duration = 0;
+				}
+				else { player.status_duration++; LOG("Player ID: %i remains paralized. Remaining turns: %i", player.id, 3 - player.status_duration);}
+			}
+			if (effect == "heal") {}
+			if (effect == "shield") 
+			{
+				if (player.status_duration == 1)
+				{
+					player.status = "none";
+					LOG("Player ID: %i has no longer a shield.", player.id);
+					player.status_duration = 0;
+				}
+				else { player.status_duration++; }
+			}
+		}
+	}
+	
+
+}
+
+
+void CombatManager::HandleTargetSelection()
+{
+	int maxEnemies = (int)combatData->enemies.size();
 
 	// RIGHT -->
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
-		int next = combatState->enemy_id_targeted;
+		int next = combatState->enemy_index_targeted;
 
-		for (int i = 0; i < maxEnemies; i++)
+		for (int i = 0; i < maxEnemies; ++i)
 		{
-			next++;
+			next = (next + 1) % maxEnemies;
 
-			if (next > maxEnemies) {
-				next = 1;
-			}
-
-
-			if (combatState->enemies_alive[next - 1])
+			if (combatData->enemies[next].alive)
 			{
-				combatState->enemy_id_targeted = next;
-
-				LOG("Targeting Enemy ID: %i", combatData->enemies_id[next - 1]);
-
+				combatState->enemy_index_targeted = next;
+				LOG("Targeting Enemy ID: %i", combatData->enemies[next].id);
 				break;
 			}
 		}
@@ -266,23 +403,16 @@ void CombatManager::HandleTargetSelection() {
 	// LEFT <--
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
-		int prev = combatState->enemy_id_targeted;
+		int prev = combatState->enemy_index_targeted;
 
-		for (int i = 0; i < maxEnemies; i++)
+		for (int i = 0; i < maxEnemies; ++i)
 		{
-			prev--;
+			prev = (prev - 1 + maxEnemies) % maxEnemies;
 
-			if (prev < 1) {
-				prev = maxEnemies;
-			}
-
-
-			if (combatState->enemies_alive[prev - 1])
+			if (combatData->enemies[prev].alive)
 			{
-				combatState->enemy_id_targeted = prev;
-
-				LOG("Targeting Enemy ID: %i", combatData->enemies_id[prev - 1]);
-
+				combatState->enemy_index_targeted = prev;
+				LOG("Targeting Enemy ID: %i", combatData->enemies[prev].id);
 				break;
 			}
 		}
@@ -291,39 +421,54 @@ void CombatManager::HandleTargetSelection() {
 	// ENTER
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		LOG("Confirmed attack on Enemy ID: %i", combatData->enemies_id[combatState->enemy_id_targeted - 1]);
+		int idx = combatState->enemy_index_targeted;
+		LOG("Confirmed attack on Enemy ID: %i", combatData->enemies[idx].id);
 
 		combatState->selecting_target = false;
-
 		ApplyCombatLogic();
 	}
-
 }
 
 void CombatManager::EnemyAI()
 {
-	std::vector<int> alive;
-	for (int i = 0; i < combatState->enemies_alive.size(); ++i)
+    std::vector<int> possibleIndices;
+    for (int i = 0; i < (int)combatData->enemies.size(); ++i)
+    {
+        if (combatData->enemies[i].alive && !(combatData->enemies[i].status == "paralized"))
+			possibleIndices.push_back(i);
+    }
+
+	if (possibleIndices.empty())
 	{
-		if (combatState->enemies_alive[i])
-			alive.push_back(i);
+		LOG("All enemies are paralized! Player's turn.");
+		return;
 	}
 
-	if (alive.empty()) return;
+    int random_index_ID = possibleIndices[rand() % possibleIndices.size()];
+    Combatant& enemy = combatData->enemies[random_index_ID];
+	Combatant& player = combatData->players[combatState->player_index_selected];
 
-	int random_index_ID = alive[rand() % alive.size()];
+    if (enemy.attacks.empty()) return;
 
-	int random_index_attack = rand() % combatData->enemies_attacks[random_index_ID].size();
+    int random_index_attack = rand() % enemy.attacks.size();
+    Attack& attack = enemy.attacks[random_index_attack];
 
-	int dmg = combatData->enemies_attacks[random_index_ID][random_index_attack].dmg;
-	combatState->enemy_attack_dmg_selected = dmg;
-	combatState->current_players_HP[combatState->player_id_selected - 1] -= dmg;
-
-	LOG("Enemy ID: %i does %i dmg to Player ID: %i",
-		combatData->enemies_id[random_index_ID],
-		dmg,
-		combatState->player_id_selected);
+	if (enemy.status == "Confused")
+	{
+		bool can_attack = rand() % 2;
+		if (can_attack)
+		{
+			LOG("Enemy attack while being confused.");
+			MakeAttack(player, enemy, attack);
+		}
+		else { LOG("Enemy didn't attack while being confused."); return; }
+	}
+	else 
+	{
+		MakeAttack(player, enemy, attack);
+	}
 }
+
 
 void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID)
 {
@@ -336,108 +481,111 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_I
 	showingButtonStart = true;
 }
 
-bool CombatManager::StartCombat(/*std::vector<int> player_IDs, std::vector<int> enemies_IDs*/)
+bool CombatManager::StartCombat()
 {
 	if (in_combat) return true;
+
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
-
 	in_combat = true;
-	/*GetTreeAttributes(combatData->fight_ID);*/ //get combatData from xml
-	//set current data for the start of the combat
-	combatState->current_players_HP = combatData->players_HP;
-	combatState->current_enemies_HP = combatData->enemies_HP;
 
-	combatState->Init(); //prepares its data to be used
-
-	combatState->player_id_selected = combatData->players_id[0]; //hardcoded. if we have 2 players at the same time, get the id from the players themselves
+	combatState->Init(*combatData);
+	combatState->player_index_selected = 0; // first player
 
 	showing_continue = false;
 
 	return true;
 }
 
-bool CombatManager::ShowAttackOptions(int player_ID) {
+
+bool CombatManager::ShowAttackOptions(int player_ID)
+{
 	LOG("ShowAttackOptions called");
-	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
+	UnloadCombatUI();
 	choosingAtk = true;
 
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
+	// find player index by ID
+	int playerIndex = 0;
+	for (int i = 0; i < (int)combatData->players.size(); ++i)
+	{
+		if (combatData->players[i].id == player_ID)
+		{
+			playerIndex = i;
+			break;
+		}
+	}
 
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
+	auto& attacks = combatData->players[playerIndex].attacks;
 
-	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, combatData->players_attacks[player_ID - 1][2].name, bt3Pos, this));
+	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65,
+						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::BUTTON, 1, attacks[0].name, bt1Pos, this));
 
-	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, combatData->players_attacks[player_ID - 1][3].name, bt4Pos, this));
+	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365,
+						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::BUTTON, 2, attacks[1].name, bt2Pos, this));
 
-	SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 700, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt5Pos, Engine::GetInstance().scene.get()));
+	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65,
+						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::BUTTON, 3, attacks[2].name, bt3Pos, this));
+
+	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365,
+						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
+	std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::BUTTON, 4, attacks[3].name, bt4Pos, this));
+
+	SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 700,
+						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(
+			UIElementType::BUTTON, 10, "Back", bt5Pos, Engine::GetInstance().scene.get()));
 
 	return true;
 }
+
 
 bool CombatManager::ShowItemOptions(int player_ID) {
 	LOG("ShowItemOptions called");
-	UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
+	//UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
+	//SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+	//std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
 
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
-
-	return true;
-}
-
-bool CombatManager::ChangePlayer() {
-	int current_player_index = combatState->player_id_selected-1;
-	for (int i = current_player_index+1; i < combatState->players_alive.size(); ++i)
-	{
-		if (combatState->players_alive[i])
-		{
-			combatState->player_id_selected = i + 1;
-			return true;
-		}
-	}
-	for (int i = 0; i < current_player_index; ++i)
-	{
-		if (combatState->players_alive[i])
-		{
-			combatState->player_id_selected = i + 1;
-			return true;
-		}
-	}
-	/*if (combatState->player_id_selected == 1 && combatState->players_alive[combatState->player_id_selected - 1])
-	{
-		combatState->player_id_selected = 2;
-		LOG("Changed player to Player ID: 2");
-	}
-	else
-		if (combatState->player_id_selected == 2 && combatState->players_alive[combatState->player_id_selected - 1])
-		{
-			combatState->player_id_selected = 1;
-			LOG("Changed player to Player ID: 1");
-		}*/
+	//SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+	//std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
 
 	return true;
 }
 
-//const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_value) {
-//	const char* ret = "Couldn't find the text.";
-//	for (pugi::xml_node dialogue_tree_node = dialogsFileXML.child("dialogs").child("dialogue_tree"); dialogue_tree_node != NULL; dialogue_tree_node = dialogue_tree_node.next_sibling("dialogue_tree"))
-//	{
-//		if (dialogue_tree_node.attribute("ID").as_int() == dialogue_tree_ID)
-//		{
-//			for(pugi::xml_node node = dialogue_tree_node.child("node"); node != NULL; node = node.next_sibling("node"))
-//			{
-//				if (node.attribute("id").as_int() == node_value) ret = (const char*)node.attribute("text").as_string();
-//			}
-//		}
-//	}
-//	return ret;
-//}
+bool CombatManager::ChangePlayer()
+{
+	int current = combatState->player_index_selected;
+	int total = (int)combatData->players.size();
+
+	for (int i = current + 1; i < total; ++i)
+	{
+		if (combatData->players[i].alive)
+		{
+			combatState->player_index_selected = i;
+			return true;
+		}
+	}
+	for (int i = 0; i < current; ++i)
+	{
+		if (combatData->players[i].alive)
+		{
+			combatState->player_index_selected = i;
+			return true;
+		}
+	}
+	return true;
+}
+
 
 void CombatManager::GetTreeAttributes(int fight_ID)
 {
@@ -445,139 +593,143 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 	combatData->Clear();
 
 	combatData->fight_ID = fight_ID;
-	combatState->magicPoints = Engine::GetInstance().map->magicPoints; //get magicPoints from map
-	//get the ids of players and enemies and add them in combatData
-	for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight"); fight_tree_node != NULL; fight_tree_node = fight_tree_node.next_sibling("fight"))
+	combatState->magicPoints = Engine::GetInstance().map->magicPoints;
+
+	std::vector<int> players_id;
+	std::vector<int> enemies_id;
+
+	for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
+		fight_tree_node != NULL;
+		fight_tree_node = fight_tree_node.next_sibling("fight"))
 	{
 		if (fight_tree_node.attribute("id").as_int() == fight_ID)
 		{
 			std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
 			std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
-			combatData->players_id = GetIDs(players_id_str);
-			combatData->enemies_id = GetIDs(enemies_id_str);
+			players_id = GetIDs(players_id_str);
+			enemies_id = GetIDs(enemies_id_str);
 			break;
 		}
 	}
-	//players data
-	std::vector<Attack> newVec;
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("player"))
+
+	// players
+	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
+		combat_tree_node != NULL;
+		combat_tree_node = combat_tree_node.next_sibling("player"))
 	{
-		if (Contains(combatData->players_id, combat_tree_node.attribute("id").as_int()))
+		int id = combat_tree_node.attribute("id").as_int();
+		if (!Contains(players_id, id)) continue;
+
+		Combatant player;
+		player.id = id;
+		player.hp = combat_tree_node.attribute("HP").as_int();
+		player.type = EntityType::PLAYER;
+		player.status_duration = 0;
+
+		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
+			current_node != NULL;
+			current_node = current_node.next_sibling("attack_stats"))
 		{
-
-			combatData->players_HP.push_back(combat_tree_node.attribute("HP").as_int());
-			for (pugi::xml_node current_node = combat_tree_node.child("attack_stats"); current_node != NULL; current_node = current_node.next_sibling("attack_stats"))
-			{
-
-				Attack attack;
-				attack.name = (const char*)current_node.attribute("name").as_string();
-				attack.dmg = current_node.attribute("dmg").as_int();
-				attack.magicPoints = current_node.attribute("magicPoints").as_int();
-				attack.effect = current_node.attribute("effect").as_string();
-				newVec.push_back(attack);
-
-			}
-
-			combatData->players_attacks.push_back(newVec);
-			newVec.clear();
-
+			Attack attack;
+			attack.name = current_node.attribute("name").as_string();
+			attack.dmg = current_node.attribute("dmg").as_int();
+			attack.magicPoints = current_node.attribute("magicPoints").as_int();
+			attack.effect = current_node.attribute("effect").as_string();
+			player.attacks.push_back(attack);
 		}
+
+		combatData->players.push_back(player);
 	}
 
-	//enemies data
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy"); combat_tree_node != NULL; combat_tree_node = combat_tree_node.next_sibling("enemy"))
+	// enemies
+	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");
+		combat_tree_node != NULL;
+		combat_tree_node = combat_tree_node.next_sibling("enemy"))
 	{
-		if (Contains(combatData->enemies_id, combat_tree_node.attribute("id").as_int()))
+		int id = combat_tree_node.attribute("id").as_int();
+		if (!Contains(enemies_id, id)) continue;
+
+		Combatant enemy;
+		enemy.id = id;
+		enemy.hp = combat_tree_node.attribute("HP").as_int();
+		enemy.type = EntityType::BASEENEMY;
+		enemy.status_duration = 0;
+
+		for (pugi::xml_node current_node = combat_tree_node.child("attack");
+			current_node != NULL;
+			current_node = current_node.next_sibling("attack"))
 		{
-
-			combatData->enemies_HP.push_back(combat_tree_node.attribute("HP").as_int());
-			for (pugi::xml_node current_node = combat_tree_node.child("attack"); current_node != NULL; current_node = current_node.next_sibling("attack"))
-			{
-
-				Attack attack;
-				attack.name = (const char*)current_node.attribute("name").as_string();
-				attack.dmg = current_node.attribute("dmg").as_int();
-				newVec.push_back(attack);
-
-			}
-			combatData->enemies_attacks.push_back(newVec);
-			newVec.clear();
-
+			Attack attack;
+			attack.name = current_node.attribute("name").as_string();
+			attack.dmg = current_node.attribute("dmg").as_int();
+			attack.effect = current_node.attribute("effect").as_string();
+			enemy.attacks.push_back(attack);
 		}
+
+		combatData->enemies.push_back(enemy);
 	}
 }
 
-void CombatManager::CheckAlive() // if hp >= 0, alive -> false
+
+void CombatManager::CheckAlive()
 {
-	for (int i = 0; i < combatState->current_enemies_HP.size(); ++i)
+	// enemies
+	for (int i = 0; i < (int)combatData->enemies.size(); ++i)
 	{
-		if (combatState->current_enemies_HP[i] <= 0 && combatState->enemies_alive[i])
+		Combatant& e = combatData->enemies[i];
+		if (e.hp <= 0 && e.alive)
 		{
-			combatState->enemies_alive[i] = false;
-			LOG("Enemy ID: %i has been killed.", combatData->enemies_id[i]);
-			for (int j = 0; j < combatData->enemies_id.size(); ++j) //change the selected enemy to one that is alive
+			e.alive = false;
+			LOG("Enemy ID: %i has been killed.", e.id);
+
+			for (int j = 0; j < (int)combatData->enemies.size(); ++j)
 			{
-				if (combatState->enemies_alive[j])
+				if (combatData->enemies[j].alive)
 				{
-					combatState->enemy_id_targeted = j+1;
-					LOG("Now targeting enemy ID: %i", combatData->enemies_id[combatState->enemy_id_targeted-1]);
+					combatState->enemy_index_targeted = j;
+					LOG("Now targeting enemy ID: %i", combatData->enemies[j].id);
 					break;
 				}
 			}
 		}
-
-
 	}
 
-	for (int i = 0; i < combatState->current_players_HP.size(); ++i)
+	// players
+	for (int i = 0; i < (int)combatData->players.size(); ++i)
 	{
-		if (combatState->current_players_HP[i] <= 0)
+		Combatant& p = combatData->players[i];
+		if (p.hp <= 0 && p.alive)
 		{
-			combatState->players_alive[i] = false;
-			for (int j = 0; j < combatData->players_id.size(); ++j) //change the selected player to one that is alive
+			p.alive = false;
+			for (int j = 0; j < (int)combatData->players.size(); ++j)
 			{
-				if (combatState->players_alive[j])
+				if (combatData->players[j].alive)
 				{
-					combatState->player_id_selected = combatData->players_id[j];
+					combatState->player_index_selected = j;
 					break;
 				}
 			}
-
 		}
 	}
 
-	//check if enemy wins
-	int deadCounter = 0;
-	for (int i = 0; i < combatState->players_alive.size(); ++i)
-	{
-		deadCounter += combatState->players_alive[i];
-	}
-	if (deadCounter == 0) combatState->enemy_Wins = true;
+	// check enemy wins
+	int alivePlayers = 0;
+	for (auto& p : combatData->players)
+		if (p.alive) ++alivePlayers;
+	if (alivePlayers == 0) combatState->enemy_Wins = true;
 
-	//check if player wins
-	deadCounter = 0;
-	for (int i = 0; i < combatState->enemies_alive.size(); ++i)
-	{
-		deadCounter += combatState->enemies_alive[i];
-	}
-	if (deadCounter == 0) combatState->player_Wins = true;
+	// check player wins
+	int aliveEnemies = 0;
+	for (auto& e : combatData->enemies)
+		if (e.alive) ++aliveEnemies;
+	if (aliveEnemies == 0) combatState->player_Wins = true;
 
 	if (combatState->player_Wins || combatState->enemy_Wins)
 	{
 		if (combatState->player_Wins) LOG("Player wins the combat.");
 		else LOG("Enemies win the combat.");
-		//UnloadCombatUI();
 
-		//combatData->Clear();
-
-		//combatState->Clear();
-
-		//Engine::GetInstance().render->StartTextDisplay("", 0.0f);
-		//in_combat = false;
-		//LOG("Cleaned combat UI.");
-		//Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1); //current_Level
 		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 		in_combat = false;
 	}
-	
 }

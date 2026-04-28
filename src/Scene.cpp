@@ -117,6 +117,26 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render->UpdateScale();
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		if (!isAudioMuted)
+		{
+			musicVolume = 0.0f;
+			sfxVolume = 0.0f;
+			Engine::GetInstance().audio->SetMusicVolume(0.0f);
+			Engine::GetInstance().audio->SetSFXVolume(0.0f);
+			LOG("All audio muted");
+		}
+		else
+		{
+			musicVolume = 1.0f;
+			sfxVolume = 1.0f;
+			Engine::GetInstance().audio->SetMusicVolume(1.0f);
+			Engine::GetInstance().audio->SetSFXVolume(1.0f);
+			LOG("All audio restored");
+		}
+	}
+
 	return true;
 }
 
@@ -600,7 +620,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 11:
 		LOG("Attack clicked");
-		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_index_selected);
 		break;
 	case 12:
 		LOG("Item clicked");
@@ -608,7 +628,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 13:
 		Engine::GetInstance().combatManager->ChangePlayer();
-		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatState->player_id_selected);
+		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);
 		break;
 	case 14:
 		LOG("Scape clicked");
