@@ -31,6 +31,24 @@ enum class SceneID
 
 };
 
+struct SceneStack {
+	std::vector<SceneID> scenes;
+	bool twiceClicked = false;
+
+	SceneID pop()
+	{
+		SceneID ret;
+		scenes.pop_back();
+		ret = scenes[scenes.size()-1];
+		return ret;
+	}
+
+	void push(SceneID scene)
+	{
+		scenes.push_back(scene);
+	}
+
+};
 
 class Scene : public Module
 {
@@ -151,18 +169,6 @@ private:
 	void UpdatePause(float dt);
 	void PostUpdatePause();
 
-	//EXIT
-	void LoadExit();
-	void UnloadExit();
-	void UpdateExit(float dt);
-	void PostUpdateExit();
-
-	//RESUME
-	void LoadResume();
-	void UnloadResume();
-	void UpdateResume(float dt);
-	void PostUpdateResume();
-
 	//BACK
 	void LoadBack();
 	void UnloadBack();
@@ -199,7 +205,7 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
-
+	SceneStack sceneStack;
 
 	//Imagen
 

@@ -271,7 +271,6 @@ bool Engine::DoUpdate()
             break;
         }
     }
-
     return result;
 }
 

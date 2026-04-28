@@ -34,8 +34,9 @@ bool UIButton::Update(float dt)
 
 			state = UIElementState::FOCUSED;
 
-			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !static_twicePressed) {
 				state = UIElementState::PRESSED;
+				static_twicePressed = true;
 			}
 
 			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {

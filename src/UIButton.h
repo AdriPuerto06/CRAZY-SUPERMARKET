@@ -3,6 +3,8 @@
 #include "UIElement.h"
 #include "Vector2D.h"
 
+static bool static_twicePressed = false;
+
 class UIButton : public UIElement
 {
 
@@ -17,6 +19,7 @@ public:
 
 	void SetTextures(SDL_Texture* normal, SDL_Texture* focused = nullptr, SDL_Texture* pressed = nullptr);
 
+
 private:
 
 	bool canClick = true;
@@ -28,6 +31,9 @@ private:
 
 	float animTimer = 0.0f;
 	float animSpeed = 1000.0f;
+
+public:
+	
 };
 
 #pragma once

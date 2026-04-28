@@ -40,6 +40,7 @@ std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id
 
 bool UIManager::Update(float dt)
 {	
+	
 	//List to store entities pending deletion
 	std::list<std::shared_ptr<UIElement>> pendingDelete;
 
@@ -53,6 +54,7 @@ bool UIManager::Update(float dt)
 		else {
 			uiElement->Update(dt);
 		}
+		
 	}
 
 	//Now iterates over the pendingDelete list and destroys the uiElement

@@ -33,6 +33,8 @@ bool Scene::Awake()
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	Engine::GetInstance().combatManager->LoadCombatData("src/", "CombatData.xml");
 
+	sceneStack.push(SceneID::MAIN_MENU);
+
 	LOG("Loading Scene");
 	bool ret = true;
 	return ret;
@@ -58,6 +60,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	static_twicePressed = false;
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -92,12 +95,6 @@ bool Scene::Update(float dt)
 		break;
 	case SceneID::PAUSE:
 		UpdatePause(dt);
-		break;
-	case SceneID::EXIT:
-		UpdateExit(dt);
-		break;
-	case SceneID::RESUME:
-		UpdateResume(dt);
 		break;
 	case SceneID::BACK:
 		UpdateBack(dt);
@@ -136,7 +133,7 @@ bool Scene::Update(float dt)
 			LOG("All audio restored");
 		}
 	}
-
+	
 	return true;
 }
 
@@ -177,12 +174,6 @@ bool Scene::PostUpdate()
 	case SceneID::PAUSE:
 		PostUpdatePause();
 		break;
-	case SceneID::EXIT:
-		PostUpdateExit();
-		break;
-	case SceneID::RESUME:
-		PostUpdateResume();
-		break;
 	case SceneID::BACK:
 		PostUpdateBack();
 		break;
@@ -201,7 +192,7 @@ bool Scene::PostUpdate()
 		ret = false;
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2)) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3)) {
 
 		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
@@ -336,12 +327,6 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::PAUSE:
 		LoadPause();
 		break;
-	case SceneID::EXIT:
-		LoadExit();
-		break;
-	case SceneID::RESUME:
-		LoadResume();
-		break;
 	case SceneID::BACK:
 		LoadBack();
 		break;
@@ -406,12 +391,6 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::PAUSE:
 		UnloadPause();
-		break;
-	case SceneID::EXIT:
-		UnloadExit();
-		break;
-	case SceneID::RESUME:
-		UnloadResume();
 		break;
 	case SceneID::BACK:
 		UnloadBack();
@@ -583,8 +562,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 3: 
 		LOG("Main Menu: Options clicked");
-		timeScene = currentScene;
+		//timeScene = currentScene;
 		ChangeScene(SceneID::OPTIONS);
+		sceneStack.push(currentScene);
 		break;
 	case 4:
 		LOG("Main Menu: Multiplayer clicked");
@@ -596,27 +576,36 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
-		timeScene = currentScene;
+		//timeScene = currentScene;
 		ChangeScene(SceneID::SOUND);
+		sceneStack.push(currentScene);
 		fromSG = true;
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
-		timeScene = currentScene;
+		//timeScene = currentScene;
 		ChangeScene(SceneID::GRAFICS);
+		sceneStack.push(currentScene);
 		fromSG = true;
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
-		ChangeScene(SceneID::EXIT);
+		Engine::GetInstance().uiManager->CleanUp();
+		closeGame = true;
 		break;
 	case 9:
 		LOG("Pause: Resume clicked");
-		ChangeScene(SceneID::LEVEL1);
+		Engine::GetInstance().uiManager->CleanUp();
+		ChangeScene(gameScene);
 		break;
 	case 10:
 		LOG("Back clicked");
-		ChangeScene(SceneID::BACK);
+		/*ChangeScene(SceneID::BACK);*/
+		if (!static_twicePressed)
+		{
+			ChangeScene(sceneStack.pop());
+			
+		}
 		break;
 	case 11:
 		LOG("Attack clicked");
@@ -701,7 +690,6 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	default:
 		break;
 	}
-
 }
 
 // *********************************************
@@ -1086,10 +1074,6 @@ void Scene::LoadCredits()
 
 }
 
-void Scene::UnloadCredits()
-{
-}
-
 void Scene::UpdateCredits(float dt)
 {
 	
@@ -1119,6 +1103,10 @@ void Scene::PostUpdateCredits()
 		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX() / 2.5, y, 450, 60, color);
 	}
 
+}
+
+void Scene::UnloadCredits()
+{
 }
 
 
@@ -1283,60 +1271,6 @@ void Scene::PostUpdatePause()
 
 
 // *********************************************
-// EXIT functions
-// *********************************************
-
-void Scene::LoadExit()
-{
-}
-
-void Scene::UnloadExit()
-{
-
-	Engine::GetInstance().uiManager->CleanUp();
-
-}
-
-void Scene::UpdateExit(float dt)
-{
-
-	closeGame = true;
-
-}
-
-void Scene::PostUpdateExit()
-{
-}
-
-
-// *********************************************
-// RESUME functions
-// *********************************************
-
-void Scene::LoadResume()
-{
-}
-
-void Scene::UnloadResume()
-{
-
-	Engine::GetInstance().uiManager->CleanUp();
-
-}
-
-void Scene::UpdateResume(float dt)
-{
-
-	ChangeScene(gameScene);
-
-}
-
-void Scene::PostUpdateResume()
-{
-}
-
-
-// *********************************************
 // BACK functions
 // *********************************************
 
@@ -1353,8 +1287,8 @@ void Scene::UnloadBack()
 
 void Scene::UpdateBack(float dt)
 {
-	
-	if (fromSG == true) { 
+	/*ChangeScene(sceneStack.pop());*/
+	/*if (fromSG == true) { 
 		ChangeScene(SceneID::MAIN_MENU);
 		fromSG = false;
 	}
@@ -1366,7 +1300,7 @@ void Scene::UpdateBack(float dt)
 	else {
 		ChangeScene(timeScene);
 		timeScene = SceneID::MAIN_MENU;
-	}
+	}*/
 
 }
 
@@ -1381,6 +1315,9 @@ void Scene::PostUpdateBack()
 
 void Scene::LoadBattle()
 {
+
+	//read enemy and player vector
+	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
 	//UI Buttons
 
