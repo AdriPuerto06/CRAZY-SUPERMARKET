@@ -10,7 +10,7 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "Map.h"
-#include "Item.h"
+#include "ItemManager.h"
 #include "BaseEnemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"

@@ -51,8 +51,6 @@ bool Contains(std::vector<int> vec, int val)
 
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
-	/*target.shield_and_buff.first = false;
-	target.shield_and_buff.second = false;*/
 	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "none")
 	{
