@@ -21,7 +21,8 @@ struct Combatant {
     int hp = 0;
     bool alive = true;
     std::string status = "none";
-    int status_duration = -1;
+    int status_duration = 0;
+    std::pair<bool, bool> shield_and_buff;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
 };

@@ -51,6 +51,8 @@ bool Contains(std::vector<int> vec, int val)
 
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
+	/*target.shield_and_buff.first = false;
+	target.shield_and_buff.second = false;*/
 	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "none")
 	{
@@ -58,7 +60,7 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	else if (attack.effect == "heal")
 	{
 		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
-									   else { LOG("Enemy ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); };
+									   else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
 	}
 	else if (attack.effect == "selfKO")
 	{
@@ -72,13 +74,13 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	}
 	else if (attack.effect == "shield")
 	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); attacker.status = "shield"; }
-		else { LOG("Enemy ID: %i activates shield.", attacker.id); attacker.status = "shield"; };
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); /*attacker.status = "shield"*/ attacker.shield_and_buff.first = true; }
+		else { LOG("Enemy ID: %i activates shield.", attacker.id); /*attacker.status = "shield";*/ attacker.shield_and_buff.first = true;};
 	}
 	else if (attack.effect == "buff") 
 	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
-		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); attacker.status = "Buff"; }
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
+		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
 	}
 	else
 	{
@@ -87,13 +89,13 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 
 	//effects of the target that affect the attacker
 	int dmg_reduction = 0;
-	if (target.status == "shield")
+	if (/*target.status == "shield"*/ target.shield_and_buff.first)
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
 		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
 		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
 	}
-	if (attacker.status == "buff")
+	if (/*attacker.status == "buff"*/ attacker.shield_and_buff.second)
 	{
 		dmg_reduction -= BUFF_DMG_INCREASE;
 		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
@@ -330,15 +332,25 @@ void CombatManager::ApplyEffects()
 				else { enemy.status_duration++; LOG("Enemy ID: %i remains paralized. Remaining turns: %i", enemy.id, 3-enemy.status_duration); /*When status_duration is 0, the next turn will not attack.*/ } 
 			}
 			if (effect == "heal") {}
-			if (effect == "shield")
+			if (enemy.shield_and_buff.first)
 			{
 				if (enemy.status_duration == 1)
 				{
-					enemy.status = "none";
+					enemy.shield_and_buff.first = false;
 					LOG("Enemy ID: %i has no longer a shield.", enemy.id);
 					enemy.status_duration = 0;
 				}
 				else{ enemy.status_duration++; }
+			}
+			if (enemy.shield_and_buff.second)
+			{
+				if (enemy.status_duration == 1)
+				{
+					enemy.shield_and_buff.second = false;
+					LOG("Enemy ID: %i has no longer a buff.", enemy.id);
+					enemy.status_duration = 0;
+				}
+				else { enemy.status_duration++; }
 			}
 		}
 	}
@@ -361,12 +373,22 @@ void CombatManager::ApplyEffects()
 				else { player.status_duration++; LOG("Player ID: %i remains paralized. Remaining turns: %i", player.id, 3 - player.status_duration);}
 			}
 			if (effect == "heal") {}
-			if (effect == "shield") 
+			if (player.shield_and_buff.first) 
 			{
 				if (player.status_duration == 1)
 				{
-					player.status = "none";
+					player.shield_and_buff.first = false;
 					LOG("Player ID: %i has no longer a shield.", player.id);
+					player.status_duration = 0;
+				}
+				else { player.status_duration++; }
+			}
+			if (player.shield_and_buff.second)
+			{
+				if (player.status_duration == 1)
+				{
+					player.shield_and_buff.second = false;
+					LOG("Player ID: %i has no longer a buff.", player.id);
 					player.status_duration = 0;
 				}
 				else { player.status_duration++; }
