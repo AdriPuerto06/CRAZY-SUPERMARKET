@@ -488,6 +488,10 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 
+	//Load IMG Background
+	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
+
+
 	//Load Buttos tex
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
 	SDL_Texture* btnStartPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Pressed.png");
@@ -525,6 +529,13 @@ void Scene::LoadMainMenu() {
 }
 
 void Scene::UnloadMainMenu() {
+
+	if (SMImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(SMImg);
+		SMImg = nullptr;
+	}
+
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
 
@@ -532,6 +543,10 @@ void Scene::UnloadMainMenu() {
 
 void Scene::UpdateMainMenu(float dt)
 {
+
+	if (SMImg != nullptr) {
+		Engine::GetInstance().render->DrawTexture(SMImg, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
+	}
 	
 }
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
