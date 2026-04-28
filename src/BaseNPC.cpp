@@ -80,5 +80,6 @@ void BaseNPC::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
 		Engine::GetInstance().dialogueManager->UnloadDialogueUI();
 		Engine::GetInstance().dialogueManager->in_conversation = false;
+		Engine::GetInstance().dialogueManager->showingButtonStart = false;
 	}
 }

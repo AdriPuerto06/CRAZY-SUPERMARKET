@@ -1387,7 +1387,7 @@ void Scene::LoadBattle()
 
 void Scene::UnloadBattle()
 {
-
+	Engine::GetInstance().combatManager->in_combat = false;
 	Engine::GetInstance().uiManager->CleanUp();
 
 }

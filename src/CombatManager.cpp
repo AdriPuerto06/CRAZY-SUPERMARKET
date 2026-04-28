@@ -147,6 +147,7 @@ bool CombatManager::PostUpdate() {
 
 bool CombatManager::CleanUp()
 {
+	in_combat = false;
 	combatFileXML.empty();
 	combatData->Clear();
 	return true;

@@ -12,10 +12,27 @@ ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
 ItemManager::~ItemManager() {}
 
-bool ItemManager::Awake() {}
+bool ItemManager::Awake() 
+{
+	return true;
+}
 
-bool ItemManager::Start() {}
+bool ItemManager::Start()
+{
+	return true;
+}
 
-bool ItemManager::Update(float dt) {}
+bool ItemManager::Update(float dt)
+{
+	return true;
+}
 
-bool ItemManager::CleanUp() {}
+bool ItemManager::PostUpdate()
+{
+	return true;
+}
+
+bool ItemManager::CleanUp()
+{
+	return true;
+}

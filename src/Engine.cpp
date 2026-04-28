@@ -16,7 +16,7 @@
 #include "UIManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
-
+#include "ItemManager.h"
 
 
 // Constructor

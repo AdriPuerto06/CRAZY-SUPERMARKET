@@ -36,6 +36,7 @@ bool DialogueManager::PostUpdate() {
 
 bool DialogueManager::CleanUp() 
 {
+	in_conversation = false;
 	dialogsFileXML.empty();
 	return true;
 }
