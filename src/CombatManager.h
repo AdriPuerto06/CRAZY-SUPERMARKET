@@ -112,6 +112,8 @@ public:
     void CheckAlive();
     void MakeAttack(Combatant& target, Combatant& attacker, Attack attack);
 
+    void MarkEnemiesAsDead();
+
     std::vector<bool> itemVector;
 
     std::string combatFileName;
@@ -129,7 +131,7 @@ public:
     bool choosingAtk = false;
 
     std::vector<Item>* items;
-    std::vector<std::shared_ptr<Entity>> enemies_to_destroy;
+    std::vector<int> enemies_to_destroy;
 
 private:
     pugi::xml_document combatFileXML;

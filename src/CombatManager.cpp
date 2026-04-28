@@ -763,7 +763,6 @@ void CombatManager::CheckAlive()
 	for (auto& e : combatData->enemies)
 		if (e.alive) ++aliveEnemies;
 	if (aliveEnemies == 0) combatState->player_Wins = true;
-
 	if (combatState->enemy_Wins)
 	{
 		LOG("Enemies win the combat.");
@@ -774,5 +773,21 @@ void CombatManager::CheckAlive()
 	else if (combatState->player_Wins) //delete the enemies you killed
 	{
 		LOG("Player wins the combat. Destroying the enemies...");
+		MarkEnemiesAsDead();
+		in_combat = false;
+		enemies_to_destroy.clear();
+		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 	}
+}
+
+void CombatManager::MarkEnemiesAsDead()
+{
+	enemies_to_destroy.clear();
+	for (auto enemy : combatData->enemies)
+	{
+		if(!enemy.alive) enemies_to_destroy.push_back(enemy.id);
+	}
+	
+	Engine::GetInstance().map->UpdateEnemiesData();
+	
 }
