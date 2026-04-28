@@ -36,3 +36,13 @@ bool ItemManager::CleanUp()
 {
 	return true;
 }
+
+void ItemManager::ShowItems()
+{
+	//show the items when pressing the "Items" button when in combat and when clicking a key.
+}
+
+void ItemManager::HideItems()
+{
+
+}

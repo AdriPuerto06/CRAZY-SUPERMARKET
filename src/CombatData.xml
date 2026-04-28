@@ -14,8 +14,6 @@
 		<attack_stats name="Low kick chill" magicPoints="0" dmg="3" effect="poisoned"></attack_stats>
 		<attack_stats name="Punch extorsion" magicPoints="5" dmg="3" effect="paralized"></attack_stats>
 		
-		<item name="Item1" heal="5"></item>
-		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="2" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -29,9 +27,6 @@
 		<attack_stats name="Poisonous kiss" magicPoints="1" dmg="0" effect="poisoned"></attack_stats>
 		<attack_stats name="Golden rain" magicPoints="5" dmg="3" effect="paralized"></attack_stats>
 
-
-		<item name="Item1" heal="5"></item>
-		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="3" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -45,9 +40,6 @@
 		<attack_stats name="Confusing perfume" magicPoints="2" dmg="0" effect="confused"></attack_stats>
 		<attack_stats name="Sacrifice" magicPoints="5" dmg="999" effect="selfKO"></attack_stats>
 
-
-		<item name="Item1" heal="5"></item>
-		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="4" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -61,9 +53,6 @@
 		<attack_stats name="Headache" magicPoints="2" dmg="5" effect="confused"></attack_stats>
 		<attack_stats name="Radioactive eruption" magicPoints="4" dmg="0" effect="poisoned"></attack_stats>
 
-
-		<item name="Item1" heal="5"></item>
-		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="5" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -77,9 +66,6 @@
 		<attack_stats name="Rage the Bait" magicPoints="5" dmg="0" effect="ragebait"></attack_stats>
 		<attack_stats name="Motivational speech" magicPoints="3" dmg="0" effect="buff"></attack_stats>
 
-
-		<item name="Item1" heal="5"></item>
-		<item name="Item2" dmg="15"></item>
 	</player>
 	<player id="6" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -92,10 +78,6 @@
 		<attack_stats name="Shoeless Dance" magicPoints="3" dmg="4" effect="confused"></attack_stats>
 		<attack_stats name="Bum bum" magicPoints="4" dmg="12" effect="none"></attack_stats>
 		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralized"></attack_stats>
-
-
-		<item name="Item1" heal="5"></item>
-		<item name="Item2" dmg="15"></item>
 	</player>
 	
 	<enemy id =" 1" HP="15">
@@ -123,4 +105,12 @@
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
 
+	<items>
+		<item id="1" name ="Cursed Knife" active="false"/>
+		<item id="2" name ="Stillish skates" active="false"/>
+		<item id="3" name ="Bike helmet" active="false"/>
+		<item id="4" name ="Blessed water" active="false"/>
+		<item id="5" name ="Disturbing picture" active="false"/>
+		<item id="6" name ="Haunted remote control" active="false"/>
+	</items>
 </combat>

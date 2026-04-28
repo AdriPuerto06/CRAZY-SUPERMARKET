@@ -1,5 +1,6 @@
 #pragma once
 #include "UIButton.h"
+#include "ItemManager.h"
 #include "Scene.h"
 #include <vector>
 
@@ -127,9 +128,14 @@ public:
     bool godMode = false;
     bool choosingAtk = false;
 
+    std::vector<Item>* items;
+    std::vector<std::shared_ptr<Entity>> enemies_to_destroy;
+
 private:
     pugi::xml_document combatFileXML;
 
     SceneID timeScene;
     SceneID currentScene;
+
+    
 };

@@ -24,10 +24,12 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void ShowItems();
+	void HideItems();
+
 public:
 
 
 private:
 	
-	std::vector<Item> items;
 };

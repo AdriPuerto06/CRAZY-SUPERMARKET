@@ -8,6 +8,8 @@
 #include<cstdlib>
 #include "Player.h"
 #include "Map.h"
+#include "ItemManager.h"
+#include "EntityManager.h"
 
 //helpers
 std::vector<int> GetIDs(std::string str)
@@ -119,6 +121,7 @@ bool CombatManager::Awake()
 {
 	combatData = new CombatData;
 	combatState = new CombatState;
+	items = new std::vector<Item>;
 	/*itemVector.push_back(false);*/
 	return true;
 }
@@ -689,6 +692,18 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 
 		combatData->enemies.push_back(enemy);
 	}
+
+	//items
+	for (pugi::xml_node item_tree_node = combatFileXML.child("items").child("item");
+		item_tree_node != NULL;
+		item_tree_node = item_tree_node.next_sibling("item"))
+	{
+		Item item;
+		item.active = item_tree_node.attribute("active").as_bool();
+		item.name = item_tree_node.attribute("name").as_string();
+		items->push_back(item);
+	}
+
 }
 
 
@@ -702,6 +717,10 @@ void CombatManager::CheckAlive()
 		{
 			e.alive = false;
 			LOG("Enemy ID: %i has been killed.", e.id);
+
+			//std::shared_ptr<Entity> entity = Engine::GetInstance().entityManager->GetEnemy(e.id); //get enemy from the id
+			//enemies_to_destroy.push_back(entity); //entities is empty because we delete all from the previous scene, I need to make a function that changes the 
+			// combat file values
 
 			for (int j = 0; j < (int)combatData->enemies.size(); ++j)
 			{
@@ -745,12 +764,15 @@ void CombatManager::CheckAlive()
 		if (e.alive) ++aliveEnemies;
 	if (aliveEnemies == 0) combatState->player_Wins = true;
 
-	if (combatState->player_Wins || combatState->enemy_Wins)
+	if (combatState->enemy_Wins)
 	{
-		if (combatState->player_Wins) LOG("Player wins the combat.");
-		else LOG("Enemies win the combat.");
-
+		LOG("Enemies win the combat.");
 		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 		in_combat = false;
+		enemies_to_destroy.clear();
+	}
+	else if (combatState->player_Wins) //delete the enemies you killed
+	{
+		LOG("Player wins the combat. Destroying the enemies...");
 	}
 }
