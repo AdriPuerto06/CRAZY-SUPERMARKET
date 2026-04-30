@@ -139,5 +139,4 @@ private:
     SceneID timeScene;
     SceneID currentScene;
 
-    
 };

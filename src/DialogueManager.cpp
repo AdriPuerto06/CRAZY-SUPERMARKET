@@ -205,7 +205,8 @@ void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 					tree->choices_text.push_back(newVec2);
 					tree->rewards.push_back(newVec2);
 					//add attributes
-					if (current_node.attribute("reward")) { tree->rewards[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("reward").as_string()); }
+					bool has_Reward = !current_choice.attribute("reward").empty();
+					if (has_Reward) { tree->rewards[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("reward").as_string()); }
 					else { tree->rewards[current_node_counter - 1].emplace_back("none"); }
 					tree->choices_id[current_node_counter-1].emplace_back(current_choice.attribute("id").as_int());
 					tree->choices_text[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("option").as_string());

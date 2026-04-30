@@ -7,7 +7,7 @@
 struct SDL_Texture;
 
 struct Item {
-	std::string name;
+	const char* name;
 	bool active;
 };
 

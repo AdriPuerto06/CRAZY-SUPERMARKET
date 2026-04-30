@@ -674,7 +674,7 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 	{
 		Item item;
 		item.active = item_tree_node.attribute("active").as_bool();
-		item.name = item_tree_node.attribute("name").as_string();
+		item.name = (const char*)item_tree_node.attribute("name").as_string();
 		items->push_back(item);
 	}
 
