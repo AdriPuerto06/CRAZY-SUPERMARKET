@@ -17,12 +17,11 @@ std::vector<int> GetIDs(std::string str)
 	std::vector<int> IDs;
 	bool lastValNum = true;
 	int num = str.at(0) - '0';
-	
 	for (int l = 1; l < str.size(); ++l)
 	{
 		if (!(str[l] == ','))
 		{
-			/*if (lastValNum) */num = num * 10 + (str.at(l) - '0');
+			num = num * 10 + (str.at(l) - '0');
 			lastValNum = true;
 		}
 		else 
@@ -33,7 +32,6 @@ std::vector<int> GetIDs(std::string str)
 		}
 			
 	}
-
 	IDs.push_back(num);
 	return IDs;
 }
@@ -47,7 +45,6 @@ bool Contains(std::vector<int> vec, int val)
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -60,7 +57,7 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	else if (attack.effect == "heal")
 	{
 		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
-									   else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
+						   else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
 	}
 	else if (attack.effect == "selfKO")
 	{
@@ -89,13 +86,13 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 
 	//effects of the target that affect the attacker
 	int dmg_reduction = 0;
-	if (/*target.status == "shield"*/ target.shield_and_buff.first)
+	if (target.shield_and_buff.first)
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
 		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
 		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
 	}
-	if (/*attacker.status == "buff"*/ attacker.shield_and_buff.second)
+	if (attacker.shield_and_buff.second)
 	{
 		dmg_reduction -= BUFF_DMG_INCREASE;
 		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
@@ -139,7 +136,6 @@ bool CombatManager::Update(float dt)
 	{
 		HandleTargetSelection();
 	}
-
 	return true;
 }
 
@@ -162,7 +158,6 @@ bool CombatManager::LoadCombatData(std::string path, std::string fileName)
 	combatPath = path;
 	std::string mapPathName = combatPath + combatFileName;
 
-	//L15 TODO 2: make mapFileXML an attribute of the Map class
 	pugi::xml_parse_result result = combatFileXML.load_file(mapPathName.c_str());
 	if (result == NULL)
 	{
@@ -286,11 +281,9 @@ void CombatManager::ApplyCombatLogic()
 		}
 		else { LOG("Player is paralized! Choose another one. Skip turn if all are."); return; }
 		
-
 		combatState->magicPoints -= attack.magicPoints;
 
 		LOG("Magic Points: %i.", combatState->magicPoints);
-
 
 		combatState->turn = "Enemy";
 		CheckAlive();
@@ -300,13 +293,7 @@ void CombatManager::ApplyCombatLogic()
 	{
 		CheckAlive();
 		EnemyAI();
-
-		/*Combatant& player = combatData->players[combatState->player_index_selected];
-		LOG("Player ID: %i now has %i HP.", player.id, player.hp);*/
-
-		
 		combatState->turn = "Player";
-
 	}
 
 	ApplyEffects();
@@ -397,10 +384,7 @@ void CombatManager::ApplyEffects()
 			}
 		}
 	}
-	
-
 }
-
 
 void CombatManager::HandleTargetSelection()
 {
@@ -493,7 +477,6 @@ void CombatManager::EnemyAI()
 	}
 }
 
-
 void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_ID)
 {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start combat", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
@@ -519,7 +502,6 @@ bool CombatManager::StartCombat()
 
 	return true;
 }
-
 
 bool CombatManager::ShowAttackOptions(int player_ID)
 {
@@ -573,16 +555,8 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 	return true;
 }
 
-
 bool CombatManager::ShowItemOptions(int player_ID) {
 	LOG("ShowItemOptions called");
-	//UnloadCombatUI(); //if needed, create a function to only delete the buttons we choose
-	//SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	//std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, combatData->players_attacks[player_ID - 1][0].name, bt1Pos, this));
-
-	//SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	//std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, combatData->players_attacks[player_ID - 1][1].name, bt2Pos, this));
-
 	return true;
 }
 
@@ -751,7 +725,6 @@ void CombatManager::CheckAlive()
 			}
 		}
 	}
-
 	// check enemy wins
 	int alivePlayers = 0;
 	for (auto& p : combatData->players)
@@ -763,6 +736,7 @@ void CombatManager::CheckAlive()
 	for (auto& e : combatData->enemies)
 		if (e.alive) ++aliveEnemies;
 	if (aliveEnemies == 0) combatState->player_Wins = true;
+
 	if (combatState->enemy_Wins)
 	{
 		LOG("Enemies win the combat.");
@@ -787,7 +761,5 @@ void CombatManager::MarkEnemiesAsDead()
 	{
 		if(!enemy.alive) enemies_to_destroy.push_back(enemy.id);
 	}
-	
 	Engine::GetInstance().map->UpdateEnemiesData();
-	
 }

@@ -528,19 +528,19 @@ void Scene::LoadMainMenu() {
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect bt1Pos = { WindowSize.getX()/2 - 115, (WindowSize.getY() / 2) - 200, 229,90};
-	createButtnon(btnStartTex, btnStartPressedTex, bt1Pos, 1);
+	CreateButton(btnStartTex, btnStartPressedTex, bt1Pos, 1);
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 132, (WindowSize.getY() / 2) - 100, 264, 85 };
-	createButtnon(btnOptTex, btnOptPressedTex, bt2Pos, 3);
+	CreateButton(btnOptTex, btnOptPressedTex, bt2Pos, 3);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 160, (WindowSize.getY() / 2), 320,85 };
-	createButtnon(btnMltTex, btnMltPressedTex, bt3Pos, 4);
+	CreateButton(btnMltTex, btnMltPressedTex, bt3Pos, 4);
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 130, (WindowSize.getY() / 2) + 100, 260,85 };
-	createButtnon(btnCredTex, btnCredPressedTex, bt4Pos, 5);
+	CreateButton(btnCredTex, btnCredPressedTex, bt4Pos, 5);
 
 	SDL_Rect bt5Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 200, 170,85 };
-	createButtnon(btnExitTex, btnExitPressedTex, bt5Pos,8);
+	CreateButton(btnExitTex, btnExitPressedTex, bt5Pos,8);
 
 }
 
@@ -945,10 +945,10 @@ void Scene::LoadOptions()
 	//UI Buttons
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 315, WindowSize.getY() / 2, 215,85 };
-	createButtnon(btnSndTex, btnSndPressedTex, bt1Pos, 6);
+	CreateButton(btnSndTex, btnSndPressedTex, bt1Pos, 6);
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 + 80, WindowSize.getY() / 2, 280,85 };
-	createButtnon(btnGfcTex, btnGfcPressedTex, bt2Pos, 7);
+	CreateButton(btnGfcTex, btnGfcPressedTex, bt2Pos, 7);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt3Pos, this));
@@ -1238,16 +1238,16 @@ void Scene::LoadPause()
 	//UI Buttons
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 128, WindowSize.getY() / 2 - 100, 257,85 };
-	createButtnon(btnResTex, btnResPressedTex, bt1Pos, 9);
+	CreateButton(btnResTex, btnResPressedTex, bt1Pos, 9);
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 107, WindowSize.getY() / 2, 215,85 };
-	createButtnon(btnSndTex, btnSndPressedTex, bt2Pos, 6);
+	CreateButton(btnSndTex, btnSndPressedTex, bt2Pos, 6);
 
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 140, WindowSize.getY() / 2 + 100, 280,85 };
-	createButtnon(btnGfcTex, btnGfcPressedTex, bt3Pos, 7);
+	CreateButton(btnGfcTex, btnGfcPressedTex, bt3Pos, 7);
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 200, 170,85 };
-	createButtnon(btnExitTex, btnExitPressedTex, bt4Pos, 8);
+	CreateButton(btnExitTex, btnExitPressedTex, bt4Pos, 8);
 
 }
 
@@ -1401,7 +1401,7 @@ void Scene::PostUpdateBattle()
 }
 
 
-void Scene::createButtnon(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+void Scene::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
 {
 	auto btn = std::dynamic_pointer_cast<UIButton>(
 		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
