@@ -6472,7 +6472,7 @@
 		<object id="15" name="Enemy1" type="Enemy" x="878" y="978">
 			<properties>
 				<property name="Enemy_ID" type="int" value="1" />
-				<property name="active" type="bool" value="true" />
+				<property name="active" type="bool" value="false" />
 				<property name="fight_ID" type="int" value="1" />
 				<property name="texturePath" value="Assets/Maps/x.png" />
 			</properties>

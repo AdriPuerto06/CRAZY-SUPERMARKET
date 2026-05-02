@@ -14,6 +14,7 @@ ItemManager::~ItemManager() {}
 
 bool ItemManager::Awake() 
 {
+	items = new std::vector<Item>;
 	return true;
 }
 

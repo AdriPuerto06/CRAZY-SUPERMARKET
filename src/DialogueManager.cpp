@@ -159,12 +159,18 @@ bool DialogueManager::ShowOptions(int node_value) {
 	if (node_value == -1) return true;
 	LOG("ShowOptions called");
 	UnloadDialogueUI();
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX()*2/4-65, Engine::GetInstance().window->GetWindowSize().getY()*2/4-15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
+	if (tree->choices_text[node_value].size() == 1)
+	{
+		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
+	}
+	else {
+		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
-
+		SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
+	}
 	return true;
 }
 
