@@ -130,7 +130,6 @@ public:
     bool godMode = false;
     bool choosingAtk = false;
 
-    std::vector<Item>* items;
     std::vector<int> enemies_to_destroy;
 
 private:

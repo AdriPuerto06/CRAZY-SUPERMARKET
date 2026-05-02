@@ -220,5 +220,8 @@
     <Xml Include="src\CombatData.xml">
       <Filter>Source Files\Engine\Combat</Filter>
     </Xml>
+    <Xml Include="ItemsData.xml">
+      <Filter>Source Files\Game\Items</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

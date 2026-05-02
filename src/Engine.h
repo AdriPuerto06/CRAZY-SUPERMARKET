@@ -21,6 +21,7 @@ class Physics;
 class UIManager;
 class DialogueManager;
 class CombatManager;
+class ItemManager;
 
 class Engine
 {
@@ -106,6 +107,7 @@ public:
 	std::shared_ptr<UIManager> uiManager;
 	std::shared_ptr<DialogueManager> dialogueManager;
 	std::shared_ptr<CombatManager> combatManager;
+	std::shared_ptr<ItemManager> itemManager;
 
 
 	bool vsync_Active = true;

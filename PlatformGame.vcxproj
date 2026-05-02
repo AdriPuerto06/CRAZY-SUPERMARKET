@@ -203,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />
+    <Xml Include="ItemsData.xml" />
     <Xml Include="src\CombatData.xml" />
     <Xml Include="src\Dialogs.xml" />
   </ItemGroup>

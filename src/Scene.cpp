@@ -15,6 +15,7 @@
 #include "UIManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
+#include "ItemManager.h"
 
 Scene::Scene() : Module()
 {
@@ -32,6 +33,7 @@ bool Scene::Awake()
 
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	Engine::GetInstance().combatManager->LoadCombatData("src/", "CombatData.xml");
+	Engine::GetInstance().itemManager->LoadItemsData("src/", "ItemsData.xml");
 
 	LOG("Loading Scene");
 	bool ret = true;

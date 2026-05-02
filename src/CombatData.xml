@@ -104,13 +104,4 @@
 		<attack name ="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-
-	<items>
-		<item id="1" name ="Cursed Knife" active="false"/>
-		<item id="2" name ="Stillish skates" active="false"/>
-		<item id="3" name ="Bike helmet" active="false"/>
-		<item id="4" name ="Blessed water" active="false"/>
-		<item id="5" name ="Disturbing picture" active="false"/>
-		<item id="6" name ="Haunted remote control" active="false"/>
-	</items>
 </combat>

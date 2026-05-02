@@ -5,7 +5,8 @@
 #include "Window.h"
 #include "Scene.h"
 #include<iostream>
-#include<cstdlib>
+#include <cstdlib>
+#include <random>
 #include "Player.h"
 #include "Map.h"
 #include "ItemManager.h"
@@ -48,8 +49,18 @@ bool Contains(std::vector<int> vec, int val)
 	return false;
 }
 
+bool CanAttack(int probability) {
+	static std::random_device rd;          // seed
+	static std::mt19937 gen(rd());         // Mersenne Twister RNG
+	std::uniform_int_distribution<> dist(1, 100);
+
+	int roll = dist(gen);
+	return roll <= probability;
+}
+
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
+
 	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "none")
 	{
@@ -83,9 +94,13 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	{
 		target.status = attack.effect;
 	}
-
-	//effects of the target that affect the attacker
+	//apply items
+	int dmg_increase = 0;
 	int dmg_reduction = 0;
+	int confused_probability = 0;
+	Engine::GetInstance().itemManager->ApplyCombatItems(dmg_increase, dmg_reduction, confused_probability);
+	//effects of the target that affect the attacker
+	
 	if (target.shield_and_buff.first)
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
@@ -94,15 +109,21 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	}
 	if (attacker.shield_and_buff.second)
 	{
-		dmg_reduction -= BUFF_DMG_INCREASE;
+		dmg_increase += BUFF_DMG_INCREASE;
 		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
 		else { LOG("Enemy ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
 	}
 
-	int dmg_applied = attack.dmg - dmg_reduction;
+	int dmg_applied = attack.dmg + dmg_increase - dmg_reduction;
 	if (dmg_applied < 0) dmg_applied = 0; //clamp
 
-	target.hp -= dmg_applied;
+	if (confused_probability != 0 && attacker.type == EntityType::BASEENEMY)
+	{
+		if (CanAttack(100 - confused_probability)) {}
+		else { LOG("Enemy couldn't attack because of the item 'Disturbing Picture'."); return; }
+	}
+	else target.hp -= dmg_applied;
+	
 	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
 	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
 }
@@ -118,7 +139,6 @@ bool CombatManager::Awake()
 {
 	combatData = new CombatData;
 	combatState = new CombatState;
-	items = new std::vector<Item>;
 	/*itemVector.push_back(false);*/
 	return true;
 }
@@ -666,20 +686,7 @@ void CombatManager::GetTreeAttributes(int fight_ID)
 
 		combatData->enemies.push_back(enemy);
 	}
-
-	//items
-	for (pugi::xml_node item_tree_node = combatFileXML.child("items").child("item");
-		item_tree_node != NULL;
-		item_tree_node = item_tree_node.next_sibling("item"))
-	{
-		Item item;
-		item.active = item_tree_node.attribute("active").as_bool();
-		item.name = (const char*)item_tree_node.attribute("name").as_string();
-		items->push_back(item);
-	}
-
 }
-
 
 void CombatManager::CheckAlive()
 {
