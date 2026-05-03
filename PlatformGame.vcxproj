@@ -163,6 +163,7 @@
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\PlatformGame.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\QuestManager.cpp" />
     <ClCompile Include="src\Render.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Textures.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="src\PerfTimer.h" />
     <ClInclude Include="src\Physics.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\QuestManager.h" />
     <ClInclude Include="src\Render.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Textures.h" />
@@ -206,6 +208,7 @@
     <Xml Include="ItemsData.xml" />
     <Xml Include="src\CombatData.xml" />
     <Xml Include="src\Dialogs.xml" />
+    <Xml Include="src\QuestsData.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

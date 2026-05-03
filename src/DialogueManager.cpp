@@ -51,7 +51,7 @@ bool DialogueManager::LoadDialogs(std::string path, std::string fileName)
 	pugi::xml_parse_result result = dialogsFileXML.load_file(mapPathName.c_str());
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
+		LOG("Could not load dialogue xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
 		return false;
 	}
 	LOG("Dialogs.xml loaded successfully.");
