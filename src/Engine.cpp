@@ -16,7 +16,8 @@
 #include "UIManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
-
+#include "ItemManager.h"
+#include "QuestManager.h"
 
 
 // Constructor
@@ -47,6 +48,8 @@ Engine::Engine() {
 	uiManager = std::make_shared<UIManager>(); 
     dialogueManager = std::make_shared<DialogueManager>();
     combatManager = std::make_shared<CombatManager>();
+    itemManager = std::make_shared<ItemManager>();
+    questManager = std::make_shared<QuestManager>();
 
     // Ordered for awake / Start / Update
     // Reverse order of CleanUp
@@ -61,6 +64,8 @@ Engine::Engine() {
     AddModule(std::static_pointer_cast<Module>(entityManager));
     AddModule(std::static_pointer_cast<Module>(dialogueManager));
     AddModule(std::static_pointer_cast<Module>(combatManager));
+    AddModule(std::static_pointer_cast<Module>(itemManager));
+    AddModule(std::static_pointer_cast<Module>(questManager));
 	// UI Manager on top of the other modules
 	AddModule(std::static_pointer_cast<Module>(uiManager)); 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "UIButton.h"
+#include "ItemManager.h"
 #include "Scene.h"
 #include <vector>
 
@@ -21,7 +22,8 @@ struct Combatant {
     int hp = 0;
     bool alive = true;
     std::string status = "none";
-    int status_duration = -1;
+    int status_duration = 0;
+    std::pair<bool, bool> shield_and_buff;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
 };
@@ -110,6 +112,8 @@ public:
     void CheckAlive();
     void MakeAttack(Combatant& target, Combatant& attacker, Attack attack);
 
+    void MarkEnemiesAsDead();
+
     std::vector<bool> itemVector;
 
     std::string combatFileName;
@@ -126,9 +130,12 @@ public:
     bool godMode = false;
     bool choosingAtk = false;
 
+    std::vector<int> enemies_to_destroy;
+
 private:
     pugi::xml_document combatFileXML;
 
     SceneID timeScene;
     SceneID currentScene;
+
 };

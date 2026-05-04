@@ -36,6 +36,7 @@ bool DialogueManager::PostUpdate() {
 
 bool DialogueManager::CleanUp() 
 {
+	in_conversation = false;
 	dialogsFileXML.empty();
 	return true;
 }
@@ -50,7 +51,7 @@ bool DialogueManager::LoadDialogs(std::string path, std::string fileName)
 	pugi::xml_parse_result result = dialogsFileXML.load_file(mapPathName.c_str());
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
+		LOG("Could not load dialogue xml file %s. pugi error: %s", mapPathName.c_str(), result.description());
 		return false;
 	}
 	LOG("Dialogs.xml loaded successfully.");
@@ -158,12 +159,18 @@ bool DialogueManager::ShowOptions(int node_value) {
 	if (node_value == -1) return true;
 	LOG("ShowOptions called");
 	UnloadDialogueUI();
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX()*2/4-65, Engine::GetInstance().window->GetWindowSize().getY()*2/4-15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
+	if (tree->choices_text[node_value].size() == 1)
+	{
+		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
+	}
+	else {
+		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
-
+		SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
+	}
 	return true;
 }
 
@@ -196,12 +203,17 @@ void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 				tree->nodes_id.emplace_back(current_node.attribute("id").as_int());
 				for (pugi::xml_node current_choice = current_node.child("choice"); current_choice != NULL; current_choice = current_choice.next_sibling("choice"))
 				{
+					//add vectors so it doesn't crash
 					std::vector<int> newVec;
 					tree->choices_id.push_back(newVec);
 					tree->choices_next_node.push_back(newVec);
 					std::vector<const char*> newVec2;
 					tree->choices_text.push_back(newVec2);
-					//add vectors so it doesn't crash
+					tree->rewards.push_back(newVec2);
+					//add attributes
+					bool has_Reward = !current_choice.attribute("reward").empty();
+					if (has_Reward) { tree->rewards[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("reward").as_string()); }
+					else { tree->rewards[current_node_counter - 1].emplace_back("none"); }
 					tree->choices_id[current_node_counter-1].emplace_back(current_choice.attribute("id").as_int());
 					tree->choices_text[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("option").as_string());
 					tree->choices_next_node[current_node_counter - 1].emplace_back(current_choice.attribute("next_node").as_int());

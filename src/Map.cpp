@@ -9,6 +9,7 @@
 #include "BaseNPC.h"
 #include "BaseEnemy.h"
 #include <math.h>
+#include "CombatManager.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -394,7 +395,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEnemy(ID));
                     const char* texturePath = enemy->texturePath;
                     bool active = enemy->active;
-
+                    int enemy_ID = -1;
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -402,8 +403,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        /*if (name == "ENEMY_ID")
-                            propertyNode.attribute("value").set_value(ENEMY_ID);*/
+                        if (name == "ENEMY_ID")
+                            propertyNode.attribute("value").as_int();
 
                         if (name == "active")
                             propertyNode.attribute("value").set_value(active);
@@ -801,4 +802,45 @@ bool Map::Load(std::string path, std::string fileName)
 
         // L09: TODO 6: Load a group of properties from a node and fill a list with it
     }
+}
+
+void Map::UpdateEnemiesData()
+{
+    bool active = false;
+    int ID;
+    bool change = false;
+    auto ids = Engine::GetInstance().combatManager->enemies_to_destroy;
+    for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
+
+        if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
+
+            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+                std::string entityType = objectNode.attribute("type").as_string();
+                
+                if (entityType == "Enemy")
+                {
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+                        if (name == "Enemy_ID")
+                        {
+                            ID = propertyNode.attribute("value").as_int();
+                        }
+                        if (name == "active")
+                        {
+                            for (auto i : ids) { if (ID == i) change = true; }
+                            if (change) { 
+                                propertyNode.attribute("value").set_value(active);  //change active value
+                                LOG("Enemy ID: %i marked %i (0 dead, 1 alive)", ID, active);
+                                std::string mapPathName = mapPath + mapFileName; //save file
+                                mapFileXML.save_file(mapPathName.c_str());
+                            };
+                        }
+                    }
+                    }
+                }
+            }
+        }
 }

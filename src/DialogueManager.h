@@ -8,6 +8,7 @@ struct DialogueTree {
 	std::vector<std::vector<int>> choices_id;
 	std::vector<std::vector<const char*>> choices_text;
 	std::vector<std::vector<int>> choices_next_node;
+	std::vector<std::vector<const char*>> rewards;
 
 	void Clear()
 	{

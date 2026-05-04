@@ -157,6 +157,8 @@ public:
     // Load new map
     bool Load(std::string path, std::string mapFileName);
 
+    void UpdateEnemiesData();
+
     // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
     Vector2D MapToWorld(int x, int y) const;
     Vector2D WorldToMap(int x, int y);

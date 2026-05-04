@@ -10,8 +10,7 @@
 			<choice id ="2" option="You don't wanna know" next_node ="2"/>
 		</node>
 		<node id ="2" text="You are CRAZY">
-			<choice id ="1" option="I will slap you" next_node ="-1"/>
-			<choice id ="2" option="I will slap you!" next_node ="-1"/>
+			<choice id ="1" option="I will slap you" next_node ="-1" reward="Jet Punch"/>
 		</node>
 	</dialogue_tree>
 

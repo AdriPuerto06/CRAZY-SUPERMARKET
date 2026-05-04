@@ -123,7 +123,7 @@
     <ClCompile Include="src\UIButton.cpp">
       <Filter>Source Files\Engine\UI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Item.cpp">
+    <ClCompile Include="src\ItemManager.cpp">
       <Filter>Source Files\Game\Items</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,7 +206,7 @@
     <ClInclude Include="src\UIButton.h">
       <Filter>Source Files\Engine\UI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Item.h">
+    <ClInclude Include="src\ItemManager.h">
       <Filter>Source Files\Game\Items</Filter>
     </ClInclude>
   </ItemGroup>
@@ -219,6 +219,9 @@
     </Xml>
     <Xml Include="src\CombatData.xml">
       <Filter>Source Files\Engine\Combat</Filter>
+    </Xml>
+    <Xml Include="ItemsData.xml">
+      <Filter>Source Files\Game\Items</Filter>
     </Xml>
   </ItemGroup>
 </Project>

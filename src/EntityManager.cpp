@@ -4,7 +4,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "Log.h"
-#include "Item.h"
+//#include "Item.h"
 
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
@@ -74,9 +74,9 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::PLAYER:
 		entity = std::make_shared<Player>();
 		break;
-	case EntityType::ITEM:
+	/*case EntityType::ITEM:
 		entity = std::make_shared<Item>();
-		break;
+		break;*/
 	case EntityType::BASEENEMY:
 		entity = std::make_shared<BaseEnemy>();
 		break;
