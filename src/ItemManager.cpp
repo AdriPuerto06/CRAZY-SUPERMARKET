@@ -93,6 +93,8 @@ void ItemManager::HideItems()
 //	return false;
 //}
 
+void ItemManager::ActivateItem(const char* name) {}
+
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {
 	for (auto item : *items)

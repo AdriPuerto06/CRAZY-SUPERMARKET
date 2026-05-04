@@ -3,6 +3,8 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "Window.h"
+#include "QuestManager.h"
+#include "ItemManager.h"
 
 DialogueManager::DialogueManager() : Module() 
 {
@@ -103,6 +105,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void DialogueManager::ButtonAction(int ID)
 {
+	GetPosibleReward(tree->rewards[dialogue->node_id][0]);
 	//update values of dialogue
 	dialogue->choice = ID;
 	dialogue->node_id = tree->choices_next_node[dialogue->node_id][ID-1];
@@ -209,16 +212,46 @@ void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 					tree->choices_next_node.push_back(newVec);
 					std::vector<const char*> newVec2;
 					tree->choices_text.push_back(newVec2);
-					tree->rewards.push_back(newVec2);
+					std::vector<Reward> newVec3;
+					tree->rewards.push_back(newVec3);
 					//add attributes
 					bool has_Reward = !current_choice.attribute("reward").empty();
-					if (has_Reward) { tree->rewards[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("reward").as_string()); }
-					else { tree->rewards[current_node_counter - 1].emplace_back("none"); }
+					if (has_Reward)
+					{ 
+						Reward r;
+						r.type = (RewardType)current_choice.attribute("reward").as_int();
+						r.reward_value = current_choice.attribute("reward_value").as_string();
+						tree->rewards[current_node_counter - 1].push_back(r);
+					}
+					else {
+						std::string none = "none";
+						tree->rewards[current_node_counter - 1].push_back(Reward(RewardType::NONE, none)); 
+					}
 					tree->choices_id[current_node_counter-1].emplace_back(current_choice.attribute("id").as_int());
 					tree->choices_text[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("option").as_string());
 					tree->choices_next_node[current_node_counter - 1].emplace_back(current_choice.attribute("next_node").as_int());
 				}
 			}
 		}
+	}
+}
+
+void DialogueManager::GetPosibleReward(Reward reward)
+{
+	switch (reward.type)
+	{
+	case RewardType::NONE:
+		return;
+
+	case RewardType::QUEST:
+		Engine::GetInstance().questManager->ActivateQuest(reward.reward_value.c_str());
+		break;
+
+	case RewardType::ITEM:
+		//Engine::GetInstance().itemManager->;
+		break;
+
+	case RewardType::COMPANION:
+		break;
 	}
 }

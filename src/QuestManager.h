@@ -5,9 +5,10 @@
 struct Quest {
 	bool active;
 	const char* name;
+	int id;
 	bool completed;
 	std::string reward;
-	int reward_Value;
+	int reward_value;
 };
 
 class QuestManager : public Module {
@@ -23,8 +24,10 @@ public:
 	bool CleanUp();
 
 	bool LoadQuests(std::string path, std::string fileName);
+	void InitQuests();
 
 	Quest GetQuest(const char* name);
+	const char* GetQuestName(int id);
 	void ActivateQuest(const char* name);
 
 private:

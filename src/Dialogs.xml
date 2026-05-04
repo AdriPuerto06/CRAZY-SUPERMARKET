@@ -1,4 +1,5 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <dialogs>
 	<dialogue_tree ID="0" NPC="1">
 		<node id ="0" text="Hello. Who are you?">
@@ -10,7 +11,10 @@
 			<choice id ="2" option="You don't wanna know" next_node ="2"/>
 		</node>
 		<node id ="2" text="You are CRAZY">
-			<choice id ="1" option="I will slap you" next_node ="-1" reward="Jet Punch"/>
+			<choice id ="1" option="I will slap you" next_node ="3"/>
+		</node>
+		<node id="3" text="">
+			<choice id="1" option="Claim quest: Talk with the other guy" next_node ="-1" reward="0" reward_value="Talk with the other guy"/>
 		</node>
 	</dialogue_tree>
 

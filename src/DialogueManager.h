@@ -2,13 +2,33 @@
 #include "UIButton.h"
 #include <vector>
 
+enum class RewardType {
+	QUEST,
+	ITEM,
+	COMPANION,
+	NONE
+};
+
+struct Reward {
+	RewardType type;
+	std::string reward_value;
+
+	Reward() {}
+
+	Reward(RewardType type, std::string str)
+	{
+		this->type = type;
+		this->reward_value = str;
+	}
+};
+
 struct DialogueTree {
 	std::vector<const char*> nodes_text;
 	std::vector<int> nodes_id;
 	std::vector<std::vector<int>> choices_id;
 	std::vector<std::vector<const char*>> choices_text;
 	std::vector<std::vector<int>> choices_next_node;
-	std::vector<std::vector<const char*>> rewards;
+	std::vector<std::vector<Reward>> rewards;
 
 	void Clear()
 	{
@@ -17,6 +37,7 @@ struct DialogueTree {
 		choices_id.clear();
 		choices_text.clear();
 		choices_next_node.clear();
+		rewards.clear();
 	}
 };
 
@@ -60,6 +81,7 @@ public:
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
+	void GetPosibleReward(Reward reward);
 
 	std::string dialogsFileName;
 	std::string dialogsPath;
