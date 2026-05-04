@@ -35,6 +35,9 @@
     <Filter Include="Source Files\Game\Items">
       <UniqueIdentifier>{9d3ff855-9a63-4078-9d20-56fe4b43a48b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Quests">
+      <UniqueIdentifier>{fd75a853-6679-402b-b8e6-4db3a9632d14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -126,6 +129,9 @@
     <ClCompile Include="src\ItemManager.cpp">
       <Filter>Source Files\Game\Items</Filter>
     </ClCompile>
+    <ClCompile Include="src\QuestManager.cpp">
+      <Filter>Source Files\Engine\Quests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -209,6 +215,9 @@
     <ClInclude Include="src\ItemManager.h">
       <Filter>Source Files\Game\Items</Filter>
     </ClInclude>
+    <ClInclude Include="src\QuestManager.h">
+      <Filter>Source Files\Engine\Quests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml">
@@ -222,6 +231,9 @@
     </Xml>
     <Xml Include="ItemsData.xml">
       <Filter>Source Files\Game\Items</Filter>
+    </Xml>
+    <Xml Include="src\QuestsData.xml">
+      <Filter>Source Files\Engine\Quests</Filter>
     </Xml>
   </ItemGroup>
 </Project>
