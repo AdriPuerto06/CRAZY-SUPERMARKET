@@ -78,8 +78,10 @@ std::vector<Item>* ItemManager::GetItems()
 void ItemManager::ShowInventory()
 {
 	img = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
-	Vector2D WindowSize = { Engine::GetInstance().window->GetBaseWidth(),   Engine::GetInstance().window->GetBaseHeight() };
-	Engine::GetInstance().render->DrawTexture(img, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
+	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w /2,
+							(float)Engine::GetInstance().render->camera.h / 2
+	};
+	Engine::GetInstance().render->DrawTexture(img, WindowSize.getX(), WindowSize.getY());
 	
 }
 
@@ -90,11 +92,6 @@ void ItemManager::UnShowInventory()
 		Engine::GetInstance().textures->UnLoad(img);
 		img = nullptr;
 	}
-}
-
-void ItemManager::HideItems()
-{
-
 }
 
 //bool ItemManager::IsItemActive(const char* name)

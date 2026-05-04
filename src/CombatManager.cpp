@@ -140,6 +140,10 @@ bool CombatManager::Awake()
 	combatData = new CombatData;
 	combatState = new CombatState;
 	/*itemVector.push_back(false);*/
+
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
+
 	return true;
 }
 
@@ -500,7 +504,7 @@ void CombatManager::EnemyAI()
 		}
 		else { LOG("Enemy didn't attack while being confused."); return; }
 	}
-	else 
+	else
 	{
 		MakeAttack(player, enemy, attack);
 	}
@@ -523,6 +527,7 @@ bool CombatManager::StartCombat()
 
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 	in_combat = true;
+	
 
 	combatState->Init(*combatData);
 	combatState->player_index_selected = 0; // first player

@@ -59,6 +59,7 @@ public:
 	PhysBody* pbody;
 
 	int HP;
+	bool inCombat = false;
 
 	std::string pendingMapLoad;
 
@@ -68,5 +69,5 @@ private:
 	int teleportCooldown = 120;
 
 	bool godMode = false;
-
+	
 };

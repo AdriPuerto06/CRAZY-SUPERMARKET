@@ -63,11 +63,18 @@ bool Player::Update(float dt)
 	GodMode();
 	CheckDialogueAndCombatLogic();
 	Draw(dt);
-	CenterCamera();
+	if (Engine::GetInstance().combatManager->in_combat == false) {
+		CenterCamera();
+	}
+	else {
+		LOG("In combat");
+	}
+	
 	return true;
 }
 
 void Player::CenterCamera() {
+	
 
 	int x, y;
 	pbody->GetPosition(x, y);
