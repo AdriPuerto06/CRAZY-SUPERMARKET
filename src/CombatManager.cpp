@@ -156,6 +156,15 @@ bool CombatManager::Update(float dt)
 	{
 		HandleTargetSelection();
 	}
+
+	if (showInventory == true) {
+		Engine::GetInstance().itemManager->ShowInventory();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && showInventory == true) {
+		showInventory = false;
+		Engine::GetInstance().itemManager->UnShowInventory();
+	}
+
 	return true;
 }
 
@@ -577,6 +586,9 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 
 bool CombatManager::ShowItemOptions(int player_ID) {
 	LOG("ShowItemOptions called");
+
+	showInventory = true;
+
 	return true;
 }
 

@@ -627,7 +627,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 12:
 		LOG("Item clicked");
-		//Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_index_selected);
 		break;
 	case 13:
 		Engine::GetInstance().combatManager->ChangePlayer();

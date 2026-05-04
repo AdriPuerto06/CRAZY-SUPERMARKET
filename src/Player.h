@@ -48,7 +48,7 @@ public:
 	//Declare player parameters
 	float speed = 4.0f;
 	bool can_Move = true;
-	SDL_Texture* texture = NULL;
+	SDL_Texture* texture = nullptr;
 
 	int texW, texH;
 

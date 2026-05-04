@@ -10,6 +10,8 @@ struct Item {
 	const char* name;
 	bool active;
 	int value;
+	std::string description;
+	SDL_Texture* texture = nullptr;
 };
 
 class ItemManager : public Module
@@ -30,18 +32,27 @@ public:
 	std::vector<Item>* GetItems();
 
 	void ShowItems();
+
+	void ShowInventory();
+	void UnShowInventory();
+
 	void HideItems();
 
 	/*bool IsItemActive(const char* name);*/
 	void ApplyCombatItems(int& dmg_inc, int& shield_inc, int& confused_inc);
 
+	void AddItemToInventory(Item item);
+
 public:
 
+	SDL_Texture* img = nullptr;
 
 private:
 	std::string itemsFileName;
 	std::string itemsPath;
 	pugi::xml_document itemsFileXML;
-	std::vector<Item>* items;
+
+	//inventory of the player
+	std::vector<Item>* inventory;
 
 };

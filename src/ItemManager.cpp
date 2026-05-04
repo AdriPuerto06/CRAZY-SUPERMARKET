@@ -14,19 +14,20 @@ ItemManager::~ItemManager() {}
 
 bool ItemManager::Awake() 
 {
-	items = new std::vector<Item>;
+	inventory = new std::vector<Item>;
 	return true;
 }
 
 bool ItemManager::Start()
 {
-	if (items->empty()) LoadItems();
+	if (inventory->empty()) LoadItems();
 	return true;
 }
 
 bool ItemManager::Update(float dt)
 {
 	return true;
+
 }
 
 bool ItemManager::PostUpdate()
@@ -65,18 +66,30 @@ void ItemManager::LoadItems()
 		item.active = item_tree_node.attribute("active").as_bool();
 		item.name = (const char*)item_tree_node.attribute("name").as_string();
 		if (item_tree_node.attribute("value")) { item.value = item_tree_node.attribute("value").as_int(); }
-		items->push_back(item);
+		inventory->push_back(item);
 	}
 }
 
 std::vector<Item>* ItemManager::GetItems()
 {
-	return items;
+	return inventory;
+}
+//show the items when pressing the "Items" button when in combat and when clicking a key.
+void ItemManager::ShowInventory()
+{
+	img = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
+	Vector2D WindowSize = { Engine::GetInstance().window->GetBaseWidth(),   Engine::GetInstance().window->GetBaseHeight() };
+	Engine::GetInstance().render->DrawTexture(img, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
+	
 }
 
-void ItemManager::ShowItems()
+void ItemManager::UnShowInventory()
 {
-	//show the items when pressing the "Items" button when in combat and when clicking a key.
+	if (img != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(img);
+		img = nullptr;
+	}
 }
 
 void ItemManager::HideItems()
@@ -93,9 +106,15 @@ void ItemManager::HideItems()
 //	return false;
 //}
 
+void ItemManager::AddItemToInventory(Item item) {
+	
+	inventory->push_back(item);
+}
+
+
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {
-	for (auto item : *items)
+	for (auto item : *inventory)
 	{
 		if (item.name == "Cursed Knife" && item.active) dmg_inc = item.value;
 		if (item.name == "Bike helmet" && item.active) shield_inc = item.value;
