@@ -131,14 +131,8 @@ void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, i
 {
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Start talk", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
-	
-	//GetTreeAttributes(dialogue_tree_ID, npc_id); //get dialogue_tree from xml
 	dialogue->dialogue_tree_ID = dialogue_tree_ID;
 	dialogue->dialogue_tree_NPC = npc_id;
-	//dialogue->node_id = tree->nodes_id[0];
-	//
-	//dialogue->dialogue_tree_ID = dialogue_tree_ID;
-	//dialogue->dialogue_tree_NPC = npc_id;
 	showingButtonStart = true;
 }
 
@@ -176,21 +170,6 @@ bool DialogueManager::ShowOptions(int node_value) {
 	}
 	return true;
 }
-
-//const char* DialogueManager::GetTextFromNode(int dialogue_tree_ID, int node_value) {
-//	const char* ret = "Couldn't find the text.";
-//	for (pugi::xml_node dialogue_tree_node = dialogsFileXML.child("dialogs").child("dialogue_tree"); dialogue_tree_node != NULL; dialogue_tree_node = dialogue_tree_node.next_sibling("dialogue_tree"))
-//	{
-//		if (dialogue_tree_node.attribute("ID").as_int() == dialogue_tree_ID)
-//		{
-//			for(pugi::xml_node node = dialogue_tree_node.child("node"); node != NULL; node = node.next_sibling("node"))
-//			{
-//				if (node.attribute("id").as_int() == node_value) ret = (const char*)node.attribute("text").as_string();
-//			}
-//		}
-//	}
-//	return ret;
-//}
 
 void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 {
@@ -252,6 +231,12 @@ void DialogueManager::GetPosibleReward(Reward reward)
 		break;
 
 	case RewardType::COMPANION:
+		break;
+
+	case RewardType::COMPLETEQUEST:
+		bool isQuestActive = Engine::GetInstance().questManager->IsQuestActive(reward.reward_value.c_str());
+		bool isQuestComplete = Engine::GetInstance().questManager->IsQuestCompleted(reward.reward_value.c_str());
+		if (isQuestActive && !isQuestComplete) Engine::GetInstance().questManager->CompleteQuest(reward.reward_value.c_str());
 		break;
 	}
 }

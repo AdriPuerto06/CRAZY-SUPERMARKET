@@ -28,7 +28,12 @@ public:
 
 	Quest GetQuest(const char* name);
 	const char* GetQuestName(int id);
+
 	void ActivateQuest(const char* name);
+	bool IsQuestActive(const char* name);
+
+	void CompleteQuest(const char* name);
+	bool IsQuestCompleted(const char* name);
 
 private:
 	pugi::xml_document questsFileXML;

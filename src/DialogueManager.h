@@ -6,6 +6,7 @@ enum class RewardType {
 	QUEST,
 	ITEM,
 	COMPANION,
+	COMPLETEQUEST,
 	NONE
 };
 

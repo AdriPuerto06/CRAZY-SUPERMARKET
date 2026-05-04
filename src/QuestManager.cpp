@@ -78,13 +78,37 @@ const char* QuestManager::GetQuestName(int id)
 	return "EMPTY";
 }
 
+bool QuestManager::IsQuestActive(const char* name)
+{
+	for (Quest q : *quests)
+	{
+		if (std::strcmp(q.name, name) == 0) { return q.active; }
+	}
+}
+
 void QuestManager::ActivateQuest(const char* name)
 {
 	for (Quest q : *quests)
 	{
-		if (q.name == name) { q.active = true; LOG("Quest: %s activated.", q.name); return; };
+		if (std::strcmp(q.name, name) == 0) { q.active = true; LOG("Quest: '%s' activated.", q.name); return; }; //strcmp -> compares two const char* and if equal returns 0
 	}
 	LOG("QuestManager: ActivateQuest() has not found the quest.");
+}
+
+bool QuestManager::IsQuestCompleted(const char* name)
+{
+	for (Quest q : *quests)
+	{
+		if (std::strcmp(q.name, name) == 0) { return q.completed; }
+	}
+}
+
+void QuestManager::CompleteQuest(const char* name)
+{
+	for (Quest q : *quests)
+	{
+		if (std::strcmp(q.name, name) == 0) { q.completed = true; LOG("Quest: '%s' completed.", q.name); }
+	}
 }
 
 void QuestManager::InitQuests()
