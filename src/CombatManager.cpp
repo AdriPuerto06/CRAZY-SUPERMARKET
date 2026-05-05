@@ -140,6 +140,9 @@ bool CombatManager::Awake()
 	combatData = new CombatData;
 	combatState = new CombatState;
 	/*itemVector.push_back(false);*/
+
+	
+
 	return true;
 }
 
@@ -156,6 +159,15 @@ bool CombatManager::Update(float dt)
 	{
 		HandleTargetSelection();
 	}
+
+	if (showInventory == true) {
+		Engine::GetInstance().itemManager->ShowInventory();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && showInventory == true) {
+		showInventory = false;
+		Engine::GetInstance().itemManager->UnShowInventory();
+	}
+
 	return true;
 }
 
@@ -187,6 +199,24 @@ bool CombatManager::LoadCombatData(std::string path, std::string fileName)
 	LOG("CombatData.xml loaded successfully.");
 	return true;
 }
+
+bool CombatManager::StartCombat()
+{
+	if (in_combat) return true;
+
+	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
+	in_combat = true;
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
+
+	combatState->Init(*combatData);
+	combatState->player_index_selected = 0; // first player
+
+	showing_continue = false;
+
+	return true;
+}
+
 
 void CombatManager::UnloadCombatUI()
 {
@@ -491,7 +521,7 @@ void CombatManager::EnemyAI()
 		}
 		else { LOG("Enemy didn't attack while being confused."); return; }
 	}
-	else 
+	else
 	{
 		MakeAttack(player, enemy, attack);
 	}
@@ -508,20 +538,6 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_I
 	showingButtonStart = true;
 }
 
-bool CombatManager::StartCombat()
-{
-	if (in_combat) return true;
-
-	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
-	in_combat = true;
-
-	combatState->Init(*combatData);
-	combatState->player_index_selected = 0; // first player
-
-	showing_continue = false;
-
-	return true;
-}
 
 bool CombatManager::ShowAttackOptions(int player_ID)
 {
@@ -577,6 +593,9 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 
 bool CombatManager::ShowItemOptions(int player_ID) {
 	LOG("ShowItemOptions called");
+
+	showInventory = true;
+
 	return true;
 }
 

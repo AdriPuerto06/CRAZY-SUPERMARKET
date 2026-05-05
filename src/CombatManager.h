@@ -127,6 +127,8 @@ public:
     bool showingButtonStart = false;
     bool in_combat = false;
 
+    bool showInventory = false;
+
     bool godMode = false;
     bool choosingAtk = false;
 
