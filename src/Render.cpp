@@ -112,8 +112,6 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	LOG("Camera Position: %d, %d", camera.x, camera.y);
-
 	if (isTyping)
 	{
 		typeTimer += dt;

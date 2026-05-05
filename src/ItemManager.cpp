@@ -77,8 +77,8 @@ std::vector<Item>* ItemManager::GetItems()
 //show the items when pressing the "Items" button when in combat and when clicking a key.
 void ItemManager::ShowInventory()
 {
-	img = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
-	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w /2,
+	img = Engine::GetInstance().textures->Load("Assets/Items/Item__67-export.png");
+	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w / 2,
 							(float)Engine::GetInstance().render->camera.h / 2
 	};
 	Engine::GetInstance().render->DrawTexture(img, WindowSize.getX(), WindowSize.getY());
