@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Player.h"
+#include "UIManager.h"
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -69,6 +70,47 @@ void ItemManager::LoadItems()
 	}
 }
 
+bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
+{
+
+	switch (uiElement->id)
+	{
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	default:
+		break;
+	}
+
+	return true;
+}
+
+bool ItemManager::ShowInventoryOptions()
+{
+	LOG("ShowInventoryOptions called");
+	//UnloadItemUI();
+
+	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w,
+							(float)Engine::GetInstance().render->camera.h };
+
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 50,50 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
+
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 50,50 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
+
+	return true;
+}
+
 std::vector<Item>* ItemManager::GetItems()
 {
 	return items;
@@ -101,4 +143,11 @@ void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_
 		if (item.name == "Bike helmet" && item.active) shield_inc = item.value;
 		if (item.name == "Disturbing picture" && item.active) confused_inc = item.value;
 	}
+}
+
+void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+{
+	auto btn = std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
+	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }

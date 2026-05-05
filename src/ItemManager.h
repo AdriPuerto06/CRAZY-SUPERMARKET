@@ -25,6 +25,9 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	bool OnUIMouseClickEvent(UIElement* uiElement);
+	bool ShowInventoryOptions();
+	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();
 	std::vector<Item>* GetItems();

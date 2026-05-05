@@ -209,6 +209,15 @@ void Player::Draw(float dt) {
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
 }
 
+void Player:: ShowMenu() {
+	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3;
+	if(can_show_menu)
+	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)) {
+		Engine::GetInstance().itemManager->ShowInventoryOptions();
+	}
+
+}
+
 bool Player::CleanUp()
 {
 	LOG("Cleanup player");

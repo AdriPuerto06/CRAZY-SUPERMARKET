@@ -42,6 +42,7 @@ private:
 	void GodMode();
 	void CenterCamera();
 	void CheckDialogueAndCombatLogic();
+	void ShowMenu();
 
 public:
 
