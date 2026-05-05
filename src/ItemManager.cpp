@@ -108,6 +108,7 @@ void ItemManager::AddItemToInventory(Item item) {
 	inventory->push_back(item);
 }
 
+void ItemManager::ActivateItem(const char* name) {}
 
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {

@@ -43,6 +43,9 @@ public:
 	bool AnimatedTextDisplay(const char* text);
 	void StartTextDisplay(const char* text, float speed);
 
+	int GetCharLength();
+	int GetCharHeight();
+
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 

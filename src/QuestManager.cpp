@@ -14,6 +14,7 @@ QuestManager::~QuestManager() {}
 bool QuestManager::Awake()
 {
 	quests = new std::vector<Quest>;
+	InitQuests();
 	return true;
 }
 
@@ -67,11 +68,64 @@ Quest QuestManager::GetQuest(const char* name)
 	return Quest();
 }
 
+const char* QuestManager::GetQuestName(int id)
+{
+	for (Quest q : *quests)
+	{
+		if (q.id == id) return q.name;
+	}
+	LOG("QuestManager: GetQuestName() didn't find the id of the desired quest.");
+	return "EMPTY";
+}
+
+bool QuestManager::IsQuestActive(const char* name)
+{
+	for (Quest q : *quests)
+	{
+		if (std::strcmp(q.name, name) == 0) { return q.active; }
+	}
+}
+
 void QuestManager::ActivateQuest(const char* name)
 {
 	for (Quest q : *quests)
 	{
-		if (q.name == name) { q.active = true; LOG("Quest: %s activated.", q.name); return; };
+		if (std::strcmp(q.name, name) == 0) { q.active = true; LOG("Quest: '%s' activated.", q.name); return; }; //strcmp -> compares two const char* and if equal returns 0
 	}
 	LOG("QuestManager: ActivateQuest() has not found the quest.");
+}
+
+bool QuestManager::IsQuestCompleted(const char* name)
+{
+	for (Quest q : *quests)
+	{
+		if (std::strcmp(q.name, name) == 0) { return q.completed; }
+	}
+}
+
+void QuestManager::CompleteQuest(const char* name)
+{
+	for (Quest q : *quests)
+	{
+		if (std::strcmp(q.name, name) == 0) { q.completed = true; LOG("Quest: '%s' completed.", q.name); }
+	}
+}
+
+void QuestManager::InitQuests()
+{
+	quests->clear();
+	int current_node_counter = 0;
+	for (pugi::xml_node quests_tree_node = questsFileXML.child("quests").child("quest");
+		quests_tree_node != NULL;
+		quests_tree_node = quests_tree_node.next_sibling("quest"))
+	{
+		Quest q;
+		q.active = quests_tree_node.attribute("active").as_bool();
+		q.completed = quests_tree_node.attribute("completed").as_bool();
+		q.id = quests_tree_node.attribute("id").as_int();
+		q.name = (const char*)quests_tree_node.attribute("name").as_string();
+		q.reward = (const char*)quests_tree_node.attribute("reward").as_string();
+		q.reward_value = quests_tree_node.attribute("reward_Value").as_int();
+		quests->push_back(q);
+	}
 }
