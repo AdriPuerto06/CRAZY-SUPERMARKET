@@ -948,6 +948,9 @@ void Scene::LoadOptions()
 	SDL_Texture* btnGfcTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Grafics_Normal.png");
 	SDL_Texture* btnGfcPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Grafics_Pressed.png");
 
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
 	//UI Buttons
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 315, WindowSize.getY() / 2, 215,85 };
@@ -956,8 +959,8 @@ void Scene::LoadOptions()
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 + 80, WindowSize.getY() / 2, 280,85 };
 	CreateButton(btnGfcTex, btnGfcPressedTex, bt2Pos, 7);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt3Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
 
 }
 
@@ -1120,10 +1123,14 @@ void Scene::UnloadCredits()
 void Scene::LoadSounds()
 {
 	Engine::GetInstance().uiManager->CleanUp();
+
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
 	//UI Button
 
-	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt1Pos, 10);
 
 	//MUSIC
 	SDL_Rect musicTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 4 - 30, 240, 30 };
@@ -1191,16 +1198,25 @@ void Scene::PostUpdateSounds()
 void Scene::LoadGrafics()
 {
 
+	SDL_Texture* btnFSTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_FS_Normal.png");
+	SDL_Texture* btnFSPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_FS_Pressed.png");
+
+	SDL_Texture* btnVSTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_VS_Normal.png");
+	SDL_Texture* btnVSPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_VS_Pressed.png");
+
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
 	//UI Button
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 16, "Full Screen", bt1Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 144, WindowSize.getY()/ 2 - 35, 288,68 };
+	CreateButton(btnFSTex, btnFSPressedTex, bt1Pos, 16);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 17, "VSync", bt2Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 90, WindowSize.getY() / 2 + 35, 180,67 };
+	CreateButton(btnVSTex, btnVSPressedTex, bt2Pos, 17);
 
-	SDL_Rect bt5Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt5Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
 
 
 }
