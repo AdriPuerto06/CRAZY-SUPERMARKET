@@ -48,7 +48,7 @@ public:
 	//Declare player parameters
 	float speed = 4.0f;
 	bool can_Move = true;
-	SDL_Texture* texture = NULL;
+	SDL_Texture* texture = nullptr;
 
 	int texW, texH;
 
@@ -59,6 +59,7 @@ public:
 	PhysBody* pbody;
 
 	int HP;
+	bool inCombat = false;
 
 	std::string pendingMapLoad;
 
@@ -68,5 +69,5 @@ private:
 	int teleportCooldown = 120;
 
 	bool godMode = false;
-
+	
 };
