@@ -141,8 +141,7 @@ bool CombatManager::Awake()
 	combatState = new CombatState;
 	/*itemVector.push_back(false);*/
 
-	Engine::GetInstance().render->camera.x = 0;
-	Engine::GetInstance().render->camera.y = 0;
+	
 
 	return true;
 }
@@ -200,6 +199,24 @@ bool CombatManager::LoadCombatData(std::string path, std::string fileName)
 	LOG("CombatData.xml loaded successfully.");
 	return true;
 }
+
+bool CombatManager::StartCombat()
+{
+	if (in_combat) return true;
+
+	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
+	in_combat = true;
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
+
+	combatState->Init(*combatData);
+	combatState->player_index_selected = 0; // first player
+
+	showing_continue = false;
+
+	return true;
+}
+
 
 void CombatManager::UnloadCombatUI()
 {
@@ -521,21 +538,6 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_I
 	showingButtonStart = true;
 }
 
-bool CombatManager::StartCombat()
-{
-	if (in_combat) return true;
-
-	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
-	in_combat = true;
-	
-
-	combatState->Init(*combatData);
-	combatState->player_index_selected = 0; // first player
-
-	showing_continue = false;
-
-	return true;
-}
 
 bool CombatManager::ShowAttackOptions(int player_ID)
 {
