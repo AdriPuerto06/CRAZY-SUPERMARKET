@@ -6,6 +6,18 @@
 #include "QuestManager.h"
 #include "ItemManager.h"
 
+int SizeOf(const char* s)
+{
+	int i = 0;
+	int size = 0;
+	while (s[i] != '\0')
+	{ 
+		size++;
+		i++; 
+	}
+	return size;
+}
+
 DialogueManager::DialogueManager() : Module() 
 {
 	name = "DialogueManager";
@@ -113,7 +125,8 @@ void DialogueManager::ButtonAction(int ID)
 	if (dialogue->node_id != -1 && !showing_continue)
 	{
 		
-		ShowOptions(dialogue->node_id);
+		/*ShowOptions(dialogue->node_id);*/
+
 		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
 	}
 	can_be_clicked = false;
@@ -125,6 +138,7 @@ void DialogueManager::ButtonAction(int ID)
 		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Continue", bt5Pos, this));
 		showing_continue = true;
 	}
+	else { UnloadDialogueUI(); }
 }
 
 void DialogueManager::ShowButtonStart(Vector2D position, int dialogue_tree_ID, int npc_id)
@@ -147,8 +161,8 @@ bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
 	showing_continue = false;
 	/*can_be_clicked = true;*/
 	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
-	ShowOptions(dialogue->node_id);
-		
+	/*ShowOptions(dialogue->node_id);*/
+	
 	return true;
 }
 
@@ -158,14 +172,19 @@ bool DialogueManager::ShowOptions(int node_value) {
 	UnloadDialogueUI();
 	if (tree->choices_text[node_value].size() == 1)
 	{
-		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		int size = SizeOf(tree->choices_text[node_value][0]);
+		int width = size * Engine::GetInstance().render->GetCharLength();
+		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 1 / 8, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 140, width,20 };
 		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 	}
 	else {
-		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 - 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		int size = SizeOf(tree->choices_text[node_value][0]);
+		int width = size * Engine::GetInstance().render->GetCharLength();
+		SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 1 / 8, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 140, width,20 };
 		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, tree->choices_text[node_value][0], bt1Pos, this));
 
-		SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 2 / 4 + 65, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 - 15, 120,20 };
+		width = SizeOf(tree->choices_text[node_value][1]) * Engine::GetInstance().render->GetCharLength();
+		SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() * 1 / 8, Engine::GetInstance().window->GetWindowSize().getY() * 2 / 4 + 165, width,20 };
 		std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, tree->choices_text[node_value][1], bt2Pos, this));
 	}
 	return true;

@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Log.h"
 #include <vector>
+#include "DialogueManager.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -26,6 +27,9 @@ int Length(const char* text) {
 	while (text[count] != '\0') { count++; }
 	return count;
 }
+
+int Render::GetCharLength() { return CHAR_LENGTH; }
+int Render::GetCharHeight() { return CHAR_HEIGHT; }
 
 Render::Render() : Module()
 {
@@ -127,6 +131,7 @@ bool Render::Update(float dt)
 			else
 			{
 				isTyping = false;
+				Engine::GetInstance().dialogueManager->ShowOptions(Engine::GetInstance().dialogueManager->dialogue->node_id);
 			}
 		}
 	}
