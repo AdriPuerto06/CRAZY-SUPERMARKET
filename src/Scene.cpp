@@ -246,8 +246,10 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::MULTIPLAYER:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::CREDITS:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::SOUND:
 		HandleMainMenuUIEvents(uiElement);
@@ -565,31 +567,28 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 3: 
 		LOG("Main Menu: Options clicked");
-		//timeScene = currentScene;
 		ChangeScene(SceneID::OPTIONS);
 		sceneStack.push(currentScene);
 		break;
 	case 4:
 		LOG("Main Menu: Multiplayer clicked");
+		sceneStack.push(currentScene);
 		ChangeScene(SceneID::MULTIPLAYER);
 		break;
 	case 5:
 		LOG("Main Menu: Credits clicked");
+		sceneStack.push(currentScene);
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
-		//timeScene = currentScene;
 		ChangeScene(SceneID::SOUND);
 		sceneStack.push(currentScene);
-		fromSG = true;
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
-		//timeScene = currentScene;
 		ChangeScene(SceneID::GRAFICS);
 		sceneStack.push(currentScene);
-		fromSG = true;
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
@@ -603,12 +602,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 10:
 		LOG("Back clicked");
-		/*ChangeScene(SceneID::BACK);*/
-		if (!static_twicePressed)
-		{
-			ChangeScene(sceneStack.pop());
-			
-		}
+		ChangeScene(sceneStack.pop());
 		break;
 	case 11:
 		LOG("Attack clicked");
@@ -990,6 +984,12 @@ void Scene::PostUpdateOptions()
 
 void Scene::LoadMultiplayer()
 {
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+
 	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/images (2).png");
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
 
@@ -1054,6 +1054,14 @@ void Scene::PostUpdateMultiplayer()
 void Scene::LoadCredits()
 {
 
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
+	//UI Button
+
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt1Pos, 10);
+
 	creditsText = {
 	"CRAZY SUPERMARKET",
 	"",
@@ -1113,6 +1121,7 @@ void Scene::PostUpdateCredits()
 
 void Scene::UnloadCredits()
 {
+	Engine::GetInstance().uiManager->CleanUp();
 }
 
 
