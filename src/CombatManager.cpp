@@ -797,7 +797,7 @@ void CombatManager::MarkEnemiesAsDead()
 	Engine::GetInstance().map->UpdateEnemiesData();
 }
 
-void CombatManager::UnlockAttack(EntityType type, int id, const char* name)
+void CombatManager::UnlockAttack(EntityType type, const char* name)
 {
 	if (type == EntityType::PLAYER)
 	{
@@ -809,6 +809,7 @@ void CombatManager::UnlockAttack(EntityType type, int id, const char* name)
 			}
 		}
 	}
+	SaveTreeAttributes();
 }
 
 void CombatManager::SaveTreeAttributes()
