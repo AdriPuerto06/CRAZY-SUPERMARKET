@@ -934,6 +934,8 @@ void  Scene::PostUpdateLevel3() {
 
 void Scene::LoadOptions()
 {
+	//Load Background
+	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/normal_almacen.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnSndTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Normal.png");
@@ -960,17 +962,19 @@ void Scene::LoadOptions()
 
 void Scene::UnloadOptions()
 {
-
+	if (almacenIMG != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(almacenIMG);
+		almacenIMG = nullptr;
+	}
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
 void Scene::UpdateOptions(float dt)
 {
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		ChangeScene(SceneID::MAIN_MENU);
+	if (almacenIMG != nullptr) {
+		Engine::GetInstance().render->DrawTexture(almacenIMG, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
 	}
-
 }
 
 void Scene::PostUpdateOptions()
