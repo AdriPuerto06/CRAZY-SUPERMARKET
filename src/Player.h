@@ -67,6 +67,7 @@ private:
 	b2Vec2 velocity;
 	AnimationSet anims;
 	int teleportCooldown = 120;
+	bool showingMenu = false;
 
 	bool godMode = false;
 

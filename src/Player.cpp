@@ -12,6 +12,7 @@
 #include "Window.h"
 #include "CombatManager.h"
 #include "DialogueManager.h"
+#include "UIManager.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -62,6 +63,7 @@ bool Player::Update(float dt)
 	ApplyPhysics();
 	GodMode();
 	CheckDialogueAndCombatLogic();
+	ShowMenu();
 	Draw(dt);
 	CenterCamera();
 	return true;
@@ -212,8 +214,13 @@ void Player::Draw(float dt) {
 void Player:: ShowMenu() {
 	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3;
 	if(can_show_menu)
-	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN)) {
+	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
+		showingMenu = true;
+	}
+	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
+		Engine::GetInstance().uiManager->CleanUp();
+		showingMenu = false;
 	}
 
 }

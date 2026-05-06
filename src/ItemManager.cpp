@@ -102,10 +102,10 @@ bool ItemManager::ShowInventoryOptions()
 	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w,
 							(float)Engine::GetInstance().render->camera.h };
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 50,50 };
+	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 50,50 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 3, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
 
 	return true;
