@@ -34,6 +34,12 @@ bool Player::Start() {
 	anims.LoadFromTSX("Assets/Textures/PLayer2_Spritesheet.tsx", aliases);
 	anims.SetCurrent("idle");
 
+	//customMouse
+	cursorSurface = IMG_Load("Assets/Textures/carrito.png");
+	customCursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
+	SDL_SetCursor(customCursor);
+	SDL_DestroySurface(cursorSurface);
+
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/player2_spritesheet.png");
 
@@ -230,6 +236,7 @@ bool Player::CleanUp()
 	LOG("Cleanup player");
 	Engine::GetInstance().textures->UnLoad(texture);
 	Engine::GetInstance().physics->DeletePhysBody(pbody);
+	SDL_DestroyCursor(customCursor);
 	return true;
 }
 

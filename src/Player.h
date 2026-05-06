@@ -69,6 +69,9 @@ private:
 	int teleportCooldown = 120;
 	bool showingMenu = false;
 
+	SDL_Surface* cursorSurface = nullptr;
+	SDL_Cursor* customCursor = nullptr;
+
 	bool godMode = false;
 
 };
