@@ -355,11 +355,18 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
                     {
-                        int HP = propertyNode.attribute("value").as_int();
-
-                        if (HP > 0) {
-                            propertyNode.attribute("value").set_value(player->HP);
+                        std::string name = propertyNode.attribute("name").as_string();
+                        if (name == "HP")
+                        {
+                            int HP = propertyNode.attribute("value").as_int();
+                            if (HP > 0) {
+                                propertyNode.attribute("value").set_value(player->HP);
+                            }
                         }
+                        else 
+                        if (name == "magicPoints") { propertyNode.attribute("value").set_value(magicPoints); }
+
+                        
                     }
 
                 }

@@ -1,5 +1,5 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <quests>
-	<quest id="1" name="Talk with the other guy" completed="false" active="false" reward="Jet Punch" reward_value="0"/>
+	<quest id="1" name="Talk with the other guy" completed="false" active="false" reward="Jet Punch" reward_value="4"/>
 </quests>
 

@@ -108,7 +108,19 @@ void ItemManager::AddItemToInventory(Item item) {
 	inventory->push_back(item);
 }
 
-void ItemManager::ActivateItem(const char* name) {}
+void ItemManager::ActivateItem(const char* name) 
+{
+	for (auto item : *inventory)
+	{
+		if (item.name == name) 
+		{ 
+			if (item.active) { LOG("ItemManager: Item '%s' was already active.", name); }
+			item.active = true;
+			LOG("ItemManager: Item '%s' was already active.", name);
+			/*Save items file*/ 
+		}
+	}
+}
 
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {

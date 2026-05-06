@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "QuestManager.h"
 #include "ItemManager.h"
+#include "CombatManager.h"
 
 int SizeOf(const char* s)
 {
@@ -245,17 +246,20 @@ void DialogueManager::GetPosibleReward(Reward reward)
 		Engine::GetInstance().questManager->ActivateQuest(reward.reward_value.c_str());
 		break;
 
+	case RewardType::COMPLETEQUEST:
+		Engine::GetInstance().questManager->CompleteQuest(reward.reward_value.c_str());
+		break;
+
 	case RewardType::ITEM:
-		//Engine::GetInstance().itemManager->;
+		Engine::GetInstance().itemManager->ActivateItem(reward.reward_value.c_str());
+		break;
+
+	case RewardType::ATTACK:
+		Engine::GetInstance().combatManager->UnlockAttack(EntityType::PLAYER, reward.reward_value.c_str());
 		break;
 
 	case RewardType::COMPANION:
 		break;
 
-	case RewardType::COMPLETEQUEST:
-		bool isQuestActive = Engine::GetInstance().questManager->IsQuestActive(reward.reward_value.c_str());
-		bool isQuestComplete = Engine::GetInstance().questManager->IsQuestCompleted(reward.reward_value.c_str());
-		if (isQuestActive && !isQuestComplete) Engine::GetInstance().questManager->CompleteQuest(reward.reward_value.c_str());
-		break;
 	}
 }

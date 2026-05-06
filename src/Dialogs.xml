@@ -1,6 +1,6 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
-<!--COMPLETEQUEST: 3-->
+<!--COMPLETEQUEST: 3, ATTACK: 4-->
 <dialogs>
 	<dialogue_tree ID="0" NPC="1">
 		<node id ="0" text="Who are you?? Are you gonna hurt me??">
@@ -22,14 +22,15 @@
 		</node>
 		
 		<node id ="4" text="*You obtained Jet Punch">
-			<choice id ="1" option="Claim" next_node ="-1" reward="1" reward_value="Jet Punch"/>
+			<choice id ="1" option="Claim" next_node ="-1" reward="4" reward_value="Jet Punch"/>
 
 		</node>
 
 	</dialogue_tree>
 
 	<dialogue_tree ID="0" NPC="2">
-		<node id ="0" text="Q1?">
+		<node id ="0" text="This is a test to check the word split function. This is a test to check the word split function. This is a test to check the word split function.
+			   This is a test to check the word split function. This is a test to check the word split function. This is a test to check the word split function.">
 			<choice id ="1" option="A1" next_node ="1"/>
 			<choice id ="2" option="A2" next_node ="1"/>
 		</node>

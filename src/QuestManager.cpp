@@ -105,6 +105,9 @@ bool QuestManager::IsQuestCompleted(const char* name)
 
 void QuestManager::CompleteQuest(const char* name)
 {
+	bool isQuestActive = IsQuestActive(name);
+	bool isQuestComplete = IsQuestCompleted(name);
+	if (!isQuestActive || isQuestComplete) { LOG("Can't complete quest. QuestActive: %i, QuestCompleted: %I.", isQuestActive, isQuestComplete); return; }
 	for (Quest q : *quests)
 	{
 		if (std::strcmp(q.name, name) == 0) { q.completed = true; LOG("Quest: '%s' completed.", q.name); }
