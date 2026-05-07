@@ -139,6 +139,7 @@ bool CombatManager::Awake()
 {
 	combatData = new CombatData;
 	combatState = new CombatState;
+	GetTreeAttributes(-1, true);
 	/*itemVector.push_back(false);*/
 
 	return true;
@@ -530,7 +531,7 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_I
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start combat", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
 
-	GetTreeAttributes(fight_ID); //get dialogue_tree from xml
+	GetTreeAttributes(fight_ID, false); //get dialogue_tree from xml
 	combatData->possible_enemy_ID = enemy_ID;
 
 	showingButtonStart = true;
@@ -630,88 +631,93 @@ bool CombatManager::ChangePlayer()
 }
 
 
-void CombatManager::GetTreeAttributes(int fight_ID)
+void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 {
-	if (in_combat) return;
-	combatData->Clear();
+		if (in_combat) return;
+		combatData->Clear();
 
-	combatData->fight_ID = fight_ID;
-	combatState->magicPoints = Engine::GetInstance().map->magicPoints;
+		combatData->fight_ID = fight_ID;
+		combatState->magicPoints = Engine::GetInstance().map->magicPoints;
 
-	std::vector<int> players_id;
-	std::vector<int> enemies_id;
+		std::vector<int> players_id;
+		std::vector<int> enemies_id;
 
-	for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
-		fight_tree_node != NULL;
-		fight_tree_node = fight_tree_node.next_sibling("fight"))
-	{
-		if (fight_tree_node.attribute("id").as_int() == fight_ID)
+		for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
+			fight_tree_node != NULL;
+			fight_tree_node = fight_tree_node.next_sibling("fight"))
 		{
-			std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
-			std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
-			players_id = GetIDs(players_id_str);
-			enemies_id = GetIDs(enemies_id_str);
-			break;
-		}
-	}
-
-	// players
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
-		combat_tree_node != NULL;
-		combat_tree_node = combat_tree_node.next_sibling("player"))
-	{
-		int id = combat_tree_node.attribute("id").as_int();
-		if (!Contains(players_id, id)) continue;
-
-		Combatant player;
-		player.id = id;
-		player.hp = combat_tree_node.attribute("HP").as_int();
-		player.type = EntityType::PLAYER;
-		player.status_duration = 0;
-
-		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
-			current_node != NULL;
-			current_node = current_node.next_sibling("attack_stats"))
-		{
-			Attack attack;
-			attack.name = current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("dmg").as_int();
-			attack.magicPoints = current_node.attribute("magicPoints").as_int();
-			attack.effect = current_node.attribute("effect").as_string();
-			attack.unlocked = current_node.attribute("unlocked").as_bool();
-			player.attacks.push_back(attack);
+			if(all) {
+				
+			}
+			else if (fight_tree_node.attribute("id").as_int() == fight_ID)
+			{
+				std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
+				std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
+				players_id = GetIDs(players_id_str);
+				enemies_id = GetIDs(enemies_id_str);
+				break;
+			}
 		}
 
-		combatData->players.push_back(player);
-	}
+		// players
+		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
+			combat_tree_node != NULL;
+			combat_tree_node = combat_tree_node.next_sibling("player"))
+		{	
+			int id = combat_tree_node.attribute("id").as_int();
+			if (!all)
+			if (!Contains(players_id, id)) continue;
 
-	// enemies
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");
-		combat_tree_node != NULL;
-		combat_tree_node = combat_tree_node.next_sibling("enemy"))
-	{
-		int id = combat_tree_node.attribute("id").as_int();
-		if (!Contains(enemies_id, id)) continue;
+			Combatant player;
+			player.id = id;
+			player.hp = combat_tree_node.attribute("HP").as_int();
+			player.type = EntityType::PLAYER;
+			player.status_duration = 0;
 
-		Combatant enemy;
-		enemy.id = id;
-		enemy.hp = combat_tree_node.attribute("HP").as_int();
-		enemy.type = EntityType::BASEENEMY;
-		enemy.status_duration = 0;
+			for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
+				current_node != NULL;
+				current_node = current_node.next_sibling("attack_stats"))
+			{
+				Attack attack;
+				attack.name = current_node.attribute("name").as_string();
+				attack.dmg = current_node.attribute("dmg").as_int();
+				attack.magicPoints = current_node.attribute("magicPoints").as_int();
+				attack.effect = current_node.attribute("effect").as_string();
+				attack.unlocked = current_node.attribute("unlocked").as_bool();
+				player.attacks.push_back(attack);
+			}
 
-		for (pugi::xml_node current_node = combat_tree_node.child("attack");
-			current_node != NULL;
-			current_node = current_node.next_sibling("attack"))
-		{
-			Attack attack;
-			attack.name = current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("dmg").as_int();
-			attack.effect = current_node.attribute("effect").as_string();
-			enemy.attacks.push_back(attack);
+			combatData->players.push_back(player);
 		}
 
-		combatData->enemies.push_back(enemy);
-	}
+		// enemies
+		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");
+			combat_tree_node != NULL;
+			combat_tree_node = combat_tree_node.next_sibling("enemy"))
+		{
+			int id = combat_tree_node.attribute("id").as_int();
+			if (!all)
+			if (!Contains(enemies_id, id)) continue;
+
+			Combatant enemy;
+			enemy.id = id;
+			enemy.hp = combat_tree_node.attribute("HP").as_int();
+			enemy.type = EntityType::BASEENEMY;
+			enemy.status_duration = 0;
+
+			for (pugi::xml_node current_node = combat_tree_node.child("attack");
+				current_node != NULL;
+				current_node = current_node.next_sibling("attack"))
+			{
+				Attack attack;
+				attack.name = current_node.attribute("name").as_string();
+				attack.dmg = current_node.attribute("dmg").as_int();
+				attack.effect = current_node.attribute("effect").as_string();
+				enemy.attacks.push_back(attack);
+			}
+
+			combatData->enemies.push_back(enemy);
+		}
 }
 
 void CombatManager::CheckAlive()
@@ -805,7 +811,7 @@ void CombatManager::UnlockAttack(EntityType type, const char* name)
 		{			
 			for (auto attack : player.attacks)
 			{
-				if (attack.name == name) { attack.unlocked = true; LOG("Attack: %s from player ID: %i unlocked.", attack.name, player.id); /*Save combat data file*/ return; }
+				if (std::strcmp(attack.name,name) == 0) { attack.unlocked = true; LOG("Attack: %s from player ID: %i unlocked.", attack.name, player.id); /*Save combat data file*/ return; }
 			}
 		}
 	}
@@ -836,13 +842,13 @@ void CombatManager::SaveTreeAttributes()
 		int id = combat_tree_node.attribute("id").as_int();
 		/*if (!combatData->players[id].alive) continue;*/
 
-		Combatant player = combatData->players[id];
+		Combatant player = combatData->players[id-1];
 		int attack_id = 0;
 		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
 			current_node != NULL;
 			current_node = current_node.next_sibling("attack_stats"))
 		{
-			Attack attack = combatData->players[id].attacks[attack_id];
+			Attack attack = combatData->players[id-1].attacks[attack_id];
 			current_node.attribute("unlocked").set_value(attack.unlocked);
 			attack_id++;
 		}

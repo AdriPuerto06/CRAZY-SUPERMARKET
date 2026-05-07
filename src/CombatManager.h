@@ -104,7 +104,7 @@ public:
     bool ChangePlayer();
     bool ShowOptions(int player_ID);
 
-    void GetTreeAttributes(int fight_ID);
+    void GetTreeAttributes(int fight_ID, bool all);
 
     void HandleTargetSelection();
     void ApplyCombatLogic();
