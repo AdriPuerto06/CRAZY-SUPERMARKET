@@ -5,9 +5,10 @@
 struct Quest {
 	bool active;
 	const char* name;
+	int id;
 	bool completed;
 	std::string reward;
-	int reward_Value;
+	int reward_value;
 };
 
 class QuestManager : public Module {
@@ -23,9 +24,16 @@ public:
 	bool CleanUp();
 
 	bool LoadQuests(std::string path, std::string fileName);
+	void InitQuests();
 
 	Quest GetQuest(const char* name);
+	const char* GetQuestName(int id);
+
 	void ActivateQuest(const char* name);
+	bool IsQuestActive(const char* name);
+
+	void CompleteQuest(const char* name);
+	bool IsQuestCompleted(const char* name);
 
 private:
 	pugi::xml_document questsFileXML;

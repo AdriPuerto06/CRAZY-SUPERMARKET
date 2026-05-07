@@ -139,7 +139,9 @@ bool CombatManager::Awake()
 {
 	combatData = new CombatData;
 	combatState = new CombatState;
+	GetTreeAttributes(-1, true);
 	/*itemVector.push_back(false);*/
+
 	return true;
 }
 
@@ -156,6 +158,15 @@ bool CombatManager::Update(float dt)
 	{
 		HandleTargetSelection();
 	}
+
+	if (showInventory == true) {
+		Engine::GetInstance().itemManager->ShowInventory();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && showInventory == true) {
+		showInventory = false;
+		Engine::GetInstance().itemManager->UnShowInventory();
+	}
+
 	return true;
 }
 
@@ -187,6 +198,24 @@ bool CombatManager::LoadCombatData(std::string path, std::string fileName)
 	LOG("CombatData.xml loaded successfully.");
 	return true;
 }
+
+bool CombatManager::StartCombat()
+{
+	if (in_combat) return true;
+
+	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
+	in_combat = true;
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
+
+	combatState->Init(*combatData);
+	combatState->player_index_selected = 0; // first player
+
+	showing_continue = false;
+
+	return true;
+}
+
 
 void CombatManager::UnloadCombatUI()
 {
@@ -491,7 +520,7 @@ void CombatManager::EnemyAI()
 		}
 		else { LOG("Enemy didn't attack while being confused."); return; }
 	}
-	else 
+	else
 	{
 		MakeAttack(player, enemy, attack);
 	}
@@ -502,26 +531,12 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_I
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Start combat", { (int)position.getX(), (int)position.getY(), 120, 20 }, this));
 	LOG("Start dialogue button created at %i, %i.", (int)position.getX(), (int)position.getY());
 
-	GetTreeAttributes(fight_ID); //get dialogue_tree from xml
+	GetTreeAttributes(fight_ID, false); //get dialogue_tree from xml
 	combatData->possible_enemy_ID = enemy_ID;
 
 	showingButtonStart = true;
 }
 
-bool CombatManager::StartCombat()
-{
-	if (in_combat) return true;
-
-	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
-	in_combat = true;
-
-	combatState->Init(*combatData);
-	combatState->player_index_selected = 0; // first player
-
-	showing_continue = false;
-
-	return true;
-}
 
 bool CombatManager::ShowAttackOptions(int player_ID)
 {
@@ -541,31 +556,39 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 	}
 
 	auto& attacks = combatData->players[playerIndex].attacks;
+	int size = attacks.size();
+	std::vector<std::pair<SDL_Rect, const char*>> buttonsAttack;
 
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65,
-						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::BUTTON, 1, attacks[0].name, bt1Pos, this));
+	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
 
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365,
-						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::BUTTON, 2, attacks[1].name, bt2Pos, this));
+	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
 
-	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65,
-						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::BUTTON, 3, attacks[2].name, bt3Pos, this));
+	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
 
-	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365,
-						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
-	std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::BUTTON, 4, attacks[3].name, bt4Pos, this));
+	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
 
+	std::vector<SDL_Rect> bPos;
+	bPos.push_back(bt1Pos); bPos.push_back(bt2Pos); bPos.push_back(bt3Pos); bPos.push_back(bt4Pos);
+	//create attack buttons
+	int bPosCount = 0;
+	for (int i = 0; i < size; ++i) 
+	{
+		std::pair<SDL_Rect, const char*> p(bPos[bPosCount], attacks[i].name);
+		if (attacks[i].unlocked) { 
+			buttonsAttack.push_back(p); 
+			bPosCount++;
+		}
+	}
+	int id = 1;
+	for (auto a : buttonsAttack)
+	{
+		std::dynamic_pointer_cast<UIButton>(
+			Engine::GetInstance().uiManager->CreateUIElement(
+				UIElementType::BUTTON, id, a.second, a.first, this));
+		id++;
+	}
+
+	//create "back" button
 	SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 700,
 						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(
@@ -577,6 +600,9 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 
 bool CombatManager::ShowItemOptions(int player_ID) {
 	LOG("ShowItemOptions called");
+
+	showInventory = true;
+
 	return true;
 }
 
@@ -605,87 +631,93 @@ bool CombatManager::ChangePlayer()
 }
 
 
-void CombatManager::GetTreeAttributes(int fight_ID)
+void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 {
-	if (in_combat) return;
-	combatData->Clear();
+		if (in_combat) return;
+		combatData->Clear();
 
-	combatData->fight_ID = fight_ID;
-	combatState->magicPoints = Engine::GetInstance().map->magicPoints;
+		combatData->fight_ID = fight_ID;
+		combatState->magicPoints = Engine::GetInstance().map->magicPoints;
 
-	std::vector<int> players_id;
-	std::vector<int> enemies_id;
+		std::vector<int> players_id;
+		std::vector<int> enemies_id;
 
-	for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
-		fight_tree_node != NULL;
-		fight_tree_node = fight_tree_node.next_sibling("fight"))
-	{
-		if (fight_tree_node.attribute("id").as_int() == fight_ID)
+		for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
+			fight_tree_node != NULL;
+			fight_tree_node = fight_tree_node.next_sibling("fight"))
 		{
-			std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
-			std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
-			players_id = GetIDs(players_id_str);
-			enemies_id = GetIDs(enemies_id_str);
-			break;
-		}
-	}
-
-	// players
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
-		combat_tree_node != NULL;
-		combat_tree_node = combat_tree_node.next_sibling("player"))
-	{
-		int id = combat_tree_node.attribute("id").as_int();
-		if (!Contains(players_id, id)) continue;
-
-		Combatant player;
-		player.id = id;
-		player.hp = combat_tree_node.attribute("HP").as_int();
-		player.type = EntityType::PLAYER;
-		player.status_duration = 0;
-
-		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
-			current_node != NULL;
-			current_node = current_node.next_sibling("attack_stats"))
-		{
-			Attack attack;
-			attack.name = current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("dmg").as_int();
-			attack.magicPoints = current_node.attribute("magicPoints").as_int();
-			attack.effect = current_node.attribute("effect").as_string();
-			player.attacks.push_back(attack);
+			if(all) {
+				
+			}
+			else if (fight_tree_node.attribute("id").as_int() == fight_ID)
+			{
+				std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
+				std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
+				players_id = GetIDs(players_id_str);
+				enemies_id = GetIDs(enemies_id_str);
+				break;
+			}
 		}
 
-		combatData->players.push_back(player);
-	}
+		// players
+		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
+			combat_tree_node != NULL;
+			combat_tree_node = combat_tree_node.next_sibling("player"))
+		{	
+			int id = combat_tree_node.attribute("id").as_int();
+			if (!all)
+			if (!Contains(players_id, id)) continue;
 
-	// enemies
-	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");
-		combat_tree_node != NULL;
-		combat_tree_node = combat_tree_node.next_sibling("enemy"))
-	{
-		int id = combat_tree_node.attribute("id").as_int();
-		if (!Contains(enemies_id, id)) continue;
+			Combatant player;
+			player.id = id;
+			player.hp = combat_tree_node.attribute("HP").as_int();
+			player.type = EntityType::PLAYER;
+			player.status_duration = 0;
 
-		Combatant enemy;
-		enemy.id = id;
-		enemy.hp = combat_tree_node.attribute("HP").as_int();
-		enemy.type = EntityType::BASEENEMY;
-		enemy.status_duration = 0;
+			for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
+				current_node != NULL;
+				current_node = current_node.next_sibling("attack_stats"))
+			{
+				Attack attack;
+				attack.name = current_node.attribute("name").as_string();
+				attack.dmg = current_node.attribute("dmg").as_int();
+				attack.magicPoints = current_node.attribute("magicPoints").as_int();
+				attack.effect = current_node.attribute("effect").as_string();
+				attack.unlocked = current_node.attribute("unlocked").as_bool();
+				player.attacks.push_back(attack);
+			}
 
-		for (pugi::xml_node current_node = combat_tree_node.child("attack");
-			current_node != NULL;
-			current_node = current_node.next_sibling("attack"))
-		{
-			Attack attack;
-			attack.name = current_node.attribute("name").as_string();
-			attack.dmg = current_node.attribute("dmg").as_int();
-			attack.effect = current_node.attribute("effect").as_string();
-			enemy.attacks.push_back(attack);
+			combatData->players.push_back(player);
 		}
 
-		combatData->enemies.push_back(enemy);
-	}
+		// enemies
+		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");
+			combat_tree_node != NULL;
+			combat_tree_node = combat_tree_node.next_sibling("enemy"))
+		{
+			int id = combat_tree_node.attribute("id").as_int();
+			if (!all)
+			if (!Contains(enemies_id, id)) continue;
+
+			Combatant enemy;
+			enemy.id = id;
+			enemy.hp = combat_tree_node.attribute("HP").as_int();
+			enemy.type = EntityType::BASEENEMY;
+			enemy.status_duration = 0;
+
+			for (pugi::xml_node current_node = combat_tree_node.child("attack");
+				current_node != NULL;
+				current_node = current_node.next_sibling("attack"))
+			{
+				Attack attack;
+				attack.name = current_node.attribute("name").as_string();
+				attack.dmg = current_node.attribute("dmg").as_int();
+				attack.effect = current_node.attribute("effect").as_string();
+				enemy.attacks.push_back(attack);
+			}
+
+			combatData->enemies.push_back(enemy);
+		}
 }
 
 void CombatManager::CheckAlive()
@@ -769,4 +801,56 @@ void CombatManager::MarkEnemiesAsDead()
 		if(!enemy.alive) enemies_to_destroy.push_back(enemy.id);
 	}
 	Engine::GetInstance().map->UpdateEnemiesData();
+}
+
+void CombatManager::UnlockAttack(EntityType type, const char* name)
+{
+	if (type == EntityType::PLAYER)
+	{
+		for (auto player : combatData->players)
+		{			
+			for (auto attack : player.attacks)
+			{
+				if (std::strcmp(attack.name,name) == 0) { attack.unlocked = true; LOG("Attack: %s from player ID: %i unlocked.", attack.name, player.id); /*Save combat data file*/ return; }
+			}
+		}
+	}
+	SaveTreeAttributes();
+}
+
+void CombatManager::SaveTreeAttributes()
+{
+	Engine::GetInstance().map->magicPoints = combatState->magicPoints;
+	//for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
+	//	fight_tree_node != NULL;
+	//	fight_tree_node = fight_tree_node.next_sibling("fight"))
+	//{
+	//	/*if (fight_tree_node.attribute("id").as_int() == fight_ID)
+	//	{
+	//		std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
+	//		std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
+	//		players_id = GetIDs(players_id_str);
+	//		enemies_id = GetIDs(enemies_id_str);
+	//		break;
+	//	}*/
+	//}
+
+	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
+		combat_tree_node != NULL;
+		combat_tree_node = combat_tree_node.next_sibling("player"))
+	{
+		int id = combat_tree_node.attribute("id").as_int();
+		/*if (!combatData->players[id].alive) continue;*/
+
+		Combatant player = combatData->players[id-1];
+		int attack_id = 0;
+		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
+			current_node != NULL;
+			current_node = current_node.next_sibling("attack_stats"))
+		{
+			Attack attack = combatData->players[id-1].attacks[attack_id];
+			current_node.attribute("unlocked").set_value(attack.unlocked);
+			attack_id++;
+		}
+	}
 }

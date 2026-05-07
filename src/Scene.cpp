@@ -610,7 +610,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 12:
 		LOG("Item clicked");
-		//Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_index_selected);
 		break;
 	case 13:
 		Engine::GetInstance().combatManager->ChangePlayer();
@@ -736,8 +736,8 @@ void Scene::LoadLevel1() {
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
-	const char* text = "Hello player! Move with WASD.";
-	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
+	/*const char* text = "Hello player! Move with WASD.";
+	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);*/
 
 	////Create a new item using the entity manager and set the position to (200, 672) to test
 	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));

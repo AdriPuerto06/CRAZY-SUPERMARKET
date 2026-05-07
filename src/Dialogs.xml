@@ -1,21 +1,36 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--QUEST: 0, ITEM: 1, COMPANION: 2-->
+<!--COMPLETEQUEST: 3, ATTACK: 4-->
 <dialogs>
 	<dialogue_tree ID="0" NPC="1">
-		<node id ="0" text="Hello. Who are you?">
-			<choice id ="1" option="I'm aaaa" next_node ="1"/>
-			<choice id ="2" option="Why do you ask?" next_node ="1"/>
+		<node id ="0" text="Who are you?? Are you gonna hurt me??">
+			<choice id ="1" option="I think we are here cause I already hurt someone (oopsies) so not from the moment" next_node ="1"/>
+			<choice id ="2" option="Not if you don't push me" next_node ="1"/>
 		</node>
-		<node id ="1" text="What happens?">
-			<choice id ="1" option="Nothing vejestorio" next_node ="2"/>
-			<choice id ="2" option="You don't wanna know" next_node ="2"/>
+		
+		<node id ="1" text="Hold on, who did you hurt?">
+			<choice id ="1" option="A stupid granny that got in the way" next_node ="2"/>
+			<choice id ="2" option="Yo mama" next_node ="2"/>
 		</node>
-		<node id ="2" text="You are CRAZY">
-			<choice id ="1" option="I will slap you" next_node ="-1" reward="Jet Punch"/>
+		
+		<node id ="2" text="ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday,         everybody here knows it..">
+			<choice id ="1" option="My bad gng" next_node ="3"/>
 		</node>
+		
+		<node id ="3" text="Well YOU got us in here, YOU take us outta here, so take this, you won't doscratches now with these">
+			<choice id ="1" option="EY, i'm not THAT weak" next_node ="4"/>
+		</node>
+		
+		<node id ="4" text="*You obtained Jet Punch">
+			<choice id ="1" option="Claim" next_node ="-1" reward="4" reward_value="Jet Punch"/>
+
+		</node>
+
 	</dialogue_tree>
 
 	<dialogue_tree ID="0" NPC="2">
-		<node id ="0" text="Q1?">
+		<node id ="0" text="This is a test to check the word split function. This is a test to check the word split function. This is a test to check the word split function.
+			   This is a test to check the word split function. This is a test to check the word split function. This is a test to check the word split function.">
 			<choice id ="1" option="A1" next_node ="1"/>
 			<choice id ="2" option="A2" next_node ="1"/>
 		</node>

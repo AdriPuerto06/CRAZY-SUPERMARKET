@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Log.h"
 #include <vector>
+#include "DialogueManager.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -13,19 +14,81 @@
 #define TEXT_DISPLAY_X 200
 #define TEXT_DISPLAY_Y 600
 
-#define MAX_CHARS_PER_LINE 75
+#define MAX_CHARS_PER_LINE 100
 
 std::string fullText;
 int visibleChars = 0;
 float typeTimer = 0.0f;
-float typeSpeed = 0.05f;
+float typeSpeed = 0.01f;
 bool isTyping = false;
 
+//helpers
 int Length(const char* text) {
 	int count = 0;
 	while (text[count] != '\0') { count++; }
 	return count;
 }
+std::vector<std::string> WrapText(const std::string& text, int maxCharsPerLine)
+{
+	std::vector<std::string> lines;
+	std::string currentLine;
+	std::string currentWord;
+
+	for (char c : text)
+	{
+		if (c == ' ' || c == '\n')
+		{
+			// Check if adding the word exceeds the limit
+			if (currentLine.length() + currentWord.length() + 1 > maxCharsPerLine)
+			{
+				lines.push_back(currentLine);
+				currentLine = currentWord;
+			}
+			else
+			{
+				if (!currentLine.empty())
+					currentLine += " ";
+				currentLine += currentWord;
+			}
+
+			currentWord.clear();
+
+			if (c == '\n') // force line break
+			{
+				lines.push_back(currentLine);
+				currentLine.clear();
+			}
+		}
+		else
+		{
+			currentWord += c;
+		}
+	}
+
+	// Handle last word
+	if (!currentWord.empty())
+	{
+		if (currentLine.length() + currentWord.length() + 1 > maxCharsPerLine)
+		{
+			lines.push_back(currentLine);
+			currentLine = currentWord;
+		}
+		else
+		{
+			if (!currentLine.empty())
+				currentLine += " ";
+			currentLine += currentWord;
+		}
+	}
+
+	if (!currentLine.empty())
+		lines.push_back(currentLine);
+
+	return lines;
+}
+
+int Render::GetCharLength() { return CHAR_LENGTH; }
+int Render::GetCharHeight() { return CHAR_HEIGHT; }
 
 Render::Render() : Module()
 {
@@ -127,6 +190,7 @@ bool Render::Update(float dt)
 			else
 			{
 				isTyping = false;
+				Engine::GetInstance().dialogueManager->ShowOptions(Engine::GetInstance().dialogueManager->dialogue->node_id);
 			}
 		}
 	}
@@ -135,7 +199,7 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	if (!fullText.empty())
+	/*if (!fullText.empty())
 	{
 		std::string visible = fullText.substr(0, visibleChars);
 
@@ -144,7 +208,20 @@ bool Render::PostUpdate()
 			std::string line = visible.substr(i, MAX_CHARS_PER_LINE);
 			TextDisplay(line, 0, (i / MAX_CHARS_PER_LINE) * CHAR_HEIGHT);
 		}
+	}*/
+
+	if (!fullText.empty())
+	{
+		std::string visible = fullText.substr(0, visibleChars);
+
+		std::vector<std::string> lines = WrapText(visible, MAX_CHARS_PER_LINE);
+
+		for (int i = 0; i < lines.size(); ++i)
+		{
+			TextDisplay(lines[i], 0, i * CHAR_HEIGHT);
+		}
 	}
+
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;

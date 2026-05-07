@@ -15,6 +15,7 @@ struct Attack {
     int dmg;
     int magicPoints;
     std::string effect;
+    bool unlocked;
 };
 
 struct Combatant {
@@ -103,16 +104,19 @@ public:
     bool ChangePlayer();
     bool ShowOptions(int player_ID);
 
-    void GetTreeAttributes(int fight_ID);
-    void EnemyAI();
+    void GetTreeAttributes(int fight_ID, bool all);
 
     void HandleTargetSelection();
     void ApplyCombatLogic();
     void ApplyEffects();
     void CheckAlive();
     void MakeAttack(Combatant& target, Combatant& attacker, Attack attack);
-
+    void EnemyAI();
     void MarkEnemiesAsDead();
+
+    void UnlockAttack(EntityType type, const char* name);
+
+    void SaveTreeAttributes();
 
     std::vector<bool> itemVector;
 
@@ -126,6 +130,8 @@ public:
     bool can_be_clicked = true;
     bool showingButtonStart = false;
     bool in_combat = false;
+
+    bool showInventory = false;
 
     bool godMode = false;
     bool choosingAtk = false;
