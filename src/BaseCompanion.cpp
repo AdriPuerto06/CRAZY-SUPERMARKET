@@ -43,6 +43,8 @@ bool BaseCompanion::Start() {
 	pbody->ctype = ColliderType::COMPANION;
 	pbody->listener = this;
 
+	pathfinding = std::make_shared<Pathfinding>();
+	
 	return true;
 }
 
@@ -51,13 +53,70 @@ bool BaseCompanion::Update(float dt)
 
 	Move();
 	Draw(dt);
+	PerformPathfinding();
 
 	return true;
 }
 
 void BaseCompanion::Move() {
 
-	// Move 
+	if (!pathfinding->pathTiles.empty()) {
+		Vector2D nextTile = pathfinding->GetPenultimateTile(pathfinding->pathTiles);
+		// Convert the current position of the enemy from world space to map tiles.
+		Vector2D pos = Engine::GetInstance().map->WorldToMap((int)GetPosition().getX(), (int)GetPosition().getY());
+
+		// Calculate the direction to move to the next tile.
+		Vector2D direction = nextTile - pos;
+
+		if (direction.getX() != 0 && direction.getY() != 0) {
+			float dirX = (direction.getX() > 0) ? 1 : -1;  // Move right if X > 0, left if X < 0.
+			float dirY = (direction.getY() < 0) ? 1 : -1;
+			velocity.x = dirX * speed;
+			velocity.y = dirY * speed;
+
+			// Set animation based on movement direction.
+			if (velocity.x < 0) {
+				anims.SetCurrent("moveLeft");
+			}
+			else {
+				anims.SetCurrent("moveRight");
+			}
+			if (velocity.y > 0) {
+				anims.SetCurrent("moveDown");
+			}
+			else {
+				anims.SetCurrent("moveUp");
+			}
+
+			// Update components
+			b2Vec2 currentVel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
+			Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity.x, velocity.y);
+
+		}
+	}
+}
+
+void BaseCompanion::PerformPathfinding() {
+	Vector2D pos = Vector2D(GetPosition().getX() + texW / 2, GetPosition().getY() + texH / 2);
+	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap((int)pos.getX(), (int)pos.getY() + 1);
+	Vector2D playerTilePos = Engine::GetInstance().map.get()->WorldToMap((int)Engine::GetInstance().scene->GetPlayerPosition().getX(), (int)Engine::GetInstance().scene->GetPlayerPosition().getY() + 1);
+
+	if (tilePos == playerTilePos) {
+		pathfinding->ResetPath(tilePos);
+		return;
+	}
+
+	if (GetDistanceFromPlayer() < separationRange) {
+
+		pathfinding->ResetPath(tilePos);
+
+		int maxIterations = 20;
+		int iterations = 0;
+		while (!(GetDistanceFromPlayer() < separationRange) && iterations < maxIterations) {
+			pathfinding->PropagateAStar(ASTAR_HEURISTICS::SQUARED);
+			iterations++;
+		}
+	}
 }
 
 void BaseCompanion::Draw(float dt) {
@@ -98,13 +157,6 @@ void BaseCompanion::SetPosition(Vector2D pos) {
 	pbody->SetPosition((int)(pos.getX()), (int)(pos.getY()));
 }
 
-Vector2D BaseCompanion::GetPosition() {
-	int x, y;
-	pbody->GetPosition(x, y);
-	// Adjust for center
-	return Vector2D((float)x-texW/2,(float)y-texH/2);
-}
-
 void BaseCompanion::OnCollision(PhysBody* physA, PhysBody* physB) 
 {
 
@@ -115,5 +167,26 @@ void BaseCompanion::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	
 }
 
+Vector2D BaseCompanion::GetPosition()
+{
+	if (!pbody)
+		return position;
 
+	int x, y;
+	pbody->GetPosition(x, y);
+	return Vector2D((float)x - texW / 2, (float)y - texH / 2);
+}
 
+float BaseCompanion::GetDistanceFromPlayer()
+{
+	Vector2D tilePos = Engine::GetInstance().map->WorldToMap(
+		(int)GetPosition().getX(),
+		(int)GetPosition().getY() + 1
+		);
+	Vector2D playerTilePos = Engine::GetInstance().map->WorldToMap(
+		(int)Engine::GetInstance().scene->GetPlayerPosition().getX(),
+		(int)Engine::GetInstance().scene->GetPlayerPosition().getY());
+
+	return std::pow(playerTilePos.getX() - tilePos.getX(), 2) +
+		std::pow(playerTilePos.getY() - tilePos.getY(), 2);
+}

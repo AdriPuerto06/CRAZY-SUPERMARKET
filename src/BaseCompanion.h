@@ -23,12 +23,14 @@ public:
 	void OnCollisionEnd(PhysBody* physA, PhysBody* physB);
 	void SetPosition(Vector2D pos);
 	Vector2D GetPosition();
+	float GetDistanceFromPlayer();
 	bool Destroy();
 
 private:
 
 	void Move();
 	void Draw(float dt);
+	void PerformPathfinding();
 
 public:
 	EntityType type;
@@ -45,6 +47,7 @@ public:
 	b2Vec2 velocity;
 	float speed;
 	std::shared_ptr<Pathfinding> pathfinding;
+	float separationRange = 10.0f;
 
 	int HP;
 	int ID;

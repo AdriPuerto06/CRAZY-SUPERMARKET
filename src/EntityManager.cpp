@@ -8,6 +8,7 @@
 
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
+#include "BaseCompanion.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -83,6 +84,8 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::BASENPC:
 		entity = std::make_shared<BaseNPC>();
 		break;
+	case EntityType::BASECOMPANION:
+		entity = std::make_shared<BaseCompanion>();
 	default:
 		break;
 	}
@@ -120,22 +123,57 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 	return nullptr;
 }
 
-std::shared_ptr<Entity> EntityManager::GetEnemy(int id) {
-	for (auto& entity : entities) {
-		auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
-		if (enemy && enemy->ID == id)
-			return enemy;
-	}
-	return nullptr;
-}
+//std::shared_ptr<Entity> EntityManager::GetEnemy(int id) {
+//	for (auto& entity : entities) {
+//		auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
+//		if (enemy && enemy->ID == id)
+//			return enemy;
+//	}
+//	return nullptr;
+//}
+//
+//std::shared_ptr<Entity> EntityManager::GetNPC(int id) {
+//	for (auto& entity : entities) {
+//		auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
+//		if (enemy && enemy->ID == id)
+//			return enemy;
+//	}
+//	return nullptr;
+//}
 
-std::shared_ptr<Entity> EntityManager::GetNPC(int id) {
-	for (auto& entity : entities) {
-		auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
-		if (enemy && enemy->ID == id)
-			return enemy;
+std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
+{
+	switch (type)
+	{
+	case EntityType::BASEENEMY:
+		for (auto& entity : entities) {
+			auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
+			if (enemy && enemy->ID == id)
+				return enemy;
+		}
+		return nullptr;
+		break;
+
+	case EntityType::BASENPC:
+		for (auto& entity : entities) {
+			auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
+			if (enemy && enemy->ID == id)
+				return enemy;
+		}
+		return nullptr;
+		break;
+
+	case EntityType::BASECOMPANION:
+		for (auto& entity : entities) {
+			auto enemy = std::dynamic_pointer_cast<BaseCompanion>(entity);
+			if (enemy && enemy->ID == id)
+				return enemy;
+		}
+		return nullptr;
+		break;
 	}
-	return nullptr;
+	
+	return std::shared_ptr<Entity>();
 }
 
 bool EntityManager::Update(float dt)
