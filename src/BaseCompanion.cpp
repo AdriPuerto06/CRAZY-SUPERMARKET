@@ -39,7 +39,7 @@ bool BaseCompanion::Start() {
 	texH = texture->h;
 	texW = texture->w;
 	//sensor
-	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::KINEMATIC);
 	pbody->ctype = ColliderType::COMPANION;
 	pbody->listener = this;
 
@@ -50,73 +50,118 @@ bool BaseCompanion::Start() {
 
 bool BaseCompanion::Update(float dt)
 {
+    PerformPathfinding();
+    Move();
+    Draw(dt);
 
-	Move();
-	Draw(dt);
-	PerformPathfinding();
-
-	return true;
+    return true;
 }
 
-void BaseCompanion::Move() {
+void BaseCompanion::Move()
+{
+    if (!pathfinding->pathTiles.empty())
+    {
+        Vector2D nextTile = pathfinding->GetPenultimateTile(pathfinding->pathTiles);
 
-	if (!pathfinding->pathTiles.empty()) {
-		Vector2D nextTile = pathfinding->GetPenultimateTile(pathfinding->pathTiles);
-		// Convert the current position of the enemy from world space to map tiles.
-		Vector2D pos = Engine::GetInstance().map->WorldToMap((int)GetPosition().getX(), (int)GetPosition().getY());
+        // Current position in tile coordinates
+        Vector2D pos = Engine::GetInstance().map->WorldToMap(
+            (int)GetPosition().getX(),
+            (int)GetPosition().getY()
+        );
 
-		// Calculate the direction to move to the next tile.
-		Vector2D direction = nextTile - pos;
+        // Direction to next tile
+        Vector2D direction = nextTile - pos;
 
-		if (direction.getX() != 0 && direction.getY() != 0) {
-			float dirX = (direction.getX() > 0) ? 1 : -1;  // Move right if X > 0, left if X < 0.
-			float dirY = (direction.getY() < 0) ? 1 : -1;
-			velocity.x = dirX * speed;
-			velocity.y = dirY * speed;
+        // Allow movement in X OR Y
+        if (direction.getX() != 0 || direction.getY() != 0)
+        {
+            float dirX = 0.0f;
+            float dirY = 0.0f;
 
-			// Set animation based on movement direction.
-			if (velocity.x < 0) {
-				anims.SetCurrent("moveLeft");
-			}
-			else {
-				anims.SetCurrent("moveRight");
-			}
-			if (velocity.y > 0) {
-				anims.SetCurrent("moveDown");
-			}
-			else {
-				anims.SetCurrent("moveUp");
-			}
+            if (direction.getX() > 0) dirX = 1.0f;
+            else if (direction.getX() < 0) dirX = -1.0f;
 
-			// Update components
-			b2Vec2 currentVel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-			Engine::GetInstance().physics->SetLinearVelocity(pbody, velocity.x, velocity.y);
+            if (direction.getY() > 0) dirY = 1.0f;
+            else if (direction.getY() < 0) dirY = -1.0f;
 
-		}
-	}
+            velocity.x = dirX * speed;
+            velocity.y = dirY * speed;
+
+            // Animations
+            if (abs(direction.getX()) > abs(direction.getY()))
+            {
+                if (velocity.x < 0)
+                    anims.SetCurrent("moveLeft");
+                else if (velocity.x > 0)
+                    anims.SetCurrent("moveRight");
+            }
+            else
+            {
+                if (velocity.y > 0)
+                    anims.SetCurrent("moveDown");
+                else if (velocity.y < 0)
+                    anims.SetCurrent("moveUp");
+            }
+
+            Engine::GetInstance().physics->SetLinearVelocity(
+                pbody,
+                velocity.x,
+                velocity.y
+            );
+        }
+    }
+    else
+    {
+        LOG("pathTiles is empty");
+    }
 }
 
-void BaseCompanion::PerformPathfinding() {
-	Vector2D pos = Vector2D(GetPosition().getX() + texW / 2, GetPosition().getY() + texH / 2);
-	Vector2D tilePos = Engine::GetInstance().map.get()->WorldToMap((int)pos.getX(), (int)pos.getY() + 1);
-	Vector2D playerTilePos = Engine::GetInstance().map.get()->WorldToMap((int)Engine::GetInstance().scene->GetPlayerPosition().getX(), (int)Engine::GetInstance().scene->GetPlayerPosition().getY() + 1);
+void BaseCompanion::PerformPathfinding()
+{
+    Vector2D pos = Vector2D(
+        GetPosition().getX() + texW / 2,
+        GetPosition().getY() + texH / 2
+    );
 
-	if (tilePos == playerTilePos) {
-		pathfinding->ResetPath(tilePos);
-		return;
-	}
+    Vector2D tilePos =
+        Engine::GetInstance().map->WorldToMap(
+            (int)pos.getX(),
+            (int)pos.getY() + 1
+        );
 
-	if (GetDistanceFromPlayer() < separationRange) {
+    Vector2D playerTilePos =
+        Engine::GetInstance().map->WorldToMap(
+            (int)Engine::GetInstance().scene->GetPlayerPosition().getX(),
+            (int)Engine::GetInstance().scene->GetPlayerPosition().getY() + 1
+        );
 
-		pathfinding->ResetPath(tilePos);
+    // Already at player tile
+    if (tilePos == playerTilePos)
+    {
+        pathfinding->ResetPath(tilePos);
+        return;
+    }
 
-		int maxIterations = 20;
-		int iterations = 0;
-		while (!(GetDistanceFromPlayer() < separationRange) && iterations < maxIterations) {
-			pathfinding->PropagateAStar(ASTAR_HEURISTICS::SQUARED);
-			iterations++;
-		}
-	}
+    // Generate path when close enough
+    if (GetDistanceFromPlayer() < separationRange)
+    {
+        // Reset current path
+        pathfinding->ResetPath(tilePos);
+
+        int maxIterations = 20;
+        int iterations = 0;
+
+        // FIXED CONDITION
+        while (GetDistanceFromPlayer() < separationRange &&
+            iterations < maxIterations)
+        {
+            pathfinding->PropagateAStar(ASTAR_HEURISTICS::SQUARED);
+            iterations++;
+        }
+
+        LOG("Generated path size: %d",
+            (int)pathfinding->pathTiles.size());
+    }
 }
 
 void BaseCompanion::Draw(float dt) {

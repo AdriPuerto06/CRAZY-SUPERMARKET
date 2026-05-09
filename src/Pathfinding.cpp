@@ -403,7 +403,7 @@ int Pathfinding::Find(std::list<Vector2D> vector, Vector2D elem)
         }
         index++;
     }
-
+      
     if (found) return index;
     else return -1;
 
