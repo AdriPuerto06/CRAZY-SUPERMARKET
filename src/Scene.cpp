@@ -199,6 +199,7 @@ bool Scene::PostUpdate()
 
 		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
+		sceneStack.push(currentScene);
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
