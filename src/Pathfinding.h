@@ -34,7 +34,7 @@ public:
     // L13: A* Pathfinding methods
     void PropagateAStar(ASTAR_HEURISTICS heuristic);
 
-    Vector2D GetPenultimateTile(std::list<Vector2D> list);
+    Vector2D GetPenultimateTile(const std::list<Vector2D>& list);
 
 private:
     int Find(std::list<Vector2D> vector, Vector2D elem);

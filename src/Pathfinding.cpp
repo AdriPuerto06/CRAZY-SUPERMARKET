@@ -409,14 +409,14 @@ int Pathfinding::Find(std::list<Vector2D> vector, Vector2D elem)
 
 }
 
-Vector2D Pathfinding::GetPenultimateTile(std::list<Vector2D> list)
+Vector2D Pathfinding::GetPenultimateTile(const std::list<Vector2D>& list)
 {
-    Vector2D currentVec;
-    if (list.size() >= 2) {
-        list.pop_back();
-        currentVec = list.back();
-        return currentVec;
-    }
+    if (list.size() < 2)
+        return Vector2D(0, 0);
 
-    return Vector2D(0, 0);
+    auto it = list.end();
+    --it;
+    --it;
+
+    return *it;
 }
