@@ -14,7 +14,7 @@
 			<choice id ="2" option="Yo mama" next_node ="2"/>
 		</node>
 		
-		<node id ="2" text="ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday,         everybody here knows it..">
+		<node id ="2" text="ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday, everybody here knows it..">
 			<choice id ="1" option="My bad gng" next_node ="3"/>
 		</node>
 		
