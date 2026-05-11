@@ -747,11 +747,12 @@ void Scene::PostUpdateCombatScene() {
 
 void Scene::LoadLevel1() {
 
-	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
+	
 
 	//Call the function to load the map & music
 	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
-	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
+	
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
@@ -770,7 +771,17 @@ void Scene::LoadLevel1() {
 }
 
 void Scene::UpdateLevel1(float dt) {
-
+	
+	//Music will play drums first and then the main theme will loop
+	if (!drumsFinished)
+	{
+		drumsTimer += dt;
+		if (drumsTimer >= 4000.0f)
+		{
+			drumsFinished = true;
+			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
+		}
+	}
 	//provisional para bajar y subir la vida del player
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		player->HP --;
@@ -825,7 +836,7 @@ void  Scene::PostUpdateLevel1() {
 
 void Scene::LoadLevel2() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	//Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
@@ -891,7 +902,7 @@ void  Scene::PostUpdateLevel2() {
 
 void Scene::LoadLevel3() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	//Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
@@ -1376,6 +1387,7 @@ void Scene::LoadBattle()
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
+	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
 	//UI Buttons
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
