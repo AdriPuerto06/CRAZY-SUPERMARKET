@@ -38,6 +38,12 @@ bool ItemManager::Update(float dt)
 
 bool ItemManager::PostUpdate()
 {
+	if (showingPlayersItem)
+	{
+		Engine::GetInstance().render->DrawTexture(cajonTex,WindowSize.getX() - 200,WindowSize.getY() - 150);
+		ShowBack();
+	}
+
 	return true;
 }
 
@@ -87,6 +93,10 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 2:
 		break;
 	case 3:
+		if (showingPlayersItem) {
+			!showingPlayersItem;
+			Engine::GetInstance().render->CleanUp();
+		}
 		break;
 	case 4:
 		break;
@@ -115,9 +125,14 @@ bool ItemManager::ShowInventoryOptions()
 	return true;
 }
 
-bool ItemManager::ShowPlayerItems() {
-	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 - 397, WindowSize.getY() / 10);
+void ItemManager::ShowBack()
+{
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Back", bt3Pos, this));
+}
 
+bool ItemManager::ShowPlayerItems() {
+	showingPlayersItem = true;
 	return true;
 }
 

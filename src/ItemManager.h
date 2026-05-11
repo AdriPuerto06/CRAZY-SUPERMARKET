@@ -31,6 +31,7 @@ public:
 	bool ShowInventoryOptions();
 	bool ShowPlayerItems();
 	bool ShowPlayerStats();
+	void ShowBack();
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();
@@ -60,9 +61,12 @@ private:
 	std::string itemsFileName;
 	std::string itemsPath;
 	pugi::xml_document itemsFileXML;
+	bool showingPlayersItem = false;
 
 	//inventory of the player
 	std::vector<Item>* inventory;
 	SDL_Texture* cajonTex = nullptr;
+
+	bool showingBack = false;
 
 };
