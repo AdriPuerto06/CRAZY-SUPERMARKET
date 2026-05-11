@@ -1181,7 +1181,7 @@ void Scene::LoadSounds()
 	//SLIDER
 	SDL_Rect Slider = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 75, 125, 35 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::SLIDER, 301, "", Slider, this));
+		UIElementType::SLIDER, 301, "", Slider, this, {}, musicVolume));
 
 	//SFX
 	SDL_Rect sfxTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 2 - 45, 230, 30 };
@@ -1204,7 +1204,7 @@ void Scene::LoadSounds()
 	//SLIDER
 	SDL_Rect Slider2 = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 255, 125, 35 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::SLIDER, 302, "", Slider2, this));
+		UIElementType::SLIDER, 302, "", Slider2, this, {}, sfxVolume));
 
 	//MUTE ALL
 	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
