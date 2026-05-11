@@ -164,13 +164,24 @@ void ItemManager::ActivateItem(const char* name)
 	}
 }
 
+bool ItemManager::IsItemActive(const char* name)
+{
+	for (auto item : *inventory)
+	{
+		if (item.name == name)
+		{
+			return item.active;
+		}
+	}
+}
+
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {
 	for (auto item : *inventory)
 	{
 		if (item.name == "Cursed Knife" && item.active) dmg_inc = item.value;
 		if (item.name == "Bike helmet" && item.active) shield_inc = item.value;
-		if (item.name == "Disturbing picture" && item.active) confused_inc = item.value;
+		if (item.name == "Gigantic flashlight" && item.active) confused_inc = item.value;
 	}
 }
 

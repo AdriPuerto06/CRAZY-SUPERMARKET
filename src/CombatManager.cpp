@@ -258,9 +258,6 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 6: // Button MyButton
 		UnloadCombatUI();
 		showingButtonStart = false;
-		//load the ids
-		/*combatData->enemies_id.push_back(combatData->possible_enemy_ID);
-		combatData->players_id.push_back(1);*/
 		StartCombat(/*combatData->players_id, combatData->enemies_id*/);
 		LOG("Combat starts.");
 		break;
@@ -351,6 +348,7 @@ void CombatManager::ApplyCombatLogic()
 
 void CombatManager::ApplyEffects()
 {
+
 	for (auto& enemy : combatData->enemies)
 	{
 		if (enemy.alive)
@@ -730,10 +728,6 @@ void CombatManager::CheckAlive()
 		{
 			e.alive = false;
 			LOG("Enemy ID: %i has been killed.", e.id);
-
-			//std::shared_ptr<Entity> entity = Engine::GetInstance().entityManager->GetEnemy(e.id); //get enemy from the id
-			//enemies_to_destroy.push_back(entity); //entities is empty because we delete all from the previous scene, I need to make a function that changes the 
-			// combat file values
 
 			for (int j = 0; j < (int)combatData->enemies.size(); ++j)
 			{

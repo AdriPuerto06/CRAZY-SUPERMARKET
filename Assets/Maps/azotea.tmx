@@ -6481,7 +6481,7 @@
   <object id="17" name="Mary Nancy" type="Companion" x="1781.13" y="897.342">
    <properties>
     <property name="Companion_ID" type="int" value="1"/>
-    <property name="active" type="bool" value="true"/>
+    <property name="active" type="bool" value="false"/>
     <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
    </properties>
    <point/>
