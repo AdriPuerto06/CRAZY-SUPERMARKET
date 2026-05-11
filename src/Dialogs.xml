@@ -76,7 +76,7 @@
 		</node>
 
 		<node id ="1" text="YUnless you know a way through those guys in front of the door, wait, you look kinda strong">
-			<choice id ="1" option="Someone could say that, yeah" next_node ="-1"/>
+			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
 
 	</dialogue_tree>
