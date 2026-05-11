@@ -685,6 +685,24 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
 		break;
 
+	case 301: //slider music
+	{
+		UISlider* slider = (UISlider*)uiElement;
+
+		musicVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+	}
+	case 302: //slider vfx
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		sfxVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+	}
+
 	default:
 		break;
 	}
