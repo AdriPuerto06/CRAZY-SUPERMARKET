@@ -1062,6 +1062,9 @@ void Scene::LoadSounds()
 	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
 	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
 
+	SDL_Texture* btnMuteTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Mute_Normal.png");
+	SDL_Texture* btnMutePressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Mute_Pressed.png");
+
 	//UI Button
 	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
 	CreateButton(btnBckTex, btnBckPressedTex, bt1Pos, 10);
@@ -1103,10 +1106,8 @@ void Scene::LoadSounds()
         UIElementType::BUTTON, 213, "+", sfxPlus, this));
 
 	//MUTE ALL
-	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
-	const char* muteText = isAudioMuted ? "Unmute All" : "Mute All";
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::BUTTON, 100, muteText, mutePos, this));
+	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 170, 51 };
+	CreateButton(btnMuteTex, btnMutePressedTex, mutePos, 100);
 }
 
 void Scene::UnloadSounds()
