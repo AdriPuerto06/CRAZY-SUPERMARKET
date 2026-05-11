@@ -74,8 +74,9 @@ bool UIManager::CleanUp()
 {
 	for (const auto& uiElement : UIElementsList)
 	{
-		uiElement->CleanUp();
+		uiElement->pendingToDelete = true;
 	}
+
 
 	return true;
 }
