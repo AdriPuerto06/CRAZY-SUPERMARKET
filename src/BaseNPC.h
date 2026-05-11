@@ -9,7 +9,7 @@ public:
 	~BaseNPC();
 	BaseNPC(EntityType type) : type(type), active(true) {};
 
-	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID);
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int currentDialogueTree);
 
 	bool Awake();
 
@@ -39,5 +39,6 @@ public:
 	int texW, texH;
 
 	int ID;
+	int currentDialogueTree;
 	bool showingButton;
 };

@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "ItemManager.h"
 #include "EntityManager.h"
+#include "QuestManager.h"
 
 //helpers
 std::vector<int> GetIDs(std::string str)
@@ -188,7 +189,7 @@ bool CombatManager::CleanUp()
 {
 	in_combat = false;
 	combatFileXML.empty();
-	combatData->Clear();
+	/*combatData->Clear();*/
 	return true;
 }
 
@@ -790,6 +791,9 @@ void CombatManager::CheckAlive()
 	{
 		LOG("Player wins the combat. Destroying the enemies...");
 		MarkEnemiesAsDead();
+
+		Engine::GetInstance().questManager->IsQuestCompleted(combatData->fight_ID, true);
+
 		in_combat = false;
 		enemies_to_destroy.clear();
 		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);

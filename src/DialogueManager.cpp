@@ -6,6 +6,7 @@
 #include "QuestManager.h"
 #include "ItemManager.h"
 #include "CombatManager.h"
+#include "EntityManager.h"
 
 int SizeOf(const char* s)
 {
@@ -17,6 +18,18 @@ int SizeOf(const char* s)
 		i++; 
 	}
 	return size;
+}
+
+int GetNumFromString(std::string str) {
+	int num = str.at(0) - '0';
+	for (int l = 1; l < str.size(); ++l)
+	{
+		if (!(str[l] == ','))
+		{
+			num = num * 10 + (str.at(l) - '0');
+		}
+	}
+	return num;
 }
 
 DialogueManager::DialogueManager() : Module() 
@@ -261,5 +274,13 @@ void DialogueManager::GetPosibleReward(Reward reward)
 	case RewardType::COMPANION:
 		break;
 
+	case RewardType::DIALOGUE:
+		UnlockNewDialogueTree(GetNumFromString(reward.reward_value));
+		break;
 	}
+}
+
+void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
+{
+	auto npc = Engine::GetInstance().entityManager->GetEntity_Map(NPC_ID, EntityType::BASENPC); //gets the entity, not the npc...
 }

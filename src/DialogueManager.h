@@ -8,6 +8,7 @@ enum class RewardType {
 	COMPANION,
 	COMPLETEQUEST,
 	ATTACK,
+	DIALOGUE,
 	NONE
 };
 
@@ -84,6 +85,8 @@ public:
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
 	void GetPosibleReward(Reward reward);
+
+	void UnlockNewDialogueTree(int NPC_ID);
 
 	std::string dialogsFileName;
 	std::string dialogsPath;

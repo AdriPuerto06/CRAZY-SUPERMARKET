@@ -244,6 +244,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
+                    int currentDialogueTree = 0;
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -260,7 +261,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
-                        
+                        if (name == "currentDialogueTree")
+                            currentDialogueTree = propertyNode.attribute("value").as_int();
                     }
 
                     if (active)
@@ -274,7 +276,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
                         }
-                        npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID);
+                        npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID, currentDialogueTree);
                         npc->entity_ID = ID;
                         LOG("NPC -> NPC_ID: %i, entity_ID: %i, at %f, %f.", NPC_ID, ID, pos.getX(), pos.getY());
                         npc->Start();
@@ -427,6 +429,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASENPC));
                     const char* texturePath = npc->texturePath;
                     bool active = npc->active;
+                    int currentDialogueTree = npc->currentDialogueTree;
 
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
@@ -443,6 +446,9 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                         if (name == "texturePath")
                             propertyNode.attribute("value").set_value(texturePath);
+
+                        if (name == "currentDialogueTree")
+                            propertyNode.attribute("value").set_value(currentDialogueTree);
                     }
                 }
 
