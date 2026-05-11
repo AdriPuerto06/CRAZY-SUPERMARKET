@@ -57,4 +57,27 @@
 		</node>
 		
 	</dialogue_tree>
+	<!--Tio asustado de puños-->
+	<dialogue_tree ID="0" NPC="3">
+		<node id ="0" text="Wow those gloves sure do look amazing… Too much in fact">
+			<choice id ="1" option="Too much?" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="Yeah, like hell I’m going near them">
+			<choice id ="1" option="It’s like a tattoo I guess, cool to have but not for everyone" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<!--Mission Puerta-->
+	<dialogue_tree ID="0" NPC="4">
+		<node id ="0" text="DAMN it, all the way here just to be trapped!">
+			<choice id ="1" option="No way, we’re trapped?" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="YUnless you know a way through those guys in front of the door, wait, you look kinda strong">
+			<choice id ="1" option="Someone could say that, yeah" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
 </dialogs>
