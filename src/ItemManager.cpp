@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "CombatManager.h"
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -21,6 +22,10 @@ bool ItemManager::Awake()
 
 bool ItemManager::Start()
 {
+	WindowSize = { (float)Engine::GetInstance().render->camera.w,
+				   (float)Engine::GetInstance().render->camera.h };
+
+	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
 	if (inventory->empty()) LoadItems();
 	return true;
 }
@@ -77,6 +82,7 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1:
+		ShowPlayerItems();
 		break;
 	case 2:
 		break;
@@ -100,14 +106,17 @@ bool ItemManager::ShowInventoryOptions()
 	LOG("ShowInventoryOptions called");
 	//UnloadItemUI();
 
-	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w,
-							(float)Engine::GetInstance().render->camera.h };
-
 	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 3, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
+
+	return true;
+}
+
+bool ItemManager::ShowPlayerItems() {
+	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 - 397, WindowSize.getY() / 10);
 
 	return true;
 }

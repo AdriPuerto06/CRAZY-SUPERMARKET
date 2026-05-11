@@ -213,6 +213,7 @@ void Player:: ShowMenu() {
 	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
 		showingMenu = true;
+	/*	can_show_menu = false;*/
 	}
 	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
 		Engine::GetInstance().uiManager->CleanUp();

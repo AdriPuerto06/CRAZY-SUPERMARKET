@@ -43,7 +43,7 @@ private:
 	void CenterCamera();
 	void CheckDialogueAndCombatLogic();
 	void ShowMenu();
-
+	
 public:
 
 	//Declare player parameters

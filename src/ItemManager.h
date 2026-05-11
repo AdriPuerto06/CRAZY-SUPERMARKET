@@ -29,6 +29,8 @@ public:
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	bool ShowInventoryOptions();
+	bool ShowPlayerItems();
+	bool ShowPlayerStats();
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();
@@ -53,11 +55,14 @@ public:
 	SDL_Texture* img = nullptr;
 
 private:
+	Vector2D WindowSize;
+
 	std::string itemsFileName;
 	std::string itemsPath;
 	pugi::xml_document itemsFileXML;
 
 	//inventory of the player
 	std::vector<Item>* inventory;
+	SDL_Texture* cajonTex = nullptr;
 
 };
