@@ -126,6 +126,15 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	
 	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
 	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
+
+	if (Engine::GetInstance().itemManager->IsItemActive("Sandwich wrapping"))
+	{
+		for (auto player : combatData->players)
+		{
+			player.hp += 1;
+		}
+		LOG("Sandwich wrapping item heals each player by 1 HP.");
+	}
 }
 
 CombatManager::CombatManager() : Module()
