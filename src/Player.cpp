@@ -54,6 +54,8 @@ bool Player::Start() {
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
+	if (Engine::GetInstance().itemManager->IsItemActive("Stillish skates")) speed = 6.0f;
+
 	return true;
 }
 

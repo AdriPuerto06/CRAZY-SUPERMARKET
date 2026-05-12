@@ -156,6 +156,8 @@ private:
 	float musicVolume = 1.0f;
 	float sfxVolume = 1.0f;
 	bool  isAudioMuted = false;
+	bool drumsFinished = false;
+	float drumsTimer = 0.0f;
 
 	//GRAFICS
 	void LoadGrafics();
