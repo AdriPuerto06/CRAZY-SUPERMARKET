@@ -11,6 +11,7 @@ struct Item {
 	bool active;
 	int value;
 	std::string description;
+	const char* texturePath;
 	SDL_Texture* texture = nullptr;
 };
 
@@ -29,6 +30,9 @@ public:
 
 	bool OnUIMouseClickEvent(UIElement* uiElement);
 	bool ShowInventoryOptions();
+	bool ShowPlayerItems();
+	bool ShowPlayerStats();
+	void ShowBack();
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();
@@ -55,11 +59,17 @@ public:
 	SDL_Texture* img = nullptr;
 
 private:
+	Vector2D WindowSize;
+
 	std::string itemsFileName;
 	std::string itemsPath;
 	pugi::xml_document itemsFileXML;
+	bool showingPlayersItem = false;
 
 	//inventory of the player
-	std::vector<Item>* inventory;
+	std::vector<Item>* inventory = nullptr;
+	SDL_Texture* cajonTex = nullptr;
+
+	bool showingBack = false;
 
 };

@@ -25,7 +25,6 @@ enum class SceneID
 	PAUSE,
 	EXIT,
 	RESUME,
-	BACK,
 	BATTLE,
 	NULLSCENE
 
@@ -171,12 +170,6 @@ private:
 	void UpdatePause(float dt);
 	void PostUpdatePause();
 
-	//BACK
-	void LoadBack();
-	void UnloadBack();
-	void UpdateBack(float dt);
-	void PostUpdateBack();
-
 	//BATTLE
 	void LoadBattle();
 	void UnloadBattle();
@@ -210,7 +203,6 @@ private:
 	SceneStack sceneStack;
 
 	//Imagen
-
 	SDL_Texture* logoImg = nullptr;
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
@@ -222,7 +214,6 @@ private:
 	bool sfxTeamPlayed = false;
 
 	//Creditos
-
 	std::vector<std::string> creditsText;
 	float creditsY = 0.0f;
 	float scrollSpeed = 100.0f;
@@ -230,6 +221,9 @@ private:
 	bool isCredits = false;
 	float creditsTimer = 5.f;
 
+	//Cursor
+	SDL_Surface* cursorSurface = nullptr;
+	SDL_Cursor* customCursor = nullptr;
 
 	bool closeGame = false;
 	bool fromSG = false;
