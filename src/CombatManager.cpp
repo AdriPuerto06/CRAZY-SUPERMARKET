@@ -174,7 +174,6 @@ bool CombatManager::Update(float dt)
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && showInventory == true) {
 		showInventory = false;
-		Engine::GetInstance().itemManager->UnShowInventory();
 	}
 
 	return true;

@@ -26,7 +26,9 @@ bool ItemManager::Start()
 				   (float)Engine::GetInstance().render->camera.h };
 
 	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
-	if (inventory->empty()) LoadItems();
+	if (inventory->empty()) { 
+		LoadItems();
+	}
 	return true;
 }
 
@@ -70,21 +72,25 @@ bool ItemManager::LoadItemsData(std::string path, std::string fileName)
 
 void ItemManager::LoadItems()
 {
-	for (pugi::xml_node item_tree_node = itemsFileXML.child("combat").child("items").child("item");
+	for (pugi::xml_node item_tree_node = itemsFileXML.child("items").child("item");
 		item_tree_node != NULL;
 		item_tree_node = item_tree_node.next_sibling("item"))
 	{
 		Item item;
 		item.active = item_tree_node.attribute("active").as_bool();
 		item.name = (const char*)item_tree_node.attribute("name").as_string();
+		if (item_tree_node.attribute("value")) { item.value = item_tree_node.attribute("value").as_int(); }
 		item.description = item_tree_node.attribute("description").as_string();
 		item.texturePath = (const char*)item_tree_node.attribute("texturePath").as_string();
 		item.texture = Engine::GetInstance().textures->Load(item.texturePath);
-		if (item_tree_node.attribute("value")) { item.value = item_tree_node.attribute("value").as_int(); }
-
+		
 
 		AddItemToInventory(item);
+
+		LOG("item : %s Loaded", item.name);
 	}
+
+	
 }
 
 bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
@@ -148,12 +154,27 @@ std::vector<Item>* ItemManager::GetItems()
 //show the items when pressing the "Items" button when in combat and when clicking a key.
 void ItemManager::ShowInventory()
 {
-	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w / 2,
-							(float)Engine::GetInstance().render->camera.h / 2
-	};
-
+	int xincrement = 0;
+	int yincrement = 0;
 	for (int i = 0; i < inventory->size(); i++) {
-		Engine::GetInstance().render->DrawTexture(inventory->data()->texture, WindowSize.getX(), WindowSize.getY());
+
+		
+		int posx = (WindowSize.getX() / 3) + xincrement;
+		int posy = (WindowSize.getY() / 3) + yincrement;
+
+
+
+		if (inventory->at(i).texture != nullptr) {
+			Engine::GetInstance().render->DrawTexture(inventory->at(i).texture, posx, posy);
+			Engine::GetInstance().render->DrawText(inventory->at(i).name, posx, posy + inventory->at(i).texture->h, 64, 32, { 0,0,0,0 });
+		}
+		else {
+			Engine::GetInstance().render->DrawRectangle({ 32, 32 }, 225, 0, 0);
+		}
+		
+
+		xincrement += 128;
+
 	}
 
 	
@@ -163,11 +184,7 @@ void ItemManager::ShowInventory()
 
 void ItemManager::UnShowInventory()
 {
-	if (img != nullptr)
-	{
-		Engine::GetInstance().textures->UnLoad(img);
-		img = nullptr;
-	}
+	
 }
 
 
