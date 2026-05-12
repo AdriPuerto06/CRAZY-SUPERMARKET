@@ -125,6 +125,7 @@ void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
 		Engine::GetInstance().combatManager->UnloadCombatUI();
 		Engine::GetInstance().combatManager->in_combat = false;
+		Engine::GetInstance().combatManager->showingButtonStart = false;
 	}
 }
 

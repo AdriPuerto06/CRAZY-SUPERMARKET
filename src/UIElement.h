@@ -29,8 +29,6 @@ enum class UIElementState
 	SELECTED
 };
 
-
-
 class UIElement : public std::enable_shared_from_this<UIElement>
 {
 public:
@@ -69,7 +67,6 @@ public:
 	{
 		observer = module;
 	}
-	
 
 	// 
 	void NotifyObserver()
@@ -86,7 +83,6 @@ public:
 	{
 		return true;
 	}
-
 
 public:
 
@@ -120,7 +116,7 @@ public:
 	{
 		Slider();
 		SDL_Renderer* renderer = Engine::GetInstance().render->renderer;
-		
+
 		//barra
 		SDL_FRect rectF = {
 		(float)bounds.x,
@@ -157,7 +153,7 @@ private:
 	bool dragging = false;
 
 
-	
+
 
 	bool Slider() {
 		int mouseX, mouseY;

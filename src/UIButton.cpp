@@ -34,8 +34,9 @@ bool UIButton::Update(float dt)
 
 			state = UIElementState::FOCUSED;
 
-			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && !static_twicePressed) {
 				state = UIElementState::PRESSED;
+				static_twicePressed = true;
 			}
 
 			if (Engine::GetInstance().input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
@@ -54,7 +55,7 @@ bool UIButton::Update(float dt)
 			break;
 		case UIElementState::NORMAL:
 			if (normalTex)
-				Engine::GetInstance().render->DrawTexture(normalTex, bounds.x, bounds.y);
+				Engine::GetInstance().render->DrawTexture(normalTex, bounds.x, bounds.y, nullptr, 1.0f, 0.0, INT_MAX, INT_MAX, false);
 			else
 				Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
 			break;
@@ -68,7 +69,7 @@ bool UIButton::Update(float dt)
 			if (focusTex)
 			{
 				SDL_SetTextureColorMod(focusTex, r, g, b);
-				Engine::GetInstance().render->DrawTexture(focusTex, bounds.x, bounds.y);
+				Engine::GetInstance().render->DrawTexture(focusTex, bounds.x, bounds.y, nullptr, 1.0f, 0.0, INT_MAX, INT_MAX, false);
 				SDL_SetTextureColorMod(focusTex, 255, 255, 255);
 			}
 			else
@@ -77,7 +78,7 @@ bool UIButton::Update(float dt)
 		}
 		case UIElementState::PRESSED:
 			if (pressedTex)
-				Engine::GetInstance().render->DrawTexture(pressedTex, bounds.x, bounds.y);
+				Engine::GetInstance().render->DrawTexture(pressedTex, bounds.x, bounds.y, nullptr, 1.0f, 0.0, INT_MAX, INT_MAX, false);
 			else
 				Engine::GetInstance().render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
 			break;

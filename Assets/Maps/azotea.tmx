@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="17">
+
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="19">
+
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
@@ -6450,6 +6452,7 @@
    <properties>
     <property name="NPC_ID" type="int" value="1"/>
     <property name="active" type="bool" value="true"/>
+    <property name="currentDialogueTree" type="int" value="0"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
@@ -6458,6 +6461,7 @@
    <properties>
     <property name="NPC_ID" type="int" value="2"/>
     <property name="active" type="bool" value="true"/>
+    <property name="currentDialogueTree" type="int" value="0"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
@@ -6475,6 +6479,14 @@
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="1"/>
     <property name="texturePath" value="Assets/Maps/x.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="Mary Nancy" type="Companion" x="1781.13" y="897.342">
+   <properties>
+    <property name="Companion_ID" type="int" value="1"/>
+    <property name="active" type="bool" value="false"/>
+    <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
    </properties>
    <point/>
   </object>

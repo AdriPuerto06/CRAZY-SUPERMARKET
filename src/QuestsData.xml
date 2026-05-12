@@ -1,0 +1,9 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--QUEST: 0, ITEM: 1, COMPANION: 2-->
+<!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5-->
+<quests>
+	<quest id="1" name="Talk with the other guy" completed="false" active="false" reward="Jet Punch" reward_type="4"/>
+	<quest id="2" name="Beat those guys!" completed="false" active="false" reward="" reward_type="5"/>
+</quests>
+

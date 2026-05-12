@@ -403,8 +403,20 @@ int Pathfinding::Find(std::list<Vector2D> vector, Vector2D elem)
         }
         index++;
     }
-
+      
     if (found) return index;
     else return -1;
 
+}
+
+Vector2D Pathfinding::GetPenultimateTile(const std::list<Vector2D>& list)
+{
+    if (list.size() < 2)
+        return Vector2D(0, 0);
+
+    auto it = list.end();
+    --it;
+    --it;
+
+    return *it;
 }

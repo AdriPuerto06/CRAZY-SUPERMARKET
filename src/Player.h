@@ -42,13 +42,14 @@ private:
 	void GodMode();
 	void CenterCamera();
 	void CheckDialogueAndCombatLogic();
-
+	void ShowMenu();
+	
 public:
 
 	//Declare player parameters
 	float speed = 4.0f;
 	bool can_Move = true;
-	SDL_Texture* texture = NULL;
+	SDL_Texture* texture = nullptr;
 
 	int texW, texH;
 
@@ -59,6 +60,7 @@ public:
 	PhysBody* pbody;
 
 	int HP;
+	bool inCombat = false;
 
 	std::string pendingMapLoad;
 
@@ -66,7 +68,8 @@ private:
 	b2Vec2 velocity;
 	AnimationSet anims;
 	int teleportCooldown = 120;
+	bool showingMenu = false;
 
 	bool godMode = false;
-
+	
 };
