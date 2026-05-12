@@ -11,6 +11,7 @@ struct Item {
 	bool active;
 	int value;
 	std::string description;
+	const char* texturePath;
 	SDL_Texture* texture = nullptr;
 };
 
@@ -66,7 +67,7 @@ private:
 	bool showingPlayersItem = false;
 
 	//inventory of the player
-	std::vector<Item>* inventory;
+	std::vector<Item>* inventory = nullptr;
 	SDL_Texture* cajonTex = nullptr;
 
 	bool showingBack = false;
