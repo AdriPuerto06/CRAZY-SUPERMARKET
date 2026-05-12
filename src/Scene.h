@@ -92,6 +92,7 @@ public:
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
 
+	std::shared_ptr<Player> GetPlayer();
 
 	//Getter
 	SceneID GetCurrentScene();

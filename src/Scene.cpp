@@ -335,6 +335,11 @@ void Scene::LoadScene(SceneID newScene)
 	}
 }
 
+std::shared_ptr<Player> Scene::GetPlayer()
+{
+	return player;
+}
+
 void Scene::ChangeScene(SceneID newScene)
 {
 	UnloadCurrentScene();

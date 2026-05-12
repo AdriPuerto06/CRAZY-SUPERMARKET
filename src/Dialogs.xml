@@ -1,6 +1,7 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5-->
 <dialogs>
 	<!--Vagabundo-->
 	<dialogue_tree ID="0" NPC="1"> 
