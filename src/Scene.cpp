@@ -685,6 +685,24 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
 		break;
 
+	case 301: //slider music
+	{
+		UISlider* slider = (UISlider*)uiElement;
+
+		musicVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+	}
+	case 302: //slider vfx
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		sfxVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -729,11 +747,12 @@ void Scene::PostUpdateCombatScene() {
 
 void Scene::LoadLevel1() {
 
-	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
+	
 
 	//Call the function to load the map & music
 	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
-	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
+	
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
@@ -752,7 +771,17 @@ void Scene::LoadLevel1() {
 }
 
 void Scene::UpdateLevel1(float dt) {
-
+	
+	//Music will play drums first and then the main theme will loop
+	if (!drumsFinished)
+	{
+		drumsTimer += dt;
+		if (drumsTimer >= 4000.0f)
+		{
+			drumsFinished = true;
+			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
+		}
+	}
 	//provisional para bajar y subir la vida del player
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		player->HP --;
@@ -807,7 +836,7 @@ void  Scene::PostUpdateLevel1() {
 
 void Scene::LoadLevel2() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	//Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
@@ -873,7 +902,7 @@ void  Scene::PostUpdateLevel2() {
 
 void Scene::LoadLevel3() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	//Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
@@ -1137,14 +1166,10 @@ void Scene::UnloadCredits()
 void Scene::LoadSounds()
 {
 	Engine::GetInstance().uiManager->CleanUp();
-
-	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
-	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
-
 	//UI Button
 
-	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 135,68 };
-	CreateButton(btnBckTex, btnBckPressedTex, bt1Pos, 10);
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
 
 	//MUSIC
 	SDL_Rect musicTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 4 - 30, 240, 30 };
@@ -1153,7 +1178,7 @@ void Scene::LoadSounds()
 
 	SDL_Rect musicVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 5, 200, 25 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string(static_cast<int>(musicVolume * 100)) + "%").c_str(),
+		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string((int)(musicVolume * 100)) + "%").c_str(),
 		musicVolPos, this));
 
 	SDL_Rect musicMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 4 + 45, 45, 25 };
@@ -1163,6 +1188,11 @@ void Scene::LoadSounds()
 	SDL_Rect musicPlusPos = { WindowSize.getX() / 2 + 65, WindowSize.getY() / 4 + 45, 45, 25 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 203, "+", musicPlusPos, this));
+
+	//SLIDER
+	SDL_Rect Slider = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 75, 125, 35 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::SLIDER, 301, "", Slider, this, {}, musicVolume));
 
 	//SFX
 	SDL_Rect sfxTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 2 - 45, 230, 30 };
@@ -1178,9 +1208,14 @@ void Scene::LoadSounds()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 212, " - ", sfxMinusPos, this));
 
-	SDL_Rect sfxPlus = { WindowSize.getX()/2 + 75, WindowSize.getY()/2 + 40, 40, 24 };
-    std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-        UIElementType::BUTTON, 213, "+", sfxPlus, this));
+	SDL_Rect sfxPlus = { WindowSize.getX() / 2 + 75, WindowSize.getY() / 2 + 40, 40, 24 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 213, "+", sfxPlus, this));
+
+	//SLIDER
+	SDL_Rect Slider2 = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 255, 125, 35 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::SLIDER, 302, "", Slider2, this, {}, sfxVolume));
 
 	//MUTE ALL
 	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
@@ -1352,6 +1387,7 @@ void Scene::LoadBattle()
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
+	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
 	//UI Buttons
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
