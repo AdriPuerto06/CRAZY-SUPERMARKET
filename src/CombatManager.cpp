@@ -266,6 +266,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 		break;
 	case 6: // Button MyButton
+		goBack = Engine::GetInstance().scene->GetCurrentScene();
 		UnloadCombatUI();
 		showingButtonStart = false;
 		StartCombat(/*combatData->players_id, combatData->enemies_id*/);
@@ -796,7 +797,8 @@ void CombatManager::CheckAlive()
 
 		in_combat = false;
 		enemies_to_destroy.clear();
-		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
+		
+		Engine::GetInstance().scene->ChangeScene(goBack);
 	}
 }
 
