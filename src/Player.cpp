@@ -35,12 +35,6 @@ bool Player::Start() {
 	anims.LoadFromTSX("Assets/Textures/testguy32x32x200resize.tsx", aliases);
 	anims.SetCurrent("idle");
 
-	//customMouse
-	cursorSurface = IMG_Load("Assets/Textures/carrito.png");
-	customCursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
-	SDL_SetCursor(customCursor);
-	SDL_DestroySurface(cursorSurface);
-
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/testguy32x32x200resize.png");
 
@@ -221,6 +215,7 @@ void Player:: ShowMenu() {
 	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
 		showingMenu = true;
+	/*	can_show_menu = false;*/
 	}
 	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
 		Engine::GetInstance().uiManager->CleanUp();
@@ -234,7 +229,6 @@ bool Player::CleanUp()
 	LOG("Cleanup player");
 	Engine::GetInstance().textures->UnLoad(texture);
 	Engine::GetInstance().physics->DeletePhysBody(pbody);
-	SDL_DestroyCursor(customCursor);
 	return true;
 }
 

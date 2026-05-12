@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "CombatManager.h"
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -21,6 +22,10 @@ bool ItemManager::Awake()
 
 bool ItemManager::Start()
 {
+	WindowSize = { (float)Engine::GetInstance().render->camera.w,
+				   (float)Engine::GetInstance().render->camera.h };
+
+	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
 	if (inventory->empty()) LoadItems();
 	return true;
 }
@@ -33,6 +38,12 @@ bool ItemManager::Update(float dt)
 
 bool ItemManager::PostUpdate()
 {
+	if (showingPlayersItem)
+	{
+		Engine::GetInstance().render->DrawTexture(cajonTex,WindowSize.getX() - 200,WindowSize.getY() - 150);
+		ShowBack();
+	}
+
 	return true;
 }
 
@@ -77,10 +88,15 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1:
+		ShowPlayerItems();
 		break;
 	case 2:
 		break;
 	case 3:
+		if (showingPlayersItem) {
+			!showingPlayersItem;
+			Engine::GetInstance().render->CleanUp();
+		}
 		break;
 	case 4:
 		break;
@@ -100,15 +116,23 @@ bool ItemManager::ShowInventoryOptions()
 	LOG("ShowInventoryOptions called");
 	//UnloadItemUI();
 
-	Vector2D WindowSize = { (float)Engine::GetInstance().render->camera.w,
-							(float)Engine::GetInstance().render->camera.h };
-
 	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 3, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
 
+	return true;
+}
+
+void ItemManager::ShowBack()
+{
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Back", bt3Pos, this));
+}
+
+bool ItemManager::ShowPlayerItems() {
+	showingPlayersItem = true;
 	return true;
 }
 
