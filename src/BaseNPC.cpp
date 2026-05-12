@@ -71,7 +71,9 @@ void BaseNPC::OnCollision(PhysBody* physA, PhysBody* physB)
 
 	/*Vector2D buttonPos = Vector2D((position.getX() + texW / 2), (position.getY() + texH * 1.5));*/
 	Vector2D buttonPos = Vector2D(500,500);
-	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, currentDialogueTree, ID);
+	LOG("Vector size: %i", Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.size());
+	int dialogue_Tree = Engine::GetInstance().dialogueManager->currentDialogueTreesNPC[ID - 1];
+	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, dialogue_Tree, ID);
 	Engine::GetInstance().dialogueManager->showingButtonStart = true;
 }
 

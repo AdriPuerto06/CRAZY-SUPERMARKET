@@ -136,15 +136,6 @@ void ItemManager::UnShowInventory()
 	}
 }
 
-//bool ItemManager::IsItemActive(const char* name)
-//{
-//	for (Item item : *items)
-//	{
-//		if (item.name == name && item.active) return true;
-//	}
-//	return false;
-//}
-
 void ItemManager::AddItemToInventory(Item item) {
 	
 	inventory->push_back(item);

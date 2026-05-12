@@ -285,9 +285,10 @@ void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
 	int index = NPC_ID - 1;
 	if (currentDialogueTreesNPC.size() > index)
 	{
-		LOG("DialogueManager: currentDialogueTreesNPC tried to be accessed out of size.");
+		LOG("DialogueManager: currentDialogueTreesNPC tried to be accessed out of size. -> %i", NPC_ID);
 		return;
 	}
 	
-	currentDialogueTreesNPC[index] += 1;
+	currentDialogueTreesNPC.at(index) += 1;
+	LOG("Unlocked new dialogue with NPC ID: %i", NPC_ID);
 }
