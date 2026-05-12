@@ -26,6 +26,9 @@ enum class SceneID
 	EXIT,
 	RESUME,
 	BATTLE,
+	ITEM,
+	STATS,
+	QUESTS,
 	NULLSCENE
 
 };
@@ -96,6 +99,8 @@ public:
 	//Getter
 	SceneID GetCurrentScene();
 	SceneID GetTimeScene();
+
+	SceneStack sceneStack;
 
 private:
 
@@ -182,6 +187,23 @@ private:
 	void UpdateCombatScene(float dt);
 	void PostUpdateCombatScene();
 
+	//Item
+	void LoadItem();
+	void UnloadItem();
+	void UpdateItem(float dt);
+
+	//Stats
+	void LoadStats();
+	void UnloadStats();
+	void UpdateStats(float dt);
+	void PostUpdateStats();
+
+	//Quests
+	void LoadQuests();
+	void UnloadQuests();
+	void UpdateQuests(float dt);
+	void PostUpdateQuests();
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -200,7 +222,6 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
-	SceneStack sceneStack;
 
 	//Imagen
 	SDL_Texture* logoImg = nullptr;

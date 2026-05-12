@@ -104,6 +104,9 @@ bool Scene::Update(float dt)
 	case SceneID::BATTLE:
 		UpdateBattle(dt);
 		break;
+	case SceneID::ITEM:
+		UpdateItem(dt);
+		break;
 
 	}
 
@@ -262,6 +265,9 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::BATTLE:
 		HandleMainMenuUIEvents(uiElement);
 		break;
+	case SceneID::ITEM:
+		HandleMainMenuUIEvents(uiElement);
+		break;
 	default:
 		break;
 	}
@@ -332,6 +338,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::BATTLE:
 		LoadBattle();
 		break;
+	case SceneID::ITEM:
+		LoadItem();
+		break;
 	}
 }
 
@@ -392,7 +401,11 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::BATTLE:
 		UnloadBattle();
 		break;
+	case SceneID::ITEM:
+		UnloadItem();
+		break;
 	}
+
 }
 
 // *********************************************
@@ -1288,6 +1301,29 @@ void Scene::PostUpdateBattle()
 {
 }
 
+// *********************************************
+// Item functions
+// *********************************************
+
+void Scene::LoadItem()
+{
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+}
+
+
+void Scene::UpdateItem(float dt)
+{
+	Engine::GetInstance().itemManager->ShowPlayerItems();
+}
+
+void Scene::UnloadItem()
+{
+	Engine::GetInstance().uiManager->CleanUp();
+}
 
 void Scene::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
 {

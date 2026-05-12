@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "UIManager.h"
 #include "CombatManager.h"
+#include "QuestManager.h"
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -41,7 +42,6 @@ bool ItemManager::PostUpdate()
 	if (showingPlayersItem)
 	{
 		Engine::GetInstance().render->DrawTexture(cajonTex,WindowSize.getX() - 200,WindowSize.getY() - 150);
-		ShowBack();
 	}
 
 	return true;
@@ -88,7 +88,8 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1:
-		ShowPlayerItems();
+		Engine::GetInstance().scene->ChangeScene(SceneID::ITEM);
+		//ShowPlayerItems();
 		break;
 	case 2:
 		break;
@@ -119,8 +120,18 @@ bool ItemManager::ShowInventoryOptions()
 	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 3, 200,150 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 200, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
+
+	SDL_Rect bt4Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 400, 200,150 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Quests", bt4Pos, this));
+
+	return true;
+}
+
+bool ItemManager::ShowingQuests()
+{
+	Engine::GetInstance().questManager->ViewQuest();
 
 	return true;
 }
@@ -160,14 +171,13 @@ void ItemManager::UnShowInventory()
 	}
 }
 
-//bool ItemManager::IsItemActive(const char* name)
-//{
-//	for (Item item : *items)
-//	{
-//		if (item.name == name && item.active) return true;
-//	}
-//	return false;
-//}
+bool ItemManager::IsItemActive(const char* name)
+{
+	for (Item item : *inventory)
+	{
+		if (item.name == name) return item.active;
+	}
+}
 
 void ItemManager::AddItemToInventory(Item item) {
 	
@@ -188,24 +198,13 @@ void ItemManager::ActivateItem(const char* name)
 	}
 }
 
-bool ItemManager::IsItemActive(const char* name)
-{
-	for (auto item : *inventory)
-	{
-		if (item.name == name)
-		{
-			return item.active;
-		}
-	}
-}
-
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {
 	for (auto item : *inventory)
 	{
 		if (item.name == "Cursed Knife" && item.active) dmg_inc = item.value;
 		if (item.name == "Bike helmet" && item.active) shield_inc = item.value;
-		if (item.name == "Gigantic flashlight" && item.active) confused_inc = item.value;
+		if (item.name == "Disturbing picture" && item.active) confused_inc = item.value;
 	}
 }
 
