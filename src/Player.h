@@ -43,7 +43,7 @@ private:
 	void CenterCamera();
 	void CheckDialogueAndCombatLogic();
 	void ShowMenu();
-
+	
 public:
 
 	//Declare player parameters
@@ -69,9 +69,6 @@ private:
 	AnimationSet anims;
 	int teleportCooldown = 120;
 	bool showingMenu = false;
-
-	SDL_Surface* cursorSurface = nullptr;
-	SDL_Cursor* customCursor = nullptr;
 
 	bool godMode = false;
 	
