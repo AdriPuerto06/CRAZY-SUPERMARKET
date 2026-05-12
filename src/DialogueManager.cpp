@@ -282,5 +282,12 @@ void DialogueManager::GetPosibleReward(Reward reward)
 
 void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
 {
-	auto npc = Engine::GetInstance().entityManager->GetEntity_Map(NPC_ID, EntityType::BASENPC); //gets the entity, not the npc...
+	int index = NPC_ID - 1;
+	if (currentDialogueTreesNPC.size() > index)
+	{
+		LOG("DialogueManager: currentDialogueTreesNPC tried to be accessed out of size.");
+		return;
+	}
+	
+	currentDialogueTreesNPC[index] += 1;
 }

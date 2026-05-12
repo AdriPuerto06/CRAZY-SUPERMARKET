@@ -202,5 +202,9 @@ bool EntityManager::Update(float dt)
 		DestroyEntity(entity);
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U)) {
+		LOG("Entities vector size: %i", entities.size());
+	}
+
 	return ret;
 }

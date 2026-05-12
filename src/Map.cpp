@@ -13,6 +13,7 @@
 
 #include <math.h>
 #include "CombatManager.h"
+#include "DialogueManager.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -190,6 +191,7 @@ MapLayer* Map::GetNavigationLayer() {
 //L15 TODO 2: Define a method to load entities from the map XML
 void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
+    Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
         //Check if the object group is "Entities"
@@ -261,8 +263,10 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
-                        if (name == "currentDialogueTree")
+                        if (name == "currentDialogueTree") {
                             currentDialogueTree = propertyNode.attribute("value").as_int();
+                            Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.push_back(currentDialogueTree);
+                        }
                     }
 
                     if (active)

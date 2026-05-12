@@ -792,7 +792,7 @@ void CombatManager::CheckAlive()
 		LOG("Player wins the combat. Destroying the enemies...");
 		MarkEnemiesAsDead();
 
-		Engine::GetInstance().questManager->IsQuestCompleted(combatData->fight_ID, true);
+		Engine::GetInstance().questManager->CanCombatQuestBeCompleted(combatData->fight_ID, true);
 
 		in_combat = false;
 		enemies_to_destroy.clear();
