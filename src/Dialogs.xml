@@ -75,9 +75,44 @@
 			<choice id ="1" option="No way, we’re trapped?" next_node ="1"/>
 		</node>
 
-		<node id ="1" text="YUnless you know a way through those guys in front of the door, wait, you look kinda strong">
+		<node id ="1" text="Unless you know a way through those guys in front of the door, wait, you look kinda strong">
 			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
+
+		<dialogue_tree ID="1" NPC="4">
+			<node id ="0" text="Oh, you again, what's up?">
+				<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
+				<choice id ="2" option="Those guys won't be a problem now" next_node ="1"/>
+
+			</node>
+
+			<node id ="1" text="What? Wait, really? Now that I look into it, you kinda smell like...">
+				<choice id ="1" option="Like tons of blood?" next_node ="2"/>
+				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3" reward="3" reward_value="Beat those guys!"/>
+
+			</node>
+
+			<node id ="2" text="Exactly! Did you loot them?">
+				<choice id ="1" option="Yeah, they had these weird, ugly, bag" next_node ="4"/>
+
+			</node>
+
+			<node id ="3" text="mmm... no? Did you find anything useful?">
+				<choice id ="1" option="Yeah, they were pissing on a bag, don't ask me why I took it" next_node ="4"/>
+
+			</node>
+
+			<node id ="4" text="Ey! That bag is mine, and inside it's my card">
+				<choice id ="1" option="Sorry but I don't want your number" next_node ="5"/>
+
+			</node>
+
+			<node id ="5" text="No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
+				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1" reward="3" reward_value="Beat those guys!"/>
+
+			</node>
+
+		</dialogue_tree>
 
 	</dialogue_tree>
 </dialogs>
