@@ -8,7 +8,7 @@ struct Quest {
 	int id;
 	bool completed;
 	std::string reward;
-	int reward_value;
+	int reward_type;
 };
 
 class QuestManager : public Module {
@@ -25,6 +25,7 @@ public:
 
 	bool LoadQuests(std::string path, std::string fileName);
 	void InitQuests();
+	void SaveQuests();
 
 	Quest GetQuest(const char* name);
 	const char* GetQuestName(int id);
@@ -34,6 +35,7 @@ public:
 
 	void CompleteQuest(const char* name);
 	bool IsQuestCompleted(const char* name);
+	void CanCombatQuestBeCompleted(int fight_ID, bool victory);
 
 private:
 	pugi::xml_document questsFileXML;

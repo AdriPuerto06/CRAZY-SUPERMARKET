@@ -103,6 +103,21 @@ bool QuestManager::IsQuestCompleted(const char* name)
 	}
 }
 
+void QuestManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
+{
+	if (!(victory)) return;
+	switch (fight_ID)
+	{
+	case 1:
+		if (IsQuestActive("Beat those guys!"))
+		{
+			CompleteQuest("Beat those guys!");
+			//???
+		}
+		break;
+	}
+}
+
 void QuestManager::CompleteQuest(const char* name)
 {
 	bool isQuestActive = IsQuestActive(name);
@@ -117,7 +132,6 @@ void QuestManager::CompleteQuest(const char* name)
 void QuestManager::InitQuests()
 {
 	quests->clear();
-	int current_node_counter = 0;
 	for (pugi::xml_node quests_tree_node = questsFileXML.child("quests").child("quest");
 		quests_tree_node != NULL;
 		quests_tree_node = quests_tree_node.next_sibling("quest"))
@@ -128,7 +142,27 @@ void QuestManager::InitQuests()
 		q.id = quests_tree_node.attribute("id").as_int();
 		q.name = (const char*)quests_tree_node.attribute("name").as_string();
 		q.reward = (const char*)quests_tree_node.attribute("reward").as_string();
-		q.reward_value = quests_tree_node.attribute("reward_Value").as_int();
+		q.reward_type = quests_tree_node.attribute("reward_type").as_int();
 		quests->push_back(q);
+	}
+}
+
+void QuestManager::SaveQuests()
+{
+	int i = 0;
+	int l = quests->size();
+	for (pugi::xml_node quests_tree_node = questsFileXML.child("quests").child("quest");
+		quests_tree_node != NULL;
+		quests_tree_node = quests_tree_node.next_sibling("quest"))
+	{
+		if (i > l) { LOG("More quests in game that in file."); return; }
+		Quest q = (*quests)[i];
+		quests_tree_node.attribute("active").set_value(q.active);
+		quests_tree_node.attribute("completed").set_value(q.completed);
+		quests_tree_node.attribute("id").set_value(q.id);
+		quests_tree_node.attribute("name").set_value(q.name);
+		quests_tree_node.attribute("reward").set_value(q.reward.c_str());
+		quests_tree_node.attribute("reward_type").set_value(q.reward_type);
+		i++;
 	}
 }

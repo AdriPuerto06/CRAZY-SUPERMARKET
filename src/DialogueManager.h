@@ -8,6 +8,7 @@ enum class RewardType {
 	COMPANION,
 	COMPLETEQUEST,
 	ATTACK,
+	DIALOGUE,
 	NONE
 };
 
@@ -85,6 +86,8 @@ public:
 	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
 	void GetPosibleReward(Reward reward);
 
+	void UnlockNewDialogueTree(int NPC_ID);
+
 	std::string dialogsFileName;
 	std::string dialogsPath;
 
@@ -96,6 +99,8 @@ public:
 	bool can_be_clicked = true;
 	bool showingButtonStart = false;
 	bool in_conversation = false;
+
+	std::vector<int> currentDialogueTreesNPC;
 
 private:
 	pugi::xml_document dialogsFileXML;

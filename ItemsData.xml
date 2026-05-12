@@ -5,5 +5,5 @@
 	<item id="3" name ="Bike helmet" active="false" value="1"/>
 	<item id="4" name ="Blessed water" active="false"/>
 	<item id="5" name ="Gigantic flashlight" active="false" value="5"/>
-	<item id="6" name ="Sandwich wrapping" active="false" value="1"/>
+	<item id="6" name ="Sandwich wrapping" active="false"/>
 </items>
