@@ -77,8 +77,13 @@ void ItemManager::LoadItems()
 		Item item;
 		item.active = item_tree_node.attribute("active").as_bool();
 		item.name = (const char*)item_tree_node.attribute("name").as_string();
+		item.description = item_tree_node.attribute("description").as_string();
+		item.texturePath = (const char*)item_tree_node.attribute("texturePath").as_string();
+		item.texture = Engine::GetInstance().textures->Load(item.texturePath);
 		if (item_tree_node.attribute("value")) { item.value = item_tree_node.attribute("value").as_int(); }
-		inventory->push_back(item);
+
+
+		AddItemToInventory(item);
 	}
 }
 
@@ -165,14 +170,6 @@ void ItemManager::UnShowInventory()
 	}
 }
 
-//bool ItemManager::IsItemActive(const char* name)
-//{
-//	for (Item item : *items)
-//	{
-//		if (item.name == name && item.active) return true;
-//	}
-//	return false;
-//}
 
 void ItemManager::AddItemToInventory(Item item) {
 	
