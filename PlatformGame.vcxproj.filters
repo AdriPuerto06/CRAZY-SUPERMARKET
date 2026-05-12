@@ -38,6 +38,9 @@
     <Filter Include="Source Files\Engine\Quests">
       <UniqueIdentifier>{fd75a853-6679-402b-b8e6-4db3a9632d14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Companions">
+      <UniqueIdentifier>{81eb3a06-b804-46f2-940d-7c21a83b19d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -132,6 +135,9 @@
     <ClCompile Include="src\QuestManager.cpp">
       <Filter>Source Files\Engine\Quests</Filter>
     </ClCompile>
+    <ClCompile Include="src\BaseCompanion.cpp">
+      <Filter>Source Files\Game\Companions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -217,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="src\QuestManager.h">
       <Filter>Source Files\Engine\Quests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseCompanion.h">
+      <Filter>Source Files\Game\Companions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

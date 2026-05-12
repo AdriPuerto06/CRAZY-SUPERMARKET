@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\BaseCompanion.cpp" />
     <ClCompile Include="src\BaseNPC.cpp" />
     <ClCompile Include="src\CombatManager.cpp" />
     <ClCompile Include="src\DialogueManager.cpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Audio.h" />
+    <ClInclude Include="src\BaseCompanion.h" />
     <ClInclude Include="src\BaseNPC.h" />
     <ClInclude Include="src\CombatManager.h" />
     <ClInclude Include="src\DialogueManager.h" />

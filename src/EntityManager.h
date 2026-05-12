@@ -38,6 +38,10 @@ public:
 
 	std::shared_ptr<Entity> GetNPC(int id);
 
+	std::shared_ptr<Entity> GetEntity_Map(int id, EntityType type);
+
+	std::shared_ptr<Entity> GetCompanion(int id);
+
 public:
 
 	std::list<std::shared_ptr<Entity>> entities;

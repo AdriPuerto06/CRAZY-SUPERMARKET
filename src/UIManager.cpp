@@ -16,7 +16,7 @@ bool UIManager::Start()
 	return true;
 }
 
-std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
+std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds, float initialValue)
 {
 	std::shared_ptr<UIElement> uiElement = std::make_shared<UIElement>();
 
@@ -27,7 +27,10 @@ std::shared_ptr<UIElement> UIManager::CreateUIElement(UIElementType type, int id
 	case UIElementType::BUTTON:
 		uiElement = std::make_shared<UIButton>(id, bounds, text);
 		break;
-	}
+	case UIElementType::SLIDER:
+		uiElement = std::make_shared<UISlider>(id, bounds, 0.0f, 1.0f, initialValue);
+		break;
+	};
 
 	//Set the observer
 	uiElement->observer = observer;
@@ -71,8 +74,9 @@ bool UIManager::CleanUp()
 {
 	for (const auto& uiElement : UIElementsList)
 	{
-		uiElement->CleanUp();
+		uiElement->pendingToDelete = true;
 	}
+
 
 	return true;
 }

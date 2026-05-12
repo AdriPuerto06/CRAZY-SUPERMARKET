@@ -5,7 +5,11 @@
 //sounds to be added
 static std::map<Music, const char*> music_paths =
 {
-    { m_title, "Assets/Audio/Music/title music.wav" }
+    { m_title, "Assets/Audio/Music/title music.wav" },
+	{ m_battle, "Assets/Audio/Music/battle music.wav" },
+    { m_roof, "Assets/Audio/Music/roof.wav" },
+    { m_roof_drums, "Assets/Audio/Music/drums.wav" }
+	
 };
 
 static std::map<Sfx, const char*> sfx_paths =
@@ -170,9 +174,21 @@ bool Audio::CleanUp() {
     return true;
 }
 
-bool Audio::PlayMusic(Music id, float fadeTime) {
+bool Audio::Update(float dt)
+{
+    if (music_loop_ && music_stream_ && music_data_.buf)
+    {
+        if (SDL_GetAudioStreamAvailable(music_stream_) == 0)
+        {
+            SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
+        }
+    }
+    return true;
+}
+bool Audio::PlayMusic(Music id, float fadeTime, int repeat) {
 
     auto it = music_paths.find(id);
+
 
     if (it == music_paths.end()) {
         LOG("Music id not found");
@@ -198,9 +214,15 @@ bool Audio::PlayMusic(Music id, float fadeTime) {
         return false;
     }
 
-    if (!SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len)) {
-        LOG("Audio: stream put failed");
-        return false;
+    if (repeat == -1) { // -1 = infinito
+        SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
+        music_loop_ = true;
+    }
+    else {
+        music_loop_ = false;
+        for (int i = 0; i <= repeat; i++) {
+            SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
+        }
     }
 
     LOG("Playing music %s", path);

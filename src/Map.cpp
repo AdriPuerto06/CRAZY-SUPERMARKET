@@ -6,8 +6,11 @@
 #include "Log.h"
 #include "Physics.h"
 #include "EntityManager.h"
+
 #include "BaseNPC.h"
 #include "BaseEnemy.h"
+#include "BaseCompanion.h"
+
 #include <math.h>
 #include "CombatManager.h"
 
@@ -203,7 +206,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 int ID = objectNode.attribute("id").as_int();
 
                 // Create entity based on type
-                if (entityType == "Player") //we will have to change the logic to add more players, this code asumes there's only 1
+                if (entityType == "Player")
                 {
                     // Create Player entity
                     if (player == nullptr) {
@@ -327,6 +330,53 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("Enemy inactive");
                     }
                 }
+
+
+                if (entityType == "Companion")
+                {
+
+                    int Companion_ID = 0;
+                    const char* texturePath = nullptr;
+                    bool active = false;
+                    //get NPC data
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "Companion_ID")
+                            Companion_ID = propertyNode.attribute("value").as_int();
+
+                        if (name == "active")
+                            active = propertyNode.attribute("value").as_bool();
+
+                        if (name == "texturePath")
+                            texturePath = (const char*)propertyNode.attribute("value").as_string();
+
+
+                    }
+
+                    if (active)
+                    {
+                        std::shared_ptr<BaseCompanion> companion;
+                        if (Engine::GetInstance().entityManager->GetEntity(EntityType::BASECOMPANION, ID) == nullptr)
+                        {
+                            companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->CreateEntity(EntityType::BASECOMPANION));
+                        }
+                        else
+                        {
+                            companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASECOMPANION, ID));
+                        }
+                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID);
+                        companion->entity_ID = ID;
+                        LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f.", Companion_ID, ID, pos.getX(), pos.getY());
+                        companion->Start();
+                    }
+                    else {
+                        LOG("Companion inactive");
+                    }
+                }
             }
         }
     }
@@ -374,7 +424,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 if (entityType == "NPC")
                 {
                     /*int NPC_ID = objectNode.attribute("id").as_int();*/
-                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetNPC(ID));
+                    std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASENPC));
                     const char* texturePath = npc->texturePath;
                     bool active = npc->active;
 
@@ -399,10 +449,10 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 if (entityType == "Enemy")
                 {
                     /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
-                    std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEnemy(ID));
+                    std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASEENEMY));
                     const char* texturePath = enemy->texturePath;
                     bool active = enemy->active;
-                    int enemy_ID = -1;
+                    /*int enemy_ID = -1;*/
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -410,8 +460,33 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        if (name == "ENEMY_ID")
-                            propertyNode.attribute("value").as_int();
+                        /*if (name == "ENEMY_ID")
+                            propertyNode.attribute("value").as_int();*/
+
+                        if (name == "active")
+                            propertyNode.attribute("value").set_value(active);
+
+                        if (name == "texturePath")
+                            propertyNode.attribute("value").set_value(texturePath);
+                    }
+                }
+
+                if (entityType == "Companion")
+                {
+                    /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
+                    std::shared_ptr<BaseEnemy> companion = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
+                    const char* texturePath = companion->texturePath;
+                    bool active = companion->active;
+                    /*int companion_ID = -1;*/
+                    //get NPC data
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        /*if (name == "ENEMY_ID")
+                            propertyNode.attribute("value").as_int();*/
 
                         if (name == "active")
                             propertyNode.attribute("value").set_value(active);
