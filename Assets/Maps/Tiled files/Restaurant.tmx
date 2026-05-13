@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="46">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="47">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
-  <image source="tmw_desert_spacing.png" width="265" height="199"/>
+  <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
  <tileset firstgid="49" name="MapMetadata" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="2" columns="2">
-  <image source="MapMetadata.png" width="67" height="34"/>
+  <image source="../Tilesets/MapMetadata.png" width="67" height="34"/>
  </tileset>
  <layer id="1" name="Map" width="45" height="40">
   <properties>
@@ -3669,6 +3669,11 @@
   <object id="41" x="224" y="352" width="64" height="96">
    <properties>
     <property name="targetMap" value="Sala1.tmx"/>
+   </properties>
+  </object>
+  <object id="46" x="1152" y="352" width="64" height="96">
+   <properties>
+    <property name="targetMap" value="RestaurantDungeon.tmx"/>
    </properties>
   </object>
  </objectgroup>
