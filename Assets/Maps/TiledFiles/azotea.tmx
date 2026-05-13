@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="19">
-
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="17">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
-  <image source="tmw_desert_spacing.png" width="265" height="199"/>
+  <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
  <tileset firstgid="49" name="MapMetadata" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="2" columns="2">
-  <image source="MapMetadata.png" width="67" height="34"/>
+  <image source="../Tilesets/MapMetadata.png" width="67" height="34"/>
  </tileset>
  <layer id="1" name="Map" width="80" height="40">
   <properties>
@@ -6451,8 +6449,7 @@
   <object id="1" name="Vagabundo" type="NPC" x="874.061" y="708.056">
    <properties>
     <property name="NPC_ID" type="int" value="1"/>
-    <property name="active" type="bool" value="true"/>
-    <property name="currentDialogueTree" type="int" value="0"/>
+    <property name="active" type="bool" value="false"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
@@ -6460,8 +6457,7 @@
   <object id="2" name="Octopuss" type="NPC" x="571.152" y="565.697">
    <properties>
     <property name="NPC_ID" type="int" value="2"/>
-    <property name="active" type="bool" value="true"/>
-    <property name="currentDialogueTree" type="int" value="0"/>
+    <property name="active" type="bool" value="false"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
@@ -6469,24 +6465,14 @@
   <object id="3" name="Player" type="Player" x="1504" y="960">
    <properties>
     <property name="HP" type="int" value="10"/>
-    <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
   </object>
-  <object id="15" name="Enemy1" type="Enemy" x="878" y="978">
+  <object id="15" name="Enemy1" type="ENEMY" x="878" y="978">
    <properties>
-    <property name="Enemy_ID" type="int" value="1"/>
+    <property name="ENEMY_ID" type="int" value="15"/>
     <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="1"/>
-    <property name="texturePath" value="Assets/Maps/x.png"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="17" name="Mary Nancy" type="Companion" x="1781.13" y="897.342">
-   <properties>
-    <property name="Companion_ID" type="int" value="1"/>
-    <property name="active" type="bool" value="false"/>
-    <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
