@@ -78,7 +78,7 @@
 		<node id ="1" text="Unless you know a way through those guys in front of the door, wait, you look kinda strong">
 			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
-
+	</dialogue_tree>
 		<dialogue_tree ID="1" NPC="4">
 			<node id ="0" text="Oh, you again, what's up?">
 				<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
@@ -111,8 +111,5 @@
 				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1" reward="3" reward_value="Beat those guys!"/>
 
 			</node>
-
-		</dialogue_tree>
-
 	</dialogue_tree>
 </dialogs>
