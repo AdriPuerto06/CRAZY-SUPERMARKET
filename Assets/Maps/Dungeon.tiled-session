@@ -1,0 +1,23 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "C:/Users/pauca/Documents/GitHub/CRAZY-SUPERMARKET/Assets/Maps/Tilesets",
+    "map.height": 100,
+    "map.width": 100,
+    "openFiles": [
+    ],
+    "project": "Dungeon.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true
+}
