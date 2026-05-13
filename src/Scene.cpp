@@ -648,7 +648,7 @@ void Scene::LoadLevel1() {
 	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
 
 	//Call the function to load the map & music
-	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles", "azotea.tmx");
 	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
 
 	//Call the function to load entities from the map
@@ -706,6 +706,7 @@ void Scene::UpdateLevel1(float dt) {
 
 		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
 		else if (target == "Sala1.tmx")      ChangeScene(SceneID::LEVEL3);
+		else if (target == "RestaurantDungeon.tmx")  ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -746,7 +747,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
@@ -767,6 +768,7 @@ void Scene::UpdateLevel2(float dt) {
 
 		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
 		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
+		else if (target == "RestaurantDungeon.tmx")  ChangeScene(SceneID::LEVEL4);
 	}
 
 }
@@ -808,7 +810,7 @@ void Scene::LoadLevel3() {
 	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles", "Sala1.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
@@ -827,7 +829,9 @@ void Scene::UpdateLevel3(float dt) {
 		std::string target = player->pendingMapLoad;
 		player->pendingMapLoad = "";
 
-		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Restaurant.tmx")  ChangeScene(SceneID::LEVEL2);
+		else if (target == "RestaurantDungeon.tmx")  ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -856,6 +860,71 @@ void  Scene::PostUpdateLevel3() {
 	//L15 TODO 4: Call the function to save entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL3);
+	}
+}
+
+// *********************************************
+// Level 4 (Dungeon) functions
+// *********************************************
+
+void Scene::LoadLevel4() {
+
+	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+
+	//Call the function to load the map. 
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles", "RestaurantDungeon.tmx");
+
+	//Call the function to load entities from the map
+	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
+}
+
+void Scene::UpdateLevel4(float dt) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL1);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL2);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+		ChangeScene(SceneID::LEVEL3);
+	}
+
+	if (player && !player->pendingMapLoad.empty())
+	{
+		std::string target = player->pendingMapLoad;
+		player->pendingMapLoad = "";
+
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Restaurant.tmx")  ChangeScene(SceneID::LEVEL2);
+		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
+	}
+}
+
+void Scene::UnloadLevel4() {
+
+	// Clean up UI elements related to the Level2
+	auto& uiManager = Engine::GetInstance().uiManager;
+	uiManager->CleanUp();
+
+	// Reset player reference (sets the shared_ptr to nullptr)
+	player.reset();
+
+	// Clean up map and entities
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().entityManager->CleanUp();
+
+}
+
+void  Scene::PostUpdateLevel4() {
+
+	//L15 TODO 3: Call the function to load entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
+	}
+
+	//L15 TODO 4: Call the function to save entities from the map
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
 	}
 }
 
