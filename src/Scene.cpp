@@ -10,11 +10,12 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "Map.h"
-#include "Item.h"
 #include "BaseEnemy.h"
 #include "UIManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
+#include "ItemManager.h"
+#include "QuestManager.h"
 
 Scene::Scene() : Module()
 {
@@ -32,6 +33,16 @@ bool Scene::Awake()
 
 	Engine::GetInstance().dialogueManager->LoadDialogs("src/", "Dialogs.xml");
 	Engine::GetInstance().combatManager->LoadCombatData("src/", "CombatData.xml");
+	Engine::GetInstance().itemManager->LoadItemsData("src/", "ItemsData.xml");
+	Engine::GetInstance().questManager->LoadQuests("src/", "QuestsData.xml");
+
+	//customMouse
+	cursorSurface = IMG_Load("Assets/Textures/carrito.png");
+	customCursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
+	SDL_SetCursor(customCursor);
+	SDL_DestroySurface(cursorSurface);
+
+	sceneStack.push(SceneID::MAIN_MENU);
 
 	LOG("Loading Scene");
 	bool ret = true;
@@ -41,11 +52,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	
 	LoadScene(currentScene); // empieza en Intro Screen
-
-	
-	
 	return true;
 }
 
@@ -58,6 +65,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	static_twicePressed = false;
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -93,21 +101,41 @@ bool Scene::Update(float dt)
 	case SceneID::PAUSE:
 		UpdatePause(dt);
 		break;
-	case SceneID::EXIT:
-		UpdateExit(dt);
-		break;
-	case SceneID::RESUME:
-		UpdateResume(dt);
-		break;
-	case SceneID::BACK:
-		UpdateBack(dt);
-		break;
 	case SceneID::BATTLE:
 		UpdateBattle(dt);
 		break;
 
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
+		Engine::GetInstance().window->SetFullSize();
+		Engine::GetInstance().render->UpdateScale();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
+		Engine::GetInstance().window->SetWindowed(2);
+		Engine::GetInstance().render->UpdateScale();
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		if (!isAudioMuted)
+		{
+			musicVolume = 0.0f;
+			sfxVolume = 0.0f;
+			Engine::GetInstance().audio->SetMusicVolume(0.0f);
+			Engine::GetInstance().audio->SetSFXVolume(0.0f);
+			LOG("All audio muted");
+		}
+		else
+		{
+			musicVolume = 1.0f;
+			sfxVolume = 1.0f;
+			Engine::GetInstance().audio->SetMusicVolume(1.0f);
+			Engine::GetInstance().audio->SetSFXVolume(1.0f);
+			LOG("All audio restored");
+		}
+	}
+	
 	return true;
 }
 
@@ -148,15 +176,6 @@ bool Scene::PostUpdate()
 	case SceneID::PAUSE:
 		PostUpdatePause();
 		break;
-	case SceneID::EXIT:
-		PostUpdateExit();
-		break;
-	case SceneID::RESUME:
-		PostUpdateResume();
-		break;
-	case SceneID::BACK:
-		PostUpdateBack();
-		break;
 	case SceneID::BATTLE:
 		PostUpdateBattle();
 		break;
@@ -172,10 +191,21 @@ bool Scene::PostUpdate()
 		ret = false;
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL1)) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3)) {
 
 		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
+		sceneStack.push(currentScene);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
+		LOG("LoadMainMenu");
+		LoadMainMenu();
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X)) {
+		LOG("Change MainMenu");
+		ChangeScene(SceneID::MAIN_MENU);
 	}
 
 	return ret;
@@ -183,12 +213,10 @@ bool Scene::PostUpdate()
 
 
 SceneID Scene::GetCurrentScene() {
-
 	return currentScene;
 }
 
 SceneID Scene::GetTimeScene() {
-
 	return timeScene;
 }
 
@@ -213,8 +241,10 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::MULTIPLAYER:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::CREDITS:
+		HandleMainMenuUIEvents(uiElement);
 		break;
 	case SceneID::SOUND:
 		HandleMainMenuUIEvents(uiElement);
@@ -229,8 +259,6 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::RESUME:
 		break;
-	case SceneID::BACK:
-		break;
 	case SceneID::BATTLE:
 		HandleMainMenuUIEvents(uiElement);
 		break;
@@ -244,6 +272,7 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	SDL_DestroyCursor(customCursor);
 	UnloadCurrentScene();
 	return true;
 }
@@ -297,21 +326,12 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::PAUSE:
 		LoadPause();
 		break;
-	case SceneID::EXIT:
-		LoadExit();
-		break;
-	case SceneID::RESUME:
-		LoadResume();
-		break;
-	case SceneID::BACK:
-		LoadBack();
 	case SceneID::LEVEL1Combat:
 		LoadCombatScene(SceneID::LEVEL1Combat);
 		break;
 	case SceneID::BATTLE:
 		LoadBattle();
 		break;
-
 	}
 }
 
@@ -323,7 +343,6 @@ void Scene::ChangeScene(SceneID newScene)
 }
 
 void Scene::UnloadCurrentScene() {
-
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -367,14 +386,6 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::PAUSE:
 		UnloadPause();
 		break;
-	case SceneID::EXIT:
-		UnloadExit();
-		break;
-	case SceneID::RESUME:
-		UnloadResume();
-		break;
-	case SceneID::BACK:
-		UnloadBack();
 	case SceneID::LEVEL1Combat:
 		UnloadCombatScene();
 		break;
@@ -382,13 +393,11 @@ void Scene::UnloadCurrentScene() {
 		UnloadBattle();
 		break;
 	}
-	
 }
 
 // *********************************************
 // INTRO SCREEN functions
 // *********************************************
-
 
 void Scene::LoadIntroScreen()
 {
@@ -407,7 +416,6 @@ void Scene::LoadIntroScreen()
 
 void Scene::UpdateIntroScreen(float dt)
 {
-	
 	if (splashTime == 0.0f && !sfxLogoPlayed) {
 		Engine::GetInstance().audio->SetSFXVolume(0.2f);
 		Engine::GetInstance().audio->PlayFx(s_epic_reveal, 0);
@@ -465,36 +473,62 @@ void Scene::UnloadIntroScreen()
 // *********************************************
 
 void Scene::LoadMainMenu() {
+	//Load IMG Background
+	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
 
-	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/retro-gaming-short-248416.wav");	*/
+	//Load Buttos tex
+	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
+	SDL_Texture* btnStartPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Pressed.png");
 
+	SDL_Texture* btnOptTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Options_Normal.png");
+	SDL_Texture* btnOptPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Options_Pressed.png");
+
+	SDL_Texture* btnMltTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Multi_Normal.png");
+	SDL_Texture* btnMltPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Multi_Pressed.png");
+
+	SDL_Texture* btnCredTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Normal.png");
+	SDL_Texture* btnCredPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Credits_Pressed.png");
+		
+	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
+	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 	
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
+
 	// Instantiate a UIButton in the Scene
-	SDL_Rect bt1Pos = { WindowSize.getX()/2, (WindowSize.getY() / 2) - 40, 120,20};
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Start", bt1Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX()/2 - 115, (WindowSize.getY() / 2) - 200, 229,90};
+	CreateButton(btnStartTex, btnStartPressedTex, bt1Pos, 1);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) - 10, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Options", bt2Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 132, (WindowSize.getY() / 2) - 100, 264, 85 };
+	CreateButton(btnOptTex, btnOptPressedTex, bt2Pos, 3);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 20, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 4, "Multiplayer", bt3Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 160, (WindowSize.getY() / 2), 320,85 };
+	CreateButton(btnMltTex, btnMltPressedTex, bt3Pos, 4);
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 2, (WindowSize.getY() / 2) + 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 5, "Credits", bt4Pos, this));
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 130, (WindowSize.getY() / 2) + 100, 260,85 };
+	CreateButton(btnCredTex, btnCredPressedTex, bt4Pos, 5);
 
+	SDL_Rect bt5Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 200, 170,85 };
+	CreateButton(btnExitTex, btnExitPressedTex, bt5Pos,8);
 }
 
 void Scene::UnloadMainMenu() {
+	if (SMImg != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(SMImg);
+		SMImg = nullptr;
+	}
+
 	// Clean up UI elements related to the main menu
 	Engine::GetInstance().uiManager->CleanUp();	
-
 }
 
 void Scene::UpdateMainMenu(float dt)
 {
-	
+	if (SMImg != nullptr) {
+		Engine::GetInstance().render->DrawTexture(SMImg, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
+	}
 }
+
 void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 {
 	switch (uiElement->id)
@@ -509,56 +543,84 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 3: 
 		LOG("Main Menu: Options clicked");
-		timeScene = currentScene;
 		ChangeScene(SceneID::OPTIONS);
+		sceneStack.push(currentScene);
 		break;
 	case 4:
 		LOG("Main Menu: Multiplayer clicked");
-		//ChangeScene(SceneID::MULTIPLAYER);
+		sceneStack.push(currentScene);
+		ChangeScene(SceneID::MULTIPLAYER);
 		break;
 	case 5:
 		LOG("Main Menu: Credits clicked");
+		sceneStack.push(currentScene);
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
-		timeScene = currentScene;
 		ChangeScene(SceneID::SOUND);
-		fromSG = true;
+		sceneStack.push(currentScene);
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
-		timeScene = currentScene;
 		ChangeScene(SceneID::GRAFICS);
-		fromSG = true;
+		sceneStack.push(currentScene);
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
-		ChangeScene(SceneID::EXIT);
+		Engine::GetInstance().uiManager->CleanUp();
+		closeGame = true;
 		break;
 	case 9:
 		LOG("Pause: Resume clicked");
-		ChangeScene(SceneID::LEVEL1);
+		Engine::GetInstance().uiManager->CleanUp();
+		ChangeScene(gameScene);
 		break;
 	case 10:
 		LOG("Back clicked");
-		ChangeScene(SceneID::BACK);
+		if (currentScene == SceneID::BATTLE) {
+			ChangeScene(SceneID::BATTLE);
+		}
+		else {
+			ChangeScene(sceneStack.pop());
+		}
 		break;
 	case 11:
 		LOG("Attack clicked");
-		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ShowAttackOptions(Engine::GetInstance().combatManager->combatState->player_index_selected);
 		break;
 	case 12:
 		LOG("Item clicked");
-		//Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_id_selected);
+		Engine::GetInstance().combatManager->ShowItemOptions(Engine::GetInstance().combatManager->combatState->player_index_selected);
 		break;
 	case 13:
-		LOG("Crazy clicked");
 		Engine::GetInstance().combatManager->ChangePlayer();
+		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);
 		break;
 	case 14:
 		LOG("Scape clicked");
 		ChangeScene(SceneID::LEVEL1);
+		break;
+	case 15:
+		LOG("Main Menu clicked");
+		ChangeScene(SceneID::MAIN_MENU);
+		break;
+	case 16:
+		LOG("Grafics: Full Screen clicked");
+		if (fullScreen == false) {
+			Engine::GetInstance().window->SetFullSize();
+			Engine::GetInstance().render->UpdateScale();
+			fullScreen = true;
+		}
+		else if (fullScreen == true) {
+			Engine::GetInstance().window->SetWindowed(2);
+			Engine::GetInstance().render->UpdateScale();
+			fullScreen = false;
+		}
+		break;
+	case 17:
+		Engine::GetInstance().vsync_Active = !Engine::GetInstance().vsync_Active;
+		LOG("Grafics: VSync %i", Engine::GetInstance().vsync_Active);
 		break;
 	case 100:
 		if (!isAudioMuted)
@@ -601,6 +663,24 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
 		break;
 
+	case 301: //slider music
+	{
+		UISlider* slider = (UISlider*)uiElement;
+
+		musicVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetMusicVolume(musicVolume);
+		break;
+	}
+	case 302: //slider vfx
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		sfxVolume = slider->GetValue();
+
+		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
+		break;
+	}
+
 	default:
 		break;
 	}
@@ -618,13 +698,8 @@ void Scene::LoadCombatScene(SceneID sceneid) {
 	default:
 		break;
 	}
-
-	/*Engine::GetInstance().map->LoadEntities(player);*/ //move the players and enemies to the combat position after loading them
-
-
 }
 void Scene::UnloadCombatScene() {
-
 	Engine::GetInstance().uiManager->CleanUp();
 
 	player.reset();
@@ -632,11 +707,8 @@ void Scene::UnloadCombatScene() {
 	Engine::GetInstance().entityManager->CleanUp();
 }
 void Scene::UpdateCombatScene(float dt) {
-
-
 }
 void Scene::PostUpdateCombatScene() {
-
 }
 
 // *********************************************
@@ -644,51 +716,30 @@ void Scene::PostUpdateCombatScene() {
 // *********************************************
 
 void Scene::LoadLevel1() {
-
-	/*Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");*/
-
 	//Call the function to load the map & music
+
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles", "azotea.tmx");
 	//Engine::GetInstance().audio->PlayMusic(m_level1, 0);
 
+	/*Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);*/
+
+
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
-	const char* text = "Hello player! Move with WASD.";
-	Engine::GetInstance().render->StartTextDisplay(text, 100.0f);
-
-	////Create a new item using the entity manager and set the position to (200, 672) to test
-	//std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ITEM));
-	//item->position = Vector2D(200, 672);
-	//item->Start(); //L17 Important call Start
-
-	////Create a new enemy 
-	//std::shared_ptr<Enemy> enemy1 = std::dynamic_pointer_cast<Enemy>(Engine::GetInstance().entityManager->CreateEntity(EntityType::ENEMY));
-	//enemy1->position = Vector2D(384, 672);
-	//enemy1->Start(); //L17 Important call Start
 }
 
 void Scene::UpdateLevel1(float dt) {
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
+	//Music will play drums first and then the main theme will loop
+	if (!drumsFinished)
+	{
+		drumsTimer += dt;
+		if (drumsTimer >= 4000.0f)
+		{
+			drumsFinished = true;
+			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
+		}
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
-		Engine::GetInstance().window->SetFullSize();
-		Engine::GetInstance().render->UpdateScale();
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
-		Engine::GetInstance().window->SetWindowed(2);
-		Engine::GetInstance().render->UpdateScale();
-	}
-	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
-		Engine::GetInstance().dialogueManager->StartDialogue(0, 1);
-	}*/
-
-
 	//provisional para bajar y subir la vida del player
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		player->HP --;
@@ -711,7 +762,6 @@ void Scene::UpdateLevel1(float dt) {
 }
 
 void Scene::UnloadLevel1() {
-
 	// Clean up UI elements related to the Level1
 	auto& uiManager = Engine::GetInstance().uiManager;
 	uiManager->CleanUp();
@@ -722,11 +772,9 @@ void Scene::UnloadLevel1() {
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
-
 }
 
 void  Scene::PostUpdateLevel1() {
-
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
@@ -743,7 +791,6 @@ void  Scene::PostUpdateLevel1() {
 // *********************************************
 
 void Scene::LoadLevel2() {
-
 	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
@@ -760,6 +807,9 @@ void Scene::UpdateLevel2(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL3);
 	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+		Engine::GetInstance().entityManager->CleanUp();
+	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -770,11 +820,9 @@ void Scene::UpdateLevel2(float dt) {
 		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
 		else if (target == "RestaurantDungeon.tmx")  ChangeScene(SceneID::LEVEL4);
 	}
-
 }
 
 void Scene::UnloadLevel2() {
-
 	// Clean up UI elements related to the Level2
 	auto& uiManager = Engine::GetInstance().uiManager;
 	uiManager->CleanUp();
@@ -785,11 +833,9 @@ void Scene::UnloadLevel2() {
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
-
 }
 
 void  Scene::PostUpdateLevel2() {
-
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
@@ -806,7 +852,6 @@ void  Scene::PostUpdateLevel2() {
 // *********************************************
 
 void Scene::LoadLevel3() {
-
 	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
@@ -823,7 +868,6 @@ void Scene::UpdateLevel3(float dt) {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL2);
 	}
-
 	if (player && !player->pendingMapLoad.empty())
 	{
 		std::string target = player->pendingMapLoad;
@@ -836,7 +880,6 @@ void Scene::UpdateLevel3(float dt) {
 }
 
 void Scene::UnloadLevel3() {
-
 	// Clean up UI elements related to the Level2
 	auto& uiManager = Engine::GetInstance().uiManager;
 	uiManager->CleanUp();
@@ -847,11 +890,9 @@ void Scene::UnloadLevel3() {
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
-
 }
 
 void  Scene::PostUpdateLevel3() {
-
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
@@ -936,33 +977,45 @@ void  Scene::PostUpdateLevel4() {
 
 void Scene::LoadOptions()
 {
+	//Load Background
+	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/normal_almacen.png");
+
+	//Load Buttos tex
+	SDL_Texture* btnSndTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Normal.png");
+	SDL_Texture* btnSndPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Pressed.png");
+
+	SDL_Texture* btnGfcTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Grafics_Normal.png");
+	SDL_Texture* btnGfcPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Grafics_Pressed.png");
+
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
 
 	//UI Buttons
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 315, WindowSize.getY() / 2, 215,85 };
+	CreateButton(btnSndTex, btnSndPressedTex, bt1Pos, 6);
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt1Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2 + 80, WindowSize.getY() / 2, 280,85 };
+	CreateButton(btnGfcTex, btnGfcPressedTex, bt2Pos, 7);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 30, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt2Pos, this));
-
-	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt3Pos, this));
-
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
 }
 
 void Scene::UnloadOptions()
 {
-
+	if (almacenIMG != nullptr)
+	{
+		Engine::GetInstance().textures->UnLoad(almacenIMG);
+		almacenIMG = nullptr;
+	}
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
 void Scene::UpdateOptions(float dt)
 {
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-		ChangeScene(SceneID::MAIN_MENU);
+	if (almacenIMG != nullptr) {
+		Engine::GetInstance().render->DrawTexture(almacenIMG, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
 	}
-
 }
 
 void Scene::PostUpdateOptions()
@@ -976,18 +1029,54 @@ void Scene::PostUpdateOptions()
 
 void Scene::LoadMultiplayer()
 {
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/images (2).png");
+	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
+
+
+	if (logoImg == nullptr || teamImg == nullptr)
+	{
+		LOG("ERROR: no se pudo cargar imagen/es.png");
+		LOG("SDL error: %s", SDL_GetError());
+	}
+
+	splashTime = 0.0f;
 }
 
 void Scene::UnloadMultiplayer()
 {
-
 	Engine::GetInstance().uiManager->CleanUp();
-
 }
 
 void Scene::UpdateMultiplayer(float dt)
 {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+	if (splashTime == 0.0f && !sfxLogoPlayed) {
+		Engine::GetInstance().audio->SetSFXVolume(1.0f);
+		Engine::GetInstance().audio->PlayFx(jumpscare, 0);
+		sfxLogoPlayed = true;
+	}
+
+	if (teamImg != nullptr && splashTime < logoGameTimer) {
+		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 50, 30);
+	}
+
+	splashTime += dt / 4000.0f;
+
+	if (splashTime >= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
+		ChangeScene(SceneID::MAIN_MENU);
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && splashTime <= logoTeamTimer) {
+		sfxLogoPlayed = false;
+		sfxTeamPlayed = false;
+		splashTime = 0;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
 }
@@ -1003,6 +1092,12 @@ void Scene::PostUpdateMultiplayer()
 
 void Scene::LoadCredits()
 {
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
+	//UI Button
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt1Pos, 10);
 
 	creditsText = {
 	"CRAZY SUPERMARKET",
@@ -1027,34 +1122,23 @@ void Scene::LoadCredits()
 	};
 
 	creditsY = WindowSize.getY();
-
-}
-
-void Scene::UnloadCredits()
-{
 }
 
 void Scene::UpdateCredits(float dt)
 {
-	
 	creditsY -= scrollSpeed * dt / 1000.0f;
 	if (creditsY <= creditsTimer) {
-
 		ChangeScene(SceneID::MAIN_MENU);
 		creditsY = WindowSize.getY();
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && splashTime <= logoTeamTimer) {
-
-
 		ChangeScene(SceneID::MAIN_MENU);
 		creditsY = WindowSize.getY();
 	}
-
 }
 
 void Scene::PostUpdateCredits()
 {
-	
 	for (int i = 0; i < creditsText.size(); ++i)
 	{
 
@@ -1062,7 +1146,11 @@ void Scene::PostUpdateCredits()
 		SDL_Color color = { 255,0,255,255 };
 		Engine::GetInstance().render->DrawText(creditsText[i].c_str(), WindowSize.getX() / 2.5, y, 450, 60, color);
 	}
+}
 
+void Scene::UnloadCredits()
+{
+	Engine::GetInstance().uiManager->CleanUp();
 }
 
 
@@ -1073,10 +1161,16 @@ void Scene::PostUpdateCredits()
 void Scene::LoadSounds()
 {
 	Engine::GetInstance().uiManager->CleanUp();
-	//UI Button
 
-	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
+	SDL_Texture* btnMuteTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Mute_Normal.png");
+	SDL_Texture* btnMutePressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Mute_Pressed.png");
+
+	//UI Button
+	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt1Pos, 10);
 
 	//MUSIC
 	SDL_Rect musicTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 4 - 30, 240, 30 };
@@ -1085,7 +1179,7 @@ void Scene::LoadSounds()
 
 	SDL_Rect musicVolPos = { WindowSize.getX() / 2 - 100, WindowSize.getY() / 4 + 5, 200, 25 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string(static_cast<int>(musicVolume * 100)) + "%").c_str(),
+		UIElementType::BUTTON, 201, ("Volumen: " + std::to_string((int)(musicVolume * 100)) + "%").c_str(),
 		musicVolPos, this));
 
 	SDL_Rect musicMinusPos = { WindowSize.getX() / 2 - 110, WindowSize.getY() / 4 + 45, 45, 25 };
@@ -1095,6 +1189,11 @@ void Scene::LoadSounds()
 	SDL_Rect musicPlusPos = { WindowSize.getX() / 2 + 65, WindowSize.getY() / 4 + 45, 45, 25 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 203, "+", musicPlusPos, this));
+
+	//SLIDER
+	SDL_Rect Slider = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 75, 125, 35 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::SLIDER, 301, "", Slider, this, {}, musicVolume));
 
 	//SFX
 	SDL_Rect sfxTitlePos = { WindowSize.getX() / 2 - 120, WindowSize.getY() / 2 - 45, 230, 30 };
@@ -1110,22 +1209,23 @@ void Scene::LoadSounds()
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
 		UIElementType::BUTTON, 212, " - ", sfxMinusPos, this));
 
-	SDL_Rect sfxPlus = { WindowSize.getX()/2 + 75, WindowSize.getY()/2 + 40, 40, 24 };
-    std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-        UIElementType::BUTTON, 213, "+", sfxPlus, this));
+	SDL_Rect sfxPlus = { WindowSize.getX() / 2 + 75, WindowSize.getY() / 2 + 40, 40, 24 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::BUTTON, 213, "+", sfxPlus, this));
+
+	//SLIDER
+	SDL_Rect Slider2 = { WindowSize.getX() / 2 - 60, WindowSize.getY() / 4 + 255, 125, 35 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
+		UIElementType::SLIDER, 302, "", Slider2, this, {}, sfxVolume));
 
 	//MUTE ALL
-	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 140, 28 };
-	const char* muteText = isAudioMuted ? "Unmute All" : "Mute All";
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(
-		UIElementType::BUTTON, 100, muteText, mutePos, this));
+	SDL_Rect mutePos = { WindowSize.getX() / 2 - 70, WindowSize.getY() * 0.78f, 170, 51 };
+	CreateButton(btnMuteTex, btnMutePressedTex, mutePos, 100);
 }
 
 void Scene::UnloadSounds()
 {
-
 	Engine::GetInstance().uiManager->CleanUp();
-
 }
 
 void Scene::UpdateSounds(float dt)
@@ -1143,20 +1243,29 @@ void Scene::PostUpdateSounds()
 
 void Scene::LoadGrafics()
 {
+	SDL_Texture* btnFSTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_FS_Normal.png");
+	SDL_Texture* btnFSPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_FS_Pressed.png");
+
+	SDL_Texture* btnVSTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_VS_Normal.png");
+	SDL_Texture* btnVSPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_VS_Pressed.png");
+
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
 
 	//UI Button
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 144, WindowSize.getY()/ 2 - 50, 288,68 };
+	CreateButton(btnFSTex, btnFSPressedTex, bt1Pos, 16);
 
-	SDL_Rect bt1Pos = { WindowSize.getX() - 200, WindowSize.getY() - 50, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 10, "Back", bt1Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 90, WindowSize.getY() / 2 + 50, 180,67 };
+	CreateButton(btnVSTex, btnVSPressedTex, bt2Pos, 17);
 
-
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
 }
 
 void Scene::UnloadGrafics()
 {
-
 	Engine::GetInstance().uiManager->CleanUp();
-
 }
 
 void Scene::UpdateGrafics(float dt)
@@ -1174,28 +1283,37 @@ void Scene::PostUpdateGrafics()
 
 void Scene::LoadPause()
 {
+	//Load Buttos tex
+	SDL_Texture* btnResTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Resume_Normal.png");
+	SDL_Texture* btnResPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Resume_Pressed.png");
+
+	SDL_Texture* btnSndTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Normal.png");
+	SDL_Texture* btnSndPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Pressed.png");
+
+	SDL_Texture* btnGfcTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Grafics_Normal.png");
+	SDL_Texture* btnGfcPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Grafics_Pressed.png");
+
+	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
+	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 
 	//UI Buttons
+	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 128, WindowSize.getY() / 2 - 150, 257,85 };
+	CreateButton(btnResTex, btnResPressedTex, bt1Pos, 9);
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 9, "Resume", bt1Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 107, WindowSize.getY() / 2 - 50, 215,85 };
+	CreateButton(btnSndTex, btnSndPressedTex, bt2Pos, 6);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 +30, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 6, "Sound", bt2Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 140, WindowSize.getY() / 2 + 50, 280,85 };
+	CreateButton(btnGfcTex, btnGfcPressedTex, bt3Pos, 7);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 60, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 7, "Grafics", bt3Pos, this));
-
-	SDL_Rect bt4Pos = { WindowSize.getX() / 2, WindowSize.getY() / 2 + 90, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 8, "Exit", bt4Pos, this));
+	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 150, 170,85 };
+	CreateButton(btnExitTex, btnExitPressedTex, bt4Pos, 8);
 
 }
 
 void Scene::UnloadPause()
 {
-
 	Engine::GetInstance().uiManager->CleanUp();
-
 }
 
 void Scene::UpdatePause(float dt)
@@ -1206,109 +1324,17 @@ void Scene::PostUpdatePause()
 {
 }
 
-
-// *********************************************
-// EXIT functions
-// *********************************************
-
-void Scene::LoadExit()
-{
-}
-
-void Scene::UnloadExit()
-{
-
-	Engine::GetInstance().uiManager->CleanUp();
-
-}
-
-void Scene::UpdateExit(float dt)
-{
-
-	closeGame = true;
-
-}
-
-void Scene::PostUpdateExit()
-{
-}
-
-
-// *********************************************
-// RESUME functions
-// *********************************************
-
-void Scene::LoadResume()
-{
-}
-
-void Scene::UnloadResume()
-{
-
-	Engine::GetInstance().uiManager->CleanUp();
-
-}
-
-void Scene::UpdateResume(float dt)
-{
-
-	ChangeScene(gameScene);
-
-}
-
-void Scene::PostUpdateResume()
-{
-}
-
-
-// *********************************************
-// BACK functions
-// *********************************************
-
-void Scene::LoadBack()
-{
-}
-
-void Scene::UnloadBack()
-{
-
-	Engine::GetInstance().uiManager->CleanUp();
-
-}
-
-void Scene::UpdateBack(float dt)
-{
-	
-	if (fromSG == true) { 
-		ChangeScene(SceneID::MAIN_MENU);
-		fromSG = false;
-	}
-	if(Engine::GetInstance().combatManager->choosingAtk == true)
-	{
-		ChangeScene(SceneID::BATTLE);
-		Engine::GetInstance().combatManager->choosingAtk = false;
-	}
-	else {
-		ChangeScene(timeScene);
-		timeScene = SceneID::MAIN_MENU;
-	}
-
-}
-
-void Scene::PostUpdateBack()
-{
-}
-
-
 // *********************************************
 // BATTLE functions
 // *********************************************
 
 void Scene::LoadBattle()
 {
+	//read enemy and player vector
+	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
+	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
 	//UI Buttons
-
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
 
@@ -1320,16 +1346,12 @@ void Scene::LoadBattle()
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 14, "Scape", bt4Pos, this));
-
-
-
 }
 
 void Scene::UnloadBattle()
 {
-
+	Engine::GetInstance().combatManager->in_combat = false;
 	Engine::GetInstance().uiManager->CleanUp();
-
 }
 
 void Scene::UpdateBattle(float dt)
@@ -1338,4 +1360,12 @@ void Scene::UpdateBattle(float dt)
 
 void Scene::PostUpdateBattle()
 {
+}
+
+
+void Scene::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+{
+	auto btn = std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
+	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }

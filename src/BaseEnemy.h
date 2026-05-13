@@ -14,7 +14,7 @@ public:
 
 	BaseEnemy();
 	~BaseEnemy();
-	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID);
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int fight_ID);
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
@@ -51,5 +51,7 @@ public:
 	std::vector<int> attack_damage;
 
 	int ID;
+	int fight_ID;
+
 	bool showingButton;
 };

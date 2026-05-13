@@ -11,6 +11,7 @@ enum class EntityType
 	ITEM,
 	BASEENEMY,
 	BASENPC,
+	BASECOMPANION,
 	UNKNOWN
 };
 
