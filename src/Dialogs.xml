@@ -1,6 +1,7 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5-->
 <dialogs>
 	<!--Vagabundo-->
 	<dialogue_tree ID="0" NPC="1"> 
@@ -88,7 +89,7 @@
 
 			<node id ="1" text="What? Wait, really? Now that I look into it, you kinda smell like...">
 				<choice id ="1" option="Like tons of blood?" next_node ="2"/>
-				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3" reward="3" reward_value="Beat those guys!"/>
+				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3"/>
 
 			</node>
 
@@ -108,7 +109,7 @@
 			</node>
 
 			<node id ="5" text="No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
-				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1" reward="3" reward_value="Beat those guys!"/>
+				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1"/>
 
 			</node>
 	</dialogue_tree>

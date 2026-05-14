@@ -187,7 +187,6 @@ void ItemManager::UnShowInventory()
 	
 }
 
-
 void ItemManager::AddItemToInventory(Item item) {
 	
 	inventory->push_back(item);

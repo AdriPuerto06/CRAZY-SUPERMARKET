@@ -1,3 +1,7 @@
+<!--Rewards-->
+<!--QUEST: 0, ITEM: 1, COMPANION: 2-->
+<!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5-->
 <combat>
 	<fight id="1" players_id="1" enemies_id="1"></fight>
 	<fight id="2" players_id="1" enemies_id="2,3,4"></fight>

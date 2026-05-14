@@ -115,6 +115,7 @@ void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 
 	Vector2D buttonPos = Vector2D{ 500,500 };
+	Engine::GetInstance().combatManager->SaveScene();
 	Engine::GetInstance().combatManager->ShowButtonStart(buttonPos, this->ID, fight_ID);
 	Engine::GetInstance().combatManager->showingButtonStart = true;
 }

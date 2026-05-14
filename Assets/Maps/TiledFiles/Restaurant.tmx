@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="50">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="45" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="49">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
-  <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
+  <image source="tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
  <tileset firstgid="49" name="MapMetadata" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="2" columns="2">
-  <image source="../Tilesets/MapMetadata.png" width="67" height="34"/>
+  <image source="MapMetadata.png" width="67" height="34"/>
  </tileset>
  <layer id="1" name="Map" width="45" height="40">
   <properties>
@@ -3671,16 +3671,6 @@
     <property name="targetMap" value="Sala1.tmx"/>
    </properties>
   </object>
-  <object id="46" x="1152" y="352" width="64" height="96">
-   <properties>
-    <property name="targetMap" value="RestaurantDungeon.tmx"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="7" name="Checkpoints">
-  <object id="47" x="224" y="448" width="64" height="32"/>
-  <object id="48" x="1152" y="448" width="64" height="32"/>
-  <object id="49" x="64" y="1056" width="32" height="96"/>
  </objectgroup>
  <objectgroup id="4" name="Entities">
   <object id="1" name="Enemy2" type="Enemy" x="429.333" y="1037.33">
@@ -3688,31 +3678,49 @@
     <property name="Enemy_ID" type="int" value="2"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="2"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
    <point/>
   </object>
-  <object id="2" name="Enemy4" type="Enemy" x="765.333" y="730.667">
-   <properties>
-    <property name="Enemy_ID" type="int" value="4"/>
-    <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="2"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="3" name="Enemy3" type="Enemy" x="1213.33" y="1085.33">
+  <object id="2" name="Enemy3" type="Enemy" x="765.333" y="730.667">
    <properties>
     <property name="Enemy_ID" type="int" value="3"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="2"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Maps/x.png"/>
    </properties>
    <point/>
   </object>
-  <object id="4" name="Player" type="Player" x="98.1563" y="1112">
+  <object id="3" name="Enemy4" type="Enemy" x="1213.33" y="1085.33">
    <properties>
-    <property name="HP" type="int" value="10"/>
+    <property name="Enemy_ID" type="int" value="4"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="2"/>
+    <property name="texturePath" value="Assets/Maps/x.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" name="Player" type="Player" x="146.2" y="1103.59">
+   <properties>
+    <property name="HP" type="int" value="-842150451"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="46" name="Scared_NPC" type="NPC" x="796.083" y="1054.59">
+   <properties>
+    <property name="NPC_ID" value="3"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="currentDialogueTree" type="int" value="0"/>
+    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="48" name="Blocked_NPC" type="NPC" x="663.892" y="810.771">
+   <properties>
+    <property name="NPC_ID" value="4"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="currentDialogueTree" type="int" value="0"/>
+    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
   </object>
