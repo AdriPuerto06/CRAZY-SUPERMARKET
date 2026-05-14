@@ -485,24 +485,26 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 {
                     /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
                     std::shared_ptr<BaseEnemy> companion = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
-                    const char* texturePath = companion->texturePath;
-                    bool active = companion->active;
-                    /*int companion_ID = -1;*/
-                    //get NPC data
-                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
-                        propertyNode;
-                        propertyNode = propertyNode.next_sibling("property"))
-                    {
-                        std::string name = propertyNode.attribute("name").as_string();
+                    if (companion) {
+                        const char* texturePath = companion->texturePath;
+                        bool active = companion->active;
+                        /*int companion_ID = -1;*/
+                        //get NPC data
+                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                            propertyNode;
+                            propertyNode = propertyNode.next_sibling("property"))
+                        {
+                            std::string name = propertyNode.attribute("name").as_string();
 
-                        /*if (name == "ENEMY_ID")
-                            propertyNode.attribute("value").as_int();*/
+                            /*if (name == "ENEMY_ID")
+                                propertyNode.attribute("value").as_int();*/
 
-                        if (name == "active")
-                            propertyNode.attribute("value").set_value(active);
+                            if (name == "active")
+                                propertyNode.attribute("value").set_value(active);
 
-                        if (name == "texturePath")
-                            propertyNode.attribute("value").set_value(texturePath);
+                            if (name == "texturePath")
+                                propertyNode.attribute("value").set_value(texturePath);
+                        }
                     }
                 }
             }
