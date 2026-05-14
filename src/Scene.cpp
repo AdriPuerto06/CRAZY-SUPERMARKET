@@ -83,6 +83,9 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL3:
 		UpdateLevel3(dt);
 		break;
+	case SceneID::LEVEL4:
+		UpdateLevel4(dt);
+		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -157,6 +160,9 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::LEVEL3:
 		PostUpdateLevel3();
+		break;
+	case SceneID::LEVEL4:
+		PostUpdateLevel4();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -237,6 +243,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL3:
 		break;
+	case SceneID::LEVEL4:
+		break;
 	case SceneID::OPTIONS: 
 		HandleMainMenuUIEvents(uiElement);
 		break;
@@ -308,6 +316,8 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL3:
 		LoadLevel3();
 		break;
+	case SceneID::LEVEL4:
+		LoadLevel3();
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
@@ -361,7 +371,11 @@ void Scene::UnloadCurrentScene() {
 		break;
 
 	case SceneID::LEVEL3:
-		UnloadLevel2();
+		UnloadLevel3();
+		break;
+
+	case SceneID::LEVEL4:
+		UnloadLevel4();
 		break;
 
 	case SceneID::OPTIONS:
