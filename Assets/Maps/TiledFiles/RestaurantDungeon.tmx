@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="125" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="90">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="125" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="94">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
@@ -12599,6 +12599,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="21"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="5"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
@@ -12623,6 +12624,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="8"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="6"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
@@ -12671,6 +12673,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="16"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="3"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
@@ -12679,6 +12682,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="17"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="4"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
@@ -12706,6 +12710,42 @@
    <point/>
   </object>
   <object id="88" name="BOSS" type="ENEMY" x="2765.33" y="3641.33">
+   <point/>
+  </object>
+  <object id="90" name="Enemy22" type="Enemy" x="2878.79" y="524.242">
+   <properties>
+    <property name="Enemy_ID" type="int" value="22"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="3"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="91" name="Enemy23" type="Enemy" x="2948.48" y="1896.97">
+   <properties>
+    <property name="Enemy_ID" type="int" value="23"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="4"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="92" name="Enemy24" type="Enemy" x="472.727" y="1987.88">
+   <properties>
+    <property name="Enemy_ID" type="int" value="24"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="5"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="93" name="Enemy25" type="Enemy" x="769.697" y="2660.61">
+   <properties>
+    <property name="Enemy_ID" type="int" value="25"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="6"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

@@ -1519,8 +1519,8 @@
    <tile gid="30"/>
    <tile gid="10"/>
    <tile gid="10"/>
-   <tile gid="30"/>
-   <tile gid="30"/>
+   <tile gid="49"/>
+   <tile gid="49"/>
    <tile gid="10"/>
    <tile gid="10"/>
    <tile gid="30"/>
@@ -3127,8 +3127,8 @@
    <tile/>
    <tile gid="49"/>
    <tile gid="49"/>
-   <tile gid="49"/>
-   <tile gid="49"/>
+   <tile/>
+   <tile/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile/>
@@ -3275,7 +3275,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="5"/>
     <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="3"/>
+    <property name="fight_ID" type="int" value="1"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
@@ -3284,7 +3284,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="6"/>
     <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="3"/>
+    <property name="fight_ID" type="int" value="1"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
@@ -3293,7 +3293,7 @@
    <properties>
     <property name="Enemy_ID" type="int" value="7"/>
     <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="3"/>
+    <property name="fight_ID" type="int" value="1"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
