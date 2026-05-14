@@ -4,6 +4,7 @@
 #include <list>
 #include <vector>
 #include "Player.h"
+#include "Scene.h"
 // L09: TODO 5: Add attributes to the property structure
 struct Properties
 {
@@ -156,6 +157,8 @@ public:
     // Load new map
     bool Load(std::string path, std::string mapFileName);
 
+    void UpdateEnemiesData();
+
     // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
     Vector2D MapToWorld(int x, int y) const;
     Vector2D WorldToMap(int x, int y);
@@ -181,9 +184,9 @@ public:
     }
 
     //L15 TODO 2: Define a method to load entities from the map XML
-    void LoadEntities(std::shared_ptr<Player>& player);
+    void LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID);
 	//L15 TODO 4: Define a method to save entities to the map XML
-    void SaveEntities(std::shared_ptr<Player> player);
+    void SaveEntities(std::shared_ptr<Player> player, SceneID sceneID);
 
     //Get the layers in order to draw them correctly
     MapLayer* GetLayer(const std::string& name) const;
@@ -197,6 +200,8 @@ public:
     std::string mapFileName;
     std::string mapPath;
     std::vector<TeleportZone> teleportZones;
+
+    int magicPoints;
 
 private:
     bool mapLoaded;

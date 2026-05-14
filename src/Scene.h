@@ -13,8 +13,11 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
+	LEVEL1Combat,
 	LEVEL2,
+	LEVEL2Combat,
 	LEVEL3,
+	LEVEL4,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -23,10 +26,29 @@ enum class SceneID
 	PAUSE,
 	EXIT,
 	RESUME,
-	BACK
+	BATTLE,
+	NULLSCENE
 
 };
 
+struct SceneStack {
+	std::vector<SceneID> scenes;
+	bool twiceClicked = false;
+
+	SceneID pop()
+	{
+		SceneID ret;
+		scenes.pop_back();
+		ret = scenes[scenes.size()-1];
+		return ret;
+	}
+
+	void push(SceneID scene)
+	{
+		scenes.push_back(scene);
+	}
+
+};
 
 class Scene : public Module
 {
@@ -70,6 +92,12 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
+
+
+	//Getter
+	SceneID GetCurrentScene();
+	SceneID GetTimeScene();
+
 private:
 
 	// Intro / Splash
@@ -79,6 +107,7 @@ private:
 
 	// L17 TODO 3: Define specific function for main menu scene: Load, Unload, Handle UI events
 	void LoadMainMenu();
+	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	void UnloadMainMenu();
 	void UpdateMainMenu(float dt);
 	void HandleMainMenuUIEvents(UIElement* uiElement);
@@ -95,11 +124,17 @@ private:
 	void UnloadLevel2();
 	void PostUpdateLevel2();
 
-	//Level 3
+	//Level3 functions
 	void LoadLevel3();
 	void UpdateLevel3(float dt);
 	void UnloadLevel3();
 	void PostUpdateLevel3();
+
+	//Level4 functions
+	void LoadLevel4();
+	void UpdateLevel4(float dt);
+	void UnloadLevel4();
+	void PostUpdateLevel4();
 
 	//OPTIONS
 	void LoadOptions();
@@ -124,6 +159,11 @@ private:
 	void UnloadSounds();
 	void UpdateSounds(float dt);
 	void PostUpdateSounds();
+	float musicVolume = 1.0f;
+	float sfxVolume = 1.0f;
+	bool  isAudioMuted = false;
+	bool drumsFinished = false;
+	float drumsTimer = 0.0f;
 
 	//GRAFICS
 	void LoadGrafics();
@@ -137,24 +177,17 @@ private:
 	void UpdatePause(float dt);
 	void PostUpdatePause();
 
-	//EXIT
-	void LoadExit();
-	void UnloadExit();
-	void UpdateExit(float dt);
-	void PostUpdateExit();
+	//BATTLE
+	void LoadBattle();
+	void UnloadBattle();
+	void UpdateBattle(float dt);
+	void PostUpdateBattle();
 
-	//RESUME
-	void LoadResume();
-	void UnloadResume();
-	void UpdateResume(float dt);
-	void PostUpdateResume();
-
-	//BACK
-	void LoadBack();
-	void UnloadBack();
-	void UpdateBack(float dt);
-	void PostUpdateBack();
-
+	//Combat scenes
+	void LoadCombatScene(SceneID sceneid);
+	void UnloadCombatScene();
+	void UpdateCombatScene(float dt);
+	void PostUpdateCombatScene();
 
 private:
 
@@ -174,12 +207,13 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
-
+	SceneStack sceneStack;
 
 	//Imagen
-
 	SDL_Texture* logoImg = nullptr;
 	SDL_Texture* teamImg = nullptr;
+	SDL_Texture* SMImg = nullptr;
+	SDL_Texture* almacenIMG = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
@@ -187,7 +221,6 @@ private:
 	bool sfxTeamPlayed = false;
 
 	//Creditos
-
 	std::vector<std::string> creditsText;
 	float creditsY = 0.0f;
 	float scrollSpeed = 100.0f;
@@ -195,8 +228,12 @@ private:
 	bool isCredits = false;
 	float creditsTimer = 5.f;
 
+	//Cursor
+	SDL_Surface* cursorSurface = nullptr;
+	SDL_Cursor* customCursor = nullptr;
 
 	bool closeGame = false;
+	bool fromSG = false;
+	bool fullScreen = true;
 	
-
 };

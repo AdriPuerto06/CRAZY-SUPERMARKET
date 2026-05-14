@@ -148,13 +148,15 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Audio.cpp" />
+    <ClCompile Include="src\BaseCompanion.cpp" />
     <ClCompile Include="src\BaseNPC.cpp" />
+    <ClCompile Include="src\CombatManager.cpp" />
     <ClCompile Include="src\DialogueManager.cpp" />
     <ClCompile Include="src\BaseEnemy.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Input.cpp" />
-    <ClCompile Include="src\Item.cpp" />
+    <ClCompile Include="src\ItemManager.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Pathfinding.cpp" />
@@ -162,6 +164,7 @@
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\PlatformGame.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\QuestManager.cpp" />
     <ClCompile Include="src\Render.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Textures.cpp" />
@@ -174,14 +177,16 @@
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Audio.h" />
+    <ClInclude Include="src\BaseCompanion.h" />
     <ClInclude Include="src\BaseNPC.h" />
+    <ClInclude Include="src\CombatManager.h" />
     <ClInclude Include="src\DialogueManager.h" />
     <ClInclude Include="src\BaseEnemy.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Input.h" />
-    <ClInclude Include="src\Item.h" />
+    <ClInclude Include="src\ItemManager.h" />
     <ClInclude Include="src\Log.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\Module.h" />
@@ -189,6 +194,7 @@
     <ClInclude Include="src\PerfTimer.h" />
     <ClInclude Include="src\Physics.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\QuestManager.h" />
     <ClInclude Include="src\Render.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Textures.h" />
@@ -201,7 +207,10 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />
+    <Xml Include="ItemsData.xml" />
+    <Xml Include="src\CombatData.xml" />
     <Xml Include="src\Dialogs.xml" />
+    <Xml Include="src\QuestsData.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
