@@ -83,6 +83,9 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL3:
 		UpdateLevel3(dt);
 		break;
+	case SceneID::LEVEL4:
+		UpdateLevel4(dt);
+		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -157,6 +160,9 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::LEVEL3:
 		PostUpdateLevel3();
+		break;
+	case SceneID::LEVEL4:
+		PostUpdateLevel4();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -236,6 +242,8 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::LEVEL2:
 		break;
 	case SceneID::LEVEL3:
+		break;
+	case SceneID::LEVEL4:
 		break;
 	case SceneID::OPTIONS: 
 		HandleMainMenuUIEvents(uiElement);
@@ -369,7 +377,11 @@ void Scene::UnloadCurrentScene() {
 		break;
 
 	case SceneID::LEVEL3:
-		UnloadLevel2();
+		UnloadLevel3();
+		break;
+
+	case SceneID::LEVEL4:
+		UnloadLevel4();
 		break;
 
 	case SceneID::OPTIONS:
