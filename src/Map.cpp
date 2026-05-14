@@ -644,6 +644,8 @@ bool Map::CleanUp()
     //Cleanup teleports
     teleportZones.clear();
 
+    autoSaves.clear();
+
     return true;
 }
 
@@ -854,7 +856,22 @@ bool Map::Load(std::string path, std::string fileName)
                 }
                 
                 //--------------------------------------------Teleports End----------------------------------------------
+                //-------------------------------------------Auto Saves Start--------------------------------------------
+                else if (groupName == "Checkpoints")
+                {
+                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+                    {
+                        AutoSave zone;
+                        zone.x = object.attribute("x").as_float();
+                        zone.y = object.attribute("y").as_float();
+                        zone.width = object.attribute("width").as_float();
+                        zone.height = object.attribute("height").as_float();
 
+                        autoSaves.push_back(zone);
+                        LOG("AutoSave loaded");
+                    }
+                }
+                //--------------------------------------------Auto Saves End---------------------------------------------
                 ret = true;
 
                 // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything

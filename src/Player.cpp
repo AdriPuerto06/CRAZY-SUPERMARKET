@@ -58,6 +58,7 @@ bool Player::Update(float dt)
 	GetPhysicsValues();
 	Move();
 	Teleport();
+	AutoSave();
 	ApplyPhysics();
 	GodMode();
 	CheckDialogueAndCombatLogic();
@@ -139,6 +140,31 @@ void Player::Teleport() {
 			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
 			pendingMapLoad = zone.targetMap;
 			teleportCooldown = 120;
+			return;
+		}
+	}
+}
+
+void Player::AutoSave() {
+	if (autosaveCooldown > 0) {
+		autosaveCooldown--;
+		/*LOG("Cooldown activo: %d", teleportCooldown);*/
+		return;
+	}
+
+
+	int x, y;
+	pbody->GetPosition(x, y);
+
+	for (const auto& zone : Engine::GetInstance().map->autoSaves)
+	{
+
+		if (x >= zone.x && x <= zone.x + zone.width &&
+			y >= zone.y && y <= zone.y + zone.height)
+		{
+			Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
+			LOG("Autosave.");
+			autosaveCooldown = 120;
 			return;
 		}
 	}
@@ -237,7 +263,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
-		LOG("Collision PLATFORM");
 
 		anims.SetCurrent("idle");
 		break;
@@ -262,10 +287,8 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
-		LOG("End Collision PLATFORM");
 		break;
 	case ColliderType::ITEM:
-		LOG("End Collision ITEM");
 		break;
 	case ColliderType::NPC:
 		LOG("End Collision NPC");

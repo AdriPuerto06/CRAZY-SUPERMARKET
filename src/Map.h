@@ -133,6 +133,10 @@ struct TeleportZone {
     std::string targetMap;
 };
 
+struct AutoSave {
+    float x, y, width, height;   // área en píxeles
+};
+
 class Map : public Module
 {
 public:
@@ -200,7 +204,7 @@ public:
     std::string mapFileName;
     std::string mapPath;
     std::vector<TeleportZone> teleportZones;
-
+    std::vector<AutoSave> autoSaves;
     int magicPoints;
 
 private:
