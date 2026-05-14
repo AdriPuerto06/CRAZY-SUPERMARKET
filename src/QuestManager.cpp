@@ -89,8 +89,9 @@ void QuestManager::ActivateQuest(const char* name)
 {
 	for (Quest& q : *quests)
 	{
-		if (std::strcmp(q.name, name) == 0) //strcmp -> compares two const char* and if equal returns 0
+		if (std::strcmp(q.name, name) == 0 && !q.completed) //strcmp -> compares two const char* and if equal returns 0
 		{ 
+			if (q.active) { LOG("Quest '%s' is already active.", q.name); return; }
 			q.active = true; 
 			LOG("Quest: '%s' activated.", q.name); 
 			SaveQuests(); 

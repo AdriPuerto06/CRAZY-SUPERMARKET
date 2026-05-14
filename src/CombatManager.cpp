@@ -239,7 +239,7 @@ void CombatManager::ApplyCombatLogic()
 	if (combatState->turn == "Player")
 	{
 		CheckAlive();
-
+		if (!in_combat) { return; }
 		Combatant& player = combatData->players[combatState->player_index_selected];
 		Combatant& enemy = combatData->enemies[combatState->enemy_index_targeted];
 		Attack& attack = player.attacks[combatState->player_attack_index_selected];
@@ -266,15 +266,17 @@ void CombatManager::ApplyCombatLogic()
 
 		combatState->turn = "Enemy";
 		CheckAlive();
+		if (!in_combat) { return; }
 	}
 
 	if (combatState->turn == "Enemy")
 	{
 		CheckAlive();
+		if (!in_combat) { return; }
 		EnemyAI();
 		combatState->turn = "Player";
 	}
-
+	if (!in_combat) { return; }
 	ApplyEffects();
 	CheckAlive();
 }
