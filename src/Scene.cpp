@@ -317,7 +317,7 @@ void Scene::LoadScene(SceneID newScene)
 		LoadLevel3();
 		break;
 	case SceneID::LEVEL4:
-		LoadLevel3();
+		LoadLevel4();
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;

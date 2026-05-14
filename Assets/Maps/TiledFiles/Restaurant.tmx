@@ -3685,22 +3685,25 @@
  <objectgroup id="4" name="Entities">
   <object id="1" name="Enemy1" type="Enemy" x="429.333" y="1037.33">
    <properties>
-    <property name="ID" type="int" value="0"/>
+    <property name="Enemy_ID" type="int" value="0"/>
     <property name="alive" type="bool" value="true"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
   <object id="2" name="Enemy2" type="Enemy" x="765.333" y="730.667">
    <properties>
-    <property name="ID" type="int" value="1"/>
+    <property name="Enemy_ID" type="int" value="1"/>
     <property name="alive" type="bool" value="true"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
   <object id="3" name="Enemy3" type="Enemy" x="1213.33" y="1085.33">
    <properties>
-    <property name="ID" type="int" value="2"/>
+    <property name="Enemy_ID" type="int" value="2"/>
     <property name="alive" type="bool" value="true"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>

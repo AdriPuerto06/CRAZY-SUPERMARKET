@@ -3273,26 +3273,26 @@
   </object>
   <object id="33" name="Enemy6" type="Enemy" x="192" y="160">
    <properties>
-    <property name="Enemy_ID" type="int" value="6"/>
+    <property name="Enemy_ID" type="int" value="5"/>
     <property name="active" type="bool" value="true"/>
-    <property name="texturePath" value="Assets/Maps/x.png"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
   <object id="34" name="Enemy7" type="Enemy" x="1056" y="320">
    <properties>
-    <property name="Enemy_ID" type="int" value="7"/>
+    <property name="Enemy_ID" type="int" value="6"/>
     <property name="active" type="bool" value="true"/>
-    <property name="texturePath" value="Assets/Maps/x.png"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
   <object id="35" name="Enemy5" type="Enemy" x="192" y="896">
    <properties>
-    <property name="Enemy_ID" type="int" value="5"/>
+    <property name="Enemy_ID" type="int" value="4"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="3"/>
-    <property name="texturePath" value="Assets/Maps/x.png"/>
+    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
