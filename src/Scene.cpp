@@ -722,7 +722,7 @@ void Scene::PostUpdateCombatScene() {
 
 void Scene::LoadLevel1() {
 	//Call the function to load the map & music
-	Engine::GetInstance().map->Load("Assets/Maps/", "azotea.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
 	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);
 
 	//Call the function to load entities from the map
@@ -793,7 +793,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
@@ -853,7 +853,7 @@ void Scene::LoadLevel3() {
 	Engine::GetInstance().audio->PlayMusic(m_title, 0);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "Sala1.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Sala1.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
