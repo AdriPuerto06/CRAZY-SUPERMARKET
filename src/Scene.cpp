@@ -876,7 +876,9 @@ void Scene::UpdateLevel3(float dt) {
 		std::string target = player->pendingMapLoad;
 		player->pendingMapLoad = "";
 
-		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
