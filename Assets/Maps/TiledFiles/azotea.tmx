@@ -6471,9 +6471,9 @@
    </properties>
    <point/>
   </object>
-  <object id="15" name="Enemy1" type="ENEMY" x="878" y="978">
+  <object id="15" name="Enemy1" type="Enemy" x="878" y="978">
    <properties>
-    <property name="ENEMY_ID" type="int" value="15"/>
+    <property name="Enemy_ID" type="int" value="1"/>
     <property name="active" type="bool" value="true"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
