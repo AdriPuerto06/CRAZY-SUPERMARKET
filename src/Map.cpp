@@ -643,8 +643,8 @@ bool Map::CleanUp()
 
     //Cleanup teleports
     teleportZones.clear();
-
     autoSaves.clear();
+    events.clear();
 
     return true;
 }
@@ -872,6 +872,22 @@ bool Map::Load(std::string path, std::string fileName)
                     }
                 }
                 //--------------------------------------------Auto Saves End---------------------------------------------
+                //---------------------------------------------Events Start----------------------------------------------
+                if (groupName == "Events")
+                {
+                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+                    {
+                        Event event;
+                        event.x = object.attribute("x").as_float();
+                        event.y = object.attribute("y").as_float();
+                        event.width = object.attribute("width").as_float();
+                        event.height = object.attribute("height").as_float();
+                        event.name = object.attribute("Name").as_string();
+
+                        events.push_back(event);
+                    }
+                }
+                //----------------------------------------------Events End-----------------------------------------------
                 ret = true;
 
                 // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything

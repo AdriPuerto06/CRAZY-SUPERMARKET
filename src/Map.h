@@ -137,6 +137,11 @@ struct AutoSave {
     float x, y, width, height;   // área en píxeles
 };
 
+struct Event {
+    float x, y, width, height;
+    std::string name;
+};
+
 class Map : public Module
 {
 public:
@@ -205,6 +210,7 @@ public:
     std::string mapPath;
     std::vector<TeleportZone> teleportZones;
     std::vector<AutoSave> autoSaves;
+    std::vector<Event> events;
     int magicPoints;
 
 private:
