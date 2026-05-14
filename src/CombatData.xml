@@ -1,7 +1,7 @@
 <combat>
 	<fight id="1" players_id="1" enemies_id="1"></fight>
 	<fight id="2" players_id="1" enemies_id="2,3,4"></fight>
-	<fight id="3" players_id="1" enemies_id="5"></fight>
+	<fight id="3" players_id="1" enemies_id="5,6,7"></fight>
 	
 	<player id="1" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
