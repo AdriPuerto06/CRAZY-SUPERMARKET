@@ -308,6 +308,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL3:
 		LoadLevel3();
 		break;
+	case SceneID::LEVEL4:
+		LoadLevel4();
+		break;
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
@@ -757,6 +760,7 @@ void Scene::UpdateLevel1(float dt) {
 
 		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
 		else if (target == "Sala1.tmx")      ChangeScene(SceneID::LEVEL3);
+		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -817,6 +821,7 @@ void Scene::UpdateLevel2(float dt) {
 
 		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
 		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
+		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -931,7 +936,6 @@ void Scene::UpdateLevel4(float dt) {
 		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
 		else if (target == "Restaurant.tmx")  ChangeScene(SceneID::LEVEL2);
 		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
-		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
