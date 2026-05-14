@@ -27,4 +27,3 @@ Uint64 PerfTimer::ReadTicks() const
 {
 	return SDL_GetPerformanceCounter() - startTime;
 }
-

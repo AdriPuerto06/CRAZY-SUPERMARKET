@@ -10,9 +10,6 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "Window.h"
-#include "CombatManager.h"
-#include "DialogueManager.h"
-#include "UIManager.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -30,16 +27,17 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	// load
-	
 	std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
-	anims.LoadFromTSX("Assets/Textures/testguy32x32x200resize.tsx", aliases);
+	anims.LoadFromTSX("Assets/Textures/PLayer2_Spritesheet.tsx", aliases);
 	anims.SetCurrent("idle");
 
 	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/testguy32x32x200resize.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/player2_spritesheet.png");
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
-	Engine::GetInstance().textures->GetSize(texture, texW, texH);
+	//Engine::GetInstance().textures->GetSize(texture, texW, texH);
+	texW = 32;
+	texH = 32;
 	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
@@ -48,7 +46,8 @@ bool Player::Start() {
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
-	if (Engine::GetInstance().itemManager->IsItemActive("Stillish skates")) speed = 6.0f;
+	//initialize audio effect
+	pickCoinFxId = Engine::GetInstance().audio->LoadFx("Assets/Audio/Fx/coin-collision-sound-342335.wav");
 
 	return true;
 }
@@ -60,20 +59,15 @@ bool Player::Update(float dt)
 	Teleport();
 	ApplyPhysics();
 	GodMode();
-	CheckDialogueAndCombatLogic();
-	ShowMenu();
 	Draw(dt);
 	CenterCamera();
-	
 	return true;
 }
 
 void Player::CenterCamera() {
-	
 
 	int x, y;
 	pbody->GetPosition(x, y);
-
 
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	int mapWidth = mapSize.getX();
@@ -88,11 +82,10 @@ void Player::CenterCamera() {
 	if (camX < 0) {
 		camX = 0;
 	}
-
 	if (camX > limitRight) {
 		camX = limitRight;
 	}
-	
+
 	if (camY < 0) {
 		camY = 0;
 	}
@@ -105,13 +98,8 @@ void Player::CenterCamera() {
 	// Apply
 	Engine::GetInstance().render->camera.x = -(int)camX;
 	Engine::GetInstance().render->camera.y = -(int)camY;
-	
-}
-
-void Player::CheckDialogueAndCombatLogic()
-{
-	if (Engine::GetInstance().dialogueManager->in_conversation) can_Move = false;
-	else can_Move = true;
+	/*LOG("map: %d x %d", mapWidth, mapHeight);
+	LOG("camera: %d x %d", Engine::GetInstance().render->camera.w, Engine::GetInstance().render->camera.h);*/
 }
 
 void Player::Teleport() {
@@ -120,26 +108,17 @@ void Player::Teleport() {
 		pbody->SetPosition(96, 96);
 	}
 
-	if (teleportCooldown > 0) {
-		teleportCooldown--;
-		/*LOG("Cooldown activo: %d", teleportCooldown);*/
-		return;
-	}
-
-	
+	// Comprobar zonas de teleporte del mapa
 	int x, y;
 	pbody->GetPosition(x, y);
 
 	for (const auto& zone : Engine::GetInstance().map->teleportZones)
 	{
-
 		if (x >= zone.x && x <= zone.x + zone.width &&
 			y >= zone.y && y <= zone.y + zone.height)
 		{
-			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
 			pendingMapLoad = zone.targetMap;
-			teleportCooldown = 120;
-			return;
+			break;
 		}
 	}
 }
@@ -151,23 +130,23 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-	if (!can_Move) return;
+
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed;
-		//anims.SetCurrent("move");
+		anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
-		//anims.SetCurrent("move");
+		anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		velocity.y = -speed;
-		//anims.SetCurrent("move");
+		anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		velocity.y = speed;
-		//anims.SetCurrent("move");
+		anims.SetCurrent("move");
 	}
 }
 
@@ -179,10 +158,10 @@ void Player::ApplyPhysics() {
 
 void Player::GodMode() {
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
-		LOG("God mode switched: %i", godMode);
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+		LOG("God mode switched");
 		godMode = !godMode;
-		Engine::GetInstance().combatManager->godMode = godMode;
+
 		//ideas provisionalse para el GodMode
 		//desactivar colisiones
 
@@ -196,7 +175,7 @@ void Player::GodMode() {
 
 void Player::Draw(float dt) {
 
-	//anims.Update(dt);
+	anims.Update(dt);
 	const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	// Update render position using your PhysBody helper
@@ -207,21 +186,6 @@ void Player::Draw(float dt) {
 
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
-}
-
-void Player:: ShowMenu() {
-	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3;
-	if(can_show_menu)
-	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
-		Engine::GetInstance().itemManager->ShowInventoryOptions();
-		showingMenu = true;
-	/*	can_show_menu = false;*/
-	}
-	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
-		Engine::GetInstance().uiManager->CleanUp();
-		showingMenu = false;
-	}
-
 }
 
 bool Player::CleanUp()

@@ -23,23 +23,8 @@
     <Filter Include="Source Files\Game\NPCs">
       <UniqueIdentifier>{8ae3e3b8-d859-48b5-93f5-6312e70bcd90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Combat">
-      <UniqueIdentifier>{92befddc-29e6-42a9-b982-19027b17120f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Enemies">
+    <Filter Include="Source Files\Game\Enemys">
       <UniqueIdentifier>{c212443a-1728-4ea4-b0af-d6b5418c49dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Engine\UI">
-      <UniqueIdentifier>{183dbbee-d47a-488e-869a-733fc23a08b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Items">
-      <UniqueIdentifier>{9d3ff855-9a63-4078-9d20-56fe4b43a48b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Engine\Quests">
-      <UniqueIdentifier>{fd75a853-6679-402b-b8e6-4db3a9632d14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Companions">
-      <UniqueIdentifier>{81eb3a06-b804-46f2-940d-7c21a83b19d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,10 +90,19 @@
     <ClCompile Include="src\Physics.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Item.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
     <ClCompile Include="src\Pathfinding.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Animation.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UIButton.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\DialogueManager.cpp">
@@ -118,25 +112,7 @@
       <Filter>Source Files\Game\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseEnemy.cpp">
-      <Filter>Source Files\Game\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CombatManager.cpp">
-      <Filter>Source Files\Engine\Combat</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIManager.cpp">
-      <Filter>Source Files\Engine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIButton.cpp">
-      <Filter>Source Files\Engine\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ItemManager.cpp">
-      <Filter>Source Files\Game\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="src\QuestManager.cpp">
-      <Filter>Source Files\Engine\Quests</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BaseCompanion.cpp">
-      <Filter>Source Files\Game\Companions</Filter>
+      <Filter>Source Files\Game\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,10 +167,22 @@
     <ClInclude Include="src\Physics.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\Item.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pathfinding.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\Animation.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIManager.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIButton.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UIElement.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="src\DialogueManager.h">
@@ -204,28 +192,7 @@
       <Filter>Source Files\Game\NPCs</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseEnemy.h">
-      <Filter>Source Files\Game\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CombatManager.h">
-      <Filter>Source Files\Engine\Combat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIManager.h">
-      <Filter>Source Files\Engine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIElement.h">
-      <Filter>Source Files\Engine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UIButton.h">
-      <Filter>Source Files\Engine\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ItemManager.h">
-      <Filter>Source Files\Game\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="src\QuestManager.h">
-      <Filter>Source Files\Engine\Quests</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BaseCompanion.h">
-      <Filter>Source Files\Game\Companions</Filter>
+      <Filter>Source Files\Game\Enemys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -234,15 +201,6 @@
     </Xml>
     <Xml Include="src\Dialogs.xml">
       <Filter>Source Files\Engine\Dialogue</Filter>
-    </Xml>
-    <Xml Include="src\CombatData.xml">
-      <Filter>Source Files\Engine\Combat</Filter>
-    </Xml>
-    <Xml Include="ItemsData.xml">
-      <Filter>Source Files\Game\Items</Filter>
-    </Xml>
-    <Xml Include="src\QuestsData.xml">
-      <Filter>Source Files\Engine\Quests</Filter>
     </Xml>
   </ItemGroup>
 </Project>

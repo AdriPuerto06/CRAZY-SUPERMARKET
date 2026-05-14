@@ -4,11 +4,10 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "Log.h"
-//#include "Item.h"
+#include "Item.h"
 
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
-#include "BaseCompanion.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -75,23 +74,20 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 	case EntityType::PLAYER:
 		entity = std::make_shared<Player>();
 		break;
-	/*case EntityType::ITEM:
+	case EntityType::ITEM:
 		entity = std::make_shared<Item>();
-		break;*/
-	case EntityType::BASEENEMY:
+		break;
+	case EntityType::ENEMY:
 		entity = std::make_shared<BaseEnemy>();
 		break;
 	case EntityType::BASENPC:
 		entity = std::make_shared<BaseNPC>();
 		break;
-	case EntityType::BASECOMPANION:
-		entity = std::make_shared<BaseCompanion>();
 	default:
 		break;
 	}
 
 	entities.push_back(entity);
-	LOG("Created entity with entity_ID: %i", entity->entity_ID);
 
 	return entity;
 }
@@ -104,11 +100,7 @@ void EntityManager::DestroyEntity(std::shared_ptr<Entity> entity)
 
 void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
 {
-	if (entity != nullptr)
-	{
-		entities.push_back(entity);
-		LOG("Created entity with entity_ID: %i", entity->entity_ID);
-	}
+	if ( entity != nullptr) entities.push_back(entity);
 }
 
 std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
@@ -121,59 +113,6 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 		}
 	}
 	return nullptr;
-}
-
-//std::shared_ptr<Entity> EntityManager::GetEnemy(int id) {
-//	for (auto& entity : entities) {
-//		auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
-//		if (enemy && enemy->ID == id)
-//			return enemy;
-//	}
-//	return nullptr;
-//}
-//
-//std::shared_ptr<Entity> EntityManager::GetNPC(int id) {
-//	for (auto& entity : entities) {
-//		auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
-//		if (enemy && enemy->ID == id)
-//			return enemy;
-//	}
-//	return nullptr;
-//}
-
-std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
-{
-	switch (type)
-	{
-	case EntityType::BASEENEMY:
-		for (auto& entity : entities) {
-			auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
-			if (enemy && enemy->ID == id)
-				return enemy;
-		}
-		return nullptr;
-		break;
-
-	case EntityType::BASENPC:
-		for (auto& entity : entities) {
-			auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
-			if (enemy && enemy->ID == id)
-				return enemy;
-		}
-		return nullptr;
-		break;
-
-	case EntityType::BASECOMPANION:
-		for (auto& entity : entities) {
-			auto enemy = std::dynamic_pointer_cast<BaseCompanion>(entity);
-			if (enemy && enemy->ID == id)
-				return enemy;
-		}
-		return nullptr;
-		break;
-	}
-	
-	return std::shared_ptr<Entity>();
 }
 
 bool EntityManager::Update(float dt)
@@ -200,10 +139,6 @@ bool EntityManager::Update(float dt)
 	for (const auto entity : pendingDelete)
 	{
 		DestroyEntity(entity);
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_U)) {
-		LOG("Entities vector size: %i", entities.size());
 	}
 
 	return ret;

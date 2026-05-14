@@ -41,15 +41,12 @@ private:
 	void Draw(float dt);
 	void GodMode();
 	void CenterCamera();
-	void CheckDialogueAndCombatLogic();
-	void ShowMenu();
-	
+
 public:
 
 	//Declare player parameters
 	float speed = 4.0f;
-	bool can_Move = true;
-	SDL_Texture* texture = nullptr;
+	SDL_Texture* texture = NULL;
 
 	int texW, texH;
 
@@ -59,17 +56,15 @@ public:
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 
-	int HP;
-	bool inCombat = false;
+	int HP = MAX_HP;
 
-	std::string pendingMapLoad;
+	std::string pendingMapLoad = "";
+
 
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;
-	int teleportCooldown = 120;
-	bool showingMenu = false;
 
 	bool godMode = false;
-	
+
 };
