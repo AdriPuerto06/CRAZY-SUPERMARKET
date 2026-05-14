@@ -7,7 +7,6 @@
 #include "ItemManager.h"
 #include "CombatManager.h"
 #include "EntityManager.h"
-#include "RewardManager.h"
 
 int SizeOf(const char* s)
 {
@@ -19,6 +18,18 @@ int SizeOf(const char* s)
 		i++; 
 	}
 	return size;
+}
+
+int GetNumFromString(std::string str) {
+	int num = str.at(0) - '0';
+	for (int l = 1; l < str.size(); ++l)
+	{
+		if (!(str[l] == ','))
+		{
+			num = num * 10 + (str.at(l) - '0');
+		}
+	}
+	return num;
 }
 
 DialogueManager::DialogueManager() : Module() 
@@ -120,8 +131,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void DialogueManager::ButtonAction(int ID)
 {
-	if (!(tree->rewards[dialogue->node_id][0].type == RewardType::NONE))
-	Engine::GetInstance().rewardManager->GetReward(tree->rewards[dialogue->node_id][0]);
+	GetPosibleReward(tree->rewards[dialogue->node_id][0]);
 	//update values of dialogue
 	dialogue->choice = ID;
 	dialogue->node_id = tree->choices_next_node[dialogue->node_id][ID-1];
@@ -168,19 +178,6 @@ bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
 	/*ShowOptions(dialogue->node_id);*/
 	
 	return true;
-}
-
-void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
-{
-	int index = NPC_ID - 1;
-	if (currentDialogueTreesNPC.size() < index)
-	{
-		LOG("DialogueManager: currentDialogueTreesNPC tried to be accessed out of size. -> %i", NPC_ID);
-		return;
-	}
-
-	currentDialogueTreesNPC.at(index) += 1;
-	LOG("Unlocked new dialogue with NPC ID: %i", NPC_ID);
 }
 
 bool DialogueManager::ShowOptions(int node_value) {
@@ -240,7 +237,7 @@ void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 					}
 					else {
 						std::string none = "none";
-						tree->rewards[current_node_counter - 1].push_back(Reward(RewardType::NONE, std::string("none")));
+						tree->rewards[current_node_counter - 1].push_back(Reward(RewardType::NONE, none)); 
 					}
 					tree->choices_id[current_node_counter-1].emplace_back(current_choice.attribute("id").as_int());
 					tree->choices_text[current_node_counter - 1].emplace_back((const char*)current_choice.attribute("option").as_string());
@@ -249,4 +246,48 @@ void DialogueManager::GetTreeAttributes(int dialogue_tree_ID, int npc_id)
 			}
 		}
 	}
+}
+
+void DialogueManager::GetPosibleReward(Reward reward)
+{
+	switch (reward.type)
+	{
+	case RewardType::NONE:
+		return;
+
+	case RewardType::QUEST:
+		Engine::GetInstance().questManager->ActivateQuest(reward.reward_value.c_str());
+		break;
+
+	case RewardType::COMPLETEQUEST:
+		Engine::GetInstance().questManager->CompleteQuest(reward.reward_value.c_str());
+		break;
+
+	case RewardType::ITEM:
+		Engine::GetInstance().itemManager->ActivateItem(reward.reward_value.c_str());
+		break;
+
+	case RewardType::ATTACK:
+		Engine::GetInstance().combatManager->UnlockAttack(EntityType::PLAYER, reward.reward_value.c_str());
+		break;
+
+	case RewardType::COMPANION:
+		break;
+
+	case RewardType::DIALOGUE:
+		UnlockNewDialogueTree(GetNumFromString(reward.reward_value));
+		break;
+	}
+}
+
+void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
+{
+	int index = NPC_ID - 1;
+	if (currentDialogueTreesNPC.size() > index)
+	{
+		LOG("DialogueManager: currentDialogueTreesNPC tried to be accessed out of size.");
+		return;
+	}
+	
+	currentDialogueTreesNPC[index] += 1;
 }
