@@ -50,7 +50,6 @@ Engine::Engine() {
     combatManager = std::make_shared<CombatManager>();
     itemManager = std::make_shared<ItemManager>();
     questManager = std::make_shared<QuestManager>();
-    rewardManager = std::make_shared<RewardManager>();
 
     // Ordered for awake / Start / Update
     // Reverse order of CleanUp
@@ -67,7 +66,6 @@ Engine::Engine() {
     AddModule(std::static_pointer_cast<Module>(combatManager));
     AddModule(std::static_pointer_cast<Module>(itemManager));
     AddModule(std::static_pointer_cast<Module>(questManager));
-    AddModule(std::static_pointer_cast<Module>(rewardManager));
 	// UI Manager on top of the other modules
 	AddModule(std::static_pointer_cast<Module>(uiManager)); 
 

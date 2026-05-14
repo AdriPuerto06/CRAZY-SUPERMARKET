@@ -41,9 +41,6 @@
     <Filter Include="Source Files\Game\Companions">
       <UniqueIdentifier>{81eb3a06-b804-46f2-940d-7c21a83b19d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Rewards">
-      <UniqueIdentifier>{b538d869-772b-4426-a25e-55755860deae}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json">
@@ -141,9 +138,6 @@
     <ClCompile Include="src\BaseCompanion.cpp">
       <Filter>Source Files\Game\Companions</Filter>
     </ClCompile>
-    <ClCompile Include="src\RewardManager.cpp">
-      <Filter>Source Files\Engine\Rewards</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio.h">
@@ -232,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="src\BaseCompanion.h">
       <Filter>Source Files\Game\Companions</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RewardManager.h">
-      <Filter>Source Files\Engine\Rewards</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

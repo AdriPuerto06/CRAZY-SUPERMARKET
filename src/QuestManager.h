@@ -7,8 +7,8 @@ struct Quest {
 	const char* name;
 	int id;
 	bool completed;
-	int reward;
-	const char* reward_value;
+	std::string reward;
+	int reward_type;
 };
 
 class QuestManager : public Module {
@@ -35,6 +35,7 @@ public:
 
 	void CompleteQuest(const char* name);
 	bool IsQuestCompleted(const char* name);
+	void CanCombatQuestBeCompleted(int fight_ID, bool victory);
 
 private:
 	pugi::xml_document questsFileXML;
