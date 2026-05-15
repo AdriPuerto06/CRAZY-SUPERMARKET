@@ -128,7 +128,6 @@ void DialogueManager::ButtonAction(int ID)
 	LOG("Dialogs: Choice %i. Current node: %i", ID, dialogue->node_id);
 	if (dialogue->node_id != -1 && !showing_continue)
 	{
-		
 		/*ShowOptions(dialogue->node_id);*/
 
 		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);

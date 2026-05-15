@@ -36,7 +36,10 @@ public:
 	void CompleteQuest(const char* name);
 	bool IsQuestCompleted(const char* name);
 
+	void ViewQuest();
+
 private:
+	Vector2D WindowSize;
 	pugi::xml_document questsFileXML;
 	std::vector<Quest>* quests;
 	std::string questsFileName;

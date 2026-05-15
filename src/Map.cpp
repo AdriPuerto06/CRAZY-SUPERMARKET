@@ -292,7 +292,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     }
                 }
 
-
                 if (entityType == "Enemy") 
                 {
                     int Enemy_ID = 0;
@@ -338,7 +337,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("Enemy inactive");
                     }
                 }
-
 
                 if (entityType == "Companion")
                 {
@@ -480,7 +478,6 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                         
                     }
-
                 }
 
                 if (entityType == "NPC")
@@ -497,7 +494,6 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                         propertyNode = propertyNode.next_sibling("property"))
                     {
                         std::string name = propertyNode.attribute("name").as_string();
-
                         /*if (name == "NPC_ID")
                             propertyNode.attribute("value").set_value(NPC_ID);*/
 
@@ -608,7 +604,7 @@ void Map::DrawLayers(bool aboveEntities)
 {
     if (!mapLoaded) return;
 
-    // Normalizamos la búsqueda de propiedades: si layer no tiene "AboveEntities", tratamos como false.
+    // Normalizamos la bï¿½squeda de propiedades: si layer no tiene "AboveEntities", tratamos como false.
     const unsigned int FLIPPED_MASK = 0xE0000000u;
 
     for (const auto& mapLayer : mapData.layers) {
@@ -620,7 +616,7 @@ void Map::DrawLayers(bool aboveEntities)
         auto aboveProp = mapLayer->properties.GetProperty("AboveEntities");
         bool layerAbove = (aboveProp != nullptr) ? aboveProp->value : false;
 
-        if (layerAbove != aboveEntities) continue; // sólo dibujamos las que correspondan al pase
+        if (layerAbove != aboveEntities) continue; // sï¿½lo dibujamos las que correspondan al pase
 
         for (int i = 0; i < mapData.width; ++i) {
             for (int j = 0; j < mapData.height; ++j) {
@@ -917,7 +913,7 @@ bool Map::Load(std::string path, std::string fileName)
                         zone.y = object.attribute("y").as_float();
                         zone.width = object.attribute("width").as_float();
                         zone.height = object.attribute("height").as_float();
-
+                        
                         // Leer propiedades custom
                         for (pugi::xml_node prop = object.child("properties").child("property"); prop; prop = prop.next_sibling("property"))
                         {

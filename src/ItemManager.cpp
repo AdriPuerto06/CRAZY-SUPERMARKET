@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "UIManager.h"
 #include "CombatManager.h"
+#include "QuestManager.h"
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -24,11 +25,7 @@ bool ItemManager::Start()
 {
 	WindowSize = { (float)Engine::GetInstance().render->camera.w,
 				   (float)Engine::GetInstance().render->camera.h };
-
-	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
-	if (inventory->empty()) { 
-		LoadItems();
-	}
+	if (inventory->empty()) LoadItems();
 	return true;
 }
 
@@ -40,12 +37,6 @@ bool ItemManager::Update(float dt)
 
 bool ItemManager::PostUpdate()
 {
-	if (showingPlayersItem)
-	{
-		Engine::GetInstance().render->DrawTexture(cajonTex,WindowSize.getX() - 200,WindowSize.getY() - 150);
-		ShowBack();
-	}
-
 	return true;
 }
 
@@ -99,15 +90,13 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1:
-		ShowPlayerItems();
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+		Engine::GetInstance().scene->ChangeScene(SceneID::ITEM);
+		//ShowPlayerItems();
 		break;
 	case 2:
 		break;
 	case 3:
-		if (showingPlayersItem) {
-			!showingPlayersItem;
-			Engine::GetInstance().render->CleanUp();
-		}
 		break;
 	case 4:
 		break;
@@ -130,20 +119,36 @@ bool ItemManager::ShowInventoryOptions()
 	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 3, 200,150 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 200, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
+
+	SDL_Rect bt4Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 400, 200,150 };
+	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Quests", bt4Pos, this));
 
 	return true;
 }
 
-void ItemManager::ShowBack()
+bool ItemManager::ShowingQuests()
 {
-	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Back", bt3Pos, this));
+	Engine::GetInstance().questManager->ViewQuest();
+
+	return true;
 }
 
 bool ItemManager::ShowPlayerItems() {
-	showingPlayersItem = true;
+	
+	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
+	CreateButton(NULL, NULL, bt1Pos, NULL);
+	SDL_Rect bt2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
+	CreateButton(NULL, NULL, bt2Pos, NULL);
+	SDL_Rect bt3Pos = { WindowSize.getX() / 3, WindowSize.getY() / 3 + 15, 64,64 };
+	CreateButton(NULL, NULL, bt3Pos, NULL);
+	SDL_Rect bt4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3 + 15, 64,64 };
+	CreateButton(NULL, NULL, bt4Pos, NULL);
+	SDL_Rect bt5Pos = { WindowSize.getX() / 3, WindowSize.getY() / 2 + 20, 64,64 };
+	CreateButton(NULL, NULL, bt5Pos, NULL);
+	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64 };
+	CreateButton(NULL, NULL, bt6Pos, NULL);
 	return true;
 }
 
@@ -187,6 +192,14 @@ void ItemManager::UnShowInventory()
 	
 }
 
+bool ItemManager::IsItemActive(const char* name)
+{
+	for (Item item : *inventory)
+	{
+		if (item.name == name) return item.active;
+	}
+}
+
 void ItemManager::AddItemToInventory(Item item) {
 	
 	inventory->push_back(item);
@@ -206,24 +219,13 @@ void ItemManager::ActivateItem(const char* name)
 	}
 }
 
-bool ItemManager::IsItemActive(const char* name)
-{
-	for (auto item : *inventory)
-	{
-		if (item.name == name)
-		{
-			return item.active;
-		}
-	}
-}
-
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {
 	for (auto item : *inventory)
 	{
 		if (item.name == "Cursed Knife" && item.active) dmg_inc = item.value;
 		if (item.name == "Bike helmet" && item.active) shield_inc = item.value;
-		if (item.name == "Gigantic flashlight" && item.active) confused_inc = item.value;
+		if (item.name == "Disturbing picture" && item.active) confused_inc = item.value;
 	}
 }
 

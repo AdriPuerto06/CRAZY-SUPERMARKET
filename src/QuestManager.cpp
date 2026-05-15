@@ -20,6 +20,9 @@ bool QuestManager::Awake()
 
 bool QuestManager::Start()
 {
+	WindowSize = { (float)Engine::GetInstance().render->camera.w,
+				   (float)Engine::GetInstance().render->camera.h };
+
 	return true;
 }
 
@@ -109,6 +112,18 @@ bool QuestManager::IsQuestCompleted(const char* name)
 	}
 }
 
+void QuestManager::ViewQuest()
+{
+	int n_quests = 0;
+	for (Quest q : *quests)
+	{
+		if (q.active) {
+			Engine::GetInstance().render->DrawTexture(NULL, 100*n_quests, WindowSize.getY() - 150);
+			n_quests++;
+		}
+	}
+}
+
 void QuestManager::CompleteQuest(const char* name)
 {
 	bool isQuestActive = IsQuestActive(name);
@@ -157,5 +172,4 @@ void QuestManager::SaveQuests()
 		i++;
 	}
 }
-
 

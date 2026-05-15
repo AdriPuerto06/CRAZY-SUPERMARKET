@@ -127,13 +127,11 @@ void Player::Teleport() {
 		return;
 	}
 
-	
 	int x, y;
 	pbody->GetPosition(x, y);
 
 	for (const auto& zone : Engine::GetInstance().map->teleportZones)
 	{
-
 		if (x >= zone.x && x <= zone.x + zone.width &&
 			y >= zone.y && y <= zone.y + zone.height)
 		{
@@ -240,8 +238,8 @@ void Player:: ShowMenu() {
 	if(can_show_menu)
 	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
 		showingMenu = true;
-	/*	can_show_menu = false;*/
 	}
 	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
 		Engine::GetInstance().uiManager->CleanUp();

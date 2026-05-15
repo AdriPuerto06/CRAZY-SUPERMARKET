@@ -108,6 +108,9 @@ bool Scene::Update(float dt)
 	case SceneID::BATTLE:
 		UpdateBattle(dt);
 		break;
+	case SceneID::ITEM:
+		UpdateItem(dt);
+		break;
 
 	}
 
@@ -218,7 +221,6 @@ bool Scene::PostUpdate()
 	return ret;
 }
 
-
 SceneID Scene::GetCurrentScene() {
 	return currentScene;
 }
@@ -226,8 +228,6 @@ SceneID Scene::GetCurrentScene() {
 SceneID Scene::GetTimeScene() {
 	return timeScene;
 }
-
-
 
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
@@ -269,6 +269,9 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::RESUME:
 		break;
 	case SceneID::BATTLE:
+		HandleMainMenuUIEvents(uiElement);
+		break;
+	case SceneID::ITEM:
 		HandleMainMenuUIEvents(uiElement);
 		break;
 	default:
@@ -344,6 +347,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::BATTLE:
 		LoadBattle();
 		break;
+	case SceneID::ITEM:
+		LoadItem();
+		break;
 	}
 }
 
@@ -413,7 +419,11 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::BATTLE:
 		UnloadBattle();
 		break;
+	case SceneID::ITEM:
+		UnloadItem();
+		break;
 	}
+
 }
 
 // *********************************************
@@ -495,7 +505,7 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 	//Load IMG Background
-	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
+	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normalMarket.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
@@ -578,14 +588,13 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
-		LOG("Options/Pause: Sounds clicked");
+		LOG("Options/Pause: Sounds clicked");tack.push(currentScene);
 		ChangeScene(SceneID::SOUND);
-		sceneStack.push(currentScene);
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
-		ChangeScene(SceneID::GRAFICS);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::GRAFICS);
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
@@ -701,7 +710,6 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		Engine::GetInstance().audio->SetSFXVolume(sfxVolume);
 		break;
 	}
-
 	default:
 		break;
 	}
@@ -990,7 +998,7 @@ void  Scene::PostUpdateLevel4() {
 void Scene::LoadOptions()
 {
 	//Load Background
-	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/normal_almacen.png");
+	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normal_almacen.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnSndTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Normal.png");
@@ -1005,10 +1013,8 @@ void Scene::LoadOptions()
 	//UI Buttons
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 315, WindowSize.getY() / 2, 215,85 };
 	CreateButton(btnSndTex, btnSndPressedTex, bt1Pos, 6);
-
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 + 80, WindowSize.getY() / 2, 280,85 };
 	CreateButton(btnGfcTex, btnGfcPressedTex, bt2Pos, 7);
-
 	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
 	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
 }
@@ -1267,10 +1273,8 @@ void Scene::LoadGrafics()
 	//UI Button
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 144, WindowSize.getY()/ 2 - 50, 288,68 };
 	CreateButton(btnFSTex, btnFSPressedTex, bt1Pos, 16);
-
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 90, WindowSize.getY() / 2 + 50, 180,67 };
 	CreateButton(btnVSTex, btnVSPressedTex, bt2Pos, 17);
-
 	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
 	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
 }
@@ -1311,13 +1315,10 @@ void Scene::LoadPause()
 	//UI Buttons
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 128, WindowSize.getY() / 2 - 150, 257,85 };
 	CreateButton(btnResTex, btnResPressedTex, bt1Pos, 9);
-
 	SDL_Rect bt2Pos = { WindowSize.getX() / 2 - 107, WindowSize.getY() / 2 - 50, 215,85 };
 	CreateButton(btnSndTex, btnSndPressedTex, bt2Pos, 6);
-
 	SDL_Rect bt3Pos = { WindowSize.getX() / 2 - 140, WindowSize.getY() / 2 + 50, 280,85 };
 	CreateButton(btnGfcTex, btnGfcPressedTex, bt3Pos, 7);
-
 	SDL_Rect bt4Pos = { WindowSize.getX() / 2 - 85, WindowSize.getY() / 2 + 150, 170,85 };
 	CreateButton(btnExitTex, btnExitPressedTex, bt4Pos, 8);
 
@@ -1372,6 +1373,32 @@ void Scene::UpdateBattle(float dt)
 
 void Scene::PostUpdateBattle()
 {
+}
+
+// *********************************************
+// Item functions
+// *********************************************
+
+void Scene::LoadItem()
+{
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
+
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+}
+
+void Scene::UpdateItem(float dt)
+{
+	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() - 200, WindowSize.getY() - 150);
+	Engine::GetInstance().itemManager->ShowPlayerItems();
+
+}
+
+void Scene::UnloadItem()
+{
+	Engine::GetInstance().uiManager->CleanUp();
 }
 
 

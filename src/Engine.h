@@ -116,7 +116,6 @@ public:
 	std::shared_ptr<EventManager> eventManager;
 
 	bool vsync_Active = true;
-
 private: 
 
 	// Delta time

@@ -129,7 +129,7 @@ struct MapData
 };
 
 struct TeleportZone {
-    float x, y, width, height;   // área en píxeles
+    float x, y, width, height;   // ï¿½rea en pï¿½xeles
     std::string targetMap;
 };
 
