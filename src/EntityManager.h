@@ -3,6 +3,10 @@
 #include "Module.h"
 #include "Entity.h"
 #include <list>
+#include <vector>
+//#include <memory>
+
+class Event;
 
 class EntityManager : public Module
 {
@@ -31,6 +35,9 @@ public:
 	void DestroyEntity(std::shared_ptr<Entity> entity);
 
 	void AddEntity(std::shared_ptr<Entity> entity);
+
+	std::vector<std::shared_ptr<Event>> GetEventsEntities();
+
 
 	std::shared_ptr<Entity> GetEntity(EntityType type, int ID);
 

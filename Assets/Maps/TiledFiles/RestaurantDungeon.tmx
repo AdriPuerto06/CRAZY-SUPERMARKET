@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="125" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="94">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="125" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="145">
 	<tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
 		<image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199" />
 	</tileset>
@@ -12576,7 +12576,7 @@
 		<object id="89" x="1504" y="384" width="32" height="96" />
 	</objectgroup>
 	<objectgroup id="4" name="Entities">
-		<object id="1" name="Player" type="Player" x="2764" y="1799">
+		<object id="1" name="Player" type="Player" x="2250" y="1085">
 			<point />
 		</object>
 		<object id="2" name="Enemy20" type="Enemy" x="404" y="792">
@@ -12770,17 +12770,105 @@
 			</properties>
 			<point />
 		</object>
+		<object id="134" name="Rock2" type="Event" x="2336" y="1280" width="64" height="64">
+			<properties>
+				<property name="Event_ID" type="int" value="10" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Rock2" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="135" name="Rock1" type="Event" x="2400" y="1536" width="64" height="64">
+			<properties>
+				<property name="Event_ID" type="int" value="9" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Rock1" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="136" name="Key for the next dungeon" type="Event" x="704" y="2208" width="32" height="32">
+			<properties>
+				<property name="Event_ID" type="int" value="8" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Key for the next dungeon" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="137" name="Healer" type="Event" x="147.333" y="2420.67" width="26.6667" height="24">
+			<properties>
+				<property name="Event_ID" type="int" value="7" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Healer" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="138" name="PlaceRock1" x="2496" y="1120" width="64" height="64">
+			<properties>
+				<property name="Event_ID" type="int" value="6" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="PlaceRock1" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="139" name="PlaceRock2" x="2656" y="864" width="64" height="64">
+			<properties>
+				<property name="Event_ID" type="int" value="5" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="PlaceRock2" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="140" name="Troll message" type="Event" x="2806" y="118" width="22.6667" height="22.6667">
+			<properties>
+				<property name="Event_ID" type="int" value="4" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Troll message" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="141" name="Gloves" type="Event" x="1984" y="1536" width="32" height="32">
+			<properties>
+				<property name="Event_ID" type="int" value="3" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Gloves" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="142" name="Door1" type="Event" x="800" y="384" width="32" height="96">
+			<properties>
+				<property name="Event_ID" type="int" value="1" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Door1" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="143" name="Door2" type="Event" x="2368" y="2752" width="32" height="96">
+			<properties>
+				<property name="Event_ID" type="int" value="2" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Door2" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
+		<object id="144" name="Key for Door1" type="Event" x="920" y="3356" width="32" height="32">
+			<properties>
+				<property name="Event_ID" type="int" value="11" />
+				<property name="activated" type="bool" value="false" />
+				<property name="active" type="bool" value="true" />
+				<property name="event_Name" value="Key for Door1" />
+				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
+			</properties>
+		</object>
 	</objectgroup>
-	<objectgroup id="5" name="Events">
-		<object id="18" name="Rock2" x="2336" y="1280" width="64" height="64" />
-		<object id="19" name="Rock1" x="2400" y="1536" width="64" height="64" />
-		<object id="20" name="Key for the next dungeon" x="704" y="2208" width="32" height="32" />
-		<object id="21" name="Healer" x="147.333" y="2420.67" width="26.6667" height="24" />
-		<object id="22" name="PlaceRock1" x="2496" y="1120" width="64" height="64" />
-		<object id="23" name="PlaceRock2" x="2656" y="864" width="64" height="64" />
-		<object id="24" name="Troll message" x="2806" y="118" width="22.6667" height="22.6667" />
-		<object id="25" name="Gloves" x="1984" y="1536" width="32" height="32" />
-		<object id="26" x="800" y="384" width="32" height="96" />
-		<object id="27" x="2368" y="2752" width="32" height="96" />
-	</objectgroup>
+	<objectgroup id="5" name="Events" />
 </map>

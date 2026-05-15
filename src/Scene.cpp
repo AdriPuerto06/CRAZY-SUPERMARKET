@@ -16,6 +16,7 @@
 #include "CombatManager.h"
 #include "ItemManager.h"
 #include "QuestManager.h"
+#include "EventManager.h"
 
 Scene::Scene() : Module()
 {
@@ -928,7 +929,8 @@ void Scene::LoadLevel4() {
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");
 
 	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
+	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
+	Engine::GetInstance().eventManager->GetEvents();
 }
 
 void Scene::UpdateLevel4(float dt) {

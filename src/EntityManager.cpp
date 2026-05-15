@@ -9,6 +9,7 @@
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
 #include "BaseCompanion.h"
+#include "Event.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -86,6 +87,10 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::BASECOMPANION:
 		entity = std::make_shared<BaseCompanion>();
+		break;
+	case EntityType::EVENT:
+		entity = std::make_shared<Event>();
+		break;
 	default:
 		break;
 	}
@@ -109,6 +114,23 @@ void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
 		entities.push_back(entity);
 		LOG("Created entity with entity_ID: %i", entity->entity_ID);
 	}
+}
+
+std::vector<std::shared_ptr<Event>> EntityManager::GetEventsEntities()
+{
+	std::vector<std::shared_ptr<Event>> events;
+
+	for (auto entity : entities)
+	{
+		auto event = std::dynamic_pointer_cast<Event>(entity);
+
+		if (event && event->type == EntityType::EVENT)
+		{
+			events.push_back(event);
+		}
+	}
+
+	return events;
 }
 
 std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
@@ -166,6 +188,15 @@ std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 	case EntityType::BASECOMPANION:
 		for (auto& entity : entities) {
 			auto enemy = std::dynamic_pointer_cast<BaseCompanion>(entity);
+			if (enemy && enemy->entity_ID == id)
+				return enemy;
+		}
+		return nullptr;
+		break;
+
+	case EntityType::EVENT:
+		for (auto& entity : entities) {
+			auto enemy = std::dynamic_pointer_cast<Event>(entity);
 			if (enemy && enemy->entity_ID == id)
 				return enemy;
 		}

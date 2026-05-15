@@ -142,6 +142,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Assets\Maps\azotea.tmx" />
+    <None Include="Assets\Maps\TiledFiles\azotea.tmx" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>
@@ -155,6 +156,8 @@
     <ClCompile Include="src\BaseEnemy.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
+    <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\EventManager.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\ItemManager.cpp" />
     <ClCompile Include="src\Log.cpp" />
@@ -186,6 +189,8 @@
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityManager.h" />
+    <ClInclude Include="src\Event.h" />
+    <ClInclude Include="src\EventManager.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\ItemManager.h" />
     <ClInclude Include="src\Log.h" />
