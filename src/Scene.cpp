@@ -487,7 +487,7 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 	//Load IMG Background
-	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
+	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normalMarket.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
@@ -917,7 +917,7 @@ void  Scene::PostUpdateLevel3() {
 void Scene::LoadOptions()
 {
 	//Load Background
-	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/normal_almacen.png");
+	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normal_almacen.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnSndTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Normal.png");
