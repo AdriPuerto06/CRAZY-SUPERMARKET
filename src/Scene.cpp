@@ -571,13 +571,13 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
-		ChangeScene(SceneID::SOUND);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
-		ChangeScene(SceneID::GRAFICS);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::GRAFICS);
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
@@ -1309,6 +1309,7 @@ void Scene::LoadItem()
 {
 	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
 	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
 
 	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
 	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
@@ -1317,7 +1318,9 @@ void Scene::LoadItem()
 
 void Scene::UpdateItem(float dt)
 {
+	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() - 200, WindowSize.getY() - 150);
 	Engine::GetInstance().itemManager->ShowPlayerItems();
+
 }
 
 void Scene::UnloadItem()

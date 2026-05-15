@@ -228,6 +228,7 @@ private:
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* cajonTex = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;

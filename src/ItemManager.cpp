@@ -26,7 +26,6 @@ bool ItemManager::Start()
 	WindowSize = { (float)Engine::GetInstance().render->camera.w,
 				   (float)Engine::GetInstance().render->camera.h };
 
-	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
 	if (inventory->empty()) LoadItems();
 	return true;
 }
@@ -39,11 +38,6 @@ bool ItemManager::Update(float dt)
 
 bool ItemManager::PostUpdate()
 {
-	if (showingPlayersItem)
-	{
-		Engine::GetInstance().render->DrawTexture(cajonTex,WindowSize.getX() - 200,WindowSize.getY() - 150);
-	}
-
 	return true;
 }
 
@@ -88,16 +82,13 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1:
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
 		Engine::GetInstance().scene->ChangeScene(SceneID::ITEM);
 		//ShowPlayerItems();
 		break;
 	case 2:
 		break;
 	case 3:
-		if (showingPlayersItem) {
-			!showingPlayersItem;
-			Engine::GetInstance().render->CleanUp();
-		}
 		break;
 	case 4:
 		break;
@@ -136,14 +127,20 @@ bool ItemManager::ShowingQuests()
 	return true;
 }
 
-void ItemManager::ShowBack()
-{
-	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Back", bt3Pos, this));
-}
-
 bool ItemManager::ShowPlayerItems() {
-	showingPlayersItem = true;
+	
+	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
+	CreateButton(NULL, NULL, bt1Pos, 10);
+	SDL_Rect bt2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
+	CreateButton(NULL, NULL, bt2Pos, 10);
+	SDL_Rect bt3Pos = { WindowSize.getX() / 3, WindowSize.getY() / 3 + 15, 64,64 };
+	CreateButton(NULL, NULL, bt3Pos, 10);
+	SDL_Rect bt4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3 + 15, 64,64 };
+	CreateButton(NULL, NULL, bt4Pos, 10);
+	SDL_Rect bt5Pos = { WindowSize.getX() / 3, WindowSize.getY() / 2 + 20, 64,64 };
+	CreateButton(NULL, NULL, bt5Pos, 10);
+	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64 };
+	CreateButton(NULL, NULL, bt6Pos, 10);
 	return true;
 }
 

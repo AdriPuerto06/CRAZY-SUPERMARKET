@@ -32,7 +32,6 @@ public:
 	bool ShowPlayerItems();
 	bool ShowPlayerStats();
 	bool ShowingQuests();
-	void ShowBack();
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();
