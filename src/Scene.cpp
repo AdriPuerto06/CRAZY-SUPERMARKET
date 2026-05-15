@@ -589,7 +589,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 6:
 		LOG("Options/Pause: Sounds clicked");
-		tack.push(currentScene);
+		sceneStack.push(currentScene);
 		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
@@ -1392,7 +1392,7 @@ void Scene::LoadItem()
 
 void Scene::UpdateItem(float dt)
 {
-	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() - 200, WindowSize.getY() - 150);
+	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
 	Engine::GetInstance().itemManager->ShowPlayerItems();
 
 }
