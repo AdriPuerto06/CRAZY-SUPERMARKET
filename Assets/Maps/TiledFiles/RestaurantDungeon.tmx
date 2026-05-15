@@ -12576,13 +12576,14 @@
 		<object id="89" x="1504" y="384" width="32" height="96" />
 	</objectgroup>
 	<objectgroup id="4" name="Entities">
-		<object id="1" name="Player" type="Player" x="1504" y="416">
+		<object id="1" name="Player" type="Player" x="2764" y="1799">
 			<point />
 		</object>
 		<object id="2" name="Enemy20" type="Enemy" x="404" y="792">
 			<properties>
 				<property name="Enemy_ID" type="int" value="20" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="4" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12599,7 +12600,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="21" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="5" />
+				<property name="fight_ID" type="int" value="7" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12608,6 +12609,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="10" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="10" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12616,6 +12618,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="9" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="9" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12624,7 +12627,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="8" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="6" />
+				<property name="fight_ID" type="int" value="8" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12633,6 +12636,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="15" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="6" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12641,6 +12645,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="11" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="12" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12649,6 +12654,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="12" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="11" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12657,6 +12663,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="14" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="14" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12665,6 +12672,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="13" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="13" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12673,7 +12681,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="16" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="3" />
+				<property name="fight_ID" type="int" value="15" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12682,7 +12690,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="17" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="4" />
+				<property name="fight_ID" type="int" value="16" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12691,6 +12699,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="18" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="17" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12699,6 +12708,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="19" />
 				<property name="active" type="bool" value="true" />
+				<property name="fight_ID" type="int" value="18" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12728,7 +12738,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="22" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="3" />
+				<property name="fight_ID" type="int" value="15" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12737,7 +12747,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="23" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="4" />
+				<property name="fight_ID" type="int" value="16" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12746,7 +12756,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="24" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="5" />
+				<property name="fight_ID" type="int" value="7" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />
@@ -12755,7 +12765,7 @@
 			<properties>
 				<property name="Enemy_ID" type="int" value="25" />
 				<property name="active" type="bool" value="true" />
-				<property name="fight_ID" type="int" value="6" />
+				<property name="fight_ID" type="int" value="8" />
 				<property name="texturePath" value="Assets/Maps/Tilesets/x.png" />
 			</properties>
 			<point />

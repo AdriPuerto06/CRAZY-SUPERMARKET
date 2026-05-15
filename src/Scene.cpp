@@ -197,7 +197,7 @@ bool Scene::PostUpdate()
 		ret = false;
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3)) {
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4)) {
 
 		gameScene = currentScene;
 		ChangeScene(SceneID::PAUSE);
