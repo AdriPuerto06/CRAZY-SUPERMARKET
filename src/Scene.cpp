@@ -588,7 +588,8 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
-		LOG("Options/Pause: Sounds clicked");tack.push(currentScene);
+		LOG("Options/Pause: Sounds clicked");
+		tack.push(currentScene);
 		ChangeScene(SceneID::SOUND);
 		break;
 	case 7:
