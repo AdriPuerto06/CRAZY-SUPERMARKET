@@ -130,17 +130,17 @@ bool ItemManager::ShowingQuests()
 bool ItemManager::ShowPlayerItems() {
 	
 	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
-	CreateButton(NULL, NULL, bt1Pos, 10);
+	CreateButton(NULL, NULL, bt1Pos, NULL);
 	SDL_Rect bt2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
-	CreateButton(NULL, NULL, bt2Pos, 10);
+	CreateButton(NULL, NULL, bt2Pos, NULL);
 	SDL_Rect bt3Pos = { WindowSize.getX() / 3, WindowSize.getY() / 3 + 15, 64,64 };
-	CreateButton(NULL, NULL, bt3Pos, 10);
+	CreateButton(NULL, NULL, bt3Pos, NULL);
 	SDL_Rect bt4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3 + 15, 64,64 };
-	CreateButton(NULL, NULL, bt4Pos, 10);
+	CreateButton(NULL, NULL, bt4Pos, NULL);
 	SDL_Rect bt5Pos = { WindowSize.getX() / 3, WindowSize.getY() / 2 + 20, 64,64 };
-	CreateButton(NULL, NULL, bt5Pos, 10);
+	CreateButton(NULL, NULL, bt5Pos, NULL);
 	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64 };
-	CreateButton(NULL, NULL, bt6Pos, 10);
+	CreateButton(NULL, NULL, bt6Pos, NULL);
 	return true;
 }
 
