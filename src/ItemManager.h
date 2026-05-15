@@ -32,7 +32,7 @@ public:
 	bool ShowInventoryOptions();
 	bool ShowPlayerItems();
 	bool ShowPlayerStats();
-	void ShowBack();
+	bool ShowingQuests();
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();

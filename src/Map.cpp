@@ -189,7 +189,7 @@ MapLayer* Map::GetNavigationLayer() {
 }
 
 //L15 TODO 2: Define a method to load entities from the map XML
-void Map::LoadEntities(std::shared_ptr<Player>& player) {
+void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
     /*Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
     //Iterate the object groups
@@ -314,6 +314,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                         if (name == "fight_ID")
                             fight_ID = propertyNode.attribute("value").as_int();
                     }
+
                     if (active)
                     {
                         std::shared_ptr<BaseEnemy> enemy;
@@ -333,7 +334,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
                     else {
                         LOG("Enemy inactive");
                     }
-
                 }
 
                 if (entityType == "Companion")
@@ -387,7 +387,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player) {
 }
 
 //L15 TODO 4: Define a method to save entities to the map XML
-void Map::SaveEntities(std::shared_ptr<Player> player) {
+void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
@@ -399,6 +399,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player) {
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 std::string entityType = objectNode.attribute("type").as_string();
                 // Modify entity based on type
+                int ID = objectNode.attribute("id").as_int();
                 if (entityType == "Player") {
                     // Modify the Player entity values
                     Vector2D playerPos = player->GetPosition();
@@ -633,6 +634,7 @@ bool Map::CleanUp()
 		Engine::GetInstance().physics->DeletePhysBody(collider);
     }
 	colliderList.clear();
+
     //Cleanup teleports
     teleportZones.clear();
 
@@ -784,6 +786,7 @@ bool Map::Load(std::string path, std::string fileName)
 
                 mapData.tilesets.push_back(tileSet);
             }
+
             //-------------------------------Colliders, Teleport-------------------------------------
             for (pugi::xml_node objectGroup = mapFileXML.child("map").child("objectgroup"); objectGroup;objectGroup = objectGroup.next_sibling("objectgroup"))
             {
@@ -811,34 +814,6 @@ bool Map::Load(std::string path, std::string fileName)
                             collider->ctype = ColliderType::PLATFORM;
                             colliderList.push_back(collider);
                         }
-                        //--------------------------------------------Colliders End--------------------------------------------
-                        //--------------------------------------------Teleport Start--------------------------------------------
-                        else if (groupName == "Teleport")
-                        {
-                            for (pugi::xml_node object = objectGroup.child("object");
-                                object; object = object.next_sibling("object"))
-                            {
-                                TeleportZone zone;
-                                zone.x = object.attribute("x").as_float();
-                                zone.y = object.attribute("y").as_float();
-                                zone.width = object.attribute("width").as_float();
-                                zone.height = object.attribute("height").as_float();
-
-                                // Leer propiedades custom
-                                for (pugi::xml_node prop = object.child("properties").child("property");
-                                    prop; prop = prop.next_sibling("property"))
-                                {
-                                    std::string propName = prop.attribute("name").as_string();
-
-                                    if (propName == "targetMap")
-                                        zone.targetMap = prop.attribute("value").as_string();
-                                }
-
-                                teleportZones.push_back(zone);
-                                LOG("TeleportZone loaded -> map:%s at (%.0f,%.0f)",
-                                    zone.targetMap.c_str());
-                            }
-                        }
                         else
                         {
                             std::cerr << "Invalid collider dimensions: width=" << width << ", height=" << height << std::endl;
@@ -857,6 +832,7 @@ bool Map::Load(std::string path, std::string fileName)
                         zone.y = object.attribute("y").as_float();
                         zone.width = object.attribute("width").as_float();
                         zone.height = object.attribute("height").as_float();
+                        
                         // Leer propiedades custom
                         for (pugi::xml_node prop = object.child("properties").child("property"); prop; prop = prop.next_sibling("property"))
                         {

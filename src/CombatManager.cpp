@@ -62,6 +62,76 @@ bool CanAttack(int probability) {
 	return roll <= probability;
 }
 
+void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
+{
+
+	//effects that affect the attacker (heal itself, buff itself...)
+	if (attack.effect == "none")
+	{
+	}
+	else if (attack.effect == "heal")
+	{
+		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
+						   else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
+	}
+	else if (attack.effect == "selfKO")
+	{
+		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id); 
+									else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
+	}
+	else if (attack.effect == "ragebait")
+	{
+		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
+		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
+	}
+	else if (attack.effect == "shield")
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); /*attacker.status = "shield"*/ attacker.shield_and_buff.first = true; }
+		else { LOG("Enemy ID: %i activates shield.", attacker.id); /*attacker.status = "shield";*/ attacker.shield_and_buff.first = true;};
+	}
+	else if (attack.effect == "buff") 
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
+		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
+	}
+	else
+	{
+		target.status = attack.effect;
+	}
+	//apply items
+	int dmg_increase = 0;
+	int dmg_reduction = 0;
+	int confused_probability = 0;
+	Engine::GetInstance().itemManager->ApplyCombatItems(dmg_increase, dmg_reduction, confused_probability);
+	//effects of the target that affect the attacker
+	
+	if (target.shield_and_buff.first)
+	{
+		dmg_reduction += SHIELD_DMG_REDUCTION;
+		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
+		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
+	}
+	if (attacker.shield_and_buff.second)
+	{
+		dmg_increase += BUFF_DMG_INCREASE;
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
+		else { LOG("Enemy ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
+	}
+
+	int dmg_applied = attack.dmg + dmg_increase - dmg_reduction;
+	if (dmg_applied < 0) dmg_applied = 0; //clamp
+
+	if (confused_probability != 0 && attacker.type == EntityType::BASEENEMY)
+	{
+		if (CanAttack(100 - confused_probability)) {}
+		else { LOG("Enemy couldn't attack because of the item 'Disturbing Picture'."); return; }
+	}
+	else target.hp -= dmg_applied;
+	
+	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
+	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
+}
+
 CombatManager::CombatManager() : Module()
 {
 	name = "CombatManagerManager";
@@ -98,6 +168,7 @@ bool CombatManager::Update(float dt)
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && showInventory == true) {
 		showInventory = false;
+		Engine::GetInstance().itemManager->UnShowInventory();
 	}
 
 	return true;
@@ -112,7 +183,7 @@ bool CombatManager::CleanUp()
 {
 	in_combat = false;
 	combatFileXML.empty();
-	/*combatData->Clear();*/
+	combatData->Clear();
 	return true;
 }
 
@@ -191,7 +262,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 6:
 		UnloadCombatUI();
 		showingButtonStart = false;
-		StartCombat();
+		StartCombat(/*combatData->players_id, combatData->enemies_id*/);
 		LOG("Combat starts.");
 		break;
 	default:

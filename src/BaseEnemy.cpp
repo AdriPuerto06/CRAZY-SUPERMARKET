@@ -10,6 +10,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "CombatManager.h"
 
 BaseEnemy::BaseEnemy(){}
 
@@ -40,7 +41,7 @@ bool BaseEnemy::Start() {
 	texW = texture->w;
 	//sensor
 	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::STATIC);
-	pbody->ctype = ColliderType::NPC;
+	pbody->ctype = ColliderType::ENEMY;
 	pbody->listener = this;
 	//bools
 	showingButton = false;
@@ -127,3 +128,6 @@ void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		Engine::GetInstance().combatManager->showingButtonStart = false;
 	}
 }
+
+
+

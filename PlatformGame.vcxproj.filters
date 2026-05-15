@@ -236,7 +236,6 @@
     <ClInclude Include="src\RewardManager.h">
       <Filter>Source Files\Engine\Rewards</Filter>
     </ClInclude>
-
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml">
@@ -254,6 +253,5 @@
     <Xml Include="src\QuestsData.xml">
       <Filter>Source Files\Engine\Quests</Filter>
     </Xml>
-
   </ItemGroup>
 </Project>

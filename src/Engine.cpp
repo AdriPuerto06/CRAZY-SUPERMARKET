@@ -51,7 +51,6 @@ Engine::Engine() {
     questManager = std::make_shared<QuestManager>();
     rewardManager = std::make_shared<RewardManager>();
 
-
     // Ordered for awake / Start / Update
     // Reverse order of CleanUp
     AddModule(std::static_pointer_cast<Module>(window));

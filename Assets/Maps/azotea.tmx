@@ -6440,7 +6440,6 @@
   <object id="13" x="1600" y="448" width="64" height="64"/>
   <object id="14" x="1664" y="448" width="160" height="160"/>
  </objectgroup>
-
  <objectgroup id="6" name="Teleport" opacity="0.9">
   <object id="16" x="1600" y="512" width="64" height="96">
    <properties>
@@ -6448,7 +6447,6 @@
    </properties>
   </object>
  </objectgroup>
-
  <objectgroup id="4" name="Entities">
   <object id="1" name="Vagabundo" type="NPC" x="874.061" y="708.056">
    <properties>

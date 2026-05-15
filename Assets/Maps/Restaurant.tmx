@@ -6,7 +6,7 @@
  <tileset firstgid="49" name="MapMetadata" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="2" columns="2">
   <image source="MapMetadata.png" width="67" height="34"/>
  </tileset>
- <layer id="1" name="Map" width="45" height="56">
+ <layer id="1" name="Map" width="45" height="40">
   <properties>
    <property name="Draw" type="bool" value="true"/>
   </properties>
@@ -1813,7 +1813,7 @@
    <tile gid="10"/>
   </data>
  </layer>
- <layer id="3" name="Navigation" width="45" height="56">
+ <layer id="3" name="Navigation" width="45" height="40">
   <properties>
    <property name="Draw" type="bool" value="false"/>
    <property name="Navigation" type="bool" value="true"/>
@@ -3662,18 +3662,6 @@
  </objectgroup>
  <objectgroup id="6" name="Teleport">
   <object id="39" x="32" y="1056" width="32" height="96">
-   <properties>
-    <property name="targetMap" value="azotea.tmx"/>
-   </properties>
-  </object>
-  <object id="41" x="224" y="352" width="64" height="96">
-   <properties>
-    <property name="targetMap" value="Sala1.tmx"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup id="6" name="Teleport">
-  <object id="40" x="32" y="1056" width="32" height="96">
    <properties>
     <property name="targetMap" value="azotea.tmx"/>
    </properties>

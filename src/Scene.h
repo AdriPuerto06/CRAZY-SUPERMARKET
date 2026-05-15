@@ -13,6 +13,7 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
+	LEVEL1Combat,
 	LEVEL2,
 	LEVEL2Combat,
 	LEVEL3,
@@ -25,6 +26,9 @@ enum class SceneID
 	EXIT,
 	RESUME,
 	BATTLE,
+	ITEM,
+	STATS,
+	QUESTS,
 	NULLSCENE
 };
 
@@ -96,6 +100,7 @@ public:
 	SceneID GetCurrentScene();
 	SceneID GetTimeScene();
 
+	SceneStack sceneStack;
 private:
 
 	// Intro / Splash
@@ -151,7 +156,6 @@ private:
 	void UnloadSounds();
 	void UpdateSounds(float dt);
 	void PostUpdateSounds();
-
 	float musicVolume = 1.0f;
 	float sfxVolume = 1.0f;
 	bool  isAudioMuted = false;
@@ -182,6 +186,23 @@ private:
 	void UpdateCombatScene(float dt);
 	void PostUpdateCombatScene();
 
+	//Item
+	void LoadItem();
+	void UnloadItem();
+	void UpdateItem(float dt);
+
+	//Stats
+	void LoadStats();
+	void UnloadStats();
+	void UpdateStats(float dt);
+	void PostUpdateStats();
+
+	//Quests
+	void LoadQuests();
+	void UnloadQuests();
+	void UpdateQuests(float dt);
+	void PostUpdateQuests();
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -200,13 +221,13 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
-	SceneStack sceneStack;
 
 	//Imagen
 	SDL_Texture* logoImg = nullptr;
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* cajonTex = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
@@ -227,5 +248,6 @@ private:
 
 	bool closeGame = false;
 	bool fromSG = false;
-	bool fullScreen = true;	
+	bool fullScreen = true;
+	
 };

@@ -280,7 +280,8 @@ void Physics::DeletePhysBody(PhysBody* physBody)
 	if (B2_IS_NULL(world)) return; // world already destroyed
     if (physBody && !B2_IS_NULL(physBody->body) && physBody->listener && physBody->listener->active)
     {
-        // Don’t change contact/sensor flags here (can mismatch event buffers).
+        // Don’t 
+        // contact/sensor flags here (can mismatch event buffers).
         // Just clear user data so late events won’t dereference a dangling PhysBody*.
         b2Body_SetUserData(physBody->body, nullptr);
     }

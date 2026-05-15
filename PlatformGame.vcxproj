@@ -150,6 +150,7 @@
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\BaseCompanion.cpp" />
     <ClCompile Include="src\BaseNPC.cpp" />
+    <ClCompile Include="src\CombatManager.cpp" />
     <ClCompile Include="src\DialogueManager.cpp" />
     <ClCompile Include="src\BaseEnemy.cpp" />
     <ClCompile Include="src\Engine.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\Audio.h" />
     <ClInclude Include="src\BaseCompanion.h" />
     <ClInclude Include="src\BaseNPC.h" />
+    <ClInclude Include="src\CombatManager.h" />
     <ClInclude Include="src\DialogueManager.h" />
     <ClInclude Include="src\BaseEnemy.h" />
     <ClInclude Include="src\Engine.h" />

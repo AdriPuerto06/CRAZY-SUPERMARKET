@@ -177,10 +177,10 @@ void Player::ApplyPhysics() {
 
 void Player::GodMode() {
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
-		LOG("God mode switched");
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+		LOG("God mode switched: %i", godMode);
 		godMode = !godMode;
-
+		Engine::GetInstance().combatManager->godMode = godMode;
 		//ideas provisionalse para el GodMode
 		//desactivar colisiones
 
@@ -212,8 +212,8 @@ void Player:: ShowMenu() {
 	if(can_show_menu)
 	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
 		showingMenu = true;
-	/*	can_show_menu = false;*/
 	}
 	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
 		Engine::GetInstance().uiManager->CleanUp();

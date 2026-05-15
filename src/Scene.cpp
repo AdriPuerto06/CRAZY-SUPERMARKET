@@ -104,6 +104,9 @@ bool Scene::Update(float dt)
 	case SceneID::BATTLE:
 		UpdateBattle(dt);
 		break;
+	case SceneID::ITEM:
+		UpdateItem(dt);
+		break;
 
 	}
 
@@ -259,6 +262,9 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::BATTLE:
 		HandleMainMenuUIEvents(uiElement);
 		break;
+	case SceneID::ITEM:
+		HandleMainMenuUIEvents(uiElement);
+		break;
 	default:
 		break;
 	}
@@ -329,6 +335,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::BATTLE:
 		LoadBattle();
 		break;
+	case SceneID::ITEM:
+		LoadItem();
+		break;
 	}
 }
 
@@ -394,7 +403,11 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::BATTLE:
 		UnloadBattle();
 		break;
+	case SceneID::ITEM:
+		UnloadItem();
+		break;
 	}
+
 }
 
 // *********************************************
@@ -476,7 +489,7 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 	//Load IMG Background
-	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/normalMarket.png");
+	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normalMarket.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
@@ -559,14 +572,13 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		ChangeScene(SceneID::CREDITS);
 		break;
 	case 6:
-		LOG("Options/Pause: Sounds clicked");
+		LOG("Options/Pause: Sounds clicked");tack.push(currentScene);
 		ChangeScene(SceneID::SOUND);
-		sceneStack.push(currentScene);
 		break;
 	case 7:
 		LOG("Options/Pause: Grafics clicked");
-		ChangeScene(SceneID::GRAFICS);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::GRAFICS);
 		break;
 	case 8:
 		LOG("Pause: Exit clicked");
@@ -772,12 +784,12 @@ void Scene::UnloadLevel1() {
 void  Scene::PostUpdateLevel1() {
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player);
+		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
 	}
 
 	//L15 TODO 4: Call the function to save entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player);
+		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL1);
 	}
 }
 
@@ -792,7 +804,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().map->Load("Assets/Maps/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player);
+	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
 }
 
 void Scene::UpdateLevel2(float dt) {
@@ -905,7 +917,7 @@ void  Scene::PostUpdateLevel3() {
 void Scene::LoadOptions()
 {
 	//Load Background
-	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/normal_almacen.png");
+	almacenIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normal_almacen.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnSndTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Sound_Normal.png");
@@ -1280,6 +1292,32 @@ void Scene::UpdateBattle(float dt)
 
 void Scene::PostUpdateBattle()
 {
+}
+
+// *********************************************
+// Item functions
+// *********************************************
+
+void Scene::LoadItem()
+{
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
+
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+}
+
+void Scene::UpdateItem(float dt)
+{
+	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() - 200, WindowSize.getY() - 150);
+	Engine::GetInstance().itemManager->ShowPlayerItems();
+
+}
+
+void Scene::UnloadItem()
+{
+	Engine::GetInstance().uiManager->CleanUp();
 }
 
 
