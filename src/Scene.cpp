@@ -353,6 +353,11 @@ void Scene::LoadScene(SceneID newScene)
 	}
 }
 
+bool Scene::IsReloading()
+{
+	return Engine::GetInstance().map->isReloading;
+}
+
 std::shared_ptr<Player> Scene::GetPlayer()
 {
 	return player;

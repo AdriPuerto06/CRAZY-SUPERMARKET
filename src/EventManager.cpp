@@ -4,6 +4,9 @@
 #include "UIManager.h"
 #include "Window.h"
 #include "EntityManager.h"
+#include "Player.h"
+#include "Scene.h"
+#include "Physics.h"
 
 EventManager::EventManager() : Module()
 {
@@ -77,11 +80,12 @@ bool EventManager::IsEventActivated(const char* name)
 void EventManager::PossibleActivate(const char* name)
 {
 	std::shared_ptr<Event> event = GetEvent(name);
-	if (event->activated) LOG("Event already made its action.");  return;
-	if (!event->active)  LOG("Event not active.");  return;
-	if (name == "Door1")
+	if (event->activated) { LOG("Event already made its action.");  return; }
+	if (!event->active) { LOG("Event not active.");  return; }
+	//Doors
+	if (std::strcmp(name,"Door1") == 0)
 	{
-		if (IsEventActivated("Key for Door1")) 
+		/*if (IsEventActivated("Key for Door1")) 
 		{
 			event->activated = true;
 			LOG("Door1 is now open.");
@@ -89,40 +93,100 @@ void EventManager::PossibleActivate(const char* name)
 		}
 		else {
 			LOG("Door1 is closed.");
-		}
+		}*/
 
 		return;
 	}
-	else if (name == "Door2") {}
-	else if (name == "Gloves")
+	else if (std::strcmp(name,"Door2")==0) {}
+	else if (std::strcmp(name,"Gloves")==0)
 	{
 		event->activated = true;
+	}
+	else if (std::strcmp(name,"Key for the next dungeon")==0)
+	{
+		event->activated = true;
+	}
+	else if (std::strcmp(name,"Key for Door1")==0)
+	{
+		event->activated = true;
+		LOG("'Key for Door1' activated.");
+		MakeAction("Door1");
+	}
+	//Rocks
+	if (std::strcmp(name, "Rock1") == 0 )
+	{
 		MakeAction(name);
 	}
-	else if (name == "Key for the next dungeon")
+	if (std::strcmp(name, "Rock2") == 0)
 	{
-		event->activated = true;
+		MakeAction(name);
 	}
 }
 
 void EventManager::MakeAction(const char* name)
 {
 	std::shared_ptr<Event> event = GetEvent(name);
-	if (!event->active)  LOG("Event not active.");  return;
-	if (name == "Door1")
+	if (!event->active) { LOG("Event not active.");  return; }
+	if (std::strcmp(name,"Door1")==0)
+	{
+		event->Disable();
+		/*event->position = Vector2D(event->position.getX() - 2 * event->texW, event->position.getY());*/
+	}
+	else if (std::strcmp(name,"Door2")==0)
 	{
 		event->position = Vector2D(event->position.getX() - 2 * event->texW, event->position.getY());
 	}
-	else if (name == "Door2") 
-	{
-		event->position = Vector2D(event->position.getX() - 2 * event->texW, event->position.getY());
-	}
-	else if (name == "Gloves")
+	else if (std::strcmp(name,"Gloves")==0)
 	{
 		
 	}
-	else if (name == "Key for the next dungeon")
+	else if (std::strcmp(name,"Key for the next dungeon")==0)
 	{
 		
+	}
+	if (std::strcmp(name, "Rock1") == 0) {
+		if (Engine::GetInstance().scene->IsReloading())
+			return;
+		/*std::shared_ptr<Player> player = Engine::GetInstance().scene->GetPlayer();
+		Vector2D dir = player->direction;
+		float new_X = dir.getX() * 3.f + event->position.getX();
+		float new_Y = dir.getY() * 3.f + event->position.getY();
+		event->position.setX(new_X);
+		event->position.setY(new_Y);*/
+
+		/*b2Vec2 rockVel = b2Body_GetLinearVelocity(event->pbody->body);
+
+		b2Vec2 dir = { Engine::GetInstance().scene->GetPlayer()->direction.getX(), Engine::GetInstance().scene->GetPlayer()->direction.getY() };
+		float len = sqrt(dir.x * dir.x + dir.y * dir.y);
+
+		b2Body_ApplyLinearImpulseToCenter(
+			event->pbody->body,
+			{ dir.x * 0.5f, dir.y * 0.5f },
+			true
+		);*/
+		LOG("Rock pos updated.");
+	}
+	if (std::strcmp(name, "Rock2") == 0) {
+		if (Engine::GetInstance().scene->IsReloading())
+			return;
+		/*std::shared_ptr<Player> player = Engine::GetInstance().scene->GetPlayer();
+		Vector2D dir = player->direction;
+		float new_X = dir.getX() * 3.f + event->position.getX();
+		float new_Y = dir.getY() * 3.f + event->position.getY();
+		event->position.setX(new_X);
+		event->position.setY(new_Y);
+		LOG("Rock pos updated.");*/
+
+		/*b2Vec2 rockVel = b2Body_GetLinearVelocity(event->pbody->body);
+
+		b2Vec2 dir = { Engine::GetInstance().scene->GetPlayer()->direction.getX(), Engine::GetInstance().scene->GetPlayer()->direction.getY() };
+		float len = sqrt(dir.x * dir.x + dir.y * dir.y);
+
+		b2Body_ApplyLinearImpulseToCenter(
+			event->pbody->body,
+			{ dir.x * 0.5f, dir.y * 0.5f },
+			true
+		);*/
+		LOG("Rock pos updated.");
 	}
 }

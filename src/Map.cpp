@@ -192,6 +192,7 @@ MapLayer* Map::GetNavigationLayer() {
 
 //L15 TODO 2: Define a method to load entities from the map XML
 void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
+    isReloading = true;
 
     /*Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
     //Iterate the object groups
@@ -440,6 +441,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
             }
         }
     }
+
+    isReloading = false;
 }
 
 //L15 TODO 4: Define a method to save entities to the map XML
@@ -567,6 +570,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     std::shared_ptr<Event> event = std::dynamic_pointer_cast<Event>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::EVENT));
                     if (event) {
                         bool active = event->active;
+                        bool activated = event->activated;
                         /*int companion_ID = -1;*/
                         //get Event data
                         for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
@@ -577,6 +581,9 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                             if (name == "active")
                                 propertyNode.attribute("value").set_value(active);
+
+                            if (name == "activated")
+                                propertyNode.attribute("value").set_value(activated);
                         }
                     }
                 }

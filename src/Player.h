@@ -63,6 +63,7 @@ public:
 	bool inCombat = false;
 
 	std::string pendingMapLoad;
+	Vector2D direction;
 
 private:
 	b2Vec2 velocity;

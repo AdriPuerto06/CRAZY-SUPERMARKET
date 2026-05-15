@@ -94,6 +94,7 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
+	bool IsReloading();
 
 	std::shared_ptr<Player> GetPlayer();
 
