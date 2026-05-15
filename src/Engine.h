@@ -20,7 +20,10 @@ class Map;
 class Physics;
 class UIManager;
 class DialogueManager;
-
+class CombatManager;
+class ItemManager;
+class QuestManager;
+class RewardManager;
 class Engine
 {
 public:
@@ -104,7 +107,12 @@ public:
 	std::shared_ptr<Physics> physics;
 	std::shared_ptr<UIManager> uiManager;
 	std::shared_ptr<DialogueManager> dialogueManager;
+	std::shared_ptr<CombatManager> combatManager;
+	std::shared_ptr<ItemManager> itemManager;
+	std::shared_ptr<QuestManager> questManager;
+	std::shared_ptr<RewardManager> rewardManager;
 
+	bool vsync_Active = true;
 private: 
 
 	// Delta time
@@ -127,6 +135,7 @@ private:
 
 	//Maximun frame duration in miliseconds.
 	int targetFrameRate = 60;
+	
 
 	std::string gameTitle = "Platformer Game";
 

@@ -1,32 +1,116 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--QUEST: 0, ITEM: 1, COMPANION: 2-->
+<!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5-->
 <dialogs>
-	<dialogue_tree ID="0" NPC="1">
-		<node id ="0" text="Hello. Who are you?">
-			<choice id ="1" option="I'm aaaa" next_node ="1"/>
-			<choice id ="2" option="Why do you ask?" next_node ="1"/>
+	<!--Vagabundo-->
+	<dialogue_tree ID="0" NPC="1"> 
+		<node id ="0" text="Who are you?? Are you gonna hurt me??">
+			<choice id ="1" option="I think we are here cause I already hurt someone (oopsies) so not from the moment" next_node ="1"/>
+			<choice id ="2" option="Not if you don't push me" next_node ="1"/>
 		</node>
-		<node id ="1" text="What happens?">
-			<choice id ="1" option="Nothing vejestorio" next_node ="2"/>
-			<choice id ="2" option="You don't wanna know" next_node ="2"/>
+		
+		<node id ="1" text="Hold on, who did you hurt?">
+			<choice id ="1" option="A stupid granny that got in the way" next_node ="2"/>
+			<choice id ="2" option="Yo mama" next_node ="2"/>
 		</node>
-		<node id ="2" text="You are CRAZY">
-			<choice id ="1" option="I will slap you" next_node ="-1"/>
-			<choice id ="2" option="I will slap you!" next_node ="-1"/>
+		
+		<node id ="2" text="ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday, everybody here knows it..">
+			<choice id ="1" option="My bad gng" next_node ="3"/>
 		</node>
+		
+		<node id ="3" text="Well YOU got us in here, YOU take us outta here, so take this, you won't doscratches now with these">
+			<choice id ="1" option="EY, i'm not THAT weak" next_node ="4"/>
+		</node>
+		
+		<node id ="4" text="*You obtained Jet Punch">
+			<choice id ="1" option="Claim" next_node ="-1" reward="4" reward_value="Jet Punch"/>
+
+		</node>
+
+	</dialogue_tree>
+	<!--Pulpa-->
+	<dialogue_tree ID="0" NPC="2">
+		<node id ="0" text="I was looking for you hon, I knew you’d come.">
+			<choice id ="1" option="Who are you again?" next_node ="1"/>
+		</node>
+		<node id ="1" text="I’m Octella Reynopus, and I am a Pythoness">
+			<choice id ="1" option="So you’re a scammer?" next_node ="2"/>
+			<choice id ="2" option="Can you read the future??" next_node ="5"/>
+		</node>
+		<node id ="2" text="Depends on whocto you ask, but I know that you’ll need my help?">
+			<choice id ="1" option="How exactly can an armless lady help me?" next_node ="3"/>
+			<choice id ="2" option="Really? You don’t look like a fighter" next_node ="3"/>
+		</node>
+		<node id ="3" text="I may not have arms, but 8 tentacles sure can get to weird places">
+			<choice id ="1" option="…ayo?" next_node ="4"/>
+			<choice id ="2" option="Wait, does that mean that you can work as a collector? Or am I trippin'" next_node ="6"/>
+		</node>
+		<node id ="4" text="Think of it as a octo-roomba, and I may find some rare items">
+			<choice id ="1" option="Where are you getting with this?" next_node ="5"/>
+		</node>
+		<node id ="5" text="I was about to be Galician-style octopus a while ago if it wasn’t by you, or I am wrong, hon?">
+			<choice id ="1" option="…yes, I assume I am responsible for that" next_node ="6"/>
+			<choice id ="2" option="You’re welcome Octella" next_node ="6"/>
+		</node>
+		<node id ="6" text="So, in return for saving my life, I'll save anything that I may consider useful to you, deal?">
+			<choice id ="1" option="Heck yeah! Free stuff!" next_node ="-1"/>
+		</node>
+		
+	</dialogue_tree>
+	<!--Tio asustado de puños-->
+	<dialogue_tree ID="0" NPC="3">
+		<node id ="0" text="Wow those gloves sure do look amazing… Too much in fact">
+			<choice id ="1" option="Too much?" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="Yeah, like hell I’m going near them">
+			<choice id ="1" option="It’s like a tattoo I guess, cool to have but not for everyone" next_node ="-1"/>
+		</node>
+
 	</dialogue_tree>
 
-	<dialogue_tree ID="0" NPC="2">
-		<node id ="0" text="Q1?">
-			<choice id ="1" option="A1" next_node ="1"/>
-			<choice id ="2" option="A2" next_node ="1"/>
+	<!--Mission Puerta-->
+	<dialogue_tree ID="0" NPC="4">
+		<node id ="0" text="DAMN it, all the way here just to be trapped!">
+			<choice id ="1" option="No way, we’re trapped?" next_node ="1"/>
 		</node>
-		<node id ="1" text="Q2?">
-			<choice id ="1" option="A1" next_node ="2"/>
-			<choice id ="2" option="A2" next_node ="2"/>
+
+		<node id ="1" text="Unless you know a way through those guys in front of the door, wait, you look kinda strong">
+			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
-		<node id ="2" text="Q3?">
-			<choice id ="1" option="A1" next_node ="-1"/>
-			<choice id ="2" option="A2!" next_node ="-1"/>
-		</node>
+	</dialogue_tree>
+		<dialogue_tree ID="1" NPC="4">
+			<node id ="0" text="Oh, you again, what's up?">
+				<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
+				<choice id ="2" option="Those guys won't be a problem now" next_node ="1"/>
+
+			</node>
+
+			<node id ="1" text="What? Wait, really? Now that I look into it, you kinda smell like...">
+				<choice id ="1" option="Like tons of blood?" next_node ="2"/>
+				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3"/>
+
+			</node>
+
+			<node id ="2" text="Exactly! Did you loot them?">
+				<choice id ="1" option="Yeah, they had these weird, ugly, bag" next_node ="4"/>
+
+			</node>
+
+			<node id ="3" text="mmm... no? Did you find anything useful?">
+				<choice id ="1" option="Yeah, they were pissing on a bag, don't ask me why I took it" next_node ="4"/>
+
+			</node>
+
+			<node id ="4" text="Ey! That bag is mine, and inside it's my card">
+				<choice id ="1" option="Sorry but I don't want your number" next_node ="5"/>
+
+			</node>
+
+			<node id ="5" text="No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
+				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1"/>
+
+			</node>
 	</dialogue_tree>
 </dialogs>

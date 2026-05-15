@@ -12,6 +12,7 @@ enum class EntityType
 	ENEMY,
 	NPC_VAGABUNDO,
 	BASENPC,
+	BASECOMPANION,
 	UNKNOWN
 };
 

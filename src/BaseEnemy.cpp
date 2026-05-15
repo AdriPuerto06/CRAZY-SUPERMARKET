@@ -13,7 +13,7 @@
 
 BaseEnemy::BaseEnemy(){}
 
-void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID)
+void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int fight_ID)
 {
 	this->type = type;
 	this->position = position;
@@ -21,6 +21,7 @@ void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char
 	this->HP = HP;
 	this->ID = ID;
 	this->texturePath = texturePath;
+	this->fight_ID = fight_ID;
 }
 
 BaseEnemy::~BaseEnemy() {
@@ -108,10 +109,21 @@ Vector2D BaseEnemy::GetPosition() {
 
 //Define OnCollision function for the enemy. 
 void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
+	if (Engine::GetInstance().combatManager->in_combat) return;
+	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 
+	Vector2D buttonPos = Vector2D{ 500,500 };
+	Engine::GetInstance().combatManager->SaveScene();
+	Engine::GetInstance().combatManager->ShowButtonStart(buttonPos, this->ID, fight_ID);
+	Engine::GetInstance().combatManager->showingButtonStart = true;
 }
 
 void BaseEnemy::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
-
+	if ((physB->ctype == ColliderType::PLAYER) && Engine::GetInstance().combatManager->showingButtonStart && !(Engine::GetInstance().combatManager->in_combat))
+	{
+		Engine::GetInstance().combatManager->UnloadCombatUI();
+		Engine::GetInstance().combatManager->in_combat = false;
+		Engine::GetInstance().combatManager->showingButtonStart = false;
+	}
 }

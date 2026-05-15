@@ -10,13 +10,14 @@
 BaseNPC::BaseNPC() {};
 BaseNPC::~BaseNPC() {};
 
-void BaseNPC::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID)
+void BaseNPC::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int currentDialogueTree)
 {
 	this->type = type;
 	this->active = active;
 	this->position = position;
 	this->texturePath = texturePath;
 	this->ID = ID;
+	this->currentDialogueTree = currentDialogueTree;
 }
 
 bool BaseNPC::Awake() {
@@ -45,12 +46,16 @@ bool BaseNPC::Update(float dt) {
 }
 
 bool BaseNPC::CleanUp() {
-
+	LOG("Cleanup NPC");
+	Engine::GetInstance().textures->UnLoad(texture);
+	Engine::GetInstance().physics->DeletePhysBody(pbody);
 	return true;
 }
 
 bool BaseNPC::Destroy() {
-
+	LOG("Destroying NPC");
+	active = false;
+	pendingToDelete = true;
 	return true;
 }
 
@@ -64,8 +69,11 @@ void BaseNPC::OnCollision(PhysBody* physA, PhysBody* physB)
 	if (Engine::GetInstance().dialogueManager->in_conversation) return;
 	if (!(physB->ctype == ColliderType::PLAYER) && showingButton) return;
 
-	Vector2D buttonPos = Vector2D((position.getX() + texW / 2), (position.getY() + texH * 1.5));
-	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, ID);
+	/*Vector2D buttonPos = Vector2D((position.getX() + texW / 2), (position.getY() + texH * 1.5));*/
+	Vector2D buttonPos = Vector2D(500,500);
+	LOG("Vector 'cDT' size: %i", Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.size());
+	int dialogue_Tree = Engine::GetInstance().dialogueManager->currentDialogueTreesNPC[ID - 1];
+	Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, dialogue_Tree, ID);
 	Engine::GetInstance().dialogueManager->showingButtonStart = true;
 }
 
@@ -75,5 +83,6 @@ void BaseNPC::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	{
 		Engine::GetInstance().dialogueManager->UnloadDialogueUI();
 		Engine::GetInstance().dialogueManager->in_conversation = false;
+		Engine::GetInstance().dialogueManager->showingButtonStart = false;
 	}
 }

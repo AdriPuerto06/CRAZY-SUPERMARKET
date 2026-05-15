@@ -17,13 +17,19 @@ struct Mix_Chunk;
 
 enum Music {
     m_OFF = 0,
-    m_title
+    m_title,
+    m_battle,
+    m_roof,
+    m_roof_drums,
+	m_restaurant
 };
 
 enum Sfx {
     s_OFF = 0,
     s_title_name,
-    s_epic_reveal
+    s_epic_reveal,
+    jumpscare,
+    s_button
 };
 
 
@@ -42,8 +48,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+    bool Update(float dt) override;
+
 	// Play a music file
-	bool PlayMusic(Music id, float fadeTime);
+	bool PlayMusic(Music id, float fadeTime, int repeat = 0);
 
 	// Load a WAV in memory
 	int LoadFx(const char* path);
@@ -51,12 +59,20 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(Sfx id, int repeat);
 
-    //Change Music track
+	// Check if music is currently playing
+    bool IsMusicFinished() const
+    {
+        if (!music_stream_) return true;
+        return SDL_GetAudioStreamAvailable(music_stream_) == 0;
+    }
+
+    // 
+    // Music track
     bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
 
 	// Volume control
-    void SetMusicVolume(float volume); // 0.0f – 1.0f
-    void SetSFXVolume(float volume);   // 0.0f – 1.0f
+    void SetMusicVolume(float volume); // 0.0f ï¿½ 1.0f
+    void SetSFXVolume(float volume);   // 0.0f ï¿½ 1.0f
 
 
 
@@ -89,7 +105,8 @@ private:
     void FreeSound(SoundData& s);
     bool EnsureDeviceOpen();
     bool EnsureStreams();
-
+    
+    bool music_loop_ = false;
     _Mix_Music* music;
     List<Mix_Chunk*>	fx;
 

@@ -128,7 +128,7 @@ struct MapData
 };
 
 struct TeleportZone {
-    float x, y, width, height;   // área en píxeles
+    float x, y, width, height;   // ï¿½rea en pï¿½xeles
     std::string targetMap;
 };
 
@@ -155,6 +155,8 @@ public:
 
     // Load new map
     bool Load(std::string path, std::string mapFileName);
+
+    void UpdateEnemiesData();
 
     // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
     Vector2D MapToWorld(int x, int y) const;
@@ -197,6 +199,8 @@ public:
     std::string mapFileName;
     std::string mapPath;
     std::vector<TeleportZone> teleportZones;
+
+    int magicPoints;
 
 private:
     bool mapLoaded;

@@ -1,6 +1,7 @@
 #pragma once
 #include "UIButton.h"
 #include <vector>
+#include "RewardManager.h"
 
 struct DialogueTree {
 	std::vector<const char*> nodes_text;
@@ -8,6 +9,17 @@ struct DialogueTree {
 	std::vector<std::vector<int>> choices_id;
 	std::vector<std::vector<const char*>> choices_text;
 	std::vector<std::vector<int>> choices_next_node;
+	std::vector<std::vector<Reward>> rewards;
+
+	void Clear()
+	{
+		nodes_text.clear();
+		nodes_id.clear();
+		choices_id.clear();
+		choices_text.clear();
+		choices_next_node.clear();
+		rewards.clear();
+	}
 };
 
 struct CurrentDialogue {
@@ -50,6 +62,7 @@ public:
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
+	void UnlockNewDialogueTree(int NPC_ID);
 
 	std::string dialogsFileName;
 	std::string dialogsPath;
@@ -62,6 +75,8 @@ public:
 	bool can_be_clicked = true;
 	bool showingButtonStart = false;
 	bool in_conversation = false;
+
+	std::vector<int> currentDialogueTreesNPC;
 
 private:
 	pugi::xml_document dialogsFileXML;

@@ -1,0 +1,9 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<items>
+	<item id="1" name ="Cursed Knife" active="false" value="1" description="this is a item" texturePath="Assets/Items/Item__67-export.png"/>
+	<item id="2" name ="Stillish skates" active="false" value="6" description="this is a item2" texturePath="Assets/Items/Item__67-export.png"/>
+	<item id="3" name ="Bike helmet" active="false" value="1" description="this is a item3" texturePath="Assets/Items/Item__67-export.png"/>
+	<item id="4" name ="Blessed water" active="false" value="1" description="this is a item4" texturePath="Assets/Items/Item__67-export.png"/>
+	<item id="5" name ="Gigantic flashlight" active="false" value="5" description="this is a item5" texturePath="Assets/Items/Item__67-export.png"/>
+	<item id="6" name ="Sandwich wrapping" active="false" value="1" description="this is a item6" texturePath="Assets/Items/Item__67-export.png"/>
+</items>
