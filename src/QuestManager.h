@@ -45,4 +45,7 @@ private:
 	std::string questsFileName;
 	std::string questsPath;
 
+	//textura de la notificación
+	SDL_Texture* PopUp = nullptr;
+
 };
