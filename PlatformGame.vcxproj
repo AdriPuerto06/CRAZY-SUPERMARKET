@@ -214,9 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />
-    <Xml Include="ItemsData.xml" />
     <Xml Include="src\CombatData.xml" />
     <Xml Include="src\Dialogs.xml" />
+    <Xml Include="src\ItemsData.xml" />
     <Xml Include="src\QuestsData.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -184,27 +184,29 @@ void Player::GetPhysicsValues() {
 
 void Player::Move() {
 	if (!can_Move) return;
+	int inc = 1;
+	if (godMode) inc = 4;
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -speed;
-		direction.setX(-1.f);
+		velocity.x = -speed * inc;
+		/*direction.setX(-1.f);*/
 		//anims.SetCurrent("move");
 	}
-	else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) { direction.setX(0); }
+	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) { direction.setX(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = speed;
-		direction.setX(1.f);
+		velocity.x = speed * inc;
+		/*direction.setX(1.f);*/
 		//anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		velocity.y = -speed;
-		direction.setY(1.f);
+		velocity.y = -speed * inc;
+		/*direction.setY(1.f);*/
 		//anims.SetCurrent("move");
 	}
-	else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) { direction.setY(0); }
+	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) { direction.setY(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		velocity.y = speed;
-		direction.setY(-1.f);
+		velocity.y = speed * inc;
+		/*direction.setY(-1.f);*/
 		//anims.SetCurrent("move");
 	}
 
