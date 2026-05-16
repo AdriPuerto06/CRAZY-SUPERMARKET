@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "UIManager.h"
 #include "Window.h"
+#include "Textures.h"
 
 QuestManager::QuestManager() : Module()
 {
@@ -23,17 +24,22 @@ bool QuestManager::Start()
 	WindowSize = { (float)Engine::GetInstance().render->camera.w,
 				   (float)Engine::GetInstance().render->camera.h };
 
+
+	PopUp = Engine::GetInstance().textures->Load("Assets/Textures/exclamation.png");
+
 	return true;
 }
 
 bool QuestManager::Update(float dt)
 {
+	
+	ViewQuest();
 
 	return true;
 }
 
 bool QuestManager::PostUpdate() {
-	
+
 	return true;
 }
 
@@ -86,6 +92,7 @@ bool QuestManager::IsQuestActive(const char* name)
 	{
 		if (std::strcmp(q.name, name) == 0) { return q.active; }
 	}
+	return false;
 }
 
 void QuestManager::ActivateQuest(const char* name)
@@ -110,16 +117,37 @@ bool QuestManager::IsQuestCompleted(const char* name)
 	{
 		if (std::strcmp(q.name, name) == 0) { return q.completed; }
 	}
+	return false;
 }
 
 void QuestManager::ViewQuest()
 {
-	int n_quests = 0;
-	for (Quest q : *quests)
+
+	int Yspacing = 0;
+	int winW = (int)WindowSize.getX();
+	int winY = (int)WindowSize.getY();
+
+	//posición en Y en la que empieza el texto
+	int Ystart = 64;
+
+	//blanco?
+	SDL_Color color = { 255, 255, 255, 255 };
+
+	for (const Quest& q : *quests)
 	{
-		if (q.active) {
-			Engine::GetInstance().render->DrawTexture(NULL, 100*n_quests, WindowSize.getY() - 150);
-			n_quests++;
+
+		if (q.active && !q.completed) {
+
+			std::string text = std::string(q.name);
+			int x = winW - 300;
+			
+			int y = Ystart + Yspacing;
+			// pasar false en DrawTexture hace que siga la camara en vez de dejar la imagen tiesa ahí (muy loco)
+			Engine::GetInstance().render->DrawTexture(PopUp, x - PopUp->w - 5, y, nullptr, 0.0f, 0.0, 0, 0, false);
+			Engine::GetInstance().render->DrawText(text.c_str(), x, y, 0, 0, color);
+
+			Yspacing += 32;
+
 		}
 	}
 }
