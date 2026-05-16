@@ -1,7 +1,26 @@
+<!--Rewards-->
+<!--QUEST: 0, ITEM: 1, COMPANION: 2-->
+<!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5-->
 <combat>
 	<fight id="1" players_id="1" enemies_id="1"></fight>
 	<fight id="2" players_id="1" enemies_id="2,3,4"></fight>
-	<fight id="3" players_id="1" enemies_id="5"></fight>
+	<fight id="3" players_id="1" enemies_id="5,6,7"></fight>
+	<fight id ="4" players_id="1" enemies_id="20"></fight>
+	<fight id ="5" players_id="1" enemies_id="24,21"></fight>
+	<fight id ="6" players_id="1" enemies_id="15"></fight>
+	<fight id ="7" players_id="1" enemies_id="24,21"></fight>
+	<fight id ="8" players_id="1" enemies_id="25,8"></fight>
+	<fight id ="9" players_id="1" enemies_id="9"></fight>
+	<fight id ="10" players_id="1" enemies_id="10"></fight>
+	<fight id ="11" players_id="1" enemies_id="12"></fight>
+	<fight id ="12" players_id="1" enemies_id="11"></fight>
+	<fight id ="13" players_id="1" enemies_id="13"></fight>
+	<fight id ="14" players_id="1" enemies_id="14"></fight>
+	<fight id ="15" players_id="1" enemies_id="16,22"></fight>
+	<fight id ="16" players_id="1" enemies_id="17,23"></fight>
+	<fight id ="17" players_id="1" enemies_id="18"></fight>
+	<fight id ="18" players_id="1" enemies_id="19"></fight>
 	
 	<player id="1" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -82,10 +101,10 @@
 	</player>
 	
 	<enemy id =" 1" HP="15">
-		<attack name="Attack1" dmg ="5" effect="buff"></attack>
-		<attack name="Attack2" dmg ="3" effect="buff"></attack>
-		<attack name ="Attack3" dmg="4" effect="buff"></attack>
-		<attack name="Attack4" dmg="2" effect="buff"></attack>
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
 	</enemy>
 	<enemy id =" 2" HP="15">
 		<attack name="Attack1" dmg ="7" effect="none"></attack>
@@ -102,6 +121,132 @@
 	<enemy id = "4" HP="5">
 		<attack name="Attack1" dmg ="3" effect="none"></attack>
 		<attack name="Attack2" dmg ="9" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 5" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 6" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 7" HP="10">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="4" effect="none"></attack>
+		<attack name ="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+	<enemy id =" 8" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 9" HP="10">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 10" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 11" HP="10">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="6" effect="none"></attack>
+		<attack name ="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
+	</enemy>
+	<enemy id =" 12" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 13" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 14" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 15" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 16" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 17" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 18" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 19" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 20" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 21" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 22" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 23" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 24" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
+		<attack name ="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+	<enemy id =" 25" HP="15">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="3" effect="none"></attack>
 		<attack name ="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>

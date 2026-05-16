@@ -1,6 +1,7 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5, ACTIVATEEVENT: 6-->
 <dialogs>
 	<!--Vagabundo-->
 	<dialogue_tree ID="0" NPC="1"> 
@@ -78,8 +79,8 @@
 		<node id ="1" text="Unless you know a way through those guys in front of the door, wait, you look kinda strong">
 			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
-
-	<dialogue_tree ID="1" NPC="4">
+	</dialogue_tree>
+		<dialogue_tree ID="1" NPC="4">
 			<node id ="0" text="Oh, you again, what's up?">
 				<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
 				<choice id ="2" option="Those guys won't be a problem now" next_node ="1"/>
@@ -88,7 +89,7 @@
 
 			<node id ="1" text="What? Wait, really? Now that I look into it, you kinda smell like...">
 				<choice id ="1" option="Like tons of blood?" next_node ="2"/>
-				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3" reward="3" reward_value="Beat those guys!"/>
+				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3"/>
 
 			</node>
 
@@ -101,18 +102,30 @@
 				<choice id ="1" option="Yeah, they were pissing on a bag, don't ask me why I took it" next_node ="4"/>
 
 			</node>
-		
+
 			<node id ="4" text="Ey! That bag is mine, and inside it's my card">
 				<choice id ="1" option="Sorry but I don't want your number" next_node ="5"/>
 
 			</node>
-		
+
 			<node id ="5" text="No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
-				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1" reward="3" reward_value="Beat those guys!"/>
+				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1"/>
 
 			</node>
-
 	</dialogue_tree>
+
+	<!--Dungeon-->
+	<!--NPC to unlock Door2-->
+	<dialogue_tree ID="0" NPC="5">
+		
+		<node id ="0" text="text1">
+			<choice id ="1" option="a1" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="text2">
+			<choice id ="1" option="Unlock the door" next_node ="-1" reward="6" reward_value="Key for Door2"/>
+		</node>
 		
 	</dialogue_tree>
+	
 </dialogs>

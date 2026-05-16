@@ -12,6 +12,9 @@
 #include "ItemManager.h"
 #include "EntityManager.h"
 #include "QuestManager.h"
+#include "DialogueManager.h"
+#include "RewardManager.h"
+#include "EntityManager.h"
 
 //helpers
 std::vector<int> GetIDs(std::string str)
@@ -59,85 +62,6 @@ bool CanAttack(int probability) {
 	return roll <= probability;
 }
 
-void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
-{
-
-	//effects that affect the attacker (heal itself, buff itself...)
-	if (attack.effect == "none")
-	{
-	}
-	else if (attack.effect == "heal")
-	{
-		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS); 
-						   else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
-	}
-	else if (attack.effect == "selfKO")
-	{
-		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id); 
-									else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
-	}
-	else if (attack.effect == "ragebait")
-	{
-		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
-		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
-	}
-	else if (attack.effect == "shield")
-	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); /*attacker.status = "shield"*/ attacker.shield_and_buff.first = true; }
-		else { LOG("Enemy ID: %i activates shield.", attacker.id); /*attacker.status = "shield";*/ attacker.shield_and_buff.first = true;};
-	}
-	else if (attack.effect == "buff") 
-	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
-		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
-	}
-	else
-	{
-		target.status = attack.effect;
-	}
-	//apply items
-	int dmg_increase = 0;
-	int dmg_reduction = 0;
-	int confused_probability = 0;
-	Engine::GetInstance().itemManager->ApplyCombatItems(dmg_increase, dmg_reduction, confused_probability);
-	//effects of the target that affect the attacker
-	
-	if (target.shield_and_buff.first)
-	{
-		dmg_reduction += SHIELD_DMG_REDUCTION;
-		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
-		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION);}
-	}
-	if (attacker.shield_and_buff.second)
-	{
-		dmg_increase += BUFF_DMG_INCREASE;
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
-		else { LOG("Enemy ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
-	}
-
-	int dmg_applied = attack.dmg + dmg_increase - dmg_reduction;
-	if (dmg_applied < 0) dmg_applied = 0; //clamp
-
-	if (confused_probability != 0 && attacker.type == EntityType::BASEENEMY)
-	{
-		if (CanAttack(100 - confused_probability)) {}
-		else { LOG("Enemy couldn't attack because of the item 'Disturbing Picture'."); return; }
-	}
-	else target.hp -= dmg_applied;
-	
-	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
-	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
-
-	if (Engine::GetInstance().itemManager->IsItemActive("Sandwich wrapping"))
-	{
-		for (auto player : combatData->players)
-		{
-			player.hp += 1;
-		}
-		LOG("Sandwich wrapping item heals each player by 1 HP.");
-	}
-}
-
 CombatManager::CombatManager() : Module()
 {
 	name = "CombatManagerManager";
@@ -174,6 +98,7 @@ bool CombatManager::Update(float dt)
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && showInventory == true) {
 		showInventory = false;
+		Engine::GetInstance().itemManager->UnShowInventory();
 	}
 
 	return true;
@@ -188,7 +113,7 @@ bool CombatManager::CleanUp()
 {
 	in_combat = false;
 	combatFileXML.empty();
-	/*combatData->Clear();*/
+	combatData->Clear();
 	return true;
 }
 
@@ -237,34 +162,34 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 	switch (uiElement->id)
 	{
-	case 1: // Button MyButton
+	case 1:
 		if (can_be_clicked) {
 			ButtonAction(1);
 		}
 		break;
-	case 2: // Button MyButton
+	case 2:
 		if (can_be_clicked) {
 			ButtonAction(2);
 		}
 		break;
-	case 3: // Button MyButton
+	case 3:
 		if (can_be_clicked) {
 			ButtonAction(3);
 		}
 		break;
-	case 4: // Button MyButton
+	case 4:
 		if (can_be_clicked) {
 			ButtonAction(4);
 		}
 		break;
-	case 5: // Button MyButton
+	case 5:
 		UnloadCombatUI();
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_combat = false;
 		LOG("Cleaned combat UI.");
 		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
 		break;
-	case 6: // Button MyButton
+	case 6:
 		UnloadCombatUI();
 		showingButtonStart = false;
 		StartCombat(/*combatData->players_id, combatData->enemies_id*/);
@@ -315,7 +240,7 @@ void CombatManager::ApplyCombatLogic()
 	if (combatState->turn == "Player")
 	{
 		CheckAlive();
-
+		if (!in_combat) { return; }
 		Combatant& player = combatData->players[combatState->player_index_selected];
 		Combatant& enemy = combatData->enemies[combatState->enemy_index_targeted];
 		Attack& attack = player.attacks[combatState->player_attack_index_selected];
@@ -342,17 +267,98 @@ void CombatManager::ApplyCombatLogic()
 
 		combatState->turn = "Enemy";
 		CheckAlive();
+		if (!in_combat) { return; }
 	}
 
 	if (combatState->turn == "Enemy")
 	{
 		CheckAlive();
+		if (!in_combat) { return; }
 		EnemyAI();
 		combatState->turn = "Player";
 	}
-
+	if (!in_combat) { return; }
 	ApplyEffects();
 	CheckAlive();
+}
+
+void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
+{
+
+	//effects that affect the attacker (heal itself, buff itself...)
+	if (attack.effect == "none")
+	{
+	}
+	else if (attack.effect == "heal")
+	{
+		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS);
+		else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
+	}
+	else if (attack.effect == "selfKO")
+	{
+		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id);
+		else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
+	}
+	else if (attack.effect == "ragebait")
+	{
+		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
+		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
+	}
+	else if (attack.effect == "shield")
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); /*attacker.status = "shield"*/ attacker.shield_and_buff.first = true; }
+		else { LOG("Enemy ID: %i activates shield.", attacker.id); /*attacker.status = "shield";*/ attacker.shield_and_buff.first = true; };
+	}
+	else if (attack.effect == "buff")
+	{
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
+		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
+	}
+	else
+	{
+		target.status = attack.effect;
+	}
+	//apply items
+	int dmg_increase = 0;
+	int dmg_reduction = 0;
+	int confused_probability = 0;
+	Engine::GetInstance().itemManager->ApplyCombatItems(dmg_increase, dmg_reduction, confused_probability);
+	//effects of the target that affect the attacker
+
+	if (target.shield_and_buff.first)
+	{
+		dmg_reduction += SHIELD_DMG_REDUCTION;
+		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION); }
+		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION); }
+	}
+	if (attacker.shield_and_buff.second)
+	{
+		dmg_increase += BUFF_DMG_INCREASE;
+		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
+		else { LOG("Enemy ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
+	}
+
+	int dmg_applied = attack.dmg + dmg_increase - dmg_reduction;
+	if (dmg_applied < 0) dmg_applied = 0; //clamp
+
+	if (confused_probability != 0 && attacker.type == EntityType::BASEENEMY)
+	{
+		if (CanAttack(100 - confused_probability)) {}
+		else { LOG("Enemy couldn't attack because of the item 'Disturbing Picture'."); return; }
+	}
+	else target.hp -= dmg_applied;
+
+	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
+	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
+
+	if (Engine::GetInstance().itemManager->IsItemActive("Sandwich wrapping")) // if item Sandwich wrapping is active -> heal 1 hp to player and companions
+	{
+		for (auto player : combatData->players)
+		{
+			player.hp += 1;
+		}
+		LOG("Sandwich wrapping item heals each player by 1 HP.");
+	}
 }
 
 void CombatManager::ApplyEffects()
@@ -782,7 +788,7 @@ void CombatManager::CheckAlive()
 	if (combatState->enemy_Wins)
 	{
 		LOG("Enemies win the combat.");
-		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
+		Engine::GetInstance().scene->ChangeScene(goBack);
 		in_combat = false;
 		enemies_to_destroy.clear();
 	}
@@ -791,11 +797,12 @@ void CombatManager::CheckAlive()
 		LOG("Player wins the combat. Destroying the enemies...");
 		MarkEnemiesAsDead();
 
-		Engine::GetInstance().questManager->CanCombatQuestBeCompleted(combatData->fight_ID, true);
+		CanCombatQuestBeCompleted(combatData->fight_ID, true);
 
 		in_combat = false;
 		enemies_to_destroy.clear();
-		Engine::GetInstance().scene->ChangeScene(SceneID::LEVEL1);
+		
+		Engine::GetInstance().scene->ChangeScene(goBack);
 	}
 }
 
@@ -817,7 +824,7 @@ void CombatManager::UnlockAttack(EntityType type, const char* name)
 		{			
 			for (auto attack : player.attacks)
 			{
-				if (std::strcmp(attack.name,name) == 0) { attack.unlocked = true; LOG("Attack: %s from player ID: %i unlocked.", attack.name, player.id); /*Save combat data file*/ return; }
+				if (std::strcmp(attack.name,name) == 0) { attack.unlocked = true; LOG("Attack: %s from player ID: %i unlocked.", attack.name, player.id); return; }
 			}
 		}
 	}
@@ -827,19 +834,6 @@ void CombatManager::UnlockAttack(EntityType type, const char* name)
 void CombatManager::SaveTreeAttributes()
 {
 	Engine::GetInstance().map->magicPoints = combatState->magicPoints;
-	//for (pugi::xml_node fight_tree_node = combatFileXML.child("combat").child("fight");
-	//	fight_tree_node != NULL;
-	//	fight_tree_node = fight_tree_node.next_sibling("fight"))
-	//{
-	//	/*if (fight_tree_node.attribute("id").as_int() == fight_ID)
-	//	{
-	//		std::string players_id_str = fight_tree_node.attribute("players_id").as_string();
-	//		std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
-	//		players_id = GetIDs(players_id_str);
-	//		enemies_id = GetIDs(enemies_id_str);
-	//		break;
-	//	}*/
-	//}
 
 	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
 		combat_tree_node != NULL;
@@ -858,5 +852,26 @@ void CombatManager::SaveTreeAttributes()
 			current_node.attribute("unlocked").set_value(attack.unlocked);
 			attack_id++;
 		}
+	}
+}
+
+void CombatManager::SaveScene()
+{
+	goBack = Engine::GetInstance().scene->GetCurrentScene();
+	Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), goBack);
+}
+
+void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
+{
+	if (!(victory)) return;
+	switch (fight_ID)
+	{
+	case 2:
+		if (Engine::GetInstance().questManager->IsQuestActive("Beat those guys!"))
+		{
+			Engine::GetInstance().questManager->CompleteQuest("Beat those guys!");
+			Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(4); //unlock next dialogue for NPC with ID = 4
+		}
+		break;
 	}
 }

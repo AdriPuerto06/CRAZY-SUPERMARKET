@@ -37,6 +37,7 @@ private:
 	void GetPhysicsValues();
 	void Move();
 	void Teleport();
+	void AutoSave();
 	void ApplyPhysics();
 	void Draw(float dt);
 	void GodMode();
@@ -58,16 +59,17 @@ public:
 
 	// L08 TODO 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-
 	int HP;
 	bool inCombat = false;
 
 	std::string pendingMapLoad;
+	Vector2D direction;
 
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;
 	int teleportCooldown = 120;
+	int autosaveCooldown = 120;
 	bool showingMenu = false;
 
 	bool godMode = false;

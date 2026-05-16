@@ -10,10 +10,12 @@
 #include "BaseNPC.h"
 #include "BaseEnemy.h"
 #include "BaseCompanion.h"
+#include "Event.h"
 
 #include <math.h>
 #include "CombatManager.h"
 #include "DialogueManager.h"
+#include "EventManager.h"
 
 Map::Map() : Module(), mapLoaded(false)
 {
@@ -190,8 +192,9 @@ MapLayer* Map::GetNavigationLayer() {
 
 //L15 TODO 2: Define a method to load entities from the map XML
 void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
+    isReloading = true;
 
-    Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();
+   /* Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
         //Check if the object group is "Entities"
@@ -206,7 +209,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 float x = objectNode.attribute("x").as_float();
                 float y = objectNode.attribute("y").as_float();
                 int ID = objectNode.attribute("id").as_int();
-
+                std::string entity_Name = objectNode.attribute("name").as_string();
                 // Create entity based on type
                 if (entityType == "Player")
                 {
@@ -242,7 +245,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                 if (entityType == "NPC")
                 {
-         
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
@@ -265,7 +267,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                         if (name == "currentDialogueTree") {
                             currentDialogueTree = propertyNode.attribute("value").as_int();
-                            Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.push_back(currentDialogueTree);
                         }
                     }
 
@@ -289,7 +290,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("NPC inactive");
                     }
                 }
-
 
                 if (entityType == "Enemy") 
                 {
@@ -337,7 +337,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     }
                 }
 
-
                 if (entityType == "Companion")
                 {
 
@@ -383,9 +382,65 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("Companion inactive");
                     }
                 }
+
+
+                if (entityType == "Event")
+                {
+
+                    int Event_ID = 0;
+                    const char* texturePath = nullptr;
+                    bool active = false;
+                    const char* event_Name = nullptr;
+                    bool activated = false;
+                    //get NPC data
+                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                        propertyNode;
+                        propertyNode = propertyNode.next_sibling("property"))
+                    {
+                        std::string name = propertyNode.attribute("name").as_string();
+
+                        if (name == "Event_ID")
+                            Event_ID = propertyNode.attribute("value").as_int();
+
+                        if (name == "active")
+                            active = propertyNode.attribute("value").as_bool();
+
+                        if (name == "texturePath")
+                            texturePath = (const char*)propertyNode.attribute("value").as_string();
+
+                        if (name == "event_Name")
+                            event_Name = (const char*)propertyNode.attribute("value").as_string();
+
+                        if (name == "activated")
+                            activated = propertyNode.attribute("value").as_bool();
+
+                    }
+
+                    if (active)
+                    {
+                        std::shared_ptr<Event> event;
+                        if (Engine::GetInstance().entityManager->GetEntity(EntityType::EVENT, ID) == nullptr)
+                        {
+                            event = std::dynamic_pointer_cast<Event>(Engine::GetInstance().entityManager->CreateEntity(EntityType::EVENT));
+                        }
+                        else
+                        {
+                            event = std::dynamic_pointer_cast<Event>(Engine::GetInstance().entityManager->GetEntity(EntityType::EVENT, ID));
+                        }
+                        event->Init(EntityType::EVENT, active, pos, texturePath, Event_ID, event_Name, activated);
+                        event->entity_ID = ID;
+                        LOG("Event -> Event: %i, entity_ID: %i, at %f, %f.", Event_ID, ID, pos.getX(), pos.getY());
+                        event->Start();
+                    }
+                    else {
+                        LOG("Event inactive");
+                    }
+                }
             }
         }
     }
+
+    isReloading = false;
 }
 
 //L15 TODO 4: Define a method to save entities to the map XML
@@ -424,7 +479,6 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                         
                     }
-
                 }
 
                 if (entityType == "NPC")
@@ -441,7 +495,6 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                         propertyNode = propertyNode.next_sibling("property"))
                     {
                         std::string name = propertyNode.attribute("name").as_string();
-
                         /*if (name == "NPC_ID")
                             propertyNode.attribute("value").set_value(NPC_ID);*/
 
@@ -485,24 +538,51 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 {
                     /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
                     std::shared_ptr<BaseEnemy> companion = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
-                    const char* texturePath = companion->texturePath;
-                    bool active = companion->active;
-                    /*int companion_ID = -1;*/
-                    //get NPC data
-                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
-                        propertyNode;
-                        propertyNode = propertyNode.next_sibling("property"))
-                    {
-                        std::string name = propertyNode.attribute("name").as_string();
+                    if (companion) {
+                        const char* texturePath = companion->texturePath;
+                        bool active = companion->active;
+                        /*int companion_ID = -1;*/
+                        //get NPC data
+                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                            propertyNode;
+                            propertyNode = propertyNode.next_sibling("property"))
+                        {
+                            std::string name = propertyNode.attribute("name").as_string();
 
-                        /*if (name == "ENEMY_ID")
-                            propertyNode.attribute("value").as_int();*/
+                            /*if (name == "ENEMY_ID")
+                                propertyNode.attribute("value").as_int();*/
 
-                        if (name == "active")
-                            propertyNode.attribute("value").set_value(active);
+                            if (name == "active")
+                                propertyNode.attribute("value").set_value(active);
 
-                        if (name == "texturePath")
-                            propertyNode.attribute("value").set_value(texturePath);
+                            if (name == "texturePath")
+                                propertyNode.attribute("value").set_value(texturePath);
+                        }
+                    }
+                }
+
+
+                if (entityType == "Event")
+                {
+                    /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
+                    std::shared_ptr<Event> event = std::dynamic_pointer_cast<Event>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::EVENT));
+                    if (event) {
+                        bool active = event->active;
+                        bool activated = event->activated;
+                        /*int companion_ID = -1;*/
+                        //get Event data
+                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                            propertyNode;
+                            propertyNode = propertyNode.next_sibling("property"))
+                        {
+                            std::string name = propertyNode.attribute("name").as_string();
+
+                            if (name == "active")
+                                propertyNode.attribute("value").set_value(active);
+
+                            if (name == "activated")
+                                propertyNode.attribute("value").set_value(activated);
+                        }
                     }
                 }
             }
@@ -529,7 +609,7 @@ void Map::DrawLayers(bool aboveEntities)
 {
     if (!mapLoaded) return;
 
-    // Normalizamos la búsqueda de propiedades: si layer no tiene "AboveEntities", tratamos como false.
+    // Normalizamos la bï¿½squeda de propiedades: si layer no tiene "AboveEntities", tratamos como false.
     const unsigned int FLIPPED_MASK = 0xE0000000u;
 
     for (const auto& mapLayer : mapData.layers) {
@@ -541,7 +621,7 @@ void Map::DrawLayers(bool aboveEntities)
         auto aboveProp = mapLayer->properties.GetProperty("AboveEntities");
         bool layerAbove = (aboveProp != nullptr) ? aboveProp->value : false;
 
-        if (layerAbove != aboveEntities) continue; // sólo dibujamos las que correspondan al pase
+        if (layerAbove != aboveEntities) continue; // sï¿½lo dibujamos las que correspondan al pase
 
         for (int i = 0; i < mapData.width; ++i) {
             for (int j = 0; j < mapData.height; ++j) {
@@ -641,6 +721,8 @@ bool Map::CleanUp()
 
     //Cleanup teleports
     teleportZones.clear();
+    autoSaves.clear();
+    /*events.clear();*/
 
     return true;
 }
@@ -836,7 +918,7 @@ bool Map::Load(std::string path, std::string fileName)
                         zone.y = object.attribute("y").as_float();
                         zone.width = object.attribute("width").as_float();
                         zone.height = object.attribute("height").as_float();
-
+                        
                         // Leer propiedades custom
                         for (pugi::xml_node prop = object.child("properties").child("property"); prop; prop = prop.next_sibling("property"))
                         {
@@ -852,7 +934,38 @@ bool Map::Load(std::string path, std::string fileName)
                 }
                 
                 //--------------------------------------------Teleports End----------------------------------------------
+                //-------------------------------------------Auto Saves Start--------------------------------------------
+                else if (groupName == "Checkpoints")
+                {
+                    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+                    {
+                        AutoSave zone;
+                        zone.x = object.attribute("x").as_float();
+                        zone.y = object.attribute("y").as_float();
+                        zone.width = object.attribute("width").as_float();
+                        zone.height = object.attribute("height").as_float();
 
+                        autoSaves.push_back(zone);
+                        LOG("AutoSave loaded");
+                    }
+                }
+                //--------------------------------------------Auto Saves End---------------------------------------------
+                ////---------------------------------------------Events Start----------------------------------------------
+                //if (groupName == "Events")
+                //{
+                //    for (pugi::xml_node object = objectGroup.child("object"); object; object = object.next_sibling("object"))
+                //    {
+                //        Event event;
+                //        event.x = object.attribute("x").as_float();
+                //        event.y = object.attribute("y").as_float();
+                //        event.width = object.attribute("width").as_float();
+                //        event.height = object.attribute("height").as_float();
+                //        event.name = object.attribute("Name").as_string();
+
+                //        events.push_back(event);
+                //    }
+                //}
+                ////----------------------------------------------Events End-----------------------------------------------
                 ret = true;
 
                 // L06: TODO 5: LOG all the data loaded iterate all tilesetsand LOG everything
@@ -894,6 +1007,8 @@ bool Map::Load(std::string path, std::string fileName)
 
         // L09: TODO 6: Load a group of properties from a node and fill a list with it
     }
+
+   /* if(Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL4) { Engine::GetInstance().eventManager->GetEvents(); }*/
 }
 
 void Map::UpdateEnemiesData()

@@ -71,8 +71,8 @@ public:
     bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
 
 	// Volume control
-    void SetMusicVolume(float volume); // 0.0f – 1.0f
-    void SetSFXVolume(float volume);   // 0.0f – 1.0f
+    void SetMusicVolume(float volume); // 0.0f ï¿½ 1.0f
+    void SetSFXVolume(float volume);   // 0.0f ï¿½ 1.0f
 
 
 

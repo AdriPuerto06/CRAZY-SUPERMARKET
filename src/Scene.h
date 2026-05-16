@@ -17,6 +17,7 @@ enum class SceneID
 	LEVEL2,
 	LEVEL2Combat,
 	LEVEL3,
+	LEVEL4,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -26,8 +27,10 @@ enum class SceneID
 	EXIT,
 	RESUME,
 	BATTLE,
+	ITEM,
+	STATS,
+	QUESTS,
 	NULLSCENE
-
 };
 
 struct SceneStack {
@@ -91,12 +94,15 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
+	bool IsReloading();
 
+	std::shared_ptr<Player> GetPlayer();
 
 	//Getter
 	SceneID GetCurrentScene();
 	SceneID GetTimeScene();
 
+	SceneStack sceneStack;
 private:
 
 	// Intro / Splash
@@ -128,6 +134,11 @@ private:
 	void UpdateLevel3(float dt);
 	void UnloadLevel3();
 	void PostUpdateLevel3();
+
+	void LoadLevel4();
+	void UpdateLevel4(float dt);
+	void UnloadLevel4();
+	void PostUpdateLevel4();
 
 	//OPTIONS
 	void LoadOptions();
@@ -182,6 +193,23 @@ private:
 	void UpdateCombatScene(float dt);
 	void PostUpdateCombatScene();
 
+	//Item
+	void LoadItem();
+	void UnloadItem();
+	void UpdateItem(float dt);
+
+	//Stats
+	void LoadStats();
+	void UnloadStats();
+	void UpdateStats(float dt);
+	void PostUpdateStats();
+
+	//Quests
+	void LoadQuests();
+	void UnloadQuests();
+	void UpdateQuests(float dt);
+	void PostUpdateQuests();
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -200,16 +228,19 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
-	SceneStack sceneStack;
 
 	//Imagen
 	SDL_Texture* logoImg = nullptr;
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* cajonTex = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+	float teamFadeValue = 0.0f;
+	float logoFadeValue = 0.0f;
+	bool  logoFadeStarted = false;
 	bool sfxLogoPlayed = false;
 	bool sfxTeamPlayed = false;
 

@@ -1,29 +1,7 @@
 #pragma once
 #include "UIButton.h"
 #include <vector>
-
-enum class RewardType {
-	QUEST,
-	ITEM,
-	COMPANION,
-	COMPLETEQUEST,
-	ATTACK,
-	DIALOGUE,
-	NONE
-};
-
-struct Reward {
-	RewardType type;
-	std::string reward_value;
-
-	Reward() {}
-
-	Reward(RewardType type, std::string str)
-	{
-		this->type = type;
-		this->reward_value = str;
-	}
-};
+#include "RewardManager.h"
 
 struct DialogueTree {
 	std::vector<const char*> nodes_text;
@@ -84,8 +62,6 @@ public:
 	
 	/*const char* GetTextFromNode(int dialogue_tree_ID, int node_value);*/
 	void GetTreeAttributes(int dialogue_tree_ID, int npc_id);
-	void GetPosibleReward(Reward reward);
-
 	void UnlockNewDialogueTree(int NPC_ID);
 
 	std::string dialogsFileName;
@@ -100,7 +76,7 @@ public:
 	bool showingButtonStart = false;
 	bool in_conversation = false;
 
-	std::vector<int> currentDialogueTreesNPC;
+	/*std::vector<int> currentDialogueTreesNPC;*/
 
 private:
 	pugi::xml_document dialogsFileXML;
