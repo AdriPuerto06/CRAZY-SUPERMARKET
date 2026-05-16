@@ -137,6 +137,7 @@ bool ItemManager::ShowingQuests()
 
 bool ItemManager::ShowPlayerItems() {
 	
+	LOG("Item Butons Created");
 	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
 	CreateButton(NULL, NULL, bt1Pos, NULL);
 	SDL_Rect bt2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
@@ -229,9 +230,9 @@ void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_
 	}
 }
 
-void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int ID)
 {
 	auto btn = std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, ID, " ", btPos, this));
 	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }

@@ -204,6 +204,7 @@ bool Scene::PostUpdate()
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4)) {
 
 		gameScene = currentScene;
+		Engine::GetInstance().map->SaveEntities(player, currentScene);
 		ChangeScene(SceneID::PAUSE);
 		sceneStack.push(currentScene);
 	}
@@ -1421,13 +1422,13 @@ void Scene::LoadItem()
 
 	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
 	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+
+	Engine::GetInstance().itemManager->ShowPlayerItems();
 }
 
 void Scene::UpdateItem(float dt)
 {
 	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
-	Engine::GetInstance().itemManager->ShowPlayerItems();
-
 }
 
 void Scene::UnloadItem()
@@ -1436,9 +1437,9 @@ void Scene::UnloadItem()
 }
 
 
-void Scene::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+void Scene::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int ID)
 {
 	auto btn = std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, ID, " ", btPos, this));
 	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }
