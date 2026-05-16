@@ -1,9 +1,10 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
-<!--DIALOGUE: 5-->
+<!--DIALOGUE: 5, COMPLETEEVENT: 6-->
 <quests>
 	<quest id="1" name="Talk with the other guy" completed="false" active="false" reward="Jet Punch" reward_value="4" path=""/>
 	<quest id="2" name="Beat those guys!" completed="false" active="false" reward="dialogueTree" reward_value="1" path=""/>
+	<quest id="3" name="Push the buttons" completed="false" active="false" reward="Key for Door3" reward_value="6" path=""/>
 </quests>
 
