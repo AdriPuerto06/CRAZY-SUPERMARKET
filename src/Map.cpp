@@ -485,27 +485,29 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 {
                     /*int NPC_ID = objectNode.attribute("id").as_int();*/
                     std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASENPC));
-                    const char* texturePath = npc->texturePath;
-                    bool active = npc->active;
-                    int currentDialogueTree = npc->currentDialogueTree;
+                    if (npc) {
+                        const char* texturePath = npc->texturePath;
+                        bool active = npc->active;
+                        int currentDialogueTree = npc->currentDialogueTree;
 
-                    //get NPC data
-                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
-                        propertyNode;
-                        propertyNode = propertyNode.next_sibling("property"))
-                    {
-                        std::string name = propertyNode.attribute("name").as_string();
-                        /*if (name == "NPC_ID")
-                            propertyNode.attribute("value").set_value(NPC_ID);*/
+                        //get NPC data
+                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                            propertyNode;
+                            propertyNode = propertyNode.next_sibling("property"))
+                        {
+                            std::string name = propertyNode.attribute("name").as_string();
+                            /*if (name == "NPC_ID")
+                                propertyNode.attribute("value").set_value(NPC_ID);*/
 
-                        if (name == "active")
-                            propertyNode.attribute("value").set_value(active);
+                            if (name == "active")
+                                propertyNode.attribute("value").set_value(active);
 
-                        if (name == "texturePath")
-                            propertyNode.attribute("value").set_value(texturePath);
+                            if (name == "texturePath")
+                                propertyNode.attribute("value").set_value(texturePath);
 
-                        if (name == "currentDialogueTree")
-                            propertyNode.attribute("value").set_value(currentDialogueTree);
+                            if (name == "currentDialogueTree")
+                                propertyNode.attribute("value").set_value(currentDialogueTree);
+                        }
                     }
                 }
 
@@ -513,24 +515,26 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 {
                     /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
                     std::shared_ptr<BaseEnemy> enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASEENEMY));
-                    const char* texturePath = enemy->texturePath;
-                    bool active = enemy->active;
-                    /*int enemy_ID = -1;*/
-                    //get NPC data
-                    for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
-                        propertyNode;
-                        propertyNode = propertyNode.next_sibling("property"))
-                    {
-                        std::string name = propertyNode.attribute("name").as_string();
+                    if (enemy) { //if enemy exists (the ones that are dead, their data is saved when they are killed in combat (Combat Manager))
+                        const char* texturePath = enemy->texturePath;
+                        bool active = enemy->active;
+                        /*int enemy_ID = -1;*/
+                        //get NPC data
+                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                            propertyNode;
+                            propertyNode = propertyNode.next_sibling("property"))
+                        {
+                            std::string name = propertyNode.attribute("name").as_string();
 
-                        /*if (name == "ENEMY_ID")
-                            propertyNode.attribute("value").as_int();*/
+                            /*if (name == "ENEMY_ID")
+                                propertyNode.attribute("value").as_int();*/
 
-                        if (name == "active")
-                            propertyNode.attribute("value").set_value(active);
+                            if (name == "active")
+                                propertyNode.attribute("value").set_value(active);
 
-                        if (name == "texturePath")
-                            propertyNode.attribute("value").set_value(texturePath);
+                            if (name == "texturePath")
+                                propertyNode.attribute("value").set_value(texturePath);
+                        }
                     }
                 }
 

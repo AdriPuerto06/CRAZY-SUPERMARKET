@@ -24,8 +24,11 @@
 		</node>
 		
 		<node id ="4" text="*You obtained Jet Punch">
-			<choice id ="1" option="Claim" next_node ="-1" reward="4" reward_value="Jet Punch"/>
+			<choice id ="1" option="Claim" next_node ="5" reward="4" reward_value="Jet Punch"/>
+		</node>
 
+		<node id ="5" text="Complete Quest: Talk with the other guy">
+			<choice id ="1" option="Claim" next_node ="-1" reward="3" reward_value="Talk with the other guy"/>
 		</node>
 
 	</dialogue_tree>
@@ -53,8 +56,8 @@
 			<choice id ="1" option="…yes, I assume I am responsible for that" next_node ="6"/>
 			<choice id ="2" option="You’re welcome Octella" next_node ="6"/>
 		</node>
-		<node id ="6" text="So, in return for saving my life, I'll save anything that I may consider useful to you, deal?">
-			<choice id ="1" option="Heck yeah! Free stuff!" next_node ="-1"/>
+		<node id ="6" text="Thanks a lot! Go talk with the other guy.">
+			<choice id ="1" option="Heck yeah! Free stuff!" next_node ="-1" reward="0" reward_value="Talk with the other guy" />
 		</node>
 		
 	</dialogue_tree>

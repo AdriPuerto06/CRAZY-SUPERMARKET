@@ -212,5 +212,8 @@ void QuestManager::SaveQuests()
 		quests_tree_node.attribute("reward_type").set_value(q.reward_value);
 		i++;
 	}
+	//Important: save the modifications to the XML 
+	std::string mapPathName = questsPath + questsFileName;
+	questsFileXML.save_file(mapPathName.c_str());
 }
 
