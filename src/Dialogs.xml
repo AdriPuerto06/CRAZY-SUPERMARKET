@@ -1,7 +1,7 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
-<!--DIALOGUE: 5-->
+<!--DIALOGUE: 5, ACTIVATEEVENT: 6-->
 <dialogs>
 	<!--Vagabundo-->
 	<dialogue_tree ID="0" NPC="1"> 
@@ -113,4 +113,19 @@
 
 			</node>
 	</dialogue_tree>
+
+	<!--Dungeon-->
+	<!--NPC to unlock Door2-->
+	<dialogue_tree ID="0" NPC="5">
+		
+		<node id ="0" text="text1">
+			<choice id ="1" option="a1" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="text2">
+			<choice id ="1" option="Unlock the door" next_node ="-1" reward="6" reward_value="Key for Door2"/>
+		</node>
+		
+	</dialogue_tree>
+	
 </dialogs>

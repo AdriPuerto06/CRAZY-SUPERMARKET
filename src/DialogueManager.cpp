@@ -8,6 +8,7 @@
 #include "CombatManager.h"
 #include "EntityManager.h"
 #include "RewardManager.h"
+#include "BaseNPC.h"
 
 int SizeOf(const char* s)
 {
@@ -171,14 +172,16 @@ bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
 
 void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
 {
-	int index = NPC_ID - 1;
+	/*int index = NPC_ID - 1;
 	if (currentDialogueTreesNPC.size() < index)
 	{
 		LOG("DialogueManager: currentDialogueTreesNPC tried to be accessed out of size. -> %i", NPC_ID);
 		return;
 	}
 
-	currentDialogueTreesNPC.at(index) += 1;
+	currentDialogueTreesNPC.at(index) += 1;*/
+
+	Engine::GetInstance().entityManager->GetNPC(NPC_ID)->currentDialogueTree += 1;
 	LOG("Unlocked new dialogue with NPC ID: %i", NPC_ID);
 }
 

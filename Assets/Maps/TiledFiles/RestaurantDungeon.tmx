@@ -12587,7 +12587,7 @@
 		<object id="156" x="2656" y="768" width="64" height="64" />
 	</objectgroup>
 	<objectgroup id="4" name="Entities">
-		<object id="1" name="Player" type="Player" x="1463" y="1067">
+		<object id="1" name="Player" type="Player" x="2742" y="2242">
 			<point />
 		</object>
 		<object id="2" name="Enemy20" type="Enemy" x="404" y="792">
@@ -12862,7 +12862,7 @@
 				<property name="texturePath" value="Assets/Textures/eventTexture.png" />
 			</properties>
 		</object>
-		<object id="143" name="Door2" type="Event" x="2500" y="2884" width="32" height="96">
+		<object id="143" name="Door2" type="Event" x="2400" y="2752" width="32" height="96">
 			<properties>
 				<property name="Event_ID" type="int" value="2" />
 				<property name="activated" type="bool" value="true" />

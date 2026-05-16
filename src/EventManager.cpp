@@ -67,6 +67,20 @@ bool EventManager::IsEventActive(const char* name)
 	return false;
 }
 
+//void EventManager::ActivateEvent(const char* name)
+//{
+//	for (auto event : events)
+//	{
+//		if ((std::strcmp(event->event_Name, name) == 0)) {
+//			event->activated = true; 
+//			LOG("Event: '%s' activated.", name);
+//			return;
+//		}
+//	}
+//
+//	LOG("Event: '%s' couldn't be activated. No event found with the same name.", name);
+//}
+
 bool EventManager::IsEventActivated(const char* name)
 {
 	if (events.size() == 0) return false;
@@ -80,46 +94,57 @@ bool EventManager::IsEventActivated(const char* name)
 void EventManager::PossibleActivate(const char* name)
 {
 	std::shared_ptr<Event> event = GetEvent(name);
-	if (event->activated) { LOG("Event already made its action.");  return; }
-	if (!event->active) { LOG("Event not active.");  return; }
-	//Doors
-	if (std::strcmp(name,"Door1") == 0)
+	if (event == nullptr)
 	{
-		/*if (IsEventActivated("Key for Door1")) 
+		//next events don't exist as an entity, but as a kind of activators for other events. These events are rewards from quests, dialogues...
+		if (std::strcmp(name, "Key for Door2") == 0)
+		{
+			MakeAction("Door2");
+		}
+		else { LOG("Tried activating an event that doesn't exist or isn't active: '%s'", name); }
+	}
+	else {
+		if (event->activated) { LOG("Event already made its action.");  return; }
+		if (!event->active) { LOG("Event not active.");  return; }
+		//Doors
+		if (std::strcmp(name, "Door1") == 0)
+		{
+			/*if (IsEventActivated("Key for Door1"))
+			{
+				event->activated = true;
+				LOG("Door1 is now open.");
+				MakeAction(name);
+			}
+			else {
+				LOG("Door1 is closed.");
+			}*/
+
+			return;
+		}
+		else if (std::strcmp(name, "Door2") == 0) { return; }
+		else if (std::strcmp(name, "Gloves") == 0)
 		{
 			event->activated = true;
-			LOG("Door1 is now open.");
+		}
+		else if (std::strcmp(name, "Key for the next dungeon") == 0)
+		{
+			event->activated = true;
+		}
+		else if (std::strcmp(name, "Key for Door1") == 0)
+		{
+			event->activated = true;
+			LOG("'Key for Door1' activated.");
+			MakeAction("Door1");
+		}
+		//Rocks
+		else if (std::strcmp(name, "Rock1") == 0)
+		{
 			MakeAction(name);
 		}
-		else {
-			LOG("Door1 is closed.");
-		}*/
-
-		return;
-	}
-	else if (std::strcmp(name,"Door2")==0) {}
-	else if (std::strcmp(name,"Gloves")==0)
-	{
-		event->activated = true;
-	}
-	else if (std::strcmp(name,"Key for the next dungeon")==0)
-	{
-		event->activated = true;
-	}
-	else if (std::strcmp(name,"Key for Door1")==0)
-	{
-		event->activated = true;
-		LOG("'Key for Door1' activated.");
-		MakeAction("Door1");
-	}
-	//Rocks
-	if (std::strcmp(name, "Rock1") == 0 )
-	{
-		MakeAction(name);
-	}
-	if (std::strcmp(name, "Rock2") == 0)
-	{
-		MakeAction(name);
+		else if (std::strcmp(name, "Rock2") == 0)
+		{
+			MakeAction(name);
+		}
 	}
 }
 
@@ -130,11 +155,13 @@ void EventManager::MakeAction(const char* name)
 	if (std::strcmp(name,"Door1")==0)
 	{
 		event->Disable();
+		LOG("Door1 opened.");
 		/*event->position = Vector2D(event->position.getX() - 2 * event->texW, event->position.getY());*/
 	}
 	else if (std::strcmp(name,"Door2")==0)
 	{
-		event->position = Vector2D(event->position.getX() - 2 * event->texW, event->position.getY());
+		event->Disable();
+		LOG("Door2 opened.");
 	}
 	else if (std::strcmp(name,"Gloves")==0)
 	{
@@ -144,7 +171,7 @@ void EventManager::MakeAction(const char* name)
 	{
 		
 	}
-	if (std::strcmp(name, "Rock1") == 0) {
+	else if (std::strcmp(name, "Rock1") == 0) {
 		if (Engine::GetInstance().scene->IsReloading())
 			return;
 		/*std::shared_ptr<Player> player = Engine::GetInstance().scene->GetPlayer();
@@ -166,7 +193,7 @@ void EventManager::MakeAction(const char* name)
 		);*/
 		LOG("Rock pos updated.");
 	}
-	if (std::strcmp(name, "Rock2") == 0) {
+	else if (std::strcmp(name, "Rock2") == 0) {
 		if (Engine::GetInstance().scene->IsReloading())
 			return;
 		/*std::shared_ptr<Player> player = Engine::GetInstance().scene->GetPlayer();
@@ -190,3 +217,5 @@ void EventManager::MakeAction(const char* name)
 		LOG("Rock pos updated.");
 	}
 }
+
+

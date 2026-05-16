@@ -27,6 +27,7 @@ public:
 	bool IsEventActivated(const char* name);
 	void PossibleActivate(const char* name);
 	void MakeAction(const char* name);
+	/*void ActivateEvent(const char* name);*/
 
 private:
 	std::vector<std::shared_ptr<Event>> events;

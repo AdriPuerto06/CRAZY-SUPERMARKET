@@ -4,6 +4,7 @@
 #include "QuestManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
+#include "EventManager.h"
 
 int GetNumFromString(std::string str) {
 	int num = str.at(0) - '0';
@@ -76,6 +77,9 @@ void RewardManager::GetReward(Reward reward)
 
 	case RewardType::DIALOGUE:
 		Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(GetNumFromString(reward.reward_value));
+		break;
+	case RewardType::EVENT:
+		Engine::GetInstance().eventManager->PossibleActivate(reward.reward_value.c_str());
 		break;
 	}
 }

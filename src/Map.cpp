@@ -194,7 +194,7 @@ MapLayer* Map::GetNavigationLayer() {
 void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
     isReloading = true;
 
-    /*Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
+   /* Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
         //Check if the object group is "Entities"
@@ -245,7 +245,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                 if (entityType == "NPC")
                 {
-         
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
@@ -268,7 +267,6 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                         if (name == "currentDialogueTree") {
                             currentDialogueTree = propertyNode.attribute("value").as_int();
-                            Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.push_back(currentDialogueTree);
                         }
                     }
 

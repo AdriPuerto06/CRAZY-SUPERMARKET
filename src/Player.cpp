@@ -49,21 +49,11 @@ bool Player::Start() {
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
-	b2Polygon box = b2MakeBox(0.5f, 0.5f);
+	/*b2Polygon box = b2MakeBox(0.5f, 0.5f);
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
 	shapeDef.density = 2.0f;
 
-	b2CreatePolygonShape(pbody->body, &shapeDef, &box);
-	/*b2body
-	b2Polygon  box;
-	box(0.5f, 0.5f);
-	
-	b2FixtureDef fixture;
-	fixture.shape = &box;
-	fixture.density = 1.0f;
-	fixture.friction = 0.5f;
-
-	player->CreateFixture(&fixture);*/
+	b2CreatePolygonShape(pbody->body, &shapeDef, &box);*/
 
 	if (Engine::GetInstance().itemManager->IsItemActive("Stillish skates")) speed = 6.0f;
 
