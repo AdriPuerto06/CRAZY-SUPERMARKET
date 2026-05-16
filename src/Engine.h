@@ -24,6 +24,8 @@ class CombatManager;
 class ItemManager;
 class QuestManager;
 class RewardManager;
+class EventManager;
+
 class Engine
 {
 public:
@@ -111,6 +113,7 @@ public:
 	std::shared_ptr<ItemManager> itemManager;
 	std::shared_ptr<QuestManager> questManager;
 	std::shared_ptr<RewardManager> rewardManager;
+	std::shared_ptr<EventManager> eventManager;
 
 	bool vsync_Active = true;
 private: 

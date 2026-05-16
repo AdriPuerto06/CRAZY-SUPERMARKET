@@ -9,6 +9,7 @@
 #include "BaseEnemy.h"
 #include "BaseNPC.h"
 #include "BaseCompanion.h"
+#include "Event.h"
 
 EntityManager::EntityManager() : Module()
 {
@@ -86,6 +87,10 @@ std::shared_ptr<Entity> EntityManager::CreateEntity(EntityType type)
 		break;
 	case EntityType::BASECOMPANION:
 		entity = std::make_shared<BaseCompanion>();
+		break;
+	case EntityType::EVENT:
+		entity = std::make_shared<Event>();
+		break;
 	default:
 		break;
 	}
@@ -111,6 +116,23 @@ void EntityManager::AddEntity(std::shared_ptr<Entity> entity)
 	}
 }
 
+std::vector<std::shared_ptr<Event>> EntityManager::GetEventsEntities()
+{
+	std::vector<std::shared_ptr<Event>> events;
+
+	for (auto entity : entities)
+	{
+		auto event = std::dynamic_pointer_cast<Event>(entity);
+
+		if (event && event->type == EntityType::EVENT)
+		{
+			events.push_back(event);
+		}
+	}
+
+	return events;
+}
+
 std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 {
 	for (std::shared_ptr<Entity> entity : entities)
@@ -132,14 +154,15 @@ std::shared_ptr<Entity> EntityManager::GetEntity(EntityType type, int ID)
 //	return nullptr;
 //}
 //
-//std::shared_ptr<Entity> EntityManager::GetNPC(int id) {
-//	for (auto& entity : entities) {
-//		auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
-//		if (enemy && enemy->ID == id)
-//			return enemy;
-//	}
-//	return nullptr;
-//}
+
+std::shared_ptr<BaseNPC> EntityManager::GetNPC(int id) {
+	for (auto& entity : entities) {
+		auto npc = std::dynamic_pointer_cast<BaseNPC>(entity);
+		if (npc && npc->ID == id && npc->type == EntityType::BASENPC)
+			return npc;
+	}
+	return nullptr;
+}
 
 std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 {
@@ -166,6 +189,15 @@ std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 	case EntityType::BASECOMPANION:
 		for (auto& entity : entities) {
 			auto enemy = std::dynamic_pointer_cast<BaseCompanion>(entity);
+			if (enemy && enemy->entity_ID == id)
+				return enemy;
+		}
+		return nullptr;
+		break;
+
+	case EntityType::EVENT:
+		for (auto& entity : entities) {
+			auto enemy = std::dynamic_pointer_cast<Event>(entity);
 			if (enemy && enemy->entity_ID == id)
 				return enemy;
 		}

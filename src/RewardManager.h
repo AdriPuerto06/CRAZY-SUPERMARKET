@@ -11,7 +11,8 @@ enum class RewardType
 	COMPANION,
 	COMPLETEQUEST,
 	ATTACK,
-	DIALOGUE
+	DIALOGUE,
+	EVENT
 };
 
 struct Reward {
