@@ -4,6 +4,8 @@
 #include "UIManager.h"
 #include "Window.h"
 #include "Textures.h"
+#include "Scene.h"
+#include "CombatManager.h"
 
 QuestManager::QuestManager() : Module()
 {
@@ -32,7 +34,6 @@ bool QuestManager::Start()
 
 bool QuestManager::Update(float dt)
 {
-	
 	ViewQuest();
 
 	return true;
@@ -45,7 +46,8 @@ bool QuestManager::PostUpdate() {
 
 bool QuestManager::CleanUp()
 {
-	
+	Engine::GetInstance().textures->UnLoad(PopUp);
+
 	return true;
 }
 
@@ -122,6 +124,17 @@ bool QuestManager::IsQuestCompleted(const char* name)
 
 void QuestManager::ViewQuest()
 {
+	//para pillar las scenes
+	auto& scene = Engine::GetInstance().scene;
+	SceneID currentScene = scene->GetCurrentScene();
+
+	
+	if (!(currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4)) {
+		return;
+	}
+	else if (Engine::GetInstance().combatManager->in_combat) {
+		return;
+	}
 
 	int Yspacing = 0;
 	int winW = (int)WindowSize.getX();

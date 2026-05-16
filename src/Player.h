@@ -65,12 +65,13 @@ public:
 	std::string pendingMapLoad;
 	Vector2D direction;
 
+	bool showingMenu = false;
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;
 	int teleportCooldown = 120;
 	int autosaveCooldown = 120;
-	bool showingMenu = false;
+	
 
 	bool godMode = false;
 	

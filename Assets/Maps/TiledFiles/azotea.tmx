@@ -6467,7 +6467,7 @@
 			</properties>
 			<point />
 		</object>
-		<object id="3" name="Player" type="Player" x="1568" y="607">
+		<object id="3" name="Player" type="Player" x="1599" y="604">
 			<properties>
 				<property name="HP" type="int" value="-842150451" />
 			</properties>
