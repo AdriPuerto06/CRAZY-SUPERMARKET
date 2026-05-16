@@ -81,6 +81,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Win
+	void LoadWin();
+	void UnloadWin();
+	void UpdateWin(float dt);
+
+	//Loose
+	void LoadLoose();
+	void UnloadLoose();
+	void UpdateLoose(float dt);
+
 	// Return the player position
 	Vector2D GetPlayerPosition();
 
@@ -211,16 +221,6 @@ private:
 	void UnloadQuests();
 	void UpdateQuests(float dt);
 	void PostUpdateQuests();
-
-	//Win
-	void LoadWin();
-	void UnloadWin();
-	void UpdateWin(float dt);
-
-	//Loose
-	void LoadLoose();
-	void UnloadLoose();
-	void UpdateLoose(float dt);
 	
 
 private:

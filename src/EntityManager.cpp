@@ -164,6 +164,16 @@ std::shared_ptr<BaseNPC> EntityManager::GetNPC(int id) {
 	return nullptr;
 }
 
+std::shared_ptr<Player> EntityManager::GetPlayerEM()
+{
+	for (auto& entity : entities) {
+		auto player = std::dynamic_pointer_cast<Player>(entity);
+		if (player && player->type == EntityType::PLAYER)
+			return player;
+	}
+	return std::shared_ptr<Player>();
+}
+
 std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 {
 	switch (type)
