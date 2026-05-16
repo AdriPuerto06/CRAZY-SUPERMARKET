@@ -796,7 +796,6 @@ void CombatManager::CheckAlive()
 	{
 		LOG("Player wins the combat. Destroying the enemies...");
 		MarkEnemiesAsDead();
-
 		in_combat = false;
 		enemies_to_destroy.clear();
 
