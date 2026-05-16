@@ -111,6 +111,9 @@ bool Scene::Update(float dt)
 	case SceneID::ITEM:
 		UpdateItem(dt);
 		break;
+	case SceneID::STATS:
+		UpdateStats(dt);
+		break;
 
 	}
 
@@ -275,6 +278,9 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 	case SceneID::ITEM:
 		HandleMainMenuUIEvents(uiElement);
 		break;
+	case SceneID::STATS:
+		HandleMainMenuUIEvents(uiElement);
+		break;
 	default:
 		break;
 	}
@@ -350,6 +356,9 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::ITEM:
 		LoadItem();
+		break;
+	case SceneID::STATS:
+		LoadStats();
 		break;
 	}
 }
@@ -427,6 +436,9 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::ITEM:
 		UnloadItem();
+		break;
+	case SceneID::STATS:
+		UnloadStats();
 		break;
 	}
 
@@ -1432,6 +1444,32 @@ void Scene::UpdateItem(float dt)
 }
 
 void Scene::UnloadItem()
+{
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+// *********************************************
+// Stats functions
+// *********************************************
+
+void Scene::LoadStats()
+{
+	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+	bookTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
+
+	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
+	CreateButton(btnBckTex, btnBckPressedTex, bt3Pos, 10);
+
+	Engine::GetInstance().itemManager->ShowPlayerStats();
+}
+
+void Scene::UpdateStats(float dt)
+{
+	Engine::GetInstance().render->DrawTexture(bookTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
+}
+
+void Scene::UnloadStats()
 {
 	Engine::GetInstance().uiManager->CleanUp();
 }

@@ -92,9 +92,10 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 1:
 		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
 		Engine::GetInstance().scene->ChangeScene(SceneID::ITEM);
-		//ShowPlayerItems();
 		break;
 	case 2:
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+		Engine::GetInstance().scene->ChangeScene(SceneID::STATS);
 		break;
 	case 3:
 		break;
@@ -136,7 +137,6 @@ bool ItemManager::ShowingQuests()
 }
 
 bool ItemManager::ShowPlayerItems() {
-	
 	LOG("Item Butons Created");
 	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
 	CreateButton(NULL, NULL, bt1Pos, NULL);
@@ -150,6 +150,25 @@ bool ItemManager::ShowPlayerItems() {
 	CreateButton(NULL, NULL, bt5Pos, NULL);
 	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64 };
 	CreateButton(NULL, NULL, bt6Pos, NULL);
+	return true;
+}
+
+bool ItemManager::ShowPlayerStats() {
+	LOG("Stats Showed");
+	SDL_Rect HPPos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64 };
+	CreateButton(NULL, NULL, HPPos, NULL);
+	SDL_Rect MPPos = { WindowSize.getX() / 3, WindowSize.getY() / 3, 64,64 };
+	CreateButton(NULL, NULL, MPPos, NULL);
+
+	//attacks
+	SDL_Rect Atck1Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
+	CreateButton(NULL, NULL, Atck1Pos, NULL);
+	SDL_Rect Atck2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3, 64,64 };
+	CreateButton(NULL, NULL, Atck2Pos, NULL);
+	SDL_Rect Atck3Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2, 64,64 };
+	CreateButton(NULL, NULL, Atck3Pos, NULL);
+	SDL_Rect Atck4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 1.3f, 64,64 };
+	CreateButton(NULL, NULL, Atck4Pos, NULL);
 	return true;
 }
 
