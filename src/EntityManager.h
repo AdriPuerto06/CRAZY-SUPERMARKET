@@ -8,6 +8,7 @@
 
 class Event;
 class BaseNPC;
+class Player;
 
 class EntityManager : public Module
 {
@@ -49,6 +50,8 @@ public:
 	std::shared_ptr<Entity> GetEntity_Map(int id, EntityType type);
 
 	std::shared_ptr<Entity> GetCompanion(int id);
+
+	std::shared_ptr<Player> GetPlayerEM();
 
 public:
 

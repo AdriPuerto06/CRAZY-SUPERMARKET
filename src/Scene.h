@@ -87,9 +87,9 @@ public:
 	void UpdateWin(float dt);
 
 	//Loose
-	void LoadLoose();
-	void UnloadLoose();
-	void UpdateLoose(float dt);
+	void LoadLose();
+	void UnloadLose();
+	void UpdateLose(float dt);
 
 	// Return the player position
 	Vector2D GetPlayerPosition();

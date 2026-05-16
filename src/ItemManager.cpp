@@ -10,6 +10,7 @@
 #include "UIManager.h"
 #include "CombatManager.h"
 #include "QuestManager.h"
+#include "EntityManager.h"
 #include <string>
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
@@ -160,7 +161,7 @@ bool ItemManager::ShowPlayerItems() {
 
 bool ItemManager::ShowPlayerStats() {
 	LOG("Stats Showed");
-	auto player = Engine::GetInstance().scene->GetPlayer();
+	auto player = Engine::GetInstance().entityManager->GetPlayerEM();
 	std::string text;
 	text = std::to_string(player->HP);
 
