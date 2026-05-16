@@ -117,8 +117,8 @@ bool Scene::Update(float dt)
 	case SceneID::WIN:
 		UpdateWin(dt);
 		break;
-	case SceneID::LOOSE:
-		UpdateLoose(dt);
+	case SceneID::LOSE:
+		UpdateLose(dt);
 		break;
 
 	}
@@ -381,7 +381,7 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::WIN:
 		LoadWin();
 		break;
-	case SceneID::LOOSE:
+	case SceneID::LOSE:
 		LoadWin();
 		break;
 	}
@@ -458,8 +458,8 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::WIN:
 		UnloadWin();
 		break;
-	case SceneID::LOOSE:
-		UnloadLoose();
+	case SceneID::LOSE:
+		UnloadLose();
 		break;
 	}
 
@@ -1506,9 +1506,10 @@ void Scene::UnloadStats()
 
 void Scene::LoadWin()
 {
-	winImg = Engine::GetInstance().textures->Load("");
+	winImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/win.png");
 	SDL_SetTextureBlendMode(winImg, SDL_BLENDMODE_BLEND);
 	screenFadeStarted = false;
+	splashTime = 0;
 }
 
 void Scene::UpdateWin(float dt)
@@ -1523,6 +1524,9 @@ void Scene::UpdateWin(float dt)
 	SDL_SetTextureAlphaMod(winImg, mod);
 
 	Engine::GetInstance().render->DrawTexture(winImg, 0, 0);
+
+	splashTime = splashTime + dt;
+	if (splashTime >= winLoseTimer) ChangeScene(SceneID::MAIN_MENU);
 }
 
 void Scene::UnloadWin()
@@ -1531,17 +1535,18 @@ void Scene::UnloadWin()
 }
 
 // *********************************************
-// Loose functions
+// Lose functions
 // *********************************************
 
-void Scene::LoadLoose()
+void Scene::LoadLose()
 {
-	looseImg = Engine::GetInstance().textures->Load("");
-	SDL_SetTextureBlendMode(looseImg, SDL_BLENDMODE_BLEND);
+	loseImg = Engine::GetInstance().textures->Load("");
+	SDL_SetTextureBlendMode(loseImg, SDL_BLENDMODE_BLEND);
 	screenFadeStarted = false;
+	splashTime = 0;
 }
 
-void Scene::UpdateLoose(float dt)
+void Scene::UpdateLose(float dt)
 {
 	screenFadeValue += (dt / 1000.0f) / 2.5f;
 	if (screenFadeValue > 1.0f) screenFadeValue = 1.0f;
@@ -1549,13 +1554,16 @@ void Scene::UpdateLoose(float dt)
 	float eased = screenFadeValue * screenFadeValue * (3.0f - 2.0f * screenFadeValue);
 	Uint8 mod = (Uint8)(eased * 255);
 
-	SDL_SetTextureColorMod(looseImg, mod, mod, mod);
-	SDL_SetTextureAlphaMod(looseImg, mod);
+	SDL_SetTextureColorMod(loseImg, mod, mod, mod);
+	SDL_SetTextureAlphaMod(loseImg, mod);
 
-	Engine::GetInstance().render->DrawTexture(looseImg, 0, 0);
+	Engine::GetInstance().render->DrawTexture(loseImg, 0, 0);
+
+	splashTime = splashTime + dt;
+	if (splashTime >= winLoseTimer) ChangeScene(SceneID::MAIN_MENU);
 }
 
-void Scene::UnloadLoose()
+void Scene::UnloadLose()
 {
 	Engine::GetInstance().uiManager->CleanUp();
 }

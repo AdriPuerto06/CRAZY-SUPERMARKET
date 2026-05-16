@@ -10,6 +10,7 @@
 #include "UIManager.h"
 #include "CombatManager.h"
 #include "QuestManager.h"
+#include <string>
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -159,7 +160,14 @@ bool ItemManager::ShowPlayerItems() {
 
 bool ItemManager::ShowPlayerStats() {
 	LOG("Stats Showed");
+	auto player = Engine::GetInstance().scene->GetPlayer();
+	std::string text;
+	text = std::to_string(player->HP);
+
 	SDL_Rect HPPos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64 };
+	auto btn = std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, NULL, text.c_str(), HPPos, this));
+	if (btn) btn->SetTextures(NULL, NULL, NULL);
 	Engine::GetInstance().render->DrawTexture(HPTex, HPPos.x, HPPos.y);
 	SDL_Rect MPPos = { WindowSize.getX() / 3, WindowSize.getY() / 3, 64,64 };
 	Engine::GetInstance().render->DrawTexture(MPTex, MPPos.x, MPPos.y);
