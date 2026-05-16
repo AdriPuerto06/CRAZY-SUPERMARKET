@@ -38,7 +38,7 @@ bool Scene::Awake()
 	Engine::GetInstance().questManager->LoadQuests("src/", "QuestsData.xml");
 
 	//customMouse
-	cursorSurface = IMG_Load("Assets/Textures/carrito.png");
+	cursorSurface = IMG_Load("Assets/Textures/pointer.png");
 	customCursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
 	SDL_SetCursor(customCursor);
 	SDL_DestroySurface(cursorSurface);
