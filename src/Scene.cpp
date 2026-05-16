@@ -401,39 +401,30 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::MAIN_MENU:
 		UnloadMainMenu();
 		break;
-
 	case SceneID::LEVEL1:
 		UnloadLevel1();
 		break;
-
 	case SceneID::LEVEL2:
 		UnloadLevel2();
 		break;
-
 	case SceneID::LEVEL3:
 		UnloadLevel3();
 		break;
-
 	case SceneID::LEVEL4:
 		UnloadLevel4();
 		break;
-
 	case SceneID::OPTIONS:
 		UnloadOptions();
 		break;
-
 	case SceneID::MULTIPLAYER:
 		UnloadMultiplayer();
 		break;
-
 	case SceneID::CREDITS:
 		UnloadCredits();
 		break;
-
 	case SceneID::SOUND:
 		UnloadSounds();
 		break;
-
 	case SceneID::GRAFICS:
 		UnloadGrafics();
 		break;
@@ -1487,6 +1478,66 @@ void Scene::UpdateStats(float dt)
 }
 
 void Scene::UnloadStats()
+{
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+// *********************************************
+// Win functions
+// *********************************************
+
+void Scene::LoadWin()
+{
+	winImg = Engine::GetInstance().textures->Load("");
+	SDL_SetTextureBlendMode(winImg, SDL_BLENDMODE_BLEND);
+	screenFadeStarted = false;
+}
+
+void Scene::UpdateWin(float dt)
+{
+	screenFadeValue += (dt / 1000.0f) / 2.5f;
+	if (screenFadeValue > 1.0f) screenFadeValue = 1.0f;
+
+	float eased = screenFadeValue * screenFadeValue * (3.0f - 2.0f * screenFadeValue);
+	Uint8 mod = (Uint8)(eased * 255);
+
+	SDL_SetTextureColorMod(winImg, mod, mod, mod);
+	SDL_SetTextureAlphaMod(winImg, mod);
+
+	Engine::GetInstance().render->DrawTexture(winImg, 0, 0);
+}
+
+void Scene::UnloadWin()
+{
+	Engine::GetInstance().uiManager->CleanUp();
+}
+
+// *********************************************
+// Loose functions
+// *********************************************
+
+void Scene::LoadLoose()
+{
+	looseImg = Engine::GetInstance().textures->Load("");
+	SDL_SetTextureBlendMode(looseImg, SDL_BLENDMODE_BLEND);
+	screenFadeStarted = false;
+}
+
+void Scene::UpdateLoose(float dt)
+{
+	screenFadeValue += (dt / 1000.0f) / 2.5f;
+	if (screenFadeValue > 1.0f) screenFadeValue = 1.0f;
+
+	float eased = screenFadeValue * screenFadeValue * (3.0f - 2.0f * screenFadeValue);
+	Uint8 mod = (Uint8)(eased * 255);
+
+	SDL_SetTextureColorMod(looseImg, mod, mod, mod);
+	SDL_SetTextureAlphaMod(looseImg, mod);
+
+	Engine::GetInstance().render->DrawTexture(looseImg, 0, 0);
+}
+
+void Scene::UnloadLoose()
 {
 	Engine::GetInstance().uiManager->CleanUp();
 }

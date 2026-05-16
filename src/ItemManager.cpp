@@ -130,9 +130,6 @@ bool ItemManager::ShowInventoryOptions()
 	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 200, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 400, 200,150 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Quests", bt4Pos, this));
-
 	return true;
 }
 

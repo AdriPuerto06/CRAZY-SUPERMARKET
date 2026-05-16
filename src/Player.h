@@ -44,6 +44,10 @@ private:
 	void CenterCamera();
 	void CheckDialogueAndCombatLogic();
 	void ShowMenu();
+	bool LoadWin();
+	bool Win();
+	bool LoadLoose();
+	bool Loose();
 	
 public:
 
@@ -71,7 +75,12 @@ private:
 	AnimationSet anims;
 	int teleportCooldown = 120;
 	int autosaveCooldown = 120;
-	
+
+	SDL_Texture* winImg = nullptr;
+	SDL_Texture* looseImg = nullptr;
+	float screenFadeValue = 0.0f;
+	float screenFadeValue = 0.0f;
+	bool  screenFadeStarted = false;
 
 	bool godMode = false;
 	
