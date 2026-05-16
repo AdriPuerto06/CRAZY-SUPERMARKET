@@ -3268,7 +3268,7 @@
   <object id="36" x="896" y="1152" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="Entities">
-  <object id="32" name="Player" type="Player" x="896" y="1151">
+  <object id="32" name="Player" type="Player" x="928" y="1184">
    <point/>
   </object>
   <object id="33" name="Enemy5" type="Enemy" x="192" y="160">

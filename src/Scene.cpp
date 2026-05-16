@@ -1426,6 +1426,9 @@ void Scene::LoadItem()
 void Scene::UpdateItem(float dt)
 {
 	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) {
+		LOG("Cajon pos: %f, %f", WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
+	}
 	Engine::GetInstance().itemManager->ShowPlayerItems();
 
 }

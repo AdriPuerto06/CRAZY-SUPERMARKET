@@ -229,9 +229,9 @@ void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_
 	}
 }
 
-void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int ID)
 {
 	auto btn = std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, ID, " ", btPos, this));
 	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }
