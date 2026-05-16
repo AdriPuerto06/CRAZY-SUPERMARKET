@@ -174,7 +174,6 @@
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\UIButton.cpp" />
-    <ClCompile Include="src\UISlider.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vector2D.cpp" />
     <ClCompile Include="src\Window.cpp" />
