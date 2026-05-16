@@ -174,6 +174,7 @@
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\UIButton.cpp" />
+    <ClCompile Include="src\UISlider.cpp" />
     <ClCompile Include="src\UIManager.cpp" />
     <ClCompile Include="src\Vector2D.cpp" />
     <ClCompile Include="src\Window.cpp" />
@@ -214,9 +215,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="config.xml" />
-    <Xml Include="ItemsData.xml" />
     <Xml Include="src\CombatData.xml" />
     <Xml Include="src\Dialogs.xml" />
+    <Xml Include="src\ItemsData.xml" />
     <Xml Include="src\QuestsData.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -231,6 +231,18 @@ SceneID Scene::GetTimeScene() {
 
 bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 {
+	if (uiElement->type == UIElementType::SLIDER)
+	{
+		UISlider* slider = (UISlider*)uiElement;
+		if (slider->DragStarted())
+		{
+			Engine::GetInstance().audio->PlayFx(s_slider, 0);
+		}
+	}
+	else
+	{
+		Engine::GetInstance().audio->PlayFx(s_button, 0);
+	}
 	switch (currentScene)
 	{
 	case SceneID::INTRO_SCREEN:
@@ -513,6 +525,7 @@ void Scene::UpdateIntroScreen(float dt)
 		sfxLogoPlayed = false;
 		sfxTeamPlayed = false;
 		splashTime = 0;
+		Engine::GetInstance().audio->StopFx();
 		ChangeScene(SceneID::MAIN_MENU);
 	}
 }
@@ -556,7 +569,7 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
 	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 	
-	Engine::GetInstance().audio->PlayMusic(m_title, 0.0);
+	Engine::GetInstance().audio->PlayMusic(m_title, 0.0, -1);
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect bt1Pos = { WindowSize.getX()/2 - 115, (WindowSize.getY() / 2) - 200, 229,90};
@@ -1426,6 +1439,10 @@ void Scene::LoadItem()
 void Scene::UpdateItem(float dt)
 {
 	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) {
+		LOG("Cajon pos: %f, %f", WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
+	}
+	
 	Engine::GetInstance().itemManager->ShowPlayerItems();
 
 }

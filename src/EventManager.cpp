@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Scene.h"
 #include "Physics.h"
+#include "QuestManager.h"
 
 EventManager::EventManager() : Module()
 {
@@ -137,12 +138,32 @@ void EventManager::PossibleActivate(const char* name)
 			MakeAction("Door1");
 		}
 		//Rocks
-		else if (std::strcmp(name, "Rock1") == 0)
+		else if (std::strcmp(name, "Button1") == 0)
 		{
+			event->activated = true;
+			event->Disable();
+			LOG("'Button1' activated.");
 			MakeAction(name);
 		}
-		else if (std::strcmp(name, "Rock2") == 0)
+		else if (std::strcmp(name, "Button2") == 0)
 		{
+			event->activated = true;
+			event->Disable();
+			LOG("'Button2' activated.");
+			MakeAction(name);
+		}
+		else if (std::strcmp(name, "Button3") == 0)
+		{
+			event->activated = true;
+			event->Disable();
+			LOG("'Button3' activated.");
+			MakeAction(name);
+		}
+		else if (std::strcmp(name, "Button4") == 0)
+		{
+			event->activated = true;
+			event->Disable();
+			LOG("'Button4' activated.");
 			MakeAction(name);
 		}
 	}
@@ -156,7 +177,6 @@ void EventManager::MakeAction(const char* name)
 	{
 		event->Disable();
 		LOG("Door1 opened.");
-		/*event->position = Vector2D(event->position.getX() - 2 * event->texW, event->position.getY());*/
 	}
 	else if (std::strcmp(name,"Door2")==0)
 	{
@@ -171,50 +191,15 @@ void EventManager::MakeAction(const char* name)
 	{
 		
 	}
-	else if (std::strcmp(name, "Rock1") == 0) {
-		if (Engine::GetInstance().scene->IsReloading())
-			return;
-		/*std::shared_ptr<Player> player = Engine::GetInstance().scene->GetPlayer();
-		Vector2D dir = player->direction;
-		float new_X = dir.getX() * 3.f + event->position.getX();
-		float new_Y = dir.getY() * 3.f + event->position.getY();
-		event->position.setX(new_X);
-		event->position.setY(new_Y);*/
-
-		/*b2Vec2 rockVel = b2Body_GetLinearVelocity(event->pbody->body);
-
-		b2Vec2 dir = { Engine::GetInstance().scene->GetPlayer()->direction.getX(), Engine::GetInstance().scene->GetPlayer()->direction.getY() };
-		float len = sqrt(dir.x * dir.x + dir.y * dir.y);
-
-		b2Body_ApplyLinearImpulseToCenter(
-			event->pbody->body,
-			{ dir.x * 0.5f, dir.y * 0.5f },
-			true
-		);*/
-		LOG("Rock pos updated.");
-	}
-	else if (std::strcmp(name, "Rock2") == 0) {
-		if (Engine::GetInstance().scene->IsReloading())
-			return;
-		/*std::shared_ptr<Player> player = Engine::GetInstance().scene->GetPlayer();
-		Vector2D dir = player->direction;
-		float new_X = dir.getX() * 3.f + event->position.getX();
-		float new_Y = dir.getY() * 3.f + event->position.getY();
-		event->position.setX(new_X);
-		event->position.setY(new_Y);
-		LOG("Rock pos updated.");*/
-
-		/*b2Vec2 rockVel = b2Body_GetLinearVelocity(event->pbody->body);
-
-		b2Vec2 dir = { Engine::GetInstance().scene->GetPlayer()->direction.getX(), Engine::GetInstance().scene->GetPlayer()->direction.getY() };
-		float len = sqrt(dir.x * dir.x + dir.y * dir.y);
-
-		b2Body_ApplyLinearImpulseToCenter(
-			event->pbody->body,
-			{ dir.x * 0.5f, dir.y * 0.5f },
-			true
-		);*/
-		LOG("Rock pos updated.");
+	else if (std::strcmp(name, "Button1") == 0 || std::strcmp(name, "Button2") == 0 || std::strcmp(name, "Button3") == 0 || std::strcmp(name, "Button4") == 0) 
+	{
+		if (IsEventActivated("Button1") && IsEventActivated("Button2") && IsEventActivated("Button3") && IsEventActivated("Button4"))
+		{
+			Engine::GetInstance().questManager->CompleteQuest("Push the buttons");
+			std::shared_ptr<Event> door3 = GetEvent("Door3");
+			door3->Disable();
+			LOG("Door3 opened.");
+		}
 	}
 }
 

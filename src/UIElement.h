@@ -144,6 +144,8 @@ public:
 	}
 
 	float GetValue() const { return value; }
+	void UpdateValue(float newValue) { value = newValue; }
+	bool DragStarted() const { return dragging && !wasDragging; }
 
 private:
 	float minValue = 0.0f;
@@ -151,7 +153,7 @@ private:
 	float value = 0.5f;
 
 	bool dragging = false;
-
+	bool wasDragging = false;
 
 
 
@@ -159,27 +161,35 @@ private:
 		int mouseX, mouseY;
 		mouseX = Engine::GetInstance().input->GetMousePosition().getX();
 		mouseY = Engine::GetInstance().input->GetMousePosition().getY();
-
 		bool mousePressed = Engine::GetInstance().input->GetMouseButtonDown(1);
 
-		if ((mousePressed && mouseX >= bounds.x) && (mouseX <= bounds.x + bounds.w) && (mouseY >= bounds.y) && (mouseY <= bounds.y + bounds.h))
-		{
-			dragging = true;
-		}
+		static int activeSliderId = -1; // solo uno activo a la vez
 
+		if (mousePressed && (activeSliderId == -1 || activeSliderId == id))
+		{
+			if ((mouseX >= bounds.x) && (mouseX <= bounds.x + bounds.w) && (mouseY >= bounds.y) && (mouseY <= bounds.y + bounds.h))
+			{
+				dragging = true;
+				activeSliderId = id;
+			}
+		}
 		if (!mousePressed)
+		{
 			dragging = false;
+			activeSliderId = -1;
+		}
 
 		if (dragging)
 		{
 			float relativeX = (float)(mouseX - bounds.x) / bounds.w;
 			if (relativeX < 0.0f) relativeX = 0.0f;
 			if (relativeX > 1.0f) relativeX = 1.0f;
-
 			value = minValue + relativeX * (maxValue - minValue);
 
-			NotifyObserver();
+			if (observer) observer->OnUIMouseClickEvent(this);
 		}
+
+		wasDragging = dragging;
 		return true;
-	};
+	}
 };
