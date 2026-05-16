@@ -38,7 +38,7 @@ bool Scene::Awake()
 	Engine::GetInstance().questManager->LoadQuests("src/", "QuestsData.xml");
 
 	//customMouse
-	cursorSurface = IMG_Load("Assets/Textures/carrito.png");
+	cursorSurface = IMG_Load("Assets/Textures/pointer.png");
 	customCursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
 	SDL_SetCursor(customCursor);
 	SDL_DestroySurface(cursorSurface);
@@ -447,7 +447,13 @@ void Scene::LoadIntroScreen()
 		LOG("SDL error: %s", SDL_GetError());
 	}
 
+	SDL_SetTextureBlendMode(teamImg, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureBlendMode(logoImg, SDL_BLENDMODE_BLEND);
+
 	splashTime = 0.0f;
+	teamFadeValue = 0.0f;
+	logoFadeValue = 0.0f;
+	logoFadeStarted = false;
 }
 
 void Scene::UpdateIntroScreen(float dt)
@@ -459,6 +465,15 @@ void Scene::UpdateIntroScreen(float dt)
 	}
 
 	if (teamImg != nullptr && splashTime < logoGameTimer) {
+		teamFadeValue += (dt / 1000.0f) / 2.5f;
+		if (teamFadeValue > 1.0f) teamFadeValue = 1.0f;
+
+		float eased = teamFadeValue * teamFadeValue * (3.0f - 2.0f * teamFadeValue);
+		Uint8 mod = (Uint8)(eased * 255);
+
+		SDL_SetTextureColorMod(teamImg, mod, mod, mod);
+		SDL_SetTextureAlphaMod(teamImg, mod);
+
 		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX()/2 - 360, 0);
 	}
 
@@ -470,7 +485,20 @@ void Scene::UpdateIntroScreen(float dt)
 			Engine::GetInstance().audio->SetSFXVolume(0.6f);
 			Engine::GetInstance().audio->PlayFx(s_title_name, 0);
 			sfxTeamPlayed = true;
+			logoFadeStarted = true;
 		}
+
+		if (logoFadeStarted) {
+			logoFadeValue += (dt / 1000.0f) / 0.7f;
+			if (logoFadeValue > 1.0f) logoFadeValue = 1.0f;
+		}
+
+		float eased = logoFadeValue * logoFadeValue * (3.0f - 2.0f * logoFadeValue);
+		Uint8 mod = (Uint8)(eased * 255);
+
+		SDL_SetTextureColorMod(logoImg, mod, mod, mod);
+		SDL_SetTextureAlphaMod(logoImg, mod);
+
 		splashTime += dt / 1000.0f;
 		Engine::GetInstance().render->DrawTexture(logoImg, WindowSize.getX()/2 - 530, WindowSize.getY()/2 - 360);
 	}

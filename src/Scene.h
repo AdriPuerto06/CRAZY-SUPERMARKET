@@ -238,6 +238,9 @@ private:
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+	float teamFadeValue = 0.0f;
+	float logoFadeValue = 0.0f;
+	bool  logoFadeStarted = false;
 	bool sfxLogoPlayed = false;
 	bool sfxTeamPlayed = false;
 
