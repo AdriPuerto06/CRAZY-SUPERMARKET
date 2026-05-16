@@ -114,20 +114,36 @@
 			</node>
 	</dialogue_tree>
 
-	<!--Dungeon-->
+	
+<!--Dungeon-->
+	
 	<!--NPC to unlock Door2-->
-	<dialogue_tree ID="0" NPC="5">
-		
-		<node id ="0" text="text1">
-			<choice id ="1" option="a1" next_node ="1"/>
+	<dialogue_tree ID = "0" NPC = "5">
+		<node id= "0" text="Halt, sinner! You think you can just walk out? The doors are sealed, the neon lights are bleeding, and the spirits are restless. And it’s all YOUR fault.">
+			<choice id= "1" option = "My fault? What did I do know" next_node="1"/>
+			<choice id= "2" option = "Chill out, man. I just wanted to buy some milk" next_node="2"/>
 		</node>
 
-		<node id ="1" text="text2">
-			<choice id ="1" option="Unlock the door" next_node ="-1" reward="6" reward_value="Key for Door2"/>
+		<node id= "1" text="Oh, don’t play dumb. Let me ask you this riddle, bound by the ancient laws of retail: What goes into a supermarket on a forbidden Tuesday, commits an act of unprovoked violence against a senior citizen’s jawline, causes a literal demonic haunting, and is currently the most hated, fashion-disaster of a customer in the entire cursed dimension?">
+			<choice id= "1" option = "Uh... Is it a Karen fighting over coupons?" next_node="3"/>
+			<choice id= "2" option = "Wait… Is it me? I am that special?" next_node="4"/>
 		</node>
 		
+		<node id= "2" text="Milk? MILK?! You brought a cosmic plague upon this establishment and you’re thinking about cereal?! Get out of my sight and come back when you’re ready to face your sins.">
+			<choice id= "1" option = "but… my milk" next_node="-1"/>
+		</node>
+
+		<node id= "3" text="Wrong! Kinda close tho, the spirits demand a correct answer, not your pathetic excuses.">
+			<choice id= "1" option = "Ya got me" next_node="-1"/>
+		</node>
+
+		<node id= "4" text="DING DING DING! Exactly! It’s YOU, you absolute maniac! You knocked out Big Nana on a Forbidden Day, and now we’re all trapped in grocery hell. How dare you? At least you own up to it. Proceed…">
+			<choice id= "1" option = "Finally... let's get out of here." next_node="-1" reward="6" reward_value="Key for Door2"/>
+		</node>
 	</dialogue_tree>
 
+
+	<!--NPC to unlock quest "Push the buttons"-->
 	<dialogue_tree ID="0" NPC="6">
 
 		<node id ="0" text="text1">
