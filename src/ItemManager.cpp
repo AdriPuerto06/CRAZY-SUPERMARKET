@@ -26,6 +26,13 @@ bool ItemManager::Start()
 	WindowSize = { (float)Engine::GetInstance().render->camera.w,
 				   (float)Engine::GetInstance().render->camera.h };
 	if (inventory->empty()) LoadItems();
+
+	HPTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
+	MPTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
+	Atck1Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
+	Atck2Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
+	Atck3Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
+	Atck4Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
 	return true;
 }
 
@@ -156,19 +163,20 @@ bool ItemManager::ShowPlayerItems() {
 bool ItemManager::ShowPlayerStats() {
 	LOG("Stats Showed");
 	SDL_Rect HPPos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64 };
-	CreateButton(NULL, NULL, HPPos, NULL);
+	Engine::GetInstance().render->DrawTexture(HPTex, HPPos.x, HPPos.y);
 	SDL_Rect MPPos = { WindowSize.getX() / 3, WindowSize.getY() / 3, 64,64 };
-	CreateButton(NULL, NULL, MPPos, NULL);
+	Engine::GetInstance().render->DrawTexture(MPTex, MPPos.x, MPPos.y);
 
 	//attacks
 	SDL_Rect Atck1Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
-	CreateButton(NULL, NULL, Atck1Pos, NULL);
+	Engine::GetInstance().render->DrawTexture(Atck1Tex, Atck1Pos.x, Atck1Pos.y);
 	SDL_Rect Atck2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3, 64,64 };
-	CreateButton(NULL, NULL, Atck2Pos, NULL);
+	Engine::GetInstance().render->DrawTexture(Atck2Tex, Atck2Pos.x, Atck2Pos.y);
 	SDL_Rect Atck3Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2, 64,64 };
-	CreateButton(NULL, NULL, Atck3Pos, NULL);
+	Engine::GetInstance().render->DrawTexture(Atck3Tex, Atck3Pos.x, Atck3Pos.y);
 	SDL_Rect Atck4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 1.3f, 64,64 };
-	CreateButton(NULL, NULL, Atck4Pos, NULL);
+	Engine::GetInstance().render->DrawTexture(Atck4Tex, Atck4Pos.x, Atck4Pos.y);
+
 	return true;
 }
 

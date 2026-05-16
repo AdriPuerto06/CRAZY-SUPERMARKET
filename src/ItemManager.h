@@ -68,8 +68,15 @@ private:
 
 	//inventory of the player
 	std::vector<Item>* inventory = nullptr;
-	SDL_Texture* cajonTex = nullptr;
+	SDL_Texture* HPTex = nullptr;
+	SDL_Texture* MPTex = nullptr;
+	SDL_Texture* Atck1Tex = nullptr;
+	SDL_Texture* Atck2Tex = nullptr;
+	SDL_Texture* Atck3Tex = nullptr;
+	SDL_Texture* Atck4Tex = nullptr;
 
 	bool showingBack = false;
+
+	
 
 };
