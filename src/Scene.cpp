@@ -114,6 +114,12 @@ bool Scene::Update(float dt)
 	case SceneID::STATS:
 		UpdateStats(dt);
 		break;
+	case SceneID::WIN:
+		UpdateWin(dt);
+		break;
+	case SceneID::LOOSE:
+		UpdateLoose(dt);
+		break;
 
 	}
 
@@ -372,6 +378,12 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::STATS:
 		LoadStats();
 		break;
+	case SceneID::WIN:
+		LoadWin();
+		break;
+	case SceneID::LOOSE:
+		LoadWin();
+		break;
 	}
 }
 
@@ -442,6 +454,12 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::STATS:
 		UnloadStats();
+		break;
+	case SceneID::WIN:
+		UnloadWin();
+		break;
+	case SceneID::LOOSE:
+		UnloadLoose();
 		break;
 	}
 

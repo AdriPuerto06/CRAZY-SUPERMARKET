@@ -267,47 +267,6 @@ void Player:: ShowMenu() {
 
 }
 
-bool Player::LoadWin()
-{
-	winImg = Engine::GetInstance().textures->Load("");
-	SDL_SetTextureBlendMode(winImg, SDL_BLENDMODE_BLEND);
-	screenFadeStarted = false;
-
-	return true;
-}
-
-bool Player::Win()
-{
-	screenFadeValue += (Engine::GetDt() / 1000.0f) / 2.5f;
-	if (screenFadeValue > 1.0f) screenFadeValue = 1.0f;
-
-	float eased = screenFadeValue * screenFadeValue * (3.0f - 2.0f * screenFadeValue);
-	Uint8 mod = (Uint8)(eased * 255);
-
-	SDL_SetTextureColorMod(winImg, mod, mod, mod);
-	SDL_SetTextureAlphaMod(winImg, mod);
-
-	Engine::GetInstance().render->DrawTexture(winImg, 0, 0);
-
-	return true;
-}
-
-bool Player::LoadLoose()
-{
-	looseImg = Engine::GetInstance().textures->Load("");
-	SDL_SetTextureBlendMode(looseImg, SDL_BLENDMODE_BLEND);
-	screenFadeStarted = false;
-
-	return true;
-}
-
-bool Player::Loose()
-{
-	Engine::GetInstance().render->DrawTexture(looseImg, 0, 0);
-
-	return true;
-}
-
 bool Player::CleanUp()
 {
 	LOG("Cleanup player");

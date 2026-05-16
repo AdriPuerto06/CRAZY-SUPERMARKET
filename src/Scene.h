@@ -30,6 +30,8 @@ enum class SceneID
 	ITEM,
 	STATS,
 	QUESTS,
+	WIN,
+	LOOSE,
 	NULLSCENE
 };
 
@@ -210,6 +212,17 @@ private:
 	void UpdateQuests(float dt);
 	void PostUpdateQuests();
 
+	//Win
+	void LoadWin();
+	void UnloadWin();
+	void UpdateWin(float dt);
+
+	//Loose
+	void LoadLoose();
+	void UnloadLoose();
+	void UpdateLoose(float dt);
+	
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -236,6 +249,8 @@ private:
 	SDL_Texture* almacenIMG = nullptr;
 	SDL_Texture* cajonTex = nullptr;
 	SDL_Texture* bookTex = nullptr;
+	SDL_Texture* winImg = nullptr;
+	SDL_Texture* looseImg = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
@@ -244,6 +259,8 @@ private:
 	bool  logoFadeStarted = false;
 	bool sfxLogoPlayed = false;
 	bool sfxTeamPlayed = false;
+	float screenFadeValue = 0.0f;
+	bool  screenFadeStarted = false;
 
 	//Creditos
 	std::vector<std::string> creditsText;
