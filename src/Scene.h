@@ -202,7 +202,7 @@ private:
 	void LoadStats();
 	void UnloadStats();
 	void UpdateStats(float dt);
-	void PostUpdateStats();
+
 
 	//Quests
 	void LoadQuests();

@@ -27,12 +27,12 @@ bool ItemManager::Start()
 				   (float)Engine::GetInstance().render->camera.h };
 	if (inventory->empty()) LoadItems();
 
-	HPTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
-	MPTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
-	Atck1Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
-	Atck2Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
-	Atck3Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
-	Atck4Tex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");;
+	HPTex = Engine::GetInstance().textures->Load("");;
+	MPTex = Engine::GetInstance().textures->Load("");;
+	Atck1Tex = Engine::GetInstance().textures->Load("");;
+	Atck2Tex = Engine::GetInstance().textures->Load("");;
+	Atck3Tex = Engine::GetInstance().textures->Load("");;
+	Atck4Tex = Engine::GetInstance().textures->Load("");;
 	return true;
 }
 
