@@ -10,6 +10,7 @@
 #include "UIManager.h"
 #include "CombatManager.h"
 #include "QuestManager.h"
+#include "Map.h"
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -27,12 +28,12 @@ bool ItemManager::Start()
 				   (float)Engine::GetInstance().render->camera.h };
 	if (inventory->empty()) LoadItems();
 
-	HPTex = Engine::GetInstance().textures->Load("");;
-	MPTex = Engine::GetInstance().textures->Load("");;
-	Atck1Tex = Engine::GetInstance().textures->Load("");;
-	Atck2Tex = Engine::GetInstance().textures->Load("");;
-	Atck3Tex = Engine::GetInstance().textures->Load("");;
-	Atck4Tex = Engine::GetInstance().textures->Load("");;
+	HPTex = Engine::GetInstance().textures->Load("");
+	MPTex = Engine::GetInstance().textures->Load("");
+	Atck1Tex = Engine::GetInstance().textures->Load("");
+	Atck2Tex = Engine::GetInstance().textures->Load("");
+	Atck3Tex = Engine::GetInstance().textures->Load("");
+	Atck4Tex = Engine::GetInstance().textures->Load("");
 	return true;
 }
 
@@ -175,6 +176,14 @@ bool ItemManager::ShowPlayerStats() {
 	Engine::GetInstance().render->DrawTexture(Atck4Tex, Atck4Pos.x, Atck4Pos.y);
 
 	return true;
+}
+
+void ItemManager::GetPlayerStats()
+{
+	auto player = Engine::GetInstance().scene->GetPlayer();
+	playerStats.HP = player->HP;
+	playerStats.magicPoints = Engine::GetInstance().map->magicPoints;
+	playerStats.playerAttacks = Engine::GetInstance().combatManager->GetPlayerAttacks();
 }
 
 std::vector<Item>* ItemManager::GetItems()

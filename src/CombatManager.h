@@ -120,6 +120,8 @@ public:
     void SaveTreeAttributes();
     void SaveScene();
 
+    std::vector<Attack> GetPlayerAttacks();
+
     std::vector<bool> itemVector;
 
     std::string combatFileName;

@@ -873,3 +873,29 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 		break;
 	}
 }
+
+std::vector<Attack> CombatManager::GetPlayerAttacks()
+{
+	std::vector<Attack> attacks;
+
+	// player
+	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
+		combat_tree_node != NULL;
+		combat_tree_node = combat_tree_node.next_sibling("player"))
+	{
+		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
+			current_node != NULL;
+			current_node = current_node.next_sibling("attack_stats"))
+		{
+			Attack attack;
+			attack.name = current_node.attribute("name").as_string();
+			attack.dmg = current_node.attribute("dmg").as_int();
+			attack.magicPoints = current_node.attribute("magicPoints").as_int();
+			attack.effect = current_node.attribute("effect").as_string();
+			attack.unlocked = current_node.attribute("unlocked").as_bool();
+			attacks.push_back(attack);
+		}
+		break;
+	}
+	return attacks;
+}
