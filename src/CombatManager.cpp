@@ -15,6 +15,8 @@
 #include "DialogueManager.h"
 #include "RewardManager.h"
 #include "EntityManager.h"
+#include "Audio.h"
+#include "Audio.cpp"
 
 //helpers
 std::vector<int> GetIDs(std::string str)
@@ -284,7 +286,14 @@ void CombatManager::ApplyCombatLogic()
 
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
-
+	if (std::string(attack.name) == "Jet Punch")
+	{
+		Engine::GetInstance().audio->PlayFx(s_punch, 0);
+	}
+	else if (std::string(attack.name) == "Low kick chill")
+	{
+		Engine::GetInstance().audio->PlayFx(s_kick, 0);
+	}
 	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "none")
 	{

@@ -30,7 +30,9 @@ enum Sfx {
     s_epic_reveal,
     jumpscare,
     s_button,
-    s_slider
+    s_slider,
+    s_punch,
+    s_kick
 };
 
 
