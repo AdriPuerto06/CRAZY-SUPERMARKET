@@ -1462,12 +1462,10 @@ void Scene::LoadItem()
 
 void Scene::UpdateItem(float dt)
 {
-	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
+	Engine::GetInstance().render->DrawTexture(cajonTex, WindowSize.getX() / 2 - 450, WindowSize.getY() / 5 - 151, nullptr, 0.0f, 0.0, 0, 0, false);
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) {
 		LOG("Cajon pos: %f, %f", WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
 	}
-	
-	Engine::GetInstance().itemManager->ShowPlayerItems();
 }
 
 void Scene::UnloadItem()
@@ -1491,8 +1489,8 @@ void Scene::LoadStats()
 
 void Scene::UpdateStats(float dt)
 {
+	Engine::GetInstance().render->DrawTexture(bookTex, WindowSize.getX() / 2 - 650, WindowSize.getY() / 5 - 151, nullptr, 0.0f, 0.0, 0, 0, false);
 	Engine::GetInstance().itemManager->ShowPlayerStats();
-	Engine::GetInstance().render->DrawTexture(bookTex, WindowSize.getX() / 2 + 450, WindowSize.getY() - 150);
 }
 
 void Scene::UnloadStats()

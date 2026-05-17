@@ -29,12 +29,12 @@ bool ItemManager::Start()
 				   (float)Engine::GetInstance().render->camera.h };
 	if (inventory->empty()) LoadItems();
 
-	HPTex = Engine::GetInstance().textures->Load("");;
-	MPTex = Engine::GetInstance().textures->Load("");;
-	Atck1Tex = Engine::GetInstance().textures->Load("");;
-	Atck2Tex = Engine::GetInstance().textures->Load("");;
-	Atck3Tex = Engine::GetInstance().textures->Load("");;
-	Atck4Tex = Engine::GetInstance().textures->Load("");;
+	HPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	MPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck1Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck2Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck3Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck4Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	return true;
 }
 
@@ -154,34 +154,28 @@ bool ItemManager::ShowPlayerItems() {
 	CreateButton(NULL, NULL, bt4Pos, NULL);
 	SDL_Rect bt5Pos = { WindowSize.getX() / 3, WindowSize.getY() / 2 + 20, 64,64 };
 	CreateButton(NULL, NULL, bt5Pos, NULL);
-	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64 };
+	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64};
 	CreateButton(NULL, NULL, bt6Pos, NULL);
 	return true;
 }
 
 bool ItemManager::ShowPlayerStats() {
 	LOG("Stats Showed");
-	auto player = Engine::GetInstance().entityManager->GetPlayerEM();
-	std::string text;
-	text = std::to_string(player->HP);
 
 	SDL_Rect HPPos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64 };
-	auto btn = std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, NULL, text.c_str(), HPPos, this));
-	if (btn) btn->SetTextures(NULL, NULL, NULL);
-	Engine::GetInstance().render->DrawTexture(HPTex, HPPos.x, HPPos.y);
+	Engine::GetInstance().render->DrawTexture(HPTex, HPPos.x, HPPos.y, nullptr, 0.0f, 0.0, 0, 0, false);
 	SDL_Rect MPPos = { WindowSize.getX() / 3, WindowSize.getY() / 3, 64,64 };
-	Engine::GetInstance().render->DrawTexture(MPTex, MPPos.x, MPPos.y);
+	Engine::GetInstance().render->DrawTexture(MPTex, MPPos.x, MPPos.y, nullptr, 0.0f, 0.0, 0, 0, false);
 
 	//attacks
 	SDL_Rect Atck1Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
-	Engine::GetInstance().render->DrawTexture(Atck1Tex, Atck1Pos.x, Atck1Pos.y);
+	Engine::GetInstance().render->DrawTexture(Atck1Tex, Atck1Pos.x, Atck1Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
 	SDL_Rect Atck2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3, 64,64 };
-	Engine::GetInstance().render->DrawTexture(Atck2Tex, Atck2Pos.x, Atck2Pos.y);
+	Engine::GetInstance().render->DrawTexture(Atck2Tex, Atck2Pos.x, Atck2Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
 	SDL_Rect Atck3Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2, 64,64 };
-	Engine::GetInstance().render->DrawTexture(Atck3Tex, Atck3Pos.x, Atck3Pos.y);
-	SDL_Rect Atck4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 1.3f, 64,64 };
-	Engine::GetInstance().render->DrawTexture(Atck4Tex, Atck4Pos.x, Atck4Pos.y);
+	Engine::GetInstance().render->DrawTexture(Atck3Tex, Atck3Pos.x, Atck3Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+	SDL_Rect Atck4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 1.5f, 64,64 };
+	Engine::GetInstance().render->DrawTexture(Atck4Tex, Atck4Pos.x, Atck4Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
 
 	return true;
 }
