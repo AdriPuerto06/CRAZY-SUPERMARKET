@@ -30,9 +30,9 @@
 
 		<!--Protagonist - Fighter-->
 		<attack_stats name="Jet Punch" magicPoints="3" dmg="4" effect="shield" unlocked="true"></attack_stats>
-		<attack_stats name="Fidget Dance" magicPoints="2" dmg="1" effect="buff" unlocked="false"></attack_stats>
+		<attack_stats name="Fidget Dance" magicPoints="2" dmg="1" effect="buff" unlocked="true"></attack_stats>
 		<attack_stats name="Low kick chill" magicPoints="0" dmg="3" effect="poisoned" unlocked="true"></attack_stats>
-		<attack_stats name="Punch extorsion" magicPoints="5" dmg="3" effect="paralized" unlocked="false"></attack_stats>
+		<attack_stats name="Punch extorsion" magicPoints="5" dmg="3" effect="paralized" unlocked="true"></attack_stats>
 		
 	</player>
 	<player id="2" HP="25">
