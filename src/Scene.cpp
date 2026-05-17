@@ -838,14 +838,14 @@ void Scene::UpdateLevel1(float dt) {
 		}
 	}
 	//provisional para bajar y subir la vida del player
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		player->HP --;
 		LOG("TAKE DAMAGE --> player HP: %d", player->HP);
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) {
 		player->HP++;
 		LOG("HEAL --> player HP: %d", player->HP);
-	}
+	}*/
 
 	if (player && !player->pendingMapLoad.empty())
 	{
