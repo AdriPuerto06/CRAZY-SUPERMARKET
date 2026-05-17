@@ -874,7 +874,7 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 	}
 }
 
-std::vector<Attack> CombatManager::GetPlayerAttacks()
+std::vector<Attack> CombatManager::GetPlayerAttacks(int& HP)
 {
 	std::vector<Attack> attacks;
 
@@ -883,6 +883,7 @@ std::vector<Attack> CombatManager::GetPlayerAttacks()
 		combat_tree_node != NULL;
 		combat_tree_node = combat_tree_node.next_sibling("player"))
 	{
+		HP = combat_tree_node.attribute("HP").as_int();
 		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
 			current_node != NULL;
 			current_node = current_node.next_sibling("attack_stats"))

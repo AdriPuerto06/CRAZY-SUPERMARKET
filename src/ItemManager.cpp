@@ -178,15 +178,38 @@ bool ItemManager::ShowPlayerStats() {
 	SDL_Rect Atck4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 1.5f, 64,64 };
 	Engine::GetInstance().render->DrawTexture(Atck4Tex, Atck4Pos.x, Atck4Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
 
+	std::string text;
+	text = std::to_string(playerStats.HP);
+	SDL_Rect textHPPos = { WindowSize.getX() / 3 + 70, WindowSize.getY() / 5, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textHPPos.x, textHPPos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::to_string(playerStats.magicPoints);
+	SDL_Rect textMPPos = { WindowSize.getX() / 3 + 70, WindowSize.getY() / 3, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textMPPos.x, textMPPos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[0].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[0].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[0].effect;
+	SDL_Rect textAtck1Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 5, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck1Pos.x, textAtck1Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[1].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[1].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[1].effect;
+	SDL_Rect textAtck2Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 3, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck2Pos.x, textAtck2Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[2].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[2].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[2].effect;
+	SDL_Rect textAtck3Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 2, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck3Pos.x, textAtck3Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[3].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[3].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[3].effect;
+	SDL_Rect textAtck4Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 1.5f, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck4Pos.x, textAtck4Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
 	return true;
 }
 
 void ItemManager::GetPlayerStats()
 {
-	auto player = Engine::GetInstance().scene->GetPlayer();
-	playerStats.HP = player->HP;
 	playerStats.magicPoints = Engine::GetInstance().map->magicPoints;
-	playerStats.playerAttacks = Engine::GetInstance().combatManager->GetPlayerAttacks();
+	playerStats.playerAttacks = Engine::GetInstance().combatManager->GetPlayerAttacks(playerStats.HP);
 }
 
 std::vector<Item>* ItemManager::GetItems()
@@ -221,6 +244,11 @@ void ItemManager::ShowInventory()
 
 	
 	Engine::GetInstance().render->DrawTexture(img, WindowSize.getX(), WindowSize.getY());
+	
+}
+
+void ItemManager::ShowStats()
+{
 	
 }
 

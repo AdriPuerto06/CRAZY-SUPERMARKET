@@ -9,8 +9,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#define CHAR_LENGTH 10
-#define CHAR_HEIGHT 16
 #define TEXT_DISPLAY_X 200
 #define TEXT_DISPLAY_Y 600
 

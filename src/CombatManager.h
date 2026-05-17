@@ -120,7 +120,7 @@ public:
     void SaveTreeAttributes();
     void SaveScene();
 
-    std::vector<Attack> GetPlayerAttacks();
+    std::vector<Attack> GetPlayerAttacks(int& HP);
 
     std::vector<bool> itemVector;
 

@@ -6,6 +6,7 @@
 #include "CombatManager.h"
 
 struct SDL_Texture;
+struct Attack;
 
 struct PlayerStats {
 	int HP;
@@ -49,6 +50,7 @@ public:
 	void ShowItems();
 
 	void ShowInventory();
+	void ShowStats();
 	void UnShowInventory();
 
 	void HideItems();

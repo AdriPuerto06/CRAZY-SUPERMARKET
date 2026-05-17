@@ -5,6 +5,9 @@
 #include "SDL3/SDL.h"
 #include "SDL3_ttf/SDL_ttf.h"
 
+#define CHAR_LENGTH 10
+#define CHAR_HEIGHT 16
+
 class Render : public Module
 {
 public:
