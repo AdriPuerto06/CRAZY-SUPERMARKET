@@ -190,6 +190,7 @@ void QuestManager::InitQuests()
 		q.name = (const char*)quests_tree_node.attribute("name").as_string();
 		q.reward = quests_tree_node.attribute("reward").as_int();
 		q.reward_value = (const char*)quests_tree_node.attribute("reward_type").as_string();
+		q.description = (const char*)quests_tree_node.attribute("description").as_string();
 		quests->push_back(q);
 	}
 }

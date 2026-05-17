@@ -9,6 +9,7 @@ struct Quest {
 	bool completed;
 	int reward;
 	const char* reward_value;
+	const char* description;
 };
 
 class QuestManager : public Module {
