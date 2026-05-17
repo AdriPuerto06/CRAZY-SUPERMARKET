@@ -573,7 +573,7 @@ void Scene::UnloadIntroScreen()
 
 void Scene::LoadMainMenu() {
 	//Load IMG Background
-	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/normalMarket.png");
+	SMImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/bck.png");
 
 	//Load Buttos tex
 	SDL_Texture* btnStartTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Start_Normal.png");
@@ -623,8 +623,12 @@ void Scene::UnloadMainMenu() {
 
 void Scene::UpdateMainMenu(float dt)
 {
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
+
 	if (SMImg != nullptr) {
-		Engine::GetInstance().render->DrawTexture(SMImg, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
+		//Engine::GetInstance().render->DrawTexture(SMImg, WindowSize.getX() / 2 - 720, WindowSize.getY() / 2 - 450);
+		Engine::GetInstance().render->DrawTexture(SMImg, 0, 0);
 	}
 }
 
