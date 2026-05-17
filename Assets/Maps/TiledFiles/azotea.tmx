@@ -6467,7 +6467,7 @@
 			</properties>
 			<point />
 		</object>
-		<object id="3" name="Player" type="Player" x="1594" y="764">
+		<object id="3" name="Player" type="Player" x="1611" y="1020">
 			<properties>
 				<property name="magicPoints" type="int" value="50" />
 			</properties>

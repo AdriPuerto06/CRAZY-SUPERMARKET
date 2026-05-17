@@ -22,7 +22,7 @@ static std::map<Sfx, const char*> sfx_paths =
     {s_button, "Assets/Audio/Fx/button.wav"},
     {s_slider, "Assets/Audio/Fx/slider.wav"},
     {s_punch, "Assets/Audio/Fx/punch.wav" },
-    { s_kick, "Assets/Audio/Fx/kick.wav" }
+    {s_kick, "Assets/Audio/Fx/kick.wav" }
 
 
 };
