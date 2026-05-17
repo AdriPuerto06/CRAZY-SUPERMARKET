@@ -38,7 +38,7 @@ _**Trapped in Backrooms**:_ _David Garcia_
 _**QA - Audio - Technical Documents writer - Sub Dev**:_ _Adam Molina_ 
 * Github: [adam-molina](https://github.com/Adomusss)
 
-_**Main Developer - QA - Audio**:_ _Adri Puerto_ 
+_**Main Developer - QA - 2D Artist**:_ _Adri Puerto_ 
 * Github: [adria-puerto](https://github.com/AdriPuerto06)
 
 ---
