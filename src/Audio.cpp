@@ -8,7 +8,9 @@ static std::map<Music, const char*> music_paths =
     { m_title, "Assets/Audio/Music/title music.wav" },
 	{ m_battle, "Assets/Audio/Music/battle music.wav" },
     { m_roof, "Assets/Audio/Music/roof.wav" },
-    { m_roof_drums, "Assets/Audio/Music/drums.wav" }
+    { m_roof_drums, "Assets/Audio/Music/drums.wav" },
+    { m_restaurant, "Assets/Audio/Music/rest.wav" }
+
 	
 };
 
@@ -18,7 +20,10 @@ static std::map<Sfx, const char*> sfx_paths =
     { s_epic_reveal, "Assets/Audio/Fx/logo-epic-reveal.wav" },
     {jumpscare, "Assets/Audio/Fx/jumpscare.wav"},
     {s_button, "Assets/Audio/Fx/button.wav"},
-    {s_slider, "Assets/Audio/Fx/slider.wav"}
+    {s_slider, "Assets/Audio/Fx/slider.wav"},
+    {s_punch, "Assets/Audio/Fx/punch.wav" },
+    { s_kick, "Assets/Audio/Fx/kick.wav" }
+
 
 };
 
