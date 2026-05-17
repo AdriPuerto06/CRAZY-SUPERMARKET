@@ -78,9 +78,6 @@
     <ClCompile Include="src\Input.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\PlatformGame.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\Render.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -158,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="src\EventManager.cpp">
       <Filter>Source Files\Game\Events\EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlatformGame.cpp">
+      <Filter>Source Files\Engine\Quests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,11 +268,9 @@
     <Xml Include="src\CombatData.xml">
       <Filter>Source Files\Engine\Combat</Filter>
     </Xml>
-    <Xml Include="ItemsData.xml">
-      <Filter>Source Files\Game\Inventory</Filter>
-    </Xml>
     <Xml Include="src\QuestsData.xml">
       <Filter>Source Files\Engine\Quests</Filter>
     </Xml>
+    <Xml Include="src\ItemsData.xml" />
   </ItemGroup>
 </Project>

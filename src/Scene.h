@@ -31,7 +31,7 @@ enum class SceneID
 	STATS,
 	QUESTS,
 	WIN,
-	LOOSE,
+	LOSE,
 	NULLSCENE
 };
 
@@ -87,9 +87,9 @@ public:
 	void UpdateWin(float dt);
 
 	//Loose
-	void LoadLoose();
-	void UnloadLoose();
-	void UpdateLoose(float dt);
+	void LoadLose();
+	void UnloadLose();
+	void UpdateLose(float dt);
 
 	// Return the player position
 	Vector2D GetPlayerPosition();
@@ -221,7 +221,6 @@ private:
 	void UnloadQuests();
 	void UpdateQuests(float dt);
 	void PostUpdateQuests();
-	
 
 private:
 
@@ -250,7 +249,7 @@ private:
 	SDL_Texture* cajonTex = nullptr;
 	SDL_Texture* bookTex = nullptr;
 	SDL_Texture* winImg = nullptr;
-	SDL_Texture* looseImg = nullptr;
+	SDL_Texture* loseImg = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
@@ -261,6 +260,7 @@ private:
 	bool sfxTeamPlayed = false;
 	float screenFadeValue = 0.0f;
 	bool  screenFadeStarted = false;
+	float winLoseTimer = 5.0f;
 
 	//Creditos
 	std::vector<std::string> creditsText;
