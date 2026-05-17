@@ -796,8 +796,9 @@ void CombatManager::CheckAlive()
 
 	if (combatState->enemy_Wins)
 	{
+		Engine::GetInstance().scene->ChangeScene(SceneID::LOSE);
 		LOG("Enemies win the combat.");
-		Engine::GetInstance().scene->ChangeScene(goBack);
+		/*Engine::GetInstance().scene->ChangeScene(goBack);*/
 		in_combat = false;
 		enemies_to_destroy.clear();
 	}
