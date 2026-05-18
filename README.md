@@ -58,7 +58,6 @@ In this release, the following features and improvements have been implemented:
 - ✅ [Quests]
 - ✅ [Audio Improvement]
 - ✅ [Easing Effects]
-- ✅ [Win & Lose]
 
 ---
 
