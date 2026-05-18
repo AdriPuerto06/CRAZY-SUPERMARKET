@@ -80,7 +80,7 @@ In this release, the following features and improvements have been implemented:
 | Pause | ESC |
 | ... | ... |
 
-### 🧑‍💻 Debug Controls (optional)
+### 🧑‍💻 Debug Controls 
 | Action | Key |
 |:--------|:----|
 | Close Game | Q + P |
