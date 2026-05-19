@@ -17,7 +17,7 @@
 std::string fullText;
 int visibleChars = 0;
 float typeTimer = 0.0f;
-float typeSpeed = 0.01f;
+float typeSpeed = 0.0001f;
 bool isTyping = false;
 
 //helpers
