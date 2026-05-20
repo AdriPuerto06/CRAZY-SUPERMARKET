@@ -8,7 +8,9 @@ static std::map<Music, const char*> music_paths =
     { m_title, "Assets/Audio/Music/title music.wav" },
 	{ m_battle, "Assets/Audio/Music/battle music.wav" },
     { m_roof, "Assets/Audio/Music/roof.wav" },
-    { m_roof_drums, "Assets/Audio/Music/drums.wav" }
+    { m_roof_drums, "Assets/Audio/Music/drums.wav" },
+    { m_restaurant, "Assets/Audio/Music/rest.wav" }
+
 	
 };
 
@@ -16,7 +18,13 @@ static std::map<Sfx, const char*> sfx_paths =
 {
     { s_title_name, "Assets/Audio/Fx/crazy-supermarket.wav" },
     { s_epic_reveal, "Assets/Audio/Fx/logo-epic-reveal.wav" },
-    {jumpscare, "Assets/Audio/Fx/arcade craniacs jumpscare sound effect - Converted with FlexClip.wav"}
+    {jumpscare, "Assets/Audio/Fx/jumpscare.wav"},
+    {s_button, "Assets/Audio/Fx/button.wav"},
+    {s_slider, "Assets/Audio/Fx/slider.wav"},
+    {s_punch, "Assets/Audio/Fx/punch.wav" },
+    {s_kick, "Assets/Audio/Fx/kick.wav" }
+
+
 };
 
 Audio::Audio() {
@@ -197,6 +205,8 @@ bool Audio::PlayMusic(Music id, float fadeTime, int repeat) {
 
     const char* path = it->second;
 
+    if (currentMusic_ == id && !IsMusicFinished())
+        return true;
     if (!active) return false;
     if (!EnsureStreams()) return false;
 
@@ -224,7 +234,7 @@ bool Audio::PlayMusic(Music id, float fadeTime, int repeat) {
             SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
         }
     }
-
+    currentMusic_ = id;
     LOG("Playing music %s", path);
     return true;
 }

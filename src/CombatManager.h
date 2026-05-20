@@ -115,8 +115,12 @@ public:
     void MarkEnemiesAsDead();
 
     void UnlockAttack(EntityType type, const char* name);
+    void CanCombatQuestBeCompleted(int fight_ID, bool victory);
 
     void SaveTreeAttributes();
+    void SaveScene();
+
+    std::vector<Attack> GetPlayerAttacks(int& HP);
 
     std::vector<bool> itemVector;
 
@@ -143,5 +147,5 @@ private:
 
     SceneID timeScene;
     SceneID currentScene;
-
+    SceneID goBack;
 };

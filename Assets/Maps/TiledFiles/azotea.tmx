@@ -6449,32 +6449,35 @@
   <object id="17" x="1600" y="608" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="4" name="Entities">
-  <object id="1" name="Vagabundo" type="NPC" x="874.061" y="708.056">
+  <object id="1" name="Vagabundo" type="NPC" x="192" y="576">
    <properties>
     <property name="NPC_ID" type="int" value="1"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="currentDialogueTree" type="int" value="0"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
   </object>
-  <object id="2" name="Octopuss" type="NPC" x="571.152" y="565.697">
+  <object id="2" name="Octopuss" type="NPC" x="1632" y="1088">
    <properties>
     <property name="NPC_ID" type="int" value="2"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="currentDialogueTree" type="int" value="0"/>
     <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
    </properties>
    <point/>
   </object>
-  <object id="3" name="Player" type="Player" x="1504" y="960">
+  <object id="3" name="Player" type="Player" x="1632" y="640">
    <properties>
-    <property name="HP" type="int" value="10"/>
+    <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
   </object>
-  <object id="15" name="Enemy1" type="Enemy" x="878" y="978">
+  <object id="15" name="Enemy1" type="Enemy" x="1632" y="832">
    <properties>
     <property name="Enemy_ID" type="int" value="1"/>
     <property name="active" type="bool" value="true"/>
+    <property name="fight_ID" type="int" value="1"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>

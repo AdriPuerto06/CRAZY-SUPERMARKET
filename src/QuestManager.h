@@ -7,8 +7,9 @@ struct Quest {
 	const char* name;
 	int id;
 	bool completed;
-	std::string reward;
-	int reward_type;
+	int reward;
+	const char* reward_value;
+	const char* description;
 };
 
 class QuestManager : public Module {
@@ -35,12 +36,17 @@ public:
 
 	void CompleteQuest(const char* name);
 	bool IsQuestCompleted(const char* name);
-	void CanCombatQuestBeCompleted(int fight_ID, bool victory);
+
+	void ViewQuest();
 
 private:
+	Vector2D WindowSize;
 	pugi::xml_document questsFileXML;
 	std::vector<Quest>* quests;
 	std::string questsFileName;
 	std::string questsPath;
+
+	//textura de la notificación
+	SDL_Texture* PopUp = nullptr;
 
 };

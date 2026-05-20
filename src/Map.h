@@ -129,8 +129,12 @@ struct MapData
 };
 
 struct TeleportZone {
-    float x, y, width, height;   // área en píxeles
+    float x, y, width, height;   // ï¿½rea en pï¿½xeles
     std::string targetMap;
+};
+
+struct AutoSave {
+    float x, y, width, height;   // área en píxeles
 };
 
 class Map : public Module
@@ -200,8 +204,11 @@ public:
     std::string mapFileName;
     std::string mapPath;
     std::vector<TeleportZone> teleportZones;
-
+    std::vector<AutoSave> autoSaves;
+    /*std::vector<Event> events;*/
     int magicPoints;
+
+    bool isReloading = false;
 
 private:
     bool mapLoaded;

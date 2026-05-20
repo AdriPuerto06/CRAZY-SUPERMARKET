@@ -13,6 +13,7 @@
 #include "CombatManager.h"
 #include "DialogueManager.h"
 #include "UIManager.h"
+#include <box2d/box2d.h>
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -48,6 +49,12 @@ bool Player::Start() {
 	// L08 TODO 7: Assign collider type
 	pbody->ctype = ColliderType::PLAYER;
 
+	/*b2Polygon box = b2MakeBox(0.5f, 0.5f);
+	b2ShapeDef shapeDef = b2DefaultShapeDef();
+	shapeDef.density = 2.0f;
+
+	b2CreatePolygonShape(pbody->body, &shapeDef, &box);*/
+
 	if (Engine::GetInstance().itemManager->IsItemActive("Stillish skates")) speed = 6.0f;
 
 	return true;
@@ -58,6 +65,7 @@ bool Player::Update(float dt)
 	GetPhysicsValues();
 	Move();
 	Teleport();
+	AutoSave();
 	ApplyPhysics();
 	GodMode();
 	CheckDialogueAndCombatLogic();
@@ -126,19 +134,43 @@ void Player::Teleport() {
 		return;
 	}
 
-	
 	int x, y;
 	pbody->GetPosition(x, y);
 
 	for (const auto& zone : Engine::GetInstance().map->teleportZones)
 	{
-
 		if (x >= zone.x && x <= zone.x + zone.width &&
 			y >= zone.y && y <= zone.y + zone.height)
 		{
 			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
 			pendingMapLoad = zone.targetMap;
 			teleportCooldown = 120;
+			return;
+		}
+	}
+}
+
+void Player::AutoSave() {
+	if (autosaveCooldown > 0) {
+		autosaveCooldown--;
+		/*LOG("Cooldown activo: %d", teleportCooldown);*/
+		return;
+	}
+
+
+	int x, y;
+	pbody->GetPosition(x, y);
+
+	for (const auto& zone : Engine::GetInstance().map->autoSaves)
+	{
+
+		if (x >= zone.x && x <= zone.x + zone.width &&
+			y >= zone.y && y <= zone.y + zone.height &&
+			!godMode)
+		{
+			Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
+			LOG("Autosave.");
+			autosaveCooldown = 120;
 			return;
 		}
 	}
@@ -152,23 +184,33 @@ void Player::GetPhysicsValues() {
 
 void Player::Move() {
 	if (!can_Move) return;
+	int inc = 1;
+	if (godMode) inc = 4;
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -speed;
+		velocity.x = -speed * inc;
+		/*direction.setX(-1.f);*/
 		//anims.SetCurrent("move");
 	}
+	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) { direction.setX(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = speed;
+		velocity.x = speed * inc;
+		/*direction.setX(1.f);*/
 		//anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		velocity.y = -speed;
+		velocity.y = -speed * inc;
+		/*direction.setY(1.f);*/
 		//anims.SetCurrent("move");
 	}
+	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) { direction.setY(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		velocity.y = speed;
+		velocity.y = speed * inc;
+		/*direction.setY(-1.f);*/
 		//anims.SetCurrent("move");
 	}
+
+	b2Vec2 playerVel = b2Body_GetLinearVelocity(pbody->body);
 }
 
 void Player::ApplyPhysics() {
@@ -210,12 +252,14 @@ void Player::Draw(float dt) {
 }
 
 void Player:: ShowMenu() {
-	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3;
+	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL4;
 	if(can_show_menu)
 	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
+		Engine::GetInstance().itemManager->GetPlayerStats();
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+		Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 		showingMenu = true;
-	/*	can_show_menu = false;*/
 	}
 	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
 		Engine::GetInstance().uiManager->CleanUp();
@@ -237,7 +281,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
-		LOG("Collision PLATFORM");
 
 		anims.SetCurrent("idle");
 		break;
@@ -262,10 +305,8 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
-		LOG("End Collision PLATFORM");
 		break;
 	case ColliderType::ITEM:
-		LOG("End Collision ITEM");
 		break;
 	case ColliderType::NPC:
 		LOG("End Collision NPC");

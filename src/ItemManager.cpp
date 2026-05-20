@@ -9,6 +9,10 @@
 #include "Player.h"
 #include "UIManager.h"
 #include "CombatManager.h"
+#include "QuestManager.h"
+#include "Map.h"
+#include "EntityManager.h"
+#include <string>
 
 ItemManager::ItemManager() : Module() { name = "ItemManager"; }
 
@@ -24,11 +28,14 @@ bool ItemManager::Start()
 {
 	WindowSize = { (float)Engine::GetInstance().render->camera.w,
 				   (float)Engine::GetInstance().render->camera.h };
+	if (inventory->empty()) LoadItems();
 
-	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
-	if (inventory->empty()) { 
-		LoadItems();
-	}
+	HPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	MPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck1Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck2Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck3Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+	Atck4Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	return true;
 }
 
@@ -40,12 +47,6 @@ bool ItemManager::Update(float dt)
 
 bool ItemManager::PostUpdate()
 {
-	if (showingPlayersItem)
-	{
-		Engine::GetInstance().render->DrawTexture(cajonTex,WindowSize.getX() - 200,WindowSize.getY() - 150);
-		ShowBack();
-	}
-
 	return true;
 }
 
@@ -99,15 +100,14 @@ bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
 	switch (uiElement->id)
 	{
 	case 1:
-		ShowPlayerItems();
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+		Engine::GetInstance().scene->ChangeScene(SceneID::ITEM);
 		break;
 	case 2:
+		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+		Engine::GetInstance().scene->ChangeScene(SceneID::STATS);
 		break;
 	case 3:
-		if (showingPlayersItem) {
-			!showingPlayersItem;
-			Engine::GetInstance().render->CleanUp();
-		}
 		break;
 	case 4:
 		break;
@@ -130,21 +130,86 @@ bool ItemManager::ShowInventoryOptions()
 	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 3, 200,150 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 200, 200,150 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
 
 	return true;
 }
 
-void ItemManager::ShowBack()
+bool ItemManager::ShowingQuests()
 {
-	SDL_Rect bt3Pos = { WindowSize.getX() - 200, WindowSize.getY() - 100, 135,68 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 3, "Back", bt3Pos, this));
+	Engine::GetInstance().questManager->ViewQuest();
+
+	return true;
 }
 
 bool ItemManager::ShowPlayerItems() {
-	showingPlayersItem = true;
+	LOG("Item Butons Created");
+	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
+	CreateButton(NULL, NULL, bt1Pos, NULL);
+	SDL_Rect bt2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
+	CreateButton(NULL, NULL, bt2Pos, NULL);
+	SDL_Rect bt3Pos = { WindowSize.getX() / 3, WindowSize.getY() / 3 + 15, 64,64 };
+	CreateButton(NULL, NULL, bt3Pos, NULL);
+	SDL_Rect bt4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3 + 15, 64,64 };
+	CreateButton(NULL, NULL, bt4Pos, NULL);
+	SDL_Rect bt5Pos = { WindowSize.getX() / 3, WindowSize.getY() / 2 + 20, 64,64 };
+	CreateButton(NULL, NULL, bt5Pos, NULL);
+	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64};
+	CreateButton(NULL, NULL, bt6Pos, NULL);
 	return true;
+}
+
+bool ItemManager::ShowPlayerStats() {
+	LOG("Stats Showed");
+
+	SDL_Rect HPPos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64 };
+	Engine::GetInstance().render->DrawTexture(HPTex, HPPos.x, HPPos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+	SDL_Rect MPPos = { WindowSize.getX() / 3, WindowSize.getY() / 3, 64,64 };
+	Engine::GetInstance().render->DrawTexture(MPTex, MPPos.x, MPPos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+
+	//attacks
+	SDL_Rect Atck1Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
+	Engine::GetInstance().render->DrawTexture(Atck1Tex, Atck1Pos.x, Atck1Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+	SDL_Rect Atck2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3, 64,64 };
+	Engine::GetInstance().render->DrawTexture(Atck2Tex, Atck2Pos.x, Atck2Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+	SDL_Rect Atck3Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2, 64,64 };
+	Engine::GetInstance().render->DrawTexture(Atck3Tex, Atck3Pos.x, Atck3Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+	SDL_Rect Atck4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 1.5f, 64,64 };
+	Engine::GetInstance().render->DrawTexture(Atck4Tex, Atck4Pos.x, Atck4Pos.y, nullptr, 0.0f, 0.0, 0, 0, false);
+
+	std::string text;
+	text = std::to_string(playerStats.HP);
+	SDL_Rect textHPPos = { WindowSize.getX() / 3 + 70, WindowSize.getY() / 5, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textHPPos.x, textHPPos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::to_string(playerStats.magicPoints);
+	SDL_Rect textMPPos = { WindowSize.getX() / 3 + 70, WindowSize.getY() / 3, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textMPPos.x, textMPPos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[0].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[0].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[0].effect;
+	SDL_Rect textAtck1Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 5, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck1Pos.x, textAtck1Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[1].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[1].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[1].effect;
+	SDL_Rect textAtck2Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 3, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck2Pos.x, textAtck2Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[2].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[2].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[2].effect;
+	SDL_Rect textAtck3Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 2, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck3Pos.x, textAtck3Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	text = std::string("Name: ") + playerStats.playerAttacks[3].name + std::string(" Damage: ") + std::to_string(playerStats.playerAttacks[3].dmg) + std::string(" Effect: ") + playerStats.playerAttacks[3].effect;
+	SDL_Rect textAtck4Pos = { WindowSize.getX() / 3 + 300 + 70, WindowSize.getY() / 1.5f, 64,64 };
+	Engine::GetInstance().render->DrawText(text.c_str(), textAtck4Pos.x, textAtck4Pos.y, CHAR_LENGTH * text.size(), CHAR_HEIGHT, { 0,0,0,0 });
+
+	return true;
+}
+
+void ItemManager::GetPlayerStats()
+{
+	playerStats.magicPoints = Engine::GetInstance().map->magicPoints;
+	playerStats.playerAttacks = Engine::GetInstance().combatManager->GetPlayerAttacks(playerStats.HP);
 }
 
 std::vector<Item>* ItemManager::GetItems()
@@ -182,11 +247,23 @@ void ItemManager::ShowInventory()
 	
 }
 
+void ItemManager::ShowStats()
+{
+	
+}
+
 void ItemManager::UnShowInventory()
 {
 	
 }
 
+bool ItemManager::IsItemActive(const char* name)
+{
+	for (Item item : *inventory)
+	{
+		if (item.name == name) return item.active;
+	}
+}
 
 void ItemManager::AddItemToInventory(Item item) {
 	
@@ -207,30 +284,19 @@ void ItemManager::ActivateItem(const char* name)
 	}
 }
 
-bool ItemManager::IsItemActive(const char* name)
-{
-	for (auto item : *inventory)
-	{
-		if (item.name == name)
-		{
-			return item.active;
-		}
-	}
-}
-
 void ItemManager::ApplyCombatItems(int &dmg_inc, int &shield_inc, int &confused_inc)
 {
 	for (auto item : *inventory)
 	{
 		if (item.name == "Cursed Knife" && item.active) dmg_inc = item.value;
 		if (item.name == "Bike helmet" && item.active) shield_inc = item.value;
-		if (item.name == "Gigantic flashlight" && item.active) confused_inc = item.value;
+		if (item.name == "Disturbing picture" && item.active) confused_inc = item.value;
 	}
 }
 
-void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int n)
+void ItemManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int ID)
 {
 	auto btn = std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, n, " ", btPos, this));
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, ID, " ", btPos, this));
 	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }

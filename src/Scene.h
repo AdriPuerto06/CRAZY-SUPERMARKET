@@ -27,8 +27,12 @@ enum class SceneID
 	EXIT,
 	RESUME,
 	BATTLE,
+	ITEM,
+	STATS,
+	QUESTS,
+	WIN,
+	LOSE,
 	NULLSCENE
-
 };
 
 struct SceneStack {
@@ -77,6 +81,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Win
+	void LoadWin();
+	void UnloadWin();
+	void UpdateWin(float dt);
+
+	//Loose
+	void LoadLose();
+	void UnloadLose();
+	void UpdateLose(float dt);
+
 	// Return the player position
 	Vector2D GetPlayerPosition();
 
@@ -92,12 +106,15 @@ public:
 	void ChangeScene(SceneID newScene);
 	void UnloadCurrentScene();
 	void LoadScene(SceneID newScene);
+	bool IsReloading();
 
+	std::shared_ptr<Player> GetPlayer();
 
 	//Getter
 	SceneID GetCurrentScene();
 	SceneID GetTimeScene();
 
+	SceneStack sceneStack;
 private:
 
 	// Intro / Splash
@@ -130,7 +147,6 @@ private:
 	void UnloadLevel3();
 	void PostUpdateLevel3();
 
-	//Level4 functions
 	void LoadLevel4();
 	void UpdateLevel4(float dt);
 	void UnloadLevel4();
@@ -189,6 +205,23 @@ private:
 	void UpdateCombatScene(float dt);
 	void PostUpdateCombatScene();
 
+	//Item
+	void LoadItem();
+	void UnloadItem();
+	void UpdateItem(float dt);
+
+	//Stats
+	void LoadStats();
+	void UnloadStats();
+	void UpdateStats(float dt);
+
+
+	//Quests
+	void LoadQuests();
+	void UnloadQuests();
+	void UpdateQuests(float dt);
+	void PostUpdateQuests();
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -207,18 +240,27 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
-	SceneStack sceneStack;
 
 	//Imagen
 	SDL_Texture* logoImg = nullptr;
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* cajonTex = nullptr;
+	SDL_Texture* bookTex = nullptr;
+	SDL_Texture* winImg = nullptr;
+	SDL_Texture* loseImg = nullptr;
 	float splashTime = 0.0f;
 	float logoGameTimer = 3.0f;
 	float logoTeamTimer = 6.0f;
+	float teamFadeValue = 0.0f;
+	float logoFadeValue = 0.0f;
+	bool  logoFadeStarted = false;
 	bool sfxLogoPlayed = false;
 	bool sfxTeamPlayed = false;
+	float screenFadeValue = 0.0f;
+	bool  screenFadeStarted = false;
+	float winLoseTimer = 5000.0f;
 
 	//Creditos
 	std::vector<std::string> creditsText;

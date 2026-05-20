@@ -31,6 +31,7 @@ enum class ColliderType {
     NPC,
     ENEMY,
     COMPANION,
+    EVENT,
     UNKNOWN
     // ..
 };

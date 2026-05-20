@@ -1,69 +1,73 @@
 <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
+<!--DIALOGUE: 5, ACTIVATEEVENT: 6-->
 <dialogs>
 	<!--Vagabundo-->
 	<dialogue_tree ID="0" NPC="1"> 
-		<node id ="0" text="Who are you?? Are you gonna hurt me??">
+		<node id ="0" text="Jonatan Artiñano:&#10;Who are you?? Are you gonna hurt me??">
 			<choice id ="1" option="I think we are here cause I already hurt someone (oopsies) so not from the moment" next_node ="1"/>
 			<choice id ="2" option="Not if you don't push me" next_node ="1"/>
 		</node>
 		
-		<node id ="1" text="Hold on, who did you hurt?">
+		<node id ="1" text="Jonatan Artiñano:&#10;Hold on, who did you hurt?">
 			<choice id ="1" option="A stupid granny that got in the way" next_node ="2"/>
 			<choice id ="2" option="Yo mama" next_node ="2"/>
 		</node>
 		
-		<node id ="2" text="ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday, everybody here knows it..">
+		<node id ="2" text="Jonatan Artiñano:&#10;ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday, everybody here knows it..">
 			<choice id ="1" option="My bad gng" next_node ="3"/>
 		</node>
 		
-		<node id ="3" text="Well YOU got us in here, YOU take us outta here, so take this, you won't doscratches now with these">
+		<node id ="3" text="Jonatan Artiñano:&#10;Well YOU got us in here, YOU take us outta here, so take this, you won't doscratches now with these">
 			<choice id ="1" option="EY, i'm not THAT weak" next_node ="4"/>
 		</node>
 		
 		<node id ="4" text="*You obtained Jet Punch">
-			<choice id ="1" option="Claim" next_node ="-1" reward="4" reward_value="Jet Punch"/>
+			<choice id ="1" option="Claim" next_node ="5" reward="4" reward_value="Jet Punch"/>
+		</node>
 
+		<node id ="5" text="Complete Quest: Talk with the other guy">
+			<choice id ="1" option="Claim" next_node ="-1" reward="3" reward_value="Talk with the other guy"/>
 		</node>
 
 	</dialogue_tree>
 	<!--Pulpa-->
 	<dialogue_tree ID="0" NPC="2">
-		<node id ="0" text="I was looking for you hon, I knew you’d come.">
+		<node id ="0" text="Octella Reynopus:&#10;I was looking for you hon, I knew you’d come.">
 			<choice id ="1" option="Who are you again?" next_node ="1"/>
 		</node>
-		<node id ="1" text="I’m Octella Reynopus, and I am a Pythoness">
+		<node id ="1" text="Octella Reynopus:&#10;I’m Octella Reynopus, and I am a Pythoness">
 			<choice id ="1" option="So you’re a scammer?" next_node ="2"/>
 			<choice id ="2" option="Can you read the future??" next_node ="5"/>
 		</node>
-		<node id ="2" text="Depends on whocto you ask, but I know that you’ll need my help?">
+		<node id ="2" text="Octella Reynopus:&#10;Depends on whocto you ask, but I know that you’ll need my help?">
 			<choice id ="1" option="How exactly can an armless lady help me?" next_node ="3"/>
 			<choice id ="2" option="Really? You don’t look like a fighter" next_node ="3"/>
 		</node>
-		<node id ="3" text="I may not have arms, but 8 tentacles sure can get to weird places">
+		<node id ="3" text="Octella Reynopus:&#10;I may not have arms, but 8 tentacles sure can get to weird places">
 			<choice id ="1" option="…ayo?" next_node ="4"/>
 			<choice id ="2" option="Wait, does that mean that you can work as a collector? Or am I trippin'" next_node ="6"/>
 		</node>
-		<node id ="4" text="Think of it as a octo-roomba, and I may find some rare items">
+		<node id ="4" text="Octella Reynopus:&#10;Think of it as a octo-roomba, and I may find some rare items">
 			<choice id ="1" option="Where are you getting with this?" next_node ="5"/>
 		</node>
-		<node id ="5" text="I was about to be Galician-style octopus a while ago if it wasn’t by you, or I am wrong, hon?">
+		<node id ="5" text="Octella Reynopus:&#10;I was about to be Galician-style octopus a while ago if it wasn’t by you, or I am wrong, hon?">
 			<choice id ="1" option="…yes, I assume I am responsible for that" next_node ="6"/>
 			<choice id ="2" option="You’re welcome Octella" next_node ="6"/>
 		</node>
-		<node id ="6" text="So, in return for saving my life, I'll save anything that I may consider useful to you, deal?">
-			<choice id ="1" option="Heck yeah! Free stuff!" next_node ="-1"/>
+		<node id ="6" text="Octella Reynopus:&#10;Thanks a lot! Go talk with the other guy.">
+			<choice id ="1" option="Heck yeah! Free stuff!" next_node ="-1" reward="0" reward_value="Talk with the other guy" />
 		</node>
 		
 	</dialogue_tree>
 	<!--Tio asustado de puños-->
 	<dialogue_tree ID="0" NPC="3">
-		<node id ="0" text="Wow those gloves sure do look amazing… Too much in fact">
+		<node id ="0" text="Marlin:&#10;Wow those gloves sure do look amazing… Too much in fact">
 			<choice id ="1" option="Too much?" next_node ="1"/>
 		</node>
 
-		<node id ="1" text="Yeah, like hell I’m going near them">
+		<node id ="1" text="Marlin:&#10;Yeah, like hell I’m going near them">
 			<choice id ="1" option="It’s like a tattoo I guess, cool to have but not for everyone" next_node ="-1"/>
 		</node>
 
@@ -71,45 +75,88 @@
 
 	<!--Mission Puerta-->
 	<dialogue_tree ID="0" NPC="4">
-		<node id ="0" text="DAMN it, all the way here just to be trapped!">
+		<node id ="0" text="Kinro:&#10;DAMN it, all the way here just to be trapped!">
 			<choice id ="1" option="No way, we’re trapped?" next_node ="1"/>
 		</node>
 
-		<node id ="1" text="Unless you know a way through those guys in front of the door, wait, you look kinda strong">
+		<node id ="1" text="Kinro:&#10;Unless you know a way through those guys in front of the door, wait, you look kinda strong">
 			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
 	</dialogue_tree>
 		<dialogue_tree ID="1" NPC="4">
-			<node id ="0" text="Oh, you again, what's up?">
+			<node id ="0" text="Kinro:&#10;Oh, you again, what's up?">
 				<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
 				<choice id ="2" option="Those guys won't be a problem now" next_node ="1"/>
 
 			</node>
 
-			<node id ="1" text="What? Wait, really? Now that I look into it, you kinda smell like...">
+			<node id ="1" text="Kinro:&#10;What? Wait, really? Now that I look into it, you kinda smell like...">
 				<choice id ="1" option="Like tons of blood?" next_node ="2"/>
-				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3" reward="3" reward_value="Beat those guys!"/>
+				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3"/>
 
 			</node>
 
-			<node id ="2" text="Exactly! Did you loot them?">
+			<node id ="2" text="Kinro:&#10;Exactly! Did you loot them?">
 				<choice id ="1" option="Yeah, they had these weird, ugly, bag" next_node ="4"/>
 
 			</node>
 
-			<node id ="3" text="mmm... no? Did you find anything useful?">
+			<node id ="3" text="Kinro:&#10;mmm... no? Did you find anything useful?">
 				<choice id ="1" option="Yeah, they were pissing on a bag, don't ask me why I took it" next_node ="4"/>
 
 			</node>
 
-			<node id ="4" text="Ey! That bag is mine, and inside it's my card">
+			<node id ="4" text="Kinro:&#10;Ey! That bag is mine, and inside it's my card">
 				<choice id ="1" option="Sorry but I don't want your number" next_node ="5"/>
 
 			</node>
 
-			<node id ="5" text="No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
-				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1" reward="3" reward_value="Beat those guys!"/>
+			<node id ="5" text="Kinro:&#10;No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
+				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1"/>
 
 			</node>
 	</dialogue_tree>
+
+	
+<!--Dungeon-->
+	
+	<!--NPC to unlock Door2-->
+	<dialogue_tree ID = "0" NPC = "5">
+		<node id= "0" text="Kim Jarrey:&#10;Halt, sinner! You think you can just walk out? The doors are sealed, the neon lights are bleeding, and the spirits are restless. And it’s all YOUR fault.">
+			<choice id= "1" option = "My fault? What did I do know" next_node="1"/>
+			<choice id= "2" option = "Chill out, man. I just wanted to buy some milk" next_node="2"/>
+		</node>
+
+		<node id= "1" text="Kim Jarrey:&#10;Oh, don’t play dumb. Let me ask you this riddle, bound by the ancient laws of retail: What goes into a supermarket on a forbidden Tuesday, commits an act of unprovoked violence against a senior citizen’s jawline, causes a literal demonic haunting, and is currently the most hated, fashion-disaster of a customer in the entire cursed dimension?">
+			<choice id= "1" option = "Uh... Is it a Karen fighting over coupons?" next_node="3"/>
+			<choice id= "2" option = "Wait… Is it me? I am that special?" next_node="4"/>
+		</node>
+		
+		<node id= "2" text="Kim Jarrey:&#10;Milk? MILK?! You brought a cosmic plague upon this establishment and you’re thinking about cereal?! Get out of my sight and come back when you’re ready to face your sins.">
+			<choice id= "1" option = "but… my milk" next_node="-1"/>
+		</node>
+
+		<node id= "3" text="Kim Jarrey:&#10;Wrong! Kinda close tho, the spirits demand a correct answer, not your pathetic excuses.">
+			<choice id= "1" option = "Ya got me" next_node="-1"/>
+		</node>
+
+		<node id= "4" text="Kim Jarrey:&#10;DING DING DING! Exactly! It’s YOU, you absolute maniac! You knocked out Big Nana on a Forbidden Day, and now we’re all trapped in grocery hell. How dare you? At least you own up to it. Proceed…">
+			<choice id= "1" option = "Finally... let's get out of here." next_node="-1" reward="6" reward_value="Key for Door2"/>
+		</node>
+	</dialogue_tree>
+
+
+	<!--NPC to unlock quest "Push the buttons"-->
+	<dialogue_tree ID="0" NPC="6">
+
+		<node id ="0" text="text1">
+			<choice id ="1" option="a1" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="text2">
+			<choice id ="1" option="Claim Quest: Push the buttons" next_node ="-1" reward="0" reward_value="Push the buttons"/>
+		</node>
+
+	</dialogue_tree>
+	
 </dialogs>

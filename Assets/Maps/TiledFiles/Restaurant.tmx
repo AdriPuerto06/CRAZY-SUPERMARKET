@@ -3677,7 +3677,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Checkpoint">
+ <objectgroup id="7" name="Checkpoints">
   <object id="50" x="224" y="448" width="64" height="32"/>
   <object id="51" x="1152" y="448" width="64" height="32"/>
   <object id="52" x="64" y="1056" width="32" height="96"/>
@@ -3710,9 +3710,9 @@
    </properties>
    <point/>
   </object>
-  <object id="4" name="Player" type="Player" x="362" y="1016">
+  <object id="4" name="Player" type="Player" x="96" y="1120">
    <properties>
-    <property name="HP" type="int" value="-842150451"/>
+    <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
   </object>

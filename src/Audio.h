@@ -29,7 +29,10 @@ enum Sfx {
     s_title_name,
     s_epic_reveal,
     jumpscare,
-    s_button
+    s_button,
+    s_slider,
+    s_punch,
+    s_kick
 };
 
 
@@ -70,9 +73,14 @@ public:
     // Music track
     bool ChangeMusic(int id, float fadeInTime = DEFAULT_MUSIC_FADE_TIME, float fadeOutTime = DEFAULT_MUSIC_FADE_TIME);
 
+    void StopFx()
+    {
+        if (sfx_stream_) SDL_ClearAudioStream(sfx_stream_);
+    }
+
 	// Volume control
-    void SetMusicVolume(float volume); // 0.0f – 1.0f
-    void SetSFXVolume(float volume);   // 0.0f – 1.0f
+    void SetMusicVolume(float volume); // 0.0f ï¿½ 1.0f
+    void SetSFXVolume(float volume);   // 0.0f ï¿½ 1.0f
 
 
 
@@ -107,6 +115,7 @@ private:
     bool EnsureStreams();
     
     bool music_loop_ = false;
+    Music currentMusic_ = m_OFF;
     _Mix_Music* music;
     List<Mix_Chunk*>	fx;
 

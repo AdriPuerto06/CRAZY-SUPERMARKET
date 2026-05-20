@@ -32,14 +32,23 @@
     <Filter Include="Source Files\Engine\UI">
       <UniqueIdentifier>{183dbbee-d47a-488e-869a-733fc23a08b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Items">
-      <UniqueIdentifier>{9d3ff855-9a63-4078-9d20-56fe4b43a48b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Engine\Quests">
       <UniqueIdentifier>{fd75a853-6679-402b-b8e6-4db3a9632d14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Companions">
       <UniqueIdentifier>{81eb3a06-b804-46f2-940d-7c21a83b19d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Rewards">
+      <UniqueIdentifier>{b538d869-772b-4426-a25e-55755860deae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Events">
+      <UniqueIdentifier>{8033cb42-52b9-4663-9676-b912efee27f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Inventory">
+      <UniqueIdentifier>{9d3ff855-9a63-4078-9d20-56fe4b43a48b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Events\EventManager">
+      <UniqueIdentifier>{ea9ad508-ba9e-4369-891c-bb64f9091026}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +64,9 @@
     <None Include="Assets\Maps\azotea.tmx">
       <Filter>Configuration FIles</Filter>
     </None>
+    <None Include="Assets\Maps\TiledFiles\azotea.tmx">
+      <Filter>Configuration FIles</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio.cpp">
@@ -64,9 +76,6 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Input.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PlatformGame.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Render.cpp">
@@ -130,13 +139,25 @@
       <Filter>Source Files\Engine\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\ItemManager.cpp">
-      <Filter>Source Files\Game\Items</Filter>
+      <Filter>Source Files\Game\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="src\QuestManager.cpp">
       <Filter>Source Files\Engine\Quests</Filter>
     </ClCompile>
     <ClCompile Include="src\BaseCompanion.cpp">
       <Filter>Source Files\Game\Companions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RewardManager.cpp">
+      <Filter>Source Files\Engine\Rewards</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event.cpp">
+      <Filter>Source Files\Game\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EventManager.cpp">
+      <Filter>Source Files\Game\Events\EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlatformGame.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,13 +240,22 @@
       <Filter>Source Files\Engine\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\ItemManager.h">
-      <Filter>Source Files\Game\Items</Filter>
+      <Filter>Source Files\Game\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="src\QuestManager.h">
       <Filter>Source Files\Engine\Quests</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseCompanion.h">
       <Filter>Source Files\Game\Companions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RewardManager.h">
+      <Filter>Source Files\Engine\Rewards</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Event.h">
+      <Filter>Source Files\Game\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EventManager.h">
+      <Filter>Source Files\Game\Events\EventManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -238,11 +268,9 @@
     <Xml Include="src\CombatData.xml">
       <Filter>Source Files\Engine\Combat</Filter>
     </Xml>
-    <Xml Include="ItemsData.xml">
-      <Filter>Source Files\Game\Items</Filter>
-    </Xml>
     <Xml Include="src\QuestsData.xml">
       <Filter>Source Files\Engine\Quests</Filter>
     </Xml>
+    <Xml Include="src\ItemsData.xml" />
   </ItemGroup>
 </Project>
