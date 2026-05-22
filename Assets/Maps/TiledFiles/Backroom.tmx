@@ -5011,7 +5011,12 @@
     <property name="targetMap" value="RestaurantDungeon.tmx"/>
    </properties>
   </object>
-  <object id="41" x="2336" y="768" width="64" height="96"/>
+  <object id="41" x="2336" y="768" width="64" height="96">
+   <properties>
+    <property name="targetMap" value="FrontRoom.tmx"/>
+    <property name="unlock" type="bool" value="false"/>
+   </properties>
+  </object>
   <object id="42" x="1280" y="1152" width="192" height="128">
    <properties>
     <property name="targetMap" value="ClothesLobby.tmx"/>

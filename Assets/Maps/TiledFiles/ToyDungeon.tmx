@@ -12564,7 +12564,11 @@
     <property name="targetMap" value="Backroom.tmx"/>
    </properties>
   </object>
-  <object id="41" x="2336" y="3104" width="96" height="32"/>
+  <object id="41" x="2336" y="3104" width="96" height="32">
+   <properties>
+    <property name="targetMap" value="FrontRoom.tmx"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="Checkpoints">
   <object id="42" x="2336" y="3072" width="96" height="32"/>
