@@ -1,29 +1,7 @@
 #pragma once
 #include "UIButton.h"
 #include <vector>
-
-enum class RewardType {
-	QUEST,
-	ITEM,
-	COMPANION,
-	COMPLETEQUEST,
-	ATTACK,
-	DIALOGUE,
-	NONE
-};
-
-struct Reward {
-	RewardType type;
-	std::string reward_value;
-
-	Reward() {}
-
-	Reward(RewardType type, std::string str)
-	{
-		this->type = type;
-		this->reward_value = str;
-	}
-};
+#include "RewardManager.h"
 
 struct DialogueTree {
 	std::vector<const char*> nodes_text;
