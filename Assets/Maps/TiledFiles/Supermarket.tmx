@@ -2517,6 +2517,9 @@
   </data>
  </layer>
  <layer id="2" name="MoreMap" width="50" height="50">
+  <properties>
+   <property name="Draw" type="bool" value="true"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
