@@ -939,6 +939,7 @@ void Scene::LoadLevel1() {
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
+	Engine::GetInstance().questManager->ActivateQuest("Speak with the granny");
 }
 
 void Scene::UpdateLevel1(float dt) {

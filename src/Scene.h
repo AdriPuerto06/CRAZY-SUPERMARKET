@@ -10,12 +10,8 @@ struct SDL_Texture;
 //L17 TODO 1: Define SceneID enum class with INTRO_SCREEN, MAIN_MENU, LEVEL1, LEVEL2
 enum class SceneID
 {
-	INTRO_SCREEN,
-	MAIN_MENU,
 	LEVEL1,
-	LEVEL1Combat,
 	LEVEL2,
-	LEVEL2Combat,
 	LEVEL3,
 	LEVEL4,
 	LEVEL5,
@@ -25,6 +21,10 @@ enum class SceneID
 	LEVEL9,
 	LEVEL10,
 	LEVEL11,
+	INTRO_SCREEN,
+	MAIN_MENU,
+	LEVEL1Combat,
+	LEVEL2Combat,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,

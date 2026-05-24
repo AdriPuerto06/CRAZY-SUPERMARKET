@@ -7,7 +7,7 @@
 	<fight id="2" players_id="1" enemies_id="2,3,4"></fight>
 	<fight id="3" players_id="1" enemies_id="5,6,7"></fight>
 	<fight id ="4" players_id="1" enemies_id="20"></fight>
-	<fight id ="5" players_id="1" enemies_id="24,21"></fight>
+
 	<fight id ="6" players_id="1" enemies_id="15"></fight>
 	<fight id ="7" players_id="1" enemies_id="24,21"></fight>
 	<fight id ="8" players_id="1" enemies_id="25,8"></fight>

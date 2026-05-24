@@ -5044,7 +5044,7 @@
 		<object id="14" x="256" y="1248" width="64" height="64" />
 	</objectgroup>
 	<objectgroup id="4" name="Entities">
-		<object id="15" name="Player" type="Player" x="778" y="243">
+		<object id="15" name="Player" type="Player" x="880" y="1139">
 			<point />
 		</object>
 		<object id="19" name="NPC14" type="NPC" x="1052" y="1298">
@@ -5083,7 +5083,7 @@
 			</properties>
 			<point />
 		</object>
-		<object id="27" name="NPC16" type="NPC" x="929.333" y="1205.33">
+		<object id="27" name="Awela" type="NPC" x="929.333" y="1205.33">
 			<properties>
 				<property name="NPC_ID" value="16" />
 				<property name="active" type="bool" value="true" />
@@ -5092,7 +5092,7 @@
 			</properties>
 			<point />
 		</object>
-		<object id="28" name="NPC17" type="NPC" x="929.333" y="1113.33">
+		<object id="28" name="NPC17" type="NPC" x="928" y="1024">
 			<properties>
 				<property name="NPC_ID" value="17" />
 				<property name="active" type="bool" value="true" />

@@ -6,6 +6,15 @@
 #include "CombatManager.h"
 #include "EventManager.h"
 
+bool IsANumber(char c)
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		if (c == (char)std::to_string(i).c_str()) return true;
+	}
+	return false;
+}
+
 int GetNumFromString(std::string str) {
 	int num = str.at(0) - '0';
 	for (int l = 1; l < str.size(); ++l)
@@ -17,6 +26,21 @@ int GetNumFromString(std::string str) {
 	}
 	return num;
 }
+
+SceneID GetSceneID(const char* scene)
+{
+	std::string s = scene;
+	int i = 0;
+	while (!IsANumber(s[i]) && s.size() > i)
+	{
+		i++;
+		if (s.size() < i) break;
+	}
+	s.erase(0, i-1);
+	return (SceneID)(GetNumFromString(s) - 1);
+}
+
+
 
 RewardManager::RewardManager() : Module()
 {
@@ -78,8 +102,13 @@ void RewardManager::GetReward(Reward reward)
 	case RewardType::DIALOGUE:
 		Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(GetNumFromString(reward.reward_value));
 		break;
+
 	case RewardType::EVENT:
 		Engine::GetInstance().eventManager->PossibleActivate(reward.reward_value.c_str());
+		break;
+
+	case RewardType::TELEPORT:
+		Engine::GetInstance().scene->ChangeScene(GetSceneID(reward.reward_value.c_str()));
 		break;
 	}
 }
