@@ -20,7 +20,7 @@
 	<fight id ="15" players_id="1" enemies_id="16,22"></fight>
 	<fight id ="16" players_id="1" enemies_id="17,23"></fight>
 	<fight id ="17" players_id="1" enemies_id="18"></fight>
-	<fight id ="18" players_id="1" enemies_id="19"></fight>
+	<fight id ="101" players_id="1" enemies_id="101"></fight>
 	
 	<player id="1" HP="25">
 		<!--<attack name="Attack1" dmg ="1"></attack>
@@ -250,4 +250,21 @@
 		<attack name ="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
+
+
+	<!--Bosses-->
+	<enemy id ="101" HP="50">
+		<attack name="Attack1" dmg ="10" effect="none"></attack>
+		<attack name="Attack2" dmg ="1" effect="none"></attack>
+		<attack name ="Attack3" dmg="1" effect="buff"></attack>
+		<attack name="Attack4" dmg="1" effect="poison"></attack>
+	</enemy>
+
+	<enemy id ="102" HP="50">
+		<attack name="Attack1" dmg ="10" effect="none"></attack>
+		<attack name="Attack2" dmg ="1" effect="none"></attack>
+		<attack name ="Attack3" dmg="1" effect="buff"></attack>
+		<attack name="Attack4" dmg="1" effect="poison"></attack>
+	</enemy>
+	
 </combat>

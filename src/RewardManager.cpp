@@ -40,8 +40,6 @@ SceneID GetSceneID(const char* scene)
 	return (SceneID)(GetNumFromString(s) - 1);
 }
 
-
-
 RewardManager::RewardManager() : Module()
 {
 	name = "RewardManager";
