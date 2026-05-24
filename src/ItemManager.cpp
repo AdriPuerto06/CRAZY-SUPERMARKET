@@ -29,6 +29,10 @@ bool ItemManager::Start()
 				   (float)Engine::GetInstance().render->camera.h };
 	if (inventory->empty()) LoadItems();
 
+	ItemsTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Items_Normal.png");
+	ItemsPresTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Items_Pressed.png");
+	StatsTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Stats_Normal.png");
+	StatsPresTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Stats_Normal.png");
 	HPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	MPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	Atck1Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
@@ -127,10 +131,10 @@ bool ItemManager::ShowInventoryOptions()
 	//UnloadItemUI();
 
 	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 1, "Items", bt1Pos, this));
+	CreateButton(ItemsTex, ItemsPresTex, bt1Pos, 1);
 
 	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 200, 200,150 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 2, "Stats", bt2Pos, this));
+	CreateButton(StatsTex, StatsPresTex, bt2Pos, 2);
 
 	return true;
 }

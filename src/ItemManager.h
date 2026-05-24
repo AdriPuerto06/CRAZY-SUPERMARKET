@@ -67,6 +67,11 @@ private:
 	bool showingPlayersItem = false;
 
 	//inventory of the player
+	SDL_Texture* ItemsTex = nullptr;
+	SDL_Texture* ItemsPresTex = nullptr;
+	SDL_Texture* StatsTex = nullptr;
+	SDL_Texture* StatsPresTex = nullptr;
+
 	std::vector<Item>* inventory = nullptr;
 	SDL_Texture* HPTex = nullptr;
 	SDL_Texture* MPTex = nullptr;
