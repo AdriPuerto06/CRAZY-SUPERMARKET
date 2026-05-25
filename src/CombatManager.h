@@ -27,6 +27,9 @@ struct Combatant {
     std::pair<bool, bool> shield_and_buff;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
+
+    Vector2D position = {0.0f, 0.0f};
+
 };
 
 struct CombatData {
