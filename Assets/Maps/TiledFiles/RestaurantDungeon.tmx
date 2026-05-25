@@ -12803,7 +12803,7 @@
   <object id="134" name="Button4" type="Event" x="3040" y="2528" width="64" height="64">
    <properties>
     <property name="Event_ID" type="int" value="10"/>
-    <property name="activated" type="bool" value="true"/>
+    <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button4"/>
     <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
@@ -12812,7 +12812,7 @@
   <object id="135" name="Button3" type="Event" x="2944" y="2208" width="64" height="64">
    <properties>
     <property name="Event_ID" type="int" value="9"/>
-    <property name="activated" type="bool" value="true"/>
+    <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button3"/>
     <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
@@ -12839,7 +12839,7 @@
   <object id="138" name="Button2" type="Event" x="1280" y="1760" width="64" height="64">
    <properties>
     <property name="Event_ID" type="int" value="6"/>
-    <property name="activated" type="bool" value="true"/>
+    <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button2"/>
     <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
@@ -12848,7 +12848,7 @@
   <object id="139" name="Button1" type="Event" x="1696" y="1600" width="64" height="64">
    <properties>
     <property name="Event_ID" type="int" value="5"/>
-    <property name="activated" type="bool" value="true"/>
+    <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button1"/>
     <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
