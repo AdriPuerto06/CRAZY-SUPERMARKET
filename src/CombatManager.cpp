@@ -16,6 +16,10 @@
 #include "RewardManager.h"
 #include "EntityManager.h"
 #include "Audio.h"
+#include "BaseEnemy.h"
+#include "BaseCompanion.h"
+#include "Animation.h"
+#include <unordered_map>
 
 
 //helpers
@@ -103,6 +107,12 @@ bool CombatManager::Update(float dt)
 		Engine::GetInstance().itemManager->UnShowInventory();
 	}
 
+
+	if (in_combat && Engine::GetInstance().scene->GetCurrentScene() == SceneID::BATTLE)
+	{
+		RenderCombatants(dt);
+	}
+
 	return true;
 }
 
@@ -171,7 +181,7 @@ bool CombatManager::StartCombat()
 	float Ypos = 2 *Engine::GetInstance().render->camera.h / 3;
 	float Xinc = 0.0f;
 	float Yinc = 0.0f;
-
+ 
 	for (int i = 0; i < combatData->enemies.size(); i++) {
 		combatData->enemies[i].position = { Xpos - Xinc, Ypos + Yinc };
 		Xinc += 50.0f;
@@ -180,7 +190,6 @@ bool CombatManager::StartCombat()
 
 
 	showing_continue = false;
-
 	return true;
 }
 
@@ -624,7 +633,7 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 	std::vector<SDL_Rect> bPos;
 	bPos.push_back(bt1Pos); bPos.push_back(bt2Pos); bPos.push_back(bt3Pos); bPos.push_back(bt4Pos);
 	//create attack buttons
-	int bPosCount = 0;
+	 int bPosCount = 0;
 	for (int i = 0; i < size; ++i) 
 	{
 		std::pair<SDL_Rect, const char*> p(bPos[bPosCount], attacks[i].name);
@@ -728,6 +737,10 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			player.type = EntityType::PLAYER;
 			player.status_duration = 0;
 
+			// animation
+			player.texturePath = combat_tree_node.attribute("texturePath").as_string();
+			player.anim_tsxpath = combat_tree_node.attribute("anim_tsxpath").as_string();
+
 			for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
 				current_node != NULL;
 				current_node = current_node.next_sibling("attack_stats"))
@@ -759,6 +772,10 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			enemy.type = EntityType::BASEENEMY;
 			enemy.status_duration = 0;
 
+			// animations
+			enemy.texturePath = combat_tree_node.attribute("texturePath").as_string();
+			enemy.anim_tsxpath = combat_tree_node.attribute("anim_tsxpath").as_string();
+
 			for (pugi::xml_node current_node = combat_tree_node.child("attack");
 				current_node != NULL;
 				current_node = current_node.next_sibling("attack"))
@@ -771,6 +788,40 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			}
 
 			combatData->enemies.push_back(enemy);
+		}
+
+		// Cargar recursos (texturas/animaciones) para cada combatant si se especificó la ruta
+		std::unordered_map<int, std::string> emptyAliases; // si necesitas alias, cambia esto
+		for (auto& p : combatData->players)
+		{
+			if (!p.texturePath.empty())
+			{
+				p.texture = Engine::GetInstance().textures->Load(p.texturePath.c_str());
+				if (p.texture) Engine::GetInstance().textures->GetSize(p.texture, p.texW, p.texH);
+			}
+			if (!p.anim_tsxpath.empty())
+			{
+				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), emptyAliases))
+				{
+					// intenta usar "idle" si existe, sino queda la primera anim por defecto
+					if (p.anims.Has("idle")) p.anims.SetCurrent("idle");
+				}
+			}
+		}
+		for (auto& e : combatData->enemies)
+		{
+			if (!e.texturePath.empty())
+			{
+				e.texture = Engine::GetInstance().textures->Load(e.texturePath.c_str());
+				if (e.texture) Engine::GetInstance().textures->GetSize(e.texture, e.texW, e.texH);
+			}
+			if (!e.anim_tsxpath.empty())
+			{
+				if (e.anims.LoadFromTSX(e.anim_tsxpath.c_str(), emptyAliases))
+				{
+					if (e.anims.Has("idle")) e.anims.SetCurrent("idle");
+				}
+			}
 		}
 }
 
@@ -941,4 +992,58 @@ std::vector<Attack> CombatManager::GetPlayerAttacks(int& HP)
 		break;
 	}
 	return attacks;
+}
+
+void CombatManager::RenderCombatants(float dt)
+{
+    // players
+    for (int i = 0; i < combatData->players.size(); ++i)
+    {
+		auto& player = combatData->players[i];
+        int x = (int)player.position.getX();
+        int y = (int)player.position.getY();
+
+        //Draw
+        if (player.anims.GetCurrentFrame().w > 0 && player.texture)
+        {
+            player.anims.Update(dt);
+            const SDL_Rect& frame = player.anims.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(player.texture, x - player.texW / 2, y - player.texH / 2, &frame);
+        }
+		else {
+			// fallback texture
+			SDL_Rect rect = { x - 32, y - 32, 64, 64 };
+			Engine::GetInstance().render->DrawRectangle(rect, 0, 180, 255, 200, true);
+		}
+        
+    }
+
+    // enemies
+    for (int i = 0; i < combatData->enemies.size(); ++i)
+    {
+        auto& enemy = combatData->enemies[i];
+        int x = (int)enemy.position.getX();
+        int y = (int)enemy.position.getY();
+
+		//draw
+        if (enemy.anims.GetCurrentFrame().w > 0 && enemy.texture)
+        {
+			enemy.anims.Update(dt);
+            const SDL_Rect& frame = enemy.anims.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(enemy.texture, x - enemy.texW / 2, y - enemy.texH / 2, &frame);
+        }
+        else
+        {
+			// fallback
+            SDL_Rect rect = { x - 32, y - 32, 64, 64 };
+			Engine::GetInstance().render->DrawRectangle(rect, 200, 40, 40, 200, true);
+        }
+
+        // resaltar objetivo (mejor poner una flecha o algo)
+        if (i == combatState->enemy_index_targeted)
+        {
+            SDL_Rect outline = { x - 36, y - 36, 72, 72 };
+			Engine::GetInstance().render->DrawRectangle(outline, 255, 255, 0, 255, false);
+        }
+    }
 }

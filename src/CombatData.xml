@@ -22,7 +22,7 @@
 	<fight id ="17" players_id="1" enemies_id="18"></fight>
 	<fight id ="18" players_id="1" enemies_id="19"></fight>
 	
-	<player id="1" HP="25">
+	<player id="1" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">>
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
@@ -35,7 +35,7 @@
 		<attack_stats name="Punch extorsion" magicPoints="5" dmg="3" effect="paralized" unlocked="true"></attack_stats>
 		
 	</player>
-	<player id="2" HP="25">
+	<player id="2" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png" >
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
@@ -48,7 +48,7 @@
 		<attack_stats name="Golden rain" magicPoints="5" dmg="3" effect="paralized" unlocked="false"></attack_stats>
 
 	</player>
-	<player id="3" HP="25">
+	<player id="3" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
@@ -100,7 +100,7 @@
 		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralized" unlocked="false"></attack_stats>
 	</player>
 	
-	<enemy id =" 1" HP="15">
+	<enemy id =" 1" HP="15" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">
 		<attack name="Attack1" dmg ="5" effect="none"></attack>
 		<attack name="Attack2" dmg ="3" effect="none"></attack>
 		<attack name ="Attack3" dmg="4" effect="none"></attack>
