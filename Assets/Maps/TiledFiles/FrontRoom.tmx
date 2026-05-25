@@ -5046,7 +5046,7 @@
   <object id="16" x="64" y="64" width="448" height="416"/>
  </objectgroup>
  <objectgroup id="4" name="Teleport">
-  <object id="17" x="800" y="96" width="32" height="64">
+  <object id="17" x="800" y="96" width="32" height="96.3333">
    <properties>
     <property name="targetMap" value="ToyDungeon.tmx"/>
    </properties>

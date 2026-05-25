@@ -15168,7 +15168,7 @@
    </properties>
    <point/>
   </object>
-  <object id="81" name="Player" type="Player" x="2764" y="1052">
+  <object id="81" name="Player" type="Player" x="1376" y="352">
    <point/>
   </object>
  </objectgroup>
