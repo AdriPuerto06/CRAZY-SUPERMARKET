@@ -162,7 +162,7 @@
 
 
 
-	<!--NPC to unlock quest "Push the buttons"-->
+	<!--Granny-->
 	<dialogue_tree ID="0" NPC="16">
 
 		<node id ="0" text="Hey kid, what happens?">
@@ -170,7 +170,7 @@
 		</node>
 
 		<node id ="1" text="1v1, noob">
-			<choice id ="1" option="*You slap her" next_node ="2" reward="3" reward_value="Speak with the granny"/>
+			<choice id ="1" option="(You slap her)" next_node ="2" reward="3" reward_value="Speak with the granny"/>
 		</node>
 
 		<node id ="2" text="Misterious voice:&#10; You will be dragged to hell!">
