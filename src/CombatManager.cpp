@@ -147,6 +147,38 @@ bool CombatManager::StartCombat()
 	combatState->Init(*combatData);
 	combatState->player_index_selected = 0; // first player
 
+
+	// Alineation:
+	//		0		   !
+	//		 0		  !
+	//		  0		 !
+	//		   0	!
+
+	//Good guys
+	float Xinitialpos = Engine::GetInstance().render->camera.w / 4;
+	float Yinitialpos = 2 *Engine::GetInstance().render->camera.h / 3;
+	float Xincrement = 0.0f;
+	float Yincrement = 0.0f;
+	
+	for (int i = 0; i < combatData->players.size(); i++) {
+		combatData->players[i].position = { Xinitialpos + Xincrement, Yinitialpos + Yincrement };
+		Xincrement += 50.0f;
+		Yincrement += 30.0f;
+	}
+
+	//Bad guys
+	float Xpos = 3 * Engine::GetInstance().render->camera.w / 4;
+	float Ypos = 2 *Engine::GetInstance().render->camera.h / 3;
+	float Xinc = 0.0f;
+	float Yinc = 0.0f;
+
+	for (int i = 0; i < combatData->enemies.size(); i++) {
+		combatData->enemies[i].position = { Xpos - Xinc, Ypos + Yinc };
+		Xinc += 50.0f;
+		Yinc += 30.0f;
+	}
+
+
 	showing_continue = false;
 
 	return true;
