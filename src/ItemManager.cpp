@@ -32,7 +32,7 @@ bool ItemManager::Start()
 	ItemsTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Items_Normal.png");
 	ItemsPresTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Items_Pressed.png");
 	StatsTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Stats_Normal.png");
-	StatsPresTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Stats_Normal.png");
+	StatsPresTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Stats_Pressed.png");
 	HPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	MPTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	Atck1Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");

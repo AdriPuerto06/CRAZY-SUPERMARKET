@@ -13,9 +13,7 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
-	LEVEL1Combat,
 	LEVEL2,
-	LEVEL2Combat,
 	LEVEL3,
 	LEVEL4,
 	OPTIONS,
@@ -199,12 +197,6 @@ private:
 	void UpdateBattle(float dt);
 	void PostUpdateBattle();
 
-	//Combat scenes
-	void LoadCombatScene(SceneID sceneid);
-	void UnloadCombatScene();
-	void UpdateCombatScene(float dt);
-	void PostUpdateCombatScene();
-
 	//Item
 	void LoadItem();
 	void UnloadItem();
@@ -214,13 +206,6 @@ private:
 	void LoadStats();
 	void UnloadStats();
 	void UpdateStats(float dt);
-
-
-	//Quests
-	void LoadQuests();
-	void UnloadQuests();
-	void UpdateQuests(float dt);
-	void PostUpdateQuests();
 
 private:
 
@@ -246,6 +231,7 @@ private:
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* BattleIMG = nullptr;
 	SDL_Texture* cajonTex = nullptr;
 	SDL_Texture* bookTex = nullptr;
 	SDL_Texture* winImg = nullptr;

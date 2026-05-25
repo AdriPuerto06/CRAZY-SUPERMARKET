@@ -366,9 +366,6 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::PAUSE:
 		LoadPause();
 		break;
-	case SceneID::LEVEL1Combat:
-		LoadCombatScene(SceneID::LEVEL1Combat);
-		break;
 	case SceneID::BATTLE:
 		LoadBattle();
 		break;
@@ -442,9 +439,6 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::PAUSE:
 		UnloadPause();
-		break;
-	case SceneID::LEVEL1Combat:
-		UnloadCombatScene();
 		break;
 	case SceneID::BATTLE:
 		UnloadBattle();
@@ -782,31 +776,6 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	default:
 		break;
 	}
-}
-
-// *********************************************
-// Combat functions
-// *********************************************
-void Scene::LoadCombatScene(SceneID sceneid) {
-	switch (sceneid) {
-	case SceneID::LEVEL1Combat:
-		//Load the background of the combat scene (players, enemies and background png)
-
-		break;
-	default:
-		break;
-	}
-}
-void Scene::UnloadCombatScene() {
-	Engine::GetInstance().uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().entityManager->CleanUp();
-}
-void Scene::UpdateCombatScene(float dt) {
-}
-void Scene::PostUpdateCombatScene() {
 }
 
 // *********************************************
@@ -1412,6 +1381,8 @@ void Scene::PostUpdatePause()
 
 void Scene::LoadBattle()
 {
+	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
@@ -1433,11 +1404,16 @@ void Scene::LoadBattle()
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
+	if (BattleIMG != nullptr) {
+		Engine::GetInstance().textures->UnLoad(BattleIMG);
+		SMImg = nullptr; 
+	}
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
 void Scene::UpdateBattle(float dt)
 {
+	Engine::GetInstance().render->DrawTexture(BattleIMG, WindowSize.getX()/2 - 720, 0);
 }
 
 void Scene::PostUpdateBattle()
