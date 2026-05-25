@@ -246,7 +246,7 @@ private:
 	bool sfxTeamPlayed = false;
 	float screenFadeValue = 0.0f;
 	bool  screenFadeStarted = false;
-	float winLoseTimer = 5.0f;
+	float winLoseTimer = 5000.0f;
 
 	//Creditos
 	std::vector<std::string> creditsText;

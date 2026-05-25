@@ -15,6 +15,8 @@
 #include "DialogueManager.h"
 #include "RewardManager.h"
 #include "EntityManager.h"
+#include "Audio.h"
+
 
 //helpers
 std::vector<int> GetIDs(std::string str)
@@ -284,7 +286,14 @@ void CombatManager::ApplyCombatLogic()
 
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
 {
-
+	if (std::string(attack.name) == "Jet Punch")
+	{
+		Engine::GetInstance().audio->PlayFx(s_punch, 0);
+	}
+	else if (std::string(attack.name) == "Low kick chill")
+	{
+		Engine::GetInstance().audio->PlayFx(s_kick, 0);
+	}
 	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "none")
 	{
@@ -787,8 +796,9 @@ void CombatManager::CheckAlive()
 
 	if (combatState->enemy_Wins)
 	{
+		Engine::GetInstance().scene->ChangeScene(SceneID::LOSE);
 		LOG("Enemies win the combat.");
-		Engine::GetInstance().scene->ChangeScene(goBack);
+		/*Engine::GetInstance().scene->ChangeScene(goBack);*/
 		in_combat = false;
 		enemies_to_destroy.clear();
 	}
@@ -872,4 +882,31 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 		}
 		break;
 	}
+}
+
+std::vector<Attack> CombatManager::GetPlayerAttacks(int& HP)
+{
+	std::vector<Attack> attacks;
+
+	// player
+	for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
+		combat_tree_node != NULL;
+		combat_tree_node = combat_tree_node.next_sibling("player"))
+	{
+		HP = combat_tree_node.attribute("HP").as_int();
+		for (pugi::xml_node current_node = combat_tree_node.child("attack_stats");
+			current_node != NULL;
+			current_node = current_node.next_sibling("attack_stats"))
+		{
+			Attack attack;
+			attack.name = current_node.attribute("name").as_string();
+			attack.dmg = current_node.attribute("dmg").as_int();
+			attack.magicPoints = current_node.attribute("magicPoints").as_int();
+			attack.effect = current_node.attribute("effect").as_string();
+			attack.unlocked = current_node.attribute("unlocked").as_bool();
+			attacks.push_back(attack);
+		}
+		break;
+	}
+	return attacks;
 }

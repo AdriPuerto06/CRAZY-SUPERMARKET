@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "CombatManager.h"
+#include "Render.h"
 
 QuestManager::QuestManager() : Module()
 {
@@ -152,13 +153,17 @@ void QuestManager::ViewQuest()
 		if (q.active && !q.completed) {
 
 			std::string text = std::string(q.name);
+			std::string desc = std::string(q.description);
+
 			int x = winW - 300;
 			
 			int y = Ystart + Yspacing;
 			// pasar false en DrawTexture hace que siga la camara en vez de dejar la imagen tiesa ahí (muy loco)
 			Engine::GetInstance().render->DrawTexture(PopUp, x - PopUp->w - 5, y, nullptr, 0.0f, 0.0, 0, 0, false);
-			Engine::GetInstance().render->DrawText(text.c_str(), x, y, 0, 0, color);
 
+			Engine::GetInstance().render->DrawText(text.c_str(), x, y, 0, 0, color);
+			Engine::GetInstance().render->DrawText(desc.c_str(), x, y + 32, (5*CHAR_LENGTH / 7) * desc.size(), (5*CHAR_HEIGHT / 7), color);
+			
 			Yspacing += 32;
 
 		}

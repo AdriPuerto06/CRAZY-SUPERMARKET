@@ -157,7 +157,7 @@
       <Filter>Source Files\Game\Events\EventManager</Filter>
     </ClCompile>
     <ClCompile Include="src\PlatformGame.cpp">
-      <Filter>Source Files\Engine\Quests</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

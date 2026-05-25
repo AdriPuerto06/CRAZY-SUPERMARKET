@@ -256,6 +256,7 @@ void Player:: ShowMenu() {
 	if(can_show_menu)
 	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
 		Engine::GetInstance().itemManager->ShowInventoryOptions();
+		Engine::GetInstance().itemManager->GetPlayerStats();
 		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
 		Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 		showingMenu = true;

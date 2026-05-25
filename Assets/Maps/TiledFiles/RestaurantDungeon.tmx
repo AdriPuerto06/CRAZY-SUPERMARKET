@@ -12591,7 +12591,7 @@
   <properties>
    <property name="magicPoints" type="int" value="50"/>
   </properties>
-  <object id="1" name="Player" type="Player" x="1504" y="448">
+  <object id="1" name="Player" type="Player" x="1472" y="480">
    <properties>
     <property name="magicPoints" type="int" value="50"/>
    </properties>

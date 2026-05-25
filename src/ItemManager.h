@@ -3,8 +3,16 @@
 #include "Entity.h"
 #include <vector>
 #include <SDL3/SDL.h>
+#include "CombatManager.h"
 
 struct SDL_Texture;
+struct Attack;
+
+struct PlayerStats {
+	int HP;
+	int magicPoints;
+	std::vector<Attack> playerAttacks;
+};
 
 struct Item {
 	const char* name;
@@ -32,6 +40,7 @@ public:
 	bool ShowInventoryOptions();
 	bool ShowPlayerItems();
 	bool ShowPlayerStats();
+	void GetPlayerStats();
 	bool ShowingQuests();
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
@@ -41,6 +50,7 @@ public:
 	void ShowItems();
 
 	void ShowInventory();
+	void ShowStats();
 	void UnShowInventory();
 
 	void HideItems();
@@ -57,6 +67,7 @@ public:
 public:
 
 	SDL_Texture* img = nullptr;
+	PlayerStats playerStats;
 
 private:
 	Vector2D WindowSize;
