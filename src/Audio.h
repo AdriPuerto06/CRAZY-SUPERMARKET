@@ -75,7 +75,7 @@ public:
 
     void StopFx()
     {
-        if (sfx_stream_) SDL_ClearAudioStream(sfx_stream_);
+        //if (sfx_stream_) SDL_ClearAudioStream(sfx_stream_);
     }
 
 	// Volume control
@@ -92,17 +92,24 @@ private:
         Uint32 len{ 0 };  // bytes
     };
 
+    // Currently playing sound effect
+    struct PlayingSfx {
+        SDL_AudioStream* stream{ nullptr };
+        float timeLeft{ 0.0f };   // segundos restantes
+    };
+
     // Device and default output format
     SDL_AudioDeviceID device_{ 0 };
     SDL_AudioSpec     device_spec_{};
 
     // Streams
     SDL_AudioStream* music_stream_{ nullptr }; // for background music (single)
-    SDL_AudioStream* sfx_stream_{ nullptr };   // simple shared SFX stream
+    
 
     // Loaded sounds
     SoundData music_data_{};
     std::vector<SoundData> sfx_; // 1-based indexing outwardly
+    std::vector<SDL_AudioStream*> active_sfx_streams_;
 
 	// Volume control
     float music_volume_ = 1.0f; // 0.0 = mute, 1.0 = full
