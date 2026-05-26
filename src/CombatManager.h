@@ -24,6 +24,7 @@ struct Attack {
 struct Combatant {
     int id = -1;
     int hp = 0;
+    int maxhp = 0;
     bool alive = true;
     std::string status = "none";
     int status_duration = 0;
