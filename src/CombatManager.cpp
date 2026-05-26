@@ -1023,6 +1023,27 @@ void CombatManager::RenderCombatants(float dt)
 			Engine::GetInstance().render->DrawRectangle(rect, 0, 180, 255, 200, true);
 		}
         
+
+		// healthbar
+
+		//outline
+		player.hp_outline.x = x;
+		player.hp_outline.y = y;
+		Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
+
+		//inner part
+		player.hp;
+		player.hp_Interior.x = x - 2;
+		player.hp_Interior.y = y - 2;
+		player.hp_Interior.w = player.hp_outline.w;
+		player.hp_Interior.h = player.hp_outline.h;
+
+
+
+		Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
+
+		
+
     }
 
     // enemies
