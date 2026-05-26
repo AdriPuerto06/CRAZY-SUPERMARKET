@@ -238,6 +238,13 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 		StartCombat(/*combatData->players_id, combatData->enemies_id*/);
 		LOG("Combat starts.");
 		break;
+	case 10:
+		//Back
+		UnloadCombatUI();
+		choosingAtk = false;
+		Engine::GetInstance().scene->LoadBattle();
+		LOG("Returned from attack options to battle UI");
+		break;
 	default:
 		break;
 	}
@@ -656,7 +663,7 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 120,20 };
 	std::dynamic_pointer_cast<UIButton>(
 		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::BUTTON, 10, "Back", bt5Pos, Engine::GetInstance().scene.get()));
+			UIElementType::BUTTON, 10, "Back", bt5Pos, this));
 
 	return true;
 }
