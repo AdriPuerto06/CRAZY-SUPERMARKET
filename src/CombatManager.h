@@ -3,6 +3,9 @@
 #include "ItemManager.h"
 #include "Scene.h"
 #include <vector>
+#include "Textures.h"
+#include "Animation.h"
+#include <SDL3/SDL.h>
 
 //Effects
 #define POISON_DAMAGE 2
@@ -27,6 +30,27 @@ struct Combatant {
     std::pair<bool, bool> shield_and_buff;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
+
+    Vector2D position = {0.0f, 0.0f};
+
+
+    // Animation
+    std::string anim_tsxpath;      // ruta al TSX (animaciones)
+    std::string texturePath;       // ruta a la textura (png)
+
+    /*
+    std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
+    anims.LoadFromTSX("Assets/Textures/testguy32x32x200resize.tsx", aliases);
+    anims.SetCurrent("idle");
+
+    //L03: TODO 2: Initialize Player parameters
+    texture = Engine::GetInstance().textures->Load("Assets/Textures/testguy32x32x200resize.png");
+    */
+    SDL_Texture* texture = nullptr;
+    AnimationSet anims;
+    int texW = 0;
+    int texH = 0;
+    
 };
 
 struct CombatData {
@@ -148,4 +172,6 @@ private:
     SceneID timeScene;
     SceneID currentScene;
     SceneID goBack;
+    // Dibuja players y enemyes
+    void RenderCombatants(float dt);
 };
