@@ -24,6 +24,7 @@ struct Attack {
 struct Combatant {
     int id = -1;
     int hp = 0;
+    int maxhp = 0;
     bool alive = true;
     std::string status = "none";
     int status_duration = 0;
@@ -34,18 +35,15 @@ struct Combatant {
     Vector2D position = {0.0f, 0.0f};
 
 
+    // Health bar
+    SDL_Rect hp_Interior = {0, 0, 0, 0,};
+    SDL_Rect hp_outline = {0, 0, 100, 10,};
+
+
     // Animation
     std::string anim_tsxpath;      // ruta al TSX (animaciones)
     std::string texturePath;       // ruta a la textura (png)
 
-    /*
-    std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
-    anims.LoadFromTSX("Assets/Textures/testguy32x32x200resize.tsx", aliases);
-    anims.SetCurrent("idle");
-
-    //L03: TODO 2: Initialize Player parameters
-    texture = Engine::GetInstance().textures->Load("Assets/Textures/testguy32x32x200resize.png");
-    */
     SDL_Texture* texture = nullptr;
     AnimationSet anims;
     int texW = 0;

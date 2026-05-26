@@ -172,8 +172,8 @@ bool CombatManager::StartCombat()
 	
 	for (int i = 0; i < combatData->players.size(); i++) {
 		combatData->players[i].position = { Xinitialpos + Xincrement, Yinitialpos + Yincrement };
-		Xincrement += 50.0f;
-		Yincrement += 30.0f;
+		Xincrement += 80.0f;
+		Yincrement += 70.0f;
 	}
 
 	//Bad guys
@@ -184,8 +184,8 @@ bool CombatManager::StartCombat()
  
 	for (int i = 0; i < combatData->enemies.size(); i++) {
 		combatData->enemies[i].position = { Xpos - Xinc, Ypos + Yinc };
-		Xinc += 50.0f;
-		Yinc += 30.0f;
+		Xinc += 70.0f;
+		Yinc += 90.0f;
 	}
 
 
@@ -741,6 +741,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			Combatant player;
 			player.id = id;
 			player.hp = combat_tree_node.attribute("HP").as_int();
+			player.maxhp = player.hp;
 			player.type = EntityType::PLAYER;
 			player.status_duration = 0;
 
@@ -776,6 +777,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			Combatant enemy;
 			enemy.id = id;
 			enemy.hp = combat_tree_node.attribute("HP").as_int();
+			enemy.maxhp = enemy.hp;
 			enemy.type = EntityType::BASEENEMY;
 			enemy.status_duration = 0;
 
@@ -1023,6 +1025,31 @@ void CombatManager::RenderCombatants(float dt)
 			Engine::GetInstance().render->DrawRectangle(rect, 0, 180, 255, 200, true);
 		}
         
+
+		// healthbar
+
+		//outline
+		player.hp_outline.x = x;
+		player.hp_outline.y = y;
+		Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
+
+		//inner part
+		float Wmax = (float)player.hp_outline.w;
+
+		float unity = Wmax / player.maxhp;
+
+		player.hp_Interior.w = player.hp * unity;
+
+		player.hp_Interior.x = x - 2;
+		player.hp_Interior.y = y - 2;
+		
+		player.hp_Interior.h = player.hp_outline.h;
+
+		if (player.hp > 0) {
+			//green
+			Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 0, 255, 0, 255, true);
+		}
+
     }
 
     // enemies
@@ -1046,6 +1073,31 @@ void CombatManager::RenderCombatants(float dt)
 			Engine::GetInstance().render->DrawRectangle(rect, 200, 40, 40, 200, true);
         }
 
+
+		// healthbar
+
+		//outline
+		enemy.hp_outline.x = x;
+		enemy.hp_outline.y = y;
+		Engine::GetInstance().render->DrawRectangle(enemy.hp_outline, 0, 0, 0, 255, true);
+
+		//inner part
+		float Wmax = (float)enemy.hp_outline.w;
+
+		float unity = Wmax / enemy.maxhp;
+
+		enemy.hp_Interior.w = enemy.hp * unity;
+
+		enemy.hp_Interior.x = x - 2;
+		enemy.hp_Interior.y = y - 2;
+
+		enemy.hp_Interior.h = enemy.hp_outline.h;
+
+		if (enemy.hp > 0) {
+			//red
+			Engine::GetInstance().render->DrawRectangle(enemy.hp_Interior, 255, 0, 0, 255, true);
+		}
+		
         // resaltar objetivo (mejor poner una flecha o algo)
         if (i == combatState->enemy_index_targeted)
         {
