@@ -54,7 +54,7 @@ public:
     bool Update(float dt) override;
 
 	// Play a music file
-	bool PlayMusic(Music id, float fadeTime, int repeat = 0);
+	bool PlayMusic(Music id, float fadeTime, int repeat = -1);
 
 	// Load a WAV in memory
 	int LoadFx(const char* path);
@@ -75,7 +75,11 @@ public:
 
     void StopFx()
     {
-        //if (sfx_stream_) SDL_ClearAudioStream(sfx_stream_);
+        for (SDL_AudioStream* stream : active_sfx_streams_)
+        {
+            if (stream) SDL_DestroyAudioStream(stream);
+        }
+        active_sfx_streams_.clear();
     }
 
 	// Volume control

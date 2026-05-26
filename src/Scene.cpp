@@ -789,7 +789,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 void Scene::LoadLevel1() {
 	//Call the function to load the map & music
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
-	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
@@ -857,7 +857,7 @@ void  Scene::PostUpdateLevel1() {
 // *********************************************
 
 void Scene::LoadLevel2() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Restaurant.tmx");
@@ -918,7 +918,7 @@ void  Scene::PostUpdateLevel2() {
 // *********************************************
 
 void Scene::LoadLevel3() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Sala1.tmx");
@@ -973,7 +973,7 @@ void  Scene::PostUpdateLevel3() {
 //Level 4
 void Scene::LoadLevel4() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");
@@ -1390,7 +1390,7 @@ void Scene::LoadBattle()
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
-	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
+	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 	//UI Buttons
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
