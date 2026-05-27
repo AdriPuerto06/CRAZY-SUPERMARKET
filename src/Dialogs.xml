@@ -180,7 +180,7 @@
 		</node>
 
 		<node id ="2" text="Also, kill the strong one because at any moment could become really dangerous!">
-			<choice id ="1" option="Claim Quest: Push the buttons" next_node ="-1" reward="0" reward_value="Push the buttons"/>
+			<choice id ="1" option="Claim Quest: Kill the boss" next_node ="-1" reward="0" reward_value="Kill the boss"/>
 		</node>
 
 	</dialogue_tree>
