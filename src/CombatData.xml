@@ -100,7 +100,7 @@
 		<attack_stats name="Hacking" magicPoints="3" dmg="7" effect="paralized" unlocked="false"></attack_stats>
 	</player>
 	
-	<enemy id =" 1" HP="15" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">
+	<enemy id =" 1" HP="15" anim_tsxpath= "Assets\Textures\frisbee-Sheet.tsx" texturePath="Assets\Textures\frisbee-Sheet.png">
 		<attack name="Attack1" dmg ="5" effect="none"></attack>
 		<attack name="Attack2" dmg ="3" effect="none"></attack>
 		<attack name ="Attack3" dmg="4" effect="none"></attack>

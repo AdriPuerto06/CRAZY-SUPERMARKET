@@ -593,6 +593,7 @@ void CombatManager::EnemyAI()
 	else
 	{
 		MakeAttack(player, enemy, attack);
+		enemy.anims.SetCurrent("attack");
 	}
 }
 
@@ -813,7 +814,10 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), emptyAliases))
 				{
 					// intenta usar "idle" si existe, sino queda la primera anim por defecto
-					if (p.anims.Has("idle")) p.anims.SetCurrent("idle");
+					if (p.anims.Has("idle")) 
+					{ 
+						p.anims.SetCurrent("idle"); 
+					}
 				}
 			}
 		}
@@ -824,9 +828,15 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 				e.texture = Engine::GetInstance().textures->Load(e.texturePath.c_str());
 				if (e.texture) Engine::GetInstance().textures->GetSize(e.texture, e.texW, e.texH);
 			}
+			// Hardcodear los aliases para cada enemigo
+			std::unordered_map<int, std::string> aliases = emptyAliases;
+			if (e.id == 1)
+			{
+				aliases = { {0, "idle"}, {4, "attack"}, {11, "hit"}, {16, "hit"} };
+			}
 			if (!e.anim_tsxpath.empty())
 			{
-				if (e.anims.LoadFromTSX(e.anim_tsxpath.c_str(), emptyAliases))
+				if (e.anims.LoadFromTSX(e.anim_tsxpath.c_str(), aliases))
 				{
 					if (e.anims.Has("idle")) e.anims.SetCurrent("idle");
 				}
