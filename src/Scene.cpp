@@ -444,9 +444,6 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::PAUSE:
 		LoadPause();
 		break;
-	case SceneID::LEVEL1Combat:
-		LoadCombatScene(SceneID::LEVEL1Combat);
-		break;
 	case SceneID::BATTLE:
 		LoadBattle();
 		break;
@@ -541,9 +538,6 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::PAUSE:
 		UnloadPause();
-		break;
-	case SceneID::LEVEL1Combat:
-		UnloadCombatScene();
 		break;
 	case SceneID::BATTLE:
 		UnloadBattle();
@@ -904,38 +898,14 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 }
 
 // *********************************************
-// Combat functions
-// *********************************************
-void Scene::LoadCombatScene(SceneID sceneid) {
-	switch (sceneid) {
-	case SceneID::LEVEL1Combat:
-		//Load the background of the combat scene (players, enemies and background png)
-
-		break;
-	default:
-		break;
-	}
-}
-void Scene::UnloadCombatScene() {
-	Engine::GetInstance().uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().entityManager->CleanUp();
-}
-void Scene::UpdateCombatScene(float dt) {
-}
-void Scene::PostUpdateCombatScene() {
-}
-
-// *********************************************
 // Level 1 functions
 // *********************************************
 
 void Scene::LoadLevel1() {
 	//Call the function to load the map & music
+
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Supermarket.tmx");
-	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
@@ -1002,7 +972,7 @@ void  Scene::PostUpdateLevel1() {
 // *********************************************
 
 void Scene::LoadLevel2() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
@@ -1061,7 +1031,7 @@ void  Scene::PostUpdateLevel2() {
 // *********************************************
 
 void Scene::LoadLevel3() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Backroom.tmx");
@@ -1117,7 +1087,7 @@ void  Scene::PostUpdateLevel3() {
 
 void Scene::LoadLevel4() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantLobby.tmx");
@@ -1975,10 +1945,12 @@ void Scene::PostUpdatePause()
 
 void Scene::LoadBattle()
 {
+	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
-	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
+	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 	//UI Buttons
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
@@ -1996,11 +1968,16 @@ void Scene::LoadBattle()
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
+	if (BattleIMG != nullptr) {
+		Engine::GetInstance().textures->UnLoad(BattleIMG);
+		SMImg = nullptr; 
+	}
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
 void Scene::UpdateBattle(float dt)
 {
+	Engine::GetInstance().render->DrawTexture(BattleIMG, WindowSize.getX()/2 - 720, 0);
 }
 
 void Scene::PostUpdateBattle()

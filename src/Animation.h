@@ -46,6 +46,10 @@ public:
 
     bool Has(const std::string& name) const;
 
+    //configurar loop por clip y consultar si el clip actual terminó
+    void SetLoopFor(const std::string& name, bool v);
+    bool HasFinishedOnce() const;
+
 private:
     int tileW_ = 0, tileH_ = 0, columns_ = 0;
     std::unordered_map<std::string, Animation> clips_;

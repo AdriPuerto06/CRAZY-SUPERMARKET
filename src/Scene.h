@@ -124,6 +124,9 @@ public:
 	SceneStack sceneStack;
 
 	void CheckScene(std::string target);
+	void LoadBattle();
+
+
 private:
 
 	// Intro / Splash
@@ -247,16 +250,10 @@ private:
 	void PostUpdatePause();
 
 	//BATTLE
-	void LoadBattle();
+	
 	void UnloadBattle();
 	void UpdateBattle(float dt);
 	void PostUpdateBattle();
-
-	//Combat scenes
-	void LoadCombatScene(SceneID sceneid);
-	void UnloadCombatScene();
-	void UpdateCombatScene(float dt);
-	void PostUpdateCombatScene();
 
 	//Item
 	void LoadItem();
@@ -267,13 +264,6 @@ private:
 	void LoadStats();
 	void UnloadStats();
 	void UpdateStats(float dt);
-
-
-	//Quests
-	void LoadQuests();
-	void UnloadQuests();
-	void UpdateQuests(float dt);
-	void PostUpdateQuests();
 
 private:
 
@@ -299,6 +289,7 @@ private:
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* BattleIMG = nullptr;
 	SDL_Texture* cajonTex = nullptr;
 	SDL_Texture* bookTex = nullptr;
 	SDL_Texture* winImg = nullptr;
