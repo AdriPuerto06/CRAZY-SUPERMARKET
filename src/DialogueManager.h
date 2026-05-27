@@ -78,8 +78,6 @@ public:
 	bool showingButtonStart = false;
 	bool in_conversation = false;
 
-	/*std::vector<int> currentDialogueTreesNPC;*/
-
 private:
 	pugi::xml_document dialogsFileXML;
 	SDL_Texture* backgroundText = nullptr;

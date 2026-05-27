@@ -142,10 +142,11 @@ enum class Component {
 };
 
 struct PendingChange {
-    EntityType type;
+    EntityType entityType;
     int ID;
     Component type;
     int new_value;
+    bool inc;
 };
 
 class Map : public Module
@@ -211,7 +212,7 @@ public:
     Vector2D GetCameraLimitsInTiles(Vector2D camPosTile);
     Vector2D GetCameraPositionInTiles();
 
-    void PendingChangesCheckAndSetter(EntityType type, Component component, int ID);
+    void PendingChangesCheckAndSetter(EntityType type, Component component, int ID, int& current_value);
 
 public: 
     std::string mapFileName;

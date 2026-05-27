@@ -1,6 +1,5 @@
 #include "RewardManager.h"
 #include "Log.h"
-#include "Map.h"
 
 #include "QuestManager.h"
 #include "DialogueManager.h"
