@@ -1386,23 +1386,29 @@ void Scene::PostUpdatePause()
 void Scene::LoadBattle()
 {
 	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
+	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
+	SDL_Texture* btnChgTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Normal.png");
+	SDL_Texture* btnChgPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Pressed.png");
+	SDL_Texture* btnScpTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Normal.png");
+	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
 	
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
 	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
 	//UI Buttons
-	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
+	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 12, "Items", bt2Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
+	CreateButton(NULL, NULL, bt2Pos, 12);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 13, "Change player", bt3Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
+	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 14, "Scape", bt4Pos, this));
+	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
+	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
 }
 
 void Scene::UnloadBattle()
