@@ -87,27 +87,6 @@ bool Scene::Update(float dt)
 	case SceneID::LEVEL4:
 		UpdateLevel4(dt);
 		break;
-	case SceneID::LEVEL5:
-		UpdateLevel5(dt);
-		break;
-	case SceneID::LEVEL6:
-		UpdateLevel6(dt);
-		break;
-	case SceneID::LEVEL7:
-		UpdateLevel7(dt);
-		break;
-	case SceneID::LEVEL8:
-		UpdateLevel8(dt);
-		break;
-	case SceneID::LEVEL9:
-		UpdateLevel9(dt);
-		break;
-	case SceneID::LEVEL10:
-		UpdateLevel10(dt);
-		break;
-	case SceneID::LEVEL11:
-		UpdateLevel11(dt);
-		break;
 	case SceneID::OPTIONS:
 		UpdateOptions(dt);
 		break;
@@ -197,27 +176,6 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::LEVEL4:
 		PostUpdateLevel4();
-		break;
-	case SceneID::LEVEL5:
-		PostUpdateLevel5();
-		break;
-	case SceneID::LEVEL6:
-		PostUpdateLevel6();
-		break;
-	case SceneID::LEVEL7:
-		PostUpdateLevel7();
-		break;
-	case SceneID::LEVEL8:
-		PostUpdateLevel8();
-		break;
-	case SceneID::LEVEL9:
-		PostUpdateLevel9();
-		break;
-	case SceneID::LEVEL10:
-		PostUpdateLevel10();
-		break;
-	case SceneID::LEVEL11:
-		PostUpdateLevel11();
 		break;
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
@@ -310,20 +268,6 @@ bool Scene::OnUIMouseClickEvent(UIElement* uiElement)
 		break;
 	case SceneID::LEVEL4:
 		break;
-	case SceneID::LEVEL5:
-		break;
-	case SceneID::LEVEL6:
-		break;
-	case SceneID::LEVEL7:
-		break;
-	case SceneID::LEVEL8:
-		break;
-	case SceneID::LEVEL9:
-		break;
-	case SceneID::LEVEL10:
-		break;
-	case SceneID::LEVEL11:
-		break;
 	case SceneID::OPTIONS: 
 		HandleMainMenuUIEvents(uiElement);
 		break;
@@ -404,27 +348,6 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LEVEL4:
 		LoadLevel4();
 		break;
-	case SceneID::LEVEL5:
-		LoadLevel5();
-		break;
-	case SceneID::LEVEL6:
-		LoadLevel6();
-		break;
-	case SceneID::LEVEL7:
-		LoadLevel7();
-		break;
-	case SceneID::LEVEL8:
-		LoadLevel8();
-		break;
-	case SceneID::LEVEL9:
-		LoadLevel9();
-		break;
-	case SceneID::LEVEL10:
-		LoadLevel10();
-		break;
-	case SceneID::LEVEL11:
-		LoadLevel11();
-		break;
 	case SceneID::OPTIONS:
 		LoadOptions();
 		break;
@@ -442,9 +365,6 @@ void Scene::LoadScene(SceneID newScene)
 		break;
 	case SceneID::PAUSE:
 		LoadPause();
-		break;
-	case SceneID::LEVEL1Combat:
-		LoadCombatScene(SceneID::LEVEL1Combat);
 		break;
 	case SceneID::BATTLE:
 		LoadBattle();
@@ -502,27 +422,6 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LEVEL4:
 		UnloadLevel4();
 		break;
-	case SceneID::LEVEL5:
-		UnloadLevel5();
-		break;
-	case SceneID::LEVEL6:
-		UnloadLevel6();
-		break;
-	case SceneID::LEVEL7:
-		UnloadLevel7();
-		break;
-	case SceneID::LEVEL8:
-		UnloadLevel8();
-		break;
-	case SceneID::LEVEL9:
-		UnloadLevel9();
-		break;
-	case SceneID::LEVEL10:
-		UnloadLevel10();
-		break;
-	case SceneID::LEVEL11:
-		UnloadLevel11();
-		break;
 	case SceneID::OPTIONS:
 		UnloadOptions();
 		break;
@@ -540,9 +439,6 @@ void Scene::UnloadCurrentScene() {
 		break;
 	case SceneID::PAUSE:
 		UnloadPause();
-		break;
-	case SceneID::LEVEL1Combat:
-		UnloadCombatScene();
 		break;
 	case SceneID::BATTLE:
 		UnloadBattle();
@@ -563,29 +459,13 @@ void Scene::UnloadCurrentScene() {
 
 }
 
-void Scene::CheckScene(std::string target) {
-
-	if (target == "Supermarket.tmx") ChangeScene(SceneID::LEVEL1);
-	else if (target == "azotea.tmx")      ChangeScene(SceneID::LEVEL2);
-	else if (target == "Backroom.tmx")      ChangeScene(SceneID::LEVEL3);
-	else if (target == "RestaurantLobby.tmx") ChangeScene(SceneID::LEVEL4);
-	else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL5);
-	else if (target == "ClothesLobby.tmx") ChangeScene(SceneID::LEVEL6);
-	else if (target == "ClotheDungeon.tmx") ChangeScene(SceneID::LEVEL7);
-	else if (target == "ToyDungeon.tmx") ChangeScene(SceneID::LEVEL8);
-	else if (target == "FrontRoom.tmx") ChangeScene(SceneID::LEVEL9);
-	else if (target == "FinalDungeon.tmx") ChangeScene(SceneID::LEVEL10);
-	else if (target == "Cursed_Supermarket.tmx") ChangeScene(SceneID::LEVEL11);
-
-}
-
 // *********************************************
 // INTRO SCREEN functions
 // *********************************************
 
 void Scene::LoadIntroScreen()
 {
-	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/Team_Logo.png");
+	teamImg = Engine::GetInstance().textures->Load("Assets/Textures/YieldToTheAcorn.png");
 	logoImg = Engine::GetInstance().textures->Load("Assets/Textures/CARRITO_LOGO.png");
 
 
@@ -903,38 +783,13 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 }
 
 // *********************************************
-// Combat functions
-// *********************************************
-void Scene::LoadCombatScene(SceneID sceneid) {
-	switch (sceneid) {
-	case SceneID::LEVEL1Combat:
-		//Load the background of the combat scene (players, enemies and background png)
-
-		break;
-	default:
-		break;
-	}
-}
-void Scene::UnloadCombatScene() {
-	Engine::GetInstance().uiManager->CleanUp();
-
-	player.reset();
-
-	Engine::GetInstance().entityManager->CleanUp();
-}
-void Scene::UpdateCombatScene(float dt) {
-}
-void Scene::PostUpdateCombatScene() {
-}
-
-// *********************************************
 // Level 1 functions
 // *********************************************
 
 void Scene::LoadLevel1() {
 	//Call the function to load the map & music
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Supermarket.tmx");
-	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0.2, 0);
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
@@ -966,7 +821,9 @@ void Scene::UpdateLevel1(float dt) {
 		std::string target = player->pendingMapLoad;
 		player->pendingMapLoad = "";
 
-		CheckScene(target);
+		if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		else if (target == "Sala1.tmx")      ChangeScene(SceneID::LEVEL3);
+		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -1000,10 +857,10 @@ void  Scene::PostUpdateLevel1() {
 // *********************************************
 
 void Scene::LoadLevel2() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
@@ -1025,7 +882,9 @@ void Scene::UpdateLevel2(float dt) {
 		std::string target = player->pendingMapLoad;
 		player->pendingMapLoad = "";
 
-		CheckScene(target);
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
+		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -1059,10 +918,10 @@ void  Scene::PostUpdateLevel2() {
 // *********************************************
 
 void Scene::LoadLevel3() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Backroom.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Sala1.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
@@ -1080,7 +939,9 @@ void Scene::UpdateLevel3(float dt) {
 		std::string target = player->pendingMapLoad;
 		player->pendingMapLoad = "";
 
-		CheckScene(target);
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL2);
+		else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL4);
 	}
 }
 
@@ -1109,16 +970,13 @@ void  Scene::PostUpdateLevel3() {
 	}
 }
 
-// *********************************************
-// Level 4 functions
-// *********************************************
-
+//Level 4
 void Scene::LoadLevel4() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantLobby.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
@@ -1141,7 +999,9 @@ void Scene::UpdateLevel4(float dt) {
 		std::string target = player->pendingMapLoad;
 		player->pendingMapLoad = "";
 
-		CheckScene(target);
+		if (target == "azotea.tmx") ChangeScene(SceneID::LEVEL1);
+		else if (target == "Restaurant.tmx")  ChangeScene(SceneID::LEVEL2);
+		else if (target == "Sala1.tmx")  ChangeScene(SceneID::LEVEL3);
 	}
 }
 
@@ -1161,454 +1021,6 @@ void Scene::UnloadLevel4() {
 }
 
 void  Scene::PostUpdateLevel4() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 5 functions
-// *********************************************
-
-void Scene::LoadLevel5() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL5);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel5(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel5() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel5() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 6 functions
-// *********************************************
-
-void Scene::LoadLevel6() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ClothesLobby.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL6);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel6(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel6() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel6() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 7 functions
-// *********************************************
-
-void Scene::LoadLevel7() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ClotheDungeon.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL7);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel7(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel7() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel7() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 8 functions
-// *********************************************
-
-void Scene::LoadLevel8() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ToyDungeon.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL8);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel8(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel8() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel8() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 9 functions
-// *********************************************
-
-void Scene::LoadLevel9() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "FrontRoom.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL9);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel9(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel9() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel9() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 10 functions
-// *********************************************
-
-void Scene::LoadLevel10() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "FinalDungeon.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL10);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel10(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel10() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel10() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
-// *********************************************
-// Level 11 functions
-// *********************************************
-
-void Scene::LoadLevel11() {
-
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
-
-	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Cursed_Supermarket.tmx");
-
-	//Call the function to load entities from the map
-	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL11);
-	Engine::GetInstance().eventManager->GetEvents();
-}
-
-void Scene::UpdateLevel11(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-
-	if (player && !player->pendingMapLoad.empty())
-	{
-		std::string target = player->pendingMapLoad;
-		player->pendingMapLoad = "";
-
-		CheckScene(target);
-	}
-}
-
-void Scene::UnloadLevel11() {
-
-	// Clean up UI elements related to the Level2
-	auto& uiManager = Engine::GetInstance().uiManager;
-	uiManager->CleanUp();
-
-	// Reset player reference (sets the shared_ptr to nullptr)
-	player.reset();
-
-	// Clean up map and entities
-	Engine::GetInstance().map->CleanUp();
-	Engine::GetInstance().entityManager->CleanUp();
-
-}
-
-void  Scene::PostUpdateLevel11() {
 
 	//L15 TODO 3: Call the function to load entities from the map
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
@@ -1973,10 +1385,12 @@ void Scene::PostUpdatePause()
 
 void Scene::LoadBattle()
 {
+	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
-	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2);
+	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 	//UI Buttons
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
 	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
@@ -1994,11 +1408,16 @@ void Scene::LoadBattle()
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
+	if (BattleIMG != nullptr) {
+		Engine::GetInstance().textures->UnLoad(BattleIMG);
+		SMImg = nullptr; 
+	}
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
 void Scene::UpdateBattle(float dt)
 {
+	Engine::GetInstance().render->DrawTexture(BattleIMG, WindowSize.getX()/2 - 720, 0);
 }
 
 void Scene::PostUpdateBattle()

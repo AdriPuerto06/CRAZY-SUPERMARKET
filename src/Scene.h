@@ -13,18 +13,9 @@ enum class SceneID
 	INTRO_SCREEN,
 	MAIN_MENU,
 	LEVEL1,
-	LEVEL1Combat,
 	LEVEL2,
-	LEVEL2Combat,
 	LEVEL3,
 	LEVEL4,
-	LEVEL5,
-	LEVEL6,
-	LEVEL7,
-	LEVEL8,
-	LEVEL9,
-	LEVEL10,
-	LEVEL11,
 	OPTIONS,
 	CREDITS,
 	MULTIPLAYER,
@@ -123,7 +114,8 @@ public:
 
 	SceneStack sceneStack;
 
-	void CheckScene(std::string target);
+	void LoadBattle();
+
 private:
 
 	// Intro / Splash
@@ -156,54 +148,10 @@ private:
 	void UnloadLevel3();
 	void PostUpdateLevel3();
 
-	//Level4 functions
 	void LoadLevel4();
 	void UpdateLevel4(float dt);
 	void UnloadLevel4();
 	void PostUpdateLevel4();
-
-	//Level5 functions
-	void LoadLevel5();
-	void UpdateLevel5(float dt);
-	void UnloadLevel5();
-	void PostUpdateLevel5();
-
-	//Level6 functions
-	void LoadLevel6();
-	void UpdateLevel6(float dt);
-	void UnloadLevel6();
-	void PostUpdateLevel6();
-
-	//Level7 functions
-	void LoadLevel7();
-	void UpdateLevel7(float dt);
-	void UnloadLevel7();
-	void PostUpdateLevel7();
-
-	//Level8 functions
-	void LoadLevel8();
-	void UpdateLevel8(float dt);
-	void UnloadLevel8();
-	void PostUpdateLevel8();
-
-	//Level9 functions
-	void LoadLevel9();
-	void UpdateLevel9(float dt);
-	void UnloadLevel9();
-	void PostUpdateLevel9();
-
-	//Level10 functions
-	void LoadLevel10();
-	void UpdateLevel10(float dt);
-	void UnloadLevel10();
-	void PostUpdateLevel10();
-
-	//Level11 functions
-	void LoadLevel11();
-	void UpdateLevel11(float dt);
-	void UnloadLevel11();
-	void PostUpdateLevel11();
-
 
 	//OPTIONS
 	void LoadOptions();
@@ -247,16 +195,10 @@ private:
 	void PostUpdatePause();
 
 	//BATTLE
-	void LoadBattle();
+	
 	void UnloadBattle();
 	void UpdateBattle(float dt);
 	void PostUpdateBattle();
-
-	//Combat scenes
-	void LoadCombatScene(SceneID sceneid);
-	void UnloadCombatScene();
-	void UpdateCombatScene(float dt);
-	void PostUpdateCombatScene();
 
 	//Item
 	void LoadItem();
@@ -267,13 +209,6 @@ private:
 	void LoadStats();
 	void UnloadStats();
 	void UpdateStats(float dt);
-
-
-	//Quests
-	void LoadQuests();
-	void UnloadQuests();
-	void UpdateQuests(float dt);
-	void PostUpdateQuests();
 
 private:
 
@@ -299,6 +234,7 @@ private:
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
+	SDL_Texture* BattleIMG = nullptr;
 	SDL_Texture* cajonTex = nullptr;
 	SDL_Texture* bookTex = nullptr;
 	SDL_Texture* winImg = nullptr;
