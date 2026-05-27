@@ -1409,6 +1409,8 @@ void Scene::LoadBattle()
 
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
 	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
+
+	monocolor = true;
 }
 
 void Scene::UnloadBattle()
@@ -1418,6 +1420,7 @@ void Scene::UnloadBattle()
 		Engine::GetInstance().textures->UnLoad(BattleIMG);
 		SMImg = nullptr; 
 	}
+	monocolor = false;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 

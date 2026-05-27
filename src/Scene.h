@@ -116,6 +116,9 @@ public:
 
 	void LoadBattle();
 
+
+	bool monocolor = false;
+
 private:
 
 	// Intro / Splash
