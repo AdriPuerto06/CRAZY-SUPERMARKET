@@ -260,12 +260,6 @@ void CombatManager::ButtonAction(int ID)
 	int playerIndex = combatState->player_index_selected;
 	std::vector<Attack>& attacks = combatData->players[playerIndex].attacks;
 
-	if (combatState->magicPoints <= 0)
-	{
-		LOG("No magic points left!");
-		return;
-	}
-
 	int attackIndex = ID - 1;
 	if (attackIndex < 0 || attackIndex >= (int)attacks.size())
 		return;
@@ -280,6 +274,17 @@ void CombatManager::ButtonAction(int ID)
 		combatState->player_attack_dmg_selected,
 		attacks[attackIndex].name,
 		attacks[attackIndex].effect.c_str());
+
+	if (combatState->magicPoints <= 0)
+	{
+		LOG("No magic points left!");
+		return;
+	}
+	if (combatState->magicPoints-attacks[attackIndex].magicPoints <= 0)
+	{
+		LOG("Not enough Magic Points to use the attack!");
+		return;
+	}
 		
 	combatState->selecting_target = true;
 	LOG("Select enemy with LEFT/RIGHT \t Press ENTER to confirm.");
@@ -918,6 +923,8 @@ void CombatManager::CheckAlive()
 	for (auto& e : combatData->enemies)
 		if (e.alive) ++aliveEnemies;
 	if (aliveEnemies == 0) combatState->player_Wins = true;
+
+	if (combatState->magicPoints <= 0) combatState->enemy_Wins = true;
 
 	if (combatState->enemy_Wins)
 	{
