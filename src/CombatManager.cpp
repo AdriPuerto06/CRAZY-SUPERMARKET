@@ -342,6 +342,17 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	{
 		Engine::GetInstance().audio->PlayFx(s_kick, 0);
 	}
+
+	// Trigger animations
+	// attacker attack, target gets hit
+	
+	attacker.anims.SetLoopFor("attack", false);
+	attacker.anims.SetCurrent("attack");
+	
+	target.anims.SetLoopFor("hit", false);
+	target.anims.SetCurrent("hit");
+	//poner timer 
+
 	//effects that affect the attacker (heal itself, buff itself...)
 	if (attack.effect == "none")
 	{
@@ -813,7 +824,15 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), emptyAliases))
 				{
 					// intenta usar "idle" si existe, sino queda la primera anim por defecto
-					if (p.anims.Has("idle")) p.anims.SetCurrent("idle");
+					if (p.anims.Has("idle")) 
+					{ 
+						p.anims.SetCurrent("idle"); 
+					}
+					// idle = loop
+					// attack/hit  = no loop
+					if (p.anims.Has("idle")) { p.anims.SetLoopFor("idle", true); }
+					if (p.anims.Has("attack")) { p.anims.SetLoopFor("attack", false); }
+					if (p.anims.Has("hit")) { p.anims.SetLoopFor("hit", false); }
 				}
 			}
 		}
@@ -824,11 +843,22 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 				e.texture = Engine::GetInstance().textures->Load(e.texturePath.c_str());
 				if (e.texture) Engine::GetInstance().textures->GetSize(e.texture, e.texW, e.texH);
 			}
+			// Hardcodear los aliases para cada enemigo
+			std::unordered_map<int, std::string> aliases = emptyAliases;
+			if (e.id == 1)
+			{
+				aliases = { {0, "idle"}, {4, "attack"}, {11, "hit"}, {16, "hit"} };
+			}
 			if (!e.anim_tsxpath.empty())
 			{
-				if (e.anims.LoadFromTSX(e.anim_tsxpath.c_str(), emptyAliases))
+				if (e.anims.LoadFromTSX(e.anim_tsxpath.c_str(), aliases))
 				{
 					if (e.anims.Has("idle")) e.anims.SetCurrent("idle");
+					// idle = loop
+					// attack/hit = no loop
+					if (e.anims.Has("idle")) { e.anims.SetLoopFor("idle", true); }
+					if (e.anims.Has("attack")) { e.anims.SetLoopFor("attack", false); }
+					if (e.anims.Has("hit")) { e.anims.SetLoopFor("hit", false); }
 				}
 			}
 		}
@@ -1018,6 +1048,12 @@ void CombatManager::RenderCombatants(float dt)
             player.anims.Update(dt);
             const SDL_Rect& frame = player.anims.GetCurrentFrame();
 			Engine::GetInstance().render->DrawTexture(player.texture, x - player.texW / 2, y - player.texH / 2, &frame);
+
+			//volver a idle
+			if (player.anims.HasFinishedOnce() && player.anims.GetCurrentName() != "idle" && player.anims.Has("idle"))
+			{
+				player.anims.SetCurrent("idle");
+			}
         }
 		else {
 			// fallback texture
@@ -1064,12 +1100,18 @@ void CombatManager::RenderCombatants(float dt)
         {
 			enemy.anims.Update(dt);
             const SDL_Rect& frame = enemy.anims.GetCurrentFrame();
-			Engine::GetInstance().render->DrawTexture(enemy.texture, x - enemy.texW / 2, y - enemy.texH / 2, &frame);
+			Engine::GetInstance().render->DrawTexture(enemy.texture, x , y, &frame);
+
+			// volver a idle
+			if (enemy.anims.HasFinishedOnce() && enemy.anims.GetCurrentName() != "idle" && enemy.anims.Has("idle"))
+			{
+				enemy.anims.SetCurrent("idle");
+			}
         }
         else
         {
 			// fallback
-            SDL_Rect rect = { x - 32, y - 32, 64, 64 };
+            SDL_Rect rect = { x, y, 64, 64 };
 			Engine::GetInstance().render->DrawRectangle(rect, 200, 40, 40, 200, true);
         }
 
@@ -1078,7 +1120,7 @@ void CombatManager::RenderCombatants(float dt)
 
 		//outline
 		enemy.hp_outline.x = x;
-		enemy.hp_outline.y = y;
+		enemy.hp_outline.y = y - 20;
 		Engine::GetInstance().render->DrawRectangle(enemy.hp_outline, 0, 0, 0, 255, true);
 
 		//inner part
@@ -1089,7 +1131,7 @@ void CombatManager::RenderCombatants(float dt)
 		enemy.hp_Interior.w = enemy.hp * unity;
 
 		enemy.hp_Interior.x = x - 2;
-		enemy.hp_Interior.y = y - 2;
+		enemy.hp_Interior.y = enemy.hp_outline.y - 2;
 
 		enemy.hp_Interior.h = enemy.hp_outline.h;
 
@@ -1101,7 +1143,7 @@ void CombatManager::RenderCombatants(float dt)
         // resaltar objetivo (mejor poner una flecha o algo)
         if (i == combatState->enemy_index_targeted)
         {
-            SDL_Rect outline = { x - 36, y - 36, 72, 72 };
+            SDL_Rect outline = { x - 4, y - 4, 72, 72 };
 			Engine::GetInstance().render->DrawRectangle(outline, 255, 255, 0, 255, false);
         }
     }

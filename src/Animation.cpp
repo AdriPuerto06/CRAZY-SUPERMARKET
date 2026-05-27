@@ -145,3 +145,17 @@ const std::string& AnimationSet::GetCurrentName() const {
 bool AnimationSet::Has(const std::string& name) const {
     return clips_.find(name) != clips_.end();
 }
+
+//set loop para un clip concreto
+void AnimationSet::SetLoopFor(const std::string& name, bool v) {
+    auto it = clips_.find(name);
+    if (it == clips_.end()) { return; }
+    it->second.SetLoop(v);
+}
+
+//consultar si el clip actual terminó
+bool AnimationSet::HasFinishedOnce() const {
+    auto it = clips_.find(currentName_);
+    if (it == clips_.end()) { return false; }
+    return it->second.HasFinishedOnce();
+}
