@@ -306,6 +306,15 @@ bool Audio::Update(float dt)
 {
     if (!active) return true;
 
+    // Loops
+    if (music_loop_ && music_stream_ && music_data_.buf)
+    {
+        if (SDL_GetAudioStreamAvailable(music_stream_) == 0)
+        {
+            SDL_PutAudioStreamData(music_stream_, music_data_.buf, music_data_.len);
+        }
+    }
+
     // Clean up finished sound effect streams
     for (auto it = active_sfx_streams_.begin(); it != active_sfx_streams_.end(); )
     {
@@ -314,7 +323,6 @@ bool Audio::Update(float dt)
             it = active_sfx_streams_.erase(it);
             continue;
         }
-
         int queued = SDL_GetAudioStreamQueued(stream);
         if (queued == 0) {
             SDL_DestroyAudioStream(stream);
@@ -324,4 +332,6 @@ bool Audio::Update(float dt)
             ++it;
         }
     }
+
+    return true;
 }
