@@ -131,7 +131,7 @@ void DialogueManager::ButtonAction(int ID)
 	{
 		/*ShowOptions(dialogue->node_id);*/
 
-		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
+		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 0.0f);
 	}
 	can_be_clicked = false;
 

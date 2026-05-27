@@ -173,25 +173,13 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-	if (isTyping)
+	if (pendingShowOptions)
 	{
-		typeTimer += dt;
+		pendingShowOptions = false;
 
-		if (typeTimer >= typeSpeed)
-		{
-			typeTimer = 0.0f;
-
-			if (visibleChars < fullText.size())
-			{
-				visibleChars++;
-			}
-			else
-			{
-				isTyping = false;
-				Engine::GetInstance().dialogueManager->ShowOptions(Engine::GetInstance().dialogueManager->dialogue->node_id);
-			}
-		}
+		Engine::GetInstance().dialogueManager->ShowOptions(Engine::GetInstance().dialogueManager->dialogue->node_id);
 	}
+
 	return true;
 }
 
@@ -490,10 +478,14 @@ bool Render::AnimatedTextDisplay(const char* text) {
 	return true;
 }
 
-void Render::StartTextDisplay(const char* text, float speed) {
+void Render::StartTextDisplay(const char* text, float speed)
+{
 	fullText = text;
-	visibleChars = 0;
+	visibleChars = fullText.size();
+
 	typeTimer = 0.0f;
 	typeSpeed = speed;
-	isTyping = true;
+	isTyping = false;
+
+	pendingShowOptions = true;
 }

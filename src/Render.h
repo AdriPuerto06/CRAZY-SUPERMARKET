@@ -62,4 +62,5 @@ public:
 private:
 	bool vsync = false;
 	TTF_Font* font;
+	bool pendingShowOptions = false;
 };

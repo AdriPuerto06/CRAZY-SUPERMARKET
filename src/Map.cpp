@@ -216,8 +216,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     // Create Player entity
                     if (player == nullptr) {
                         player = std::dynamic_pointer_cast<Player>(Engine::GetInstance().entityManager->CreateEntity(EntityType::PLAYER));
-                        player->position = Vector2D(pos.getX(), pos.getY());
-                        player->Start(); //L17: Importan to call Start to initialize teh Entity
+                        player->position = Vector2D(pos.getX() + 32, pos.getY() + 32);
+                        player->Start();
                         LOG("Player created at %f, %f.", pos.getX(), pos.getY());
                     }
                     //If the player already exists, just set its position

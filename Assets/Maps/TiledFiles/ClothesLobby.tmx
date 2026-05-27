@@ -2176,7 +2176,7 @@
     <property name="targetMap" value="Backroom.tmx"/>
    </properties>
   </object>
-  <object id="28" x="896" y="768" width="32" height="64">
+  <object id="28" x="896" y="768" width="32" height="95.75">
    <properties>
     <property name="targetMap" value="ClotheDungeon.tmx"/>
    </properties>

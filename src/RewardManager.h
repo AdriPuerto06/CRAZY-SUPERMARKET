@@ -12,7 +12,8 @@ enum class RewardType
 	COMPLETEQUEST,
 	ATTACK,
 	DIALOGUE,
-	EVENT
+	EVENT,
+	TELEPORT
 };
 
 struct Reward {

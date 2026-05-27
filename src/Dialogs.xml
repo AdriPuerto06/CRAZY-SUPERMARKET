@@ -2,6 +2,7 @@
 <!--QUEST: 0, ITEM: 1, COMPANION: 2-->
 <!--COMPLETEQUEST: 3, ATTACK: 4-->
 <!--DIALOGUE: 5, ACTIVATEEVENT: 6-->
+<!--TELEPORT: 7-->
 <dialogs>
 	<!--Vagabundo-->
 	<dialogue_tree ID="0" NPC="1"> 
@@ -155,6 +156,25 @@
 
 		<node id ="1" text="text2">
 			<choice id ="1" option="Claim Quest: Push the buttons" next_node ="-1" reward="0" reward_value="Push the buttons"/>
+		</node>
+
+	</dialogue_tree>
+
+
+
+	<!--Granny-->
+	<dialogue_tree ID="0" NPC="16">
+
+		<node id ="0" text="Hey kid, what happens?">
+			<choice id ="1" option="fy" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="1v1, noob">
+			<choice id ="1" option="(You slap her)" next_node ="2" reward="3" reward_value="Speak with the granny"/>
+		</node>
+
+		<node id ="2" text="Misterious voice:&#10; You will be dragged to hell!">
+			<choice id ="1" option="Ok" next_node ="-1" reward="7" reward_value="LEVEL2"/>
 		</node>
 
 	</dialogue_tree>

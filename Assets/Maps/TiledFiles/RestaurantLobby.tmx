@@ -2647,12 +2647,12 @@
   <object id="17" x="0" y="480" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="Teleport">
-  <object id="18" x="192" y="160" width="32" height="64">
+  <object id="18" x="192" y="160" width="32" height="69.5">
    <properties>
     <property name="targetMap" value="Backroom.tmx"/>
    </properties>
   </object>
-  <object id="19" x="64" y="928" width="32" height="64">
+  <object id="19" x="64" y="928" width="32" height="96">
    <properties>
     <property name="targetMap" value="RestaurantDungeon.tmx"/>
    </properties>
@@ -2663,7 +2663,7 @@
   <object id="21" x="64" y="992" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="4" name="Entities">
-  <object id="22" name="Player" type="Player" x="208" y="298.667">
+  <object id="22" name="Player" type="Player" x="192" y="288">
    <point/>
   </object>
  </objectgroup>
