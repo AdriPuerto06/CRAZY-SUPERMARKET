@@ -113,6 +113,9 @@ public:
 	SceneID GetTimeScene();
 
 	SceneStack sceneStack;
+
+	void LoadBattle();
+
 private:
 
 	// Intro / Splash
@@ -192,7 +195,7 @@ private:
 	void PostUpdatePause();
 
 	//BATTLE
-	void LoadBattle();
+	
 	void UnloadBattle();
 	void UpdateBattle(float dt);
 	void PostUpdateBattle();

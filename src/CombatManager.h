@@ -3,6 +3,9 @@
 #include "ItemManager.h"
 #include "Scene.h"
 #include <vector>
+#include "Textures.h"
+#include "Animation.h"
+#include <SDL3/SDL.h>
 
 //Effects
 #define POISON_DAMAGE 2
@@ -21,12 +24,31 @@ struct Attack {
 struct Combatant {
     int id = -1;
     int hp = 0;
+    int maxhp = 0;
     bool alive = true;
     std::string status = "none";
     int status_duration = 0;
     std::pair<bool, bool> shield_and_buff;
     std::vector<Attack> attacks;
     EntityType type = EntityType::UNKNOWN;
+
+    Vector2D position = {0.0f, 0.0f};
+
+
+    // Health bar
+    SDL_Rect hp_Interior = {0, 0, 0, 0,};
+    SDL_Rect hp_outline = {0, 0, 100, 10,};
+
+
+    // Animation
+    std::string anim_tsxpath;      // ruta al TSX (animaciones)
+    std::string texturePath;       // ruta a la textura (png)
+
+    SDL_Texture* texture = nullptr;
+    AnimationSet anims;
+    int texW = 0;
+    int texH = 0;
+    
 };
 
 struct CombatData {
@@ -148,4 +170,6 @@ private:
     SceneID timeScene;
     SceneID currentScene;
     SceneID goBack;
+    // Dibuja players y enemyes
+    void RenderCombatants(float dt);
 };
