@@ -1,10 +1,12 @@
 #include "RewardManager.h"
 #include "Log.h"
+#include "Map.h"
 
 #include "QuestManager.h"
 #include "DialogueManager.h"
 #include "CombatManager.h"
 #include "EventManager.h"
+
 
 bool IsANumber(char c)
 {

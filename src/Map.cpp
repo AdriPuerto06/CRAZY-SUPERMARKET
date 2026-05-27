@@ -193,8 +193,6 @@ MapLayer* Map::GetNavigationLayer() {
 //L15 TODO 2: Define a method to load entities from the map XML
 void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
     isReloading = true;
-
-   /* Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
         //Check if the object group is "Entities"
@@ -249,6 +247,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     const char* texturePath = nullptr;
                     bool active = false;
                     int currentDialogueTree = 0;
+
+                    
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -267,6 +267,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                         if (name == "currentDialogueTree") {
                             currentDialogueTree = propertyNode.attribute("value").as_int();
+                            PendingChangesCheckAndSetter(EntityType::BASENPC, Component::DIALOGUETREE, NPC_ID, currentDialogueTree); //if currentDialogueTree is suposed to be different (changed because
+                            // of a quest and couldn't assign it because the in current map the NPC was not active (not in memory)), this fucntion takes the reference of the value and modifies it accordingly.
                         }
                     }
 
@@ -1054,4 +1056,29 @@ void Map::UpdateEnemiesData()
                 }
             }
         }
+}
+
+void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int ID, int& current_value)
+{
+    for (auto change : pendingChanges)
+    {
+        if (change.ID == ID && change.entityType == type)
+        {
+            switch (component)
+            {
+            case Component::DIALOGUETREE:
+                if (change.inc)
+                {
+                    current_value++;
+                }
+                else
+                { 
+                    current_value = change.new_value;
+                }
+                
+                LOG("Map: CurrentDialogueTree of NPC ID: %i was changed (it was pending)", ID);
+                break;
+            }
+        }
+    }
 }

@@ -137,6 +137,17 @@ struct AutoSave {
     float x, y, width, height;   // área en píxeles
 };
 
+enum class Component {
+    DIALOGUETREE
+};
+
+struct PendingChange {
+    EntityType type;
+    int ID;
+    Component type;
+    int new_value;
+};
+
 class Map : public Module
 {
 public:
@@ -200,6 +211,8 @@ public:
     Vector2D GetCameraLimitsInTiles(Vector2D camPosTile);
     Vector2D GetCameraPositionInTiles();
 
+    void PendingChangesCheckAndSetter(EntityType type, Component component, int ID);
+
 public: 
     std::string mapFileName;
     std::string mapPath;
@@ -209,6 +222,8 @@ public:
     int magicPoints;
 
     bool isReloading = false;
+
+    std::vector<PendingChange> pendingChanges;
 
 private:
     bool mapLoaded;
