@@ -41,7 +41,7 @@ bool Player::Start() {
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	Engine::GetInstance().textures->GetSize(texture, texW, texH);
-	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), 32, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), 16, bodyType::DYNAMIC);
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -248,7 +248,7 @@ void Player::Draw(float dt) {
 	position.setY((float)y);
 
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 6, y - texH / 2, &animFrame);
 }
 
 void Player:: ShowMenu() {
