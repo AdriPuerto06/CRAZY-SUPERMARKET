@@ -261,16 +261,6 @@ bool Scene::PostUpdate()
 		sceneStack.push(currentScene);
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
-		LOG("LoadMainMenu");
-		LoadMainMenu();
-	}
-
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X)) {
-		LOG("Change MainMenu");
-		ChangeScene(SceneID::MAIN_MENU);
-	}
-
 	return ret;
 }
 

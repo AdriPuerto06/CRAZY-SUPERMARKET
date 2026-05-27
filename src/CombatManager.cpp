@@ -82,12 +82,15 @@ bool CombatManager::Awake()
 	GetTreeAttributes(-1, true);
 	/*itemVector.push_back(false);*/
 
+	
+
 	return true;
 }
 
 bool CombatManager::Start()
 {
 	srand((unsigned)time(NULL));
+	playerHealthbar = Engine::GetInstance().textures->Load("Assets/Textures/healthbarplayer.png");
 	return true;
 }
 
@@ -1064,28 +1067,52 @@ void CombatManager::RenderCombatants(float dt)
 
 		// healthbar
 
-		//outline
-		player.hp_outline.x = x;
-		player.hp_outline.y = y;
-		Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
+		if (player.id == 1) {
+			
+			int player_hpbar_posX = 0;
+			int player_hpbar_posY = 0;
 
-		//inner part
-		float Wmax = (float)player.hp_outline.w;
+			float Wmax = 330;
 
-		float unity = Wmax / player.maxhp;
+			float unity = Wmax / player.maxhp;
 
-		player.hp_Interior.w = player.hp * unity;
+			player.hp_Interior.w = player.hp * unity;
 
-		player.hp_Interior.x = x - 2;
-		player.hp_Interior.y = y - 2;
-		
-		player.hp_Interior.h = player.hp_outline.h;
+			player.hp_Interior.x = player_hpbar_posX + 117;
+			player.hp_Interior.y = player_hpbar_posY + 27;
 
-		if (player.hp > 0) {
-			//green
-			Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 0, 255, 0, 255, true);
+			player.hp_Interior.h = 37;
+
+
+			
+
+			Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
+
+			Engine::GetInstance().render->DrawTexture(playerHealthbar, player_hpbar_posX, player_hpbar_posY, nullptr, 0.0f, 0.0, 0, 0, true);
 		}
+		else {
+			//outline
+			player.hp_outline.x = x;
+			player.hp_outline.y = y;
+			Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
 
+			//inner part
+			float Wmax = (float)player.hp_outline.w;
+
+			float unity = Wmax / player.maxhp;
+
+			player.hp_Interior.w = player.hp * unity;
+
+			player.hp_Interior.x = x - 2;
+			player.hp_Interior.y = y - 2;
+
+			player.hp_Interior.h = player.hp_outline.h;
+
+			if (player.hp > 0) {
+				//green
+				Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 0, 255, 0, 255, true);
+			}
+		}
     }
 
     // enemies
