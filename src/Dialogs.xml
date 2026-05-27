@@ -33,6 +33,27 @@
 		</node>
 
 	</dialogue_tree>
+
+	<dialogue_tree ID="1" NPC="1">
+		<node id ="0" text="Jonatan Artiñano:&#10;I've heard that you are becoming strong...">
+			<choice id ="1" option="Thanks for the courage you gave me!" next_node ="1"/>
+			<choice id ="2" option="I don't need you anymore. Bye." next_node ="2"/>
+		</node>
+
+		<node id ="1" text="Jonatan Artiñano:&#10;You are welcome. That will be 1.000 euros.">
+			<choice id ="1" option="..." next_node ="2"/>
+		</node>
+
+		<node id ="2" text="Jonatan Artiñano:&#10;Fuck you.">
+			<choice id ="1" option="Fuck you to." next_node ="3"/>
+		</node>
+
+		<node id ="3" text="Complete Quest: Talk with the homeless guy">
+			<choice id ="1" option="Claim" next_node ="-1" reward="3" reward_value="Talk with the homeless guy"/>
+		</node>
+
+	</dialogue_tree>
+	
 	<!--Pulpa-->
 	<dialogue_tree ID="0" NPC="2">
 		<node id ="0" text="Octella Reynopus:&#10;I was looking for you hon, I knew you’d come.">
@@ -154,8 +175,12 @@
 			<choice id ="1" option="a1" next_node ="1"/>
 		</node>
 
-		<node id ="1" text="text2">
-			<choice id ="1" option="Claim Quest: Push the buttons" next_node ="-1" reward="0" reward_value="Push the buttons"/>
+		<node id ="1" text="Push the buttons to be able to explore the dungeon.">
+			<choice id ="1" option="Claim Quest: Push the buttons" next_node ="2" reward="0" reward_value="Push the buttons"/>
+		</node>
+
+		<node id ="2" text="Also, kill the strong one because at any moment could become really dangerous!">
+			<choice id ="1" option="Claim Quest: Kill the boss" next_node ="-1" reward="0" reward_value="Kill the boss"/>
 		</node>
 
 	</dialogue_tree>

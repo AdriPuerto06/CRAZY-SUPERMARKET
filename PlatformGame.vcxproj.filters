@@ -271,6 +271,8 @@
     <Xml Include="src\QuestsData.xml">
       <Filter>Source Files\Engine\Quests</Filter>
     </Xml>
-    <Xml Include="src\ItemsData.xml" />
+    <Xml Include="src\ItemsData.xml">
+      <Filter>Source Files\Game\Inventory</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

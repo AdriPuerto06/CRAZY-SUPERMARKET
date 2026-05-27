@@ -2,6 +2,7 @@
 #include "Render.h"
 #include "Engine.h"
 #include "Audio.h"
+#include "Scene.h"
 #include <cmath>
 
 #ifndef M_PI
@@ -61,19 +62,25 @@ bool UIButton::Update(float dt)
 			break;
 		case UIElementState::FOCUSED:
 		{
-			animTimer += dt * animSpeed;
-
-			Uint8 r = (Uint8)(128 + 127 * sin(animTimer));
-			Uint8 g = (Uint8)(128 + 127 * sin(animTimer + 2.0f * M_PI / 3.0f));
-			Uint8 b = (Uint8)(128 + 127 * sin(animTimer + 4.0f * M_PI / 3.0f));
 			if (focusTex)
 			{
-				SDL_SetTextureColorMod(focusTex, r, g, b);
+				if (Engine::GetInstance().scene->monocolor == false)
+				{
+					animTimer += dt * animSpeed;
+					Uint8 r = (Uint8)(128 + 127 * sin(animTimer));
+					Uint8 g = (Uint8)(128 + 127 * sin(animTimer + 2.0f * M_PI / 3.0f));
+					Uint8 b = (Uint8)(128 + 127 * sin(animTimer + 4.0f * M_PI / 3.0f));
+					SDL_SetTextureColorMod(focusTex, r, g, b);
+				}
+
 				Engine::GetInstance().render->DrawTexture(focusTex, bounds.x, bounds.y, nullptr, 1.0f, 0.0, INT_MAX, INT_MAX, false);
-				SDL_SetTextureColorMod(focusTex, 255, 255, 255);
+
+				if (Engine::GetInstance().scene->monocolor == false)
+					SDL_SetTextureColorMod(focusTex, 255, 255, 255);
 			}
 			else
 				Engine::GetInstance().render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+
 			break;
 		}
 		case UIElementState::PRESSED:

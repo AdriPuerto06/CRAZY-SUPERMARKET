@@ -187,7 +187,8 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::MAIN_MENU:
 		break;
-	case SceneID::LEVEL1:
+		// helo
+	/*case SceneID::LEVEL1:
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
@@ -219,7 +220,7 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::LEVEL11:
 		PostUpdateLevel11();
-		break;
+		break;*/
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
 		break;
@@ -253,12 +254,33 @@ bool Scene::PostUpdate()
 		ret = false;
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4)) {
+	//Pause
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
+																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8 ||
+																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) {
 
 		gameScene = currentScene;
 		Engine::GetInstance().map->SaveEntities(player, currentScene);
 		ChangeScene(SceneID::PAUSE);
 		sceneStack.push(currentScene);
+	}
+
+	//Save-Load
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
+		Engine::GetInstance().map->LoadEntities(player, currentScene);
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		Engine::GetInstance().map->SaveEntities(player, currentScene);
+	}
+
+	//Go MainMenu
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
+		LOG("LoadMainMenu");
+		LoadMainMenu();
+	}
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X)) {
+		LOG("Change MainMenu");
+		ChangeScene(SceneID::MAIN_MENU);
 	}
 
 	return ret;
@@ -945,18 +967,6 @@ void Scene::UnloadLevel1() {
 	Engine::GetInstance().entityManager->CleanUp();
 }
 
-void  Scene::PostUpdateLevel1() {
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL1);
-	}
-}
-
 // *********************************************
 // Level 2 functions
 // *********************************************
@@ -1004,18 +1014,6 @@ void Scene::UnloadLevel2() {
 	Engine::GetInstance().entityManager->CleanUp();
 }
 
-void  Scene::PostUpdateLevel2() {
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL2);
-	}
-}
-
 // *********************************************
 // Level 3 functions
 // *********************************************
@@ -1057,18 +1055,6 @@ void Scene::UnloadLevel3() {
 	// Clean up map and entities
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
-}
-
-void  Scene::PostUpdateLevel3() {
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL3);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL3);
-	}
 }
 
 // *********************************************
@@ -1122,19 +1108,6 @@ void Scene::UnloadLevel4() {
 
 }
 
-void  Scene::PostUpdateLevel4() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
 // *********************************************
 // Level 5 functions
 // *********************************************
@@ -1184,19 +1157,6 @@ void Scene::UnloadLevel5() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
-}
-
-void  Scene::PostUpdateLevel5() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
 }
 
 // *********************************************
@@ -1250,19 +1210,6 @@ void Scene::UnloadLevel6() {
 
 }
 
-void  Scene::PostUpdateLevel6() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
 // *********************************************
 // Level 7 functions
 // *********************************************
@@ -1312,19 +1259,6 @@ void Scene::UnloadLevel7() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
-}
-
-void  Scene::PostUpdateLevel7() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
 }
 
 // *********************************************
@@ -1378,19 +1312,6 @@ void Scene::UnloadLevel8() {
 
 }
 
-void  Scene::PostUpdateLevel8() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
 // *********************************************
 // Level 9 functions
 // *********************************************
@@ -1440,19 +1361,6 @@ void Scene::UnloadLevel9() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
-}
-
-void  Scene::PostUpdateLevel9() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
 }
 
 // *********************************************
@@ -1506,19 +1414,6 @@ void Scene::UnloadLevel10() {
 
 }
 
-void  Scene::PostUpdateLevel10() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
-}
-
 // *********************************************
 // Level 11 functions
 // *********************************************
@@ -1568,19 +1463,6 @@ void Scene::UnloadLevel11() {
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().entityManager->CleanUp();
 
-}
-
-void  Scene::PostUpdateLevel11() {
-
-	//L15 TODO 3: Call the function to load entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
-	}
-
-	//L15 TODO 4: Call the function to save entities from the map
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, SceneID::LEVEL4);
-	}
 }
 
 // *********************************************
@@ -1936,23 +1818,31 @@ void Scene::PostUpdatePause()
 void Scene::LoadBattle()
 {
 	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
+	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
+	SDL_Texture* btnChgTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Normal.png");
+	SDL_Texture* btnChgPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Pressed.png");
+	SDL_Texture* btnScpTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Normal.png");
+	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
 	
 	//read enemy and player vector
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
 	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 	//UI Buttons
-	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 11, "Attack", bt1Pos, this));
+	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
+	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 12, "Items", bt2Pos, this));
+	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
+	CreateButton(NULL, NULL, bt2Pos, 12);
 
-	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 13, "Change player", bt3Pos, this));
+	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
+	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
 
-	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 200, 180,30 };
-	std::dynamic_pointer_cast<UIButton>(Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, 14, "Scape", bt4Pos, this));
+	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
+	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
+
+	monocolor = true;
 }
 
 void Scene::UnloadBattle()
@@ -1962,6 +1852,7 @@ void Scene::UnloadBattle()
 		Engine::GetInstance().textures->UnLoad(BattleIMG);
 		SMImg = nullptr; 
 	}
+	monocolor = false;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 
@@ -2068,7 +1959,7 @@ void Scene::UnloadWin()
 
 void Scene::LoadLose()
 {
-	loseImg = Engine::GetInstance().textures->Load("");
+	loseImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/LooseScreen");
 	SDL_SetTextureBlendMode(loseImg, SDL_BLENDMODE_BLEND);
 	screenFadeStarted = false;
 	splashTime = 0;
