@@ -82,5 +82,7 @@ public:
 
 private:
 	pugi::xml_document dialogsFileXML;
+	SDL_Texture* backgroundText = nullptr;
+	Vector2D WindowSize;
 
 };

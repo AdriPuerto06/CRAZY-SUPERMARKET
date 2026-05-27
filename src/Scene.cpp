@@ -2087,7 +2087,7 @@ void Scene::UnloadWin()
 
 void Scene::LoadLose()
 {
-	loseImg = Engine::GetInstance().textures->Load("");
+	loseImg = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/LooseScreen");
 	SDL_SetTextureBlendMode(loseImg, SDL_BLENDMODE_BLEND);
 	screenFadeStarted = false;
 	splashTime = 0;
