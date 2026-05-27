@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "Physics.h"
 #include "QuestManager.h"
+#include "Map.h"
 
 EventManager::EventManager() : Module()
 {
@@ -201,6 +202,7 @@ void EventManager::MakeAction(const char* name)
 			LOG("Door3 opened.");
 		}
 	}
+	Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 }
 
 
