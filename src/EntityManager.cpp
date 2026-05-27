@@ -181,7 +181,7 @@ std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 	case EntityType::BASEENEMY:
 		for (auto& entity : entities) {
 			auto enemy = std::dynamic_pointer_cast<BaseEnemy>(entity);
-			if (enemy && enemy->entity_ID == id)
+			if (enemy && enemy->ID == id)
 				return enemy;
 		}
 		return nullptr;
@@ -190,7 +190,7 @@ std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 	case EntityType::BASENPC:
 		for (auto& entity : entities) {
 			auto enemy = std::dynamic_pointer_cast<BaseNPC>(entity);
-			if (enemy && enemy->entity_ID== id)
+			if (enemy && enemy->ID == id)
 				return enemy;
 		}
 		return nullptr;
@@ -199,7 +199,7 @@ std::shared_ptr<Entity> EntityManager::GetEntity_Map(int id, EntityType type)
 	case EntityType::BASECOMPANION:
 		for (auto& entity : entities) {
 			auto enemy = std::dynamic_pointer_cast<BaseCompanion>(entity);
-			if (enemy && enemy->entity_ID == id)
+			if (enemy && enemy->ID == id)
 				return enemy;
 		}
 		return nullptr;
