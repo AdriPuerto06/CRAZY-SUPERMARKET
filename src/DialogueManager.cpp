@@ -31,6 +31,7 @@ DialogueManager::~DialogueManager() {}
 
 bool DialogueManager::Awake() 
 {
+	WindowSize = { Engine::GetInstance().window->GetBaseWidth(),   Engine::GetInstance().window->GetBaseHeight() };
 	return true;
 }
 
@@ -64,6 +65,8 @@ bool DialogueManager::LoadDialogs(std::string path, std::string fileName)
 	dialogsFileName = fileName;
 	dialogsPath = path;
 	std::string mapPathName = dialogsPath + dialogsFileName;
+
+	backgroundText = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/backgroundText");
 
 	//L15 TODO 2: make mapFileXML an attribute of the Map class
 	pugi::xml_parse_result result = dialogsFileXML.load_file(mapPathName.c_str());
@@ -109,6 +112,7 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 	case 4: // Button MyButton
 		UnloadDialogueUI();
 		showingButtonStart = false;
+		Engine::GetInstance().render->DrawTexture(backgroundText, WindowSize.getX() / 10, 0);
 		StartDialogue(dialogue->dialogue_tree_ID, dialogue->dialogue_tree_NPC);
 		LOG("Dialogue starts.");
 		break;

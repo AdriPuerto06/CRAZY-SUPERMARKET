@@ -125,7 +125,7 @@ public:
 
 	void CheckScene(std::string target);
 	void LoadBattle();
-
+	bool monocolor = false;
 
 private:
 

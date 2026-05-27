@@ -131,10 +131,10 @@ bool ItemManager::ShowInventoryOptions()
 	LOG("ShowInventoryOptions called");
 	//UnloadItemUI();
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 200,150 };
+	SDL_Rect bt1Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10, 162,168 };
 	CreateButton(ItemsTex, ItemsPresTex, bt1Pos, 1);
 
-	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 200, 200,150 };
+	SDL_Rect bt2Pos = { WindowSize.getX() / 10, WindowSize.getY() / 10 + 220, 162,168 };
 	CreateButton(StatsTex, StatsPresTex, bt2Pos, 2);
 
 	return true;

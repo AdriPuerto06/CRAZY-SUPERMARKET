@@ -30,7 +30,7 @@ private:
 	SDL_Texture* pressedTex = nullptr;
 
 	float animTimer = 0.0f;
-	float animSpeed = 1000.0f;
+	float animSpeed = 3000.0f;
 
 public:
 	
