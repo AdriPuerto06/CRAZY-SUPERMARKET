@@ -187,7 +187,7 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::MAIN_MENU:
 		break;
-	case SceneID::LEVEL1:
+	/*case SceneID::LEVEL1:
 		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
@@ -219,7 +219,7 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::LEVEL11:
 		PostUpdateLevel11();
-		break;
+		break;*/
 	case SceneID::OPTIONS:
 		PostUpdateOptions();
 		break;
@@ -254,8 +254,8 @@ bool Scene::PostUpdate()
 	}
 
 	//Pause
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4,
-																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8,
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
+																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8 ||
 																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) {
 
 		gameScene = currentScene;
