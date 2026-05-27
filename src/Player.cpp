@@ -33,15 +33,15 @@ bool Player::Start() {
 	// load
 	
 	std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
-	anims.LoadFromTSX("Assets/Textures/testguy32x32x200resize.tsx", aliases);
+	anims.LoadFromTSX("Assets/Textures/Characters/Prota.tsx", aliases);
 	anims.SetCurrent("idle");
 
 	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/testguy32x32x200resize.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/Characters/Prota.png");
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	Engine::GetInstance().textures->GetSize(texture, texW, texH);
-	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), 32, bodyType::DYNAMIC);
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -238,7 +238,7 @@ void Player::GodMode() {
 
 void Player::Draw(float dt) {
 
-	//anims.Update(dt);
+	anims.Update(dt);
 	const SDL_Rect& animFrame = anims.GetCurrentFrame();
 
 	// Update render position using your PhysBody helper
@@ -281,8 +281,6 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	switch (physB->ctype)
 	{
 	case ColliderType::PLATFORM:
-
-		anims.SetCurrent("idle");
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
