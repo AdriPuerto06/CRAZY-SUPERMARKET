@@ -127,14 +127,17 @@ void EventManager::PossibleActivate(const char* name)
 		else if (std::strcmp(name, "Gloves") == 0)
 		{
 			event->activated = true;
+			event->active = false;
 		}
 		else if (std::strcmp(name, "Key for the next dungeon") == 0)
 		{
 			event->activated = true;
+			event->active = false;
 		}
 		else if (std::strcmp(name, "Key for Door1") == 0)
 		{
 			event->activated = true;
+			event->active = false;
 			LOG("'Key for Door1' activated.");
 			MakeAction("Door1");
 		}
@@ -163,6 +166,7 @@ void EventManager::PossibleActivate(const char* name)
 		else if (std::strcmp(name, "Button4") == 0)
 		{
 			event->activated = true;
+
 			event->Disable();
 			LOG("'Button4' activated.");
 			MakeAction(name);
@@ -177,11 +181,13 @@ void EventManager::MakeAction(const char* name)
 	if (std::strcmp(name,"Door1")==0)
 	{
 		event->Disable();
+		event->active = false;
 		LOG("Door1 opened.");
 	}
 	else if (std::strcmp(name,"Door2")==0)
 	{
 		event->Disable();
+		event->active = false;
 		LOG("Door2 opened.");
 	}
 	else if (std::strcmp(name,"Gloves")==0)
@@ -199,7 +205,21 @@ void EventManager::MakeAction(const char* name)
 			Engine::GetInstance().questManager->CompleteQuest("Push the buttons");
 			std::shared_ptr<Event> door3 = GetEvent("Door3");
 			door3->Disable();
+			door3->active = false;
 			LOG("Door3 opened.");
+
+			std::shared_ptr<Event> b1 = GetEvent("Button1");
+			b1->Disable();
+			b1->active = false;
+			std::shared_ptr<Event> b2 = GetEvent("Button2");
+			b2->Disable();
+			b2->active = false;
+			std::shared_ptr<Event> b3 = GetEvent("Button3");
+			b3->Disable();
+			b3->active = false;
+			std::shared_ptr<Event> b4 = GetEvent("Button4");
+			b4->Disable();
+			b4->active = false;
 		}
 	}
 	Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());

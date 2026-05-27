@@ -588,6 +588,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                             if (name == "activated")
                                 propertyNode.attribute("value").set_value(activated);
+
+                            LOG("Map: Event saved. Active: %i, Activated: %i", active, activated);
                         }
                     }
                 }
