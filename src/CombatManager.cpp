@@ -1003,6 +1003,13 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 			Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(4); //unlock next dialogue for NPC with ID = 4
 		}
 		break;
+	case 102:
+		if (Engine::GetInstance().questManager->IsQuestActive("Kill the boss"))
+		{
+			Engine::GetInstance().questManager->CompleteQuest("Kill the boss");
+			Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(1); //unlock next dialogue for NPC with ID = 1
+		}
+		break;
 	}
 }
 
