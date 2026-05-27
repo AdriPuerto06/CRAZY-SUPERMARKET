@@ -170,6 +170,9 @@ private:
     SceneID timeScene;
     SceneID currentScene;
     SceneID goBack;
+
+    SDL_Texture* playerHealthbar = nullptr;
+
     // Dibuja players y enemyes
     void RenderCombatants(float dt);
 };
