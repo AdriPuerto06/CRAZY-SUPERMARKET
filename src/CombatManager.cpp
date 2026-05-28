@@ -245,6 +245,7 @@ bool CombatManager::OnUIMouseClickEvent(UIElement* uiElement)
 		//Back
 		UnloadCombatUI();
 		choosingAtk = false;
+		combatState->selecting_target = false;
 		Engine::GetInstance().scene->LoadBattle();
 		LOG("Returned from attack options to battle UI");
 		break;
@@ -320,7 +321,7 @@ void CombatManager::ApplyCombatLogic()
 		else { LOG("Player is paralized! Choose another one. Skip turn if all are."); return; }
 		
 		combatState->magicPoints -= attack.magicPoints;
-
+		combatState->selecting_target = false;
 		LOG("Magic Points: %i.", combatState->magicPoints);
 
 		combatState->turn = "Enemy";
@@ -1091,13 +1092,12 @@ void CombatManager::RenderCombatants(float dt)
 		// prota
 		if (player.id == 1) {
 			
-
 			//healthbar
-			int player_hpbar_posX = 0;
-			int player_hpbar_posY = 0;
+			int player_hpbar_posX = 64;
+			int player_hpbar_posY = 64;
 
-			float Wmax = 330; // maximum width
-			float unity = Wmax / player.maxhp;
+			int Wmax = 330; // maximum width
+			int unity = Wmax / player.maxhp;
 			player.hp_Interior.w = player.hp * unity;
 			player.hp_Interior.x = player_hpbar_posX + 117;
 			player.hp_Interior.y = player_hpbar_posY + 27;
@@ -1106,28 +1106,25 @@ void CombatManager::RenderCombatants(float dt)
 
 			//mana bar
 			combatState->magicPoints;
-			int player_manabar_posX = 0;
-			int player_manabar_posY = 0;
+			int player_manabar_posX = 64;
+			int player_manabar_posY = 64;
 
-			float Wmax_mana = 250; // maximum width
-			float Munity = Wmax_mana / 50;
+			int Wmax_mana = 250; // maximum width
+			int Munity = Wmax_mana / 50;
 			SDL_Rect mana_rect = { player_manabar_posX + 110, player_manabar_posY + 65, combatState->magicPoints * Munity, 30};
 			Engine::GetInstance().render->DrawRectangle(mana_rect, 0, 0, 255, 255, true);
-
-			
-
-			
 
 			Engine::GetInstance().render->DrawTexture(playerHealthbar, player_hpbar_posX, player_hpbar_posY, nullptr, 0.0f, 0.0, 0, 0, true);
 		}
 		else {
+
 			//outline
 			player.hp_outline.x = x;
 			player.hp_outline.y = y;
 			Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
 
 			//inner part
-			float Wmax = (float)player.hp_outline.w;
+			float Wmax = player.hp_outline.w;
 
 			float unity = Wmax / player.maxhp;
 
@@ -1192,14 +1189,33 @@ void CombatManager::RenderCombatants(float dt)
 
 		enemy.hp_Interior.h = enemy.hp_outline.h;
 
+
+		
+
+		
+
 		if (enemy.hp > 0) {
 			//red
 			Engine::GetInstance().render->DrawRectangle(enemy.hp_Interior, 255, 0, 0, 255, true);
+
 		}
 		
-        // resaltar objetivo (mejor poner una flecha o algo)
-        if (i == combatState->enemy_index_targeted)
+        // marcar objetivo + calcular damage
+        if (i == combatState->enemy_index_targeted && combatState->selecting_target)
         {
+
+			// output
+			int output_x = enemy.hp_Interior.x + enemy.hp_Interior.w - (combatState->player_attack_dmg_selected * unity);
+			int output_w = combatState->player_attack_dmg_selected * unity;
+			if (output_x < enemy.hp_Interior.x) {
+				output_x = enemy.hp_Interior.x;
+				output_w = enemy.hp_Interior.w;
+			}
+
+			SDL_Rect output = { output_x, enemy.hp_Interior.y, output_w ,  enemy.hp_Interior.h };
+			Engine::GetInstance().render->DrawRectangle(output, 255, 255, 0, 255, true);
+
+			// resaltar
             SDL_Rect outline = { x - 4, y - 4, 72, 72 };
 			Engine::GetInstance().render->DrawRectangle(outline, 255, 255, 0, 255, false);
         }
