@@ -138,7 +138,8 @@ struct AutoSave {
 };
 
 enum class Component {
-    DIALOGUETREE
+    DIALOGUETREE,
+    MAGICPOINTS
 };
 
 struct PendingChange {

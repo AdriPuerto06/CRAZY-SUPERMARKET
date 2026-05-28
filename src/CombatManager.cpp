@@ -936,6 +936,11 @@ void CombatManager::CheckAlive()
 	}
 	else if (combatState->player_Wins) //delete the enemies you killed
 	{
+		PendingChange change;
+		change.entityType = EntityType::PLAYER;
+		change.type = Component::MAGICPOINTS;
+		change.new_value = combatState->magicPoints;
+		Engine::GetInstance().map->pendingChanges.emplace_back(change);
 		LOG("Player wins the combat. Destroying the enemies...");
 		MarkEnemiesAsDead();
 		in_combat = false;

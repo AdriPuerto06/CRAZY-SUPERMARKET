@@ -12576,6 +12576,9 @@
  </objectgroup>
  <objectgroup id="5" name="Entities">
   <object id="44" name="Player" type="Player" x="3636" y="304">
+   <properties>
+    <property name="magicPoints" type="int" value="50"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

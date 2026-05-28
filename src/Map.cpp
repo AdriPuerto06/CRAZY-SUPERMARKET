@@ -235,8 +235,10 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                             LOG("player HP: %d", player->HP);
                         }
                         if (name == "magicPoints")
+                        {
                             magicPoints = propertyNode.attribute("value").as_int(); //map has magicPoints
-
+                            PendingChangesCheckAndSetter(EntityType::PLAYER, Component::MAGICPOINTS, 0, magicPoints);
+                        }
                         
                     }
                 }
@@ -443,6 +445,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
     }
 
     isReloading = false;
+    pendingChanges.clear();
 }
 
 //L15 TODO 4: Define a method to save entities to the map XML
@@ -1064,7 +1067,7 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
 {
     for (auto change : pendingChanges)
     {
-        if (change.ID == ID && change.entityType == type)
+        if (change.ID == ID && change.entityType == EntityType::BASENPC)
         {
             switch (component)
             {
@@ -1079,6 +1082,16 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
                 }
                 
                 LOG("Map: CurrentDialogueTree of NPC ID: %i was changed (it was pending)", ID);
+                break;
+            }
+        }
+
+        if (change.entityType == EntityType::PLAYER)
+        {
+            switch (component)
+            {
+            case Component::MAGICPOINTS:
+                current_value = change.new_value;
                 break;
             }
         }
