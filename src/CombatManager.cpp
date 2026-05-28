@@ -213,6 +213,8 @@ bool CombatManager::Update(float dt)
 				combatState->turn = "Player";
 
 				PlayerHasAttacked = false;
+
+				Engine::GetInstance().scene->LoadBattle();
 			}
 
 			// empezar fase efectos
@@ -750,13 +752,12 @@ void CombatManager::HandleTargetSelection()
 
 		PlayerHasAttacked = true;
 
-		// mismo comportamiento que botón BACK
+		// destruir UI
 		UnloadCombatUI();
 
 		choosingAtk = false;
 		combatState->selecting_target = false;
 
-		Engine::GetInstance().scene->LoadBattle();
 
 		ApplyCombatLogic();
 	}
