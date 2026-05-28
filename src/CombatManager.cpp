@@ -114,8 +114,113 @@ bool CombatManager::Update(float dt)
 	if (in_combat && Engine::GetInstance().scene->GetCurrentScene() == SceneID::BATTLE)
 	{
 		RenderCombatants(dt);
+		
 	}
 
+	// COMBAT TIMERS
+	
+
+	if (waitingAttack || waitingDamage || waitingEffect || waitingEnemyTurn)
+	{
+		combatTimer += dt;
+	}
+
+	// Esperando efectos pasivos
+	if (waitingEffect)
+	{
+		if (combatTimer >= EFFECT_DELAY)
+		{
+			waitingEffect = false;
+
+			combatTimer = 0.0f;
+
+			// aplicar efectos SOLO al turno actual
+			if (combatState->turn == "Player")
+			{
+				ApplyPlayerEffects();
+			}
+			else
+			{
+				ApplyEnemyEffects();
+			}
+
+			CheckAlive();
+
+			// si el enemigo sigue vivo -> IA
+			if (combatState->turn == "Enemy")
+			{
+				EnemyAI();
+			}
+		}
+	}
+
+	// Esperando animación de ataque
+	if (waitingAttack)
+	{
+		if (currentAttacker != nullptr)
+		{
+			// si ya NO está en attack,
+			// significa que terminó
+
+			if (currentAttacker->anims.GetCurrentName() != "attack")
+			{
+				waitingAttack = false;
+
+				waitingDamage = true;
+
+				combatTimer = 0.0f;
+			}
+		}
+	}
+
+	// Esperando aplicar daño
+	if (waitingDamage)
+	{
+		if (combatTimer >= DAMAGE_DELAY)
+		{
+			waitingDamage = false;
+
+			combatTimer = 0.0f;
+
+			currentTarget->hp -= pendingDamage;
+
+			currentTarget->anims.SetCurrent("hit");
+
+			LOG("Damage applied: %i", pendingDamage);
+
+			CheckAlive();
+
+			waitingEnemyTurn = true;
+		}
+	}
+
+	// Delay antes siguiente turno
+	if (waitingEnemyTurn)
+	{
+		if (combatTimer >= ENEMY_TURN_DELAY)
+		{
+			waitingEnemyTurn = false;
+
+			combatTimer = 0.0f;
+
+			// cambiar turno
+			if (combatState->turn == "Player")
+			{
+				combatState->turn = "Enemy";
+			}
+			else
+			{
+				combatState->turn = "Player";
+
+				PlayerHasAttacked = false;
+
+				Engine::GetInstance().scene->LoadBattle();
+			}
+
+			// empezar fase efectos
+			waitingEffect = true;
+		}
+	}
 	return true;
 }
 
@@ -296,49 +401,27 @@ void CombatManager::ButtonAction(int ID)
 
 void CombatManager::ApplyCombatLogic()
 {
+	if (waitingAttack || waitingDamage || waitingEffect || waitingEnemyTurn)
+		return;
+
 	if (combatState->turn == "Player")
 	{
-		CheckAlive();
-		if (!in_combat) { return; }
 		Combatant& player = combatData->players[combatState->player_index_selected];
 		Combatant& enemy = combatData->enemies[combatState->enemy_index_targeted];
 		Attack& attack = player.attacks[combatState->player_attack_index_selected];
 
-		if (!(player.status == "Paralized"))
+		// comprobar mana
+		if (combatState->magicPoints < attack.magicPoints)
 		{
-			if (player.status == "Confused") //50% chance
-			{
-				bool can_attack = rand() % 2;
-				if (can_attack)
-				{
-					LOG("Player attacked while being confused.");
-					MakeAttack(enemy, combatData->players[combatState->player_index_selected], attack);
-				}
-				else { LOG("Player didn't attack while being confused."); }
-			}
-			else { MakeAttack(enemy, combatData->players[combatState->player_index_selected], attack); }
+			LOG("Not enough magic points!");
+			return;
 		}
-		else { LOG("Player is paralized! Choose another one. Skip turn if all are."); return; }
-		
+
+		// consumir mana AQUÍ
 		combatState->magicPoints -= attack.magicPoints;
-		combatState->selecting_target = false;
-		LOG("Magic Points: %i.", combatState->magicPoints);
 
-		combatState->turn = "Enemy";
-		CheckAlive();
-		if (!in_combat) { return; }
+		MakeAttack(enemy, player, attack);
 	}
-
-	if (combatState->turn == "Enemy")
-	{
-		CheckAlive();
-		if (!in_combat) { return; }
-		EnemyAI();
-		combatState->turn = "Player";
-	}
-	if (!in_combat) { return; }
-	ApplyEffects();
-	CheckAlive();
 }
 
 void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack attack)
@@ -352,174 +435,273 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 		Engine::GetInstance().audio->PlayFx(s_kick, 0);
 	}
 
-	// Trigger animations
-	// attacker attack, target gets hit
-	
 	attacker.anims.SetLoopFor("attack", false);
 	attacker.anims.SetCurrent("attack");
-	
-	target.anims.SetLoopFor("hit", false);
-	target.anims.SetCurrent("hit");
-	//poner timer 
 
-	//effects that affect the attacker (heal itself, buff itself...)
-	if (attack.effect == "none")
+	target.anims.SetLoopFor("hit", false);
+
+	// NO poner hit todavía
+	// porque el daño llegará después
+	if (attack.effect == "heal")
 	{
-	}
-	else if (attack.effect == "heal")
-	{
-		attacker.hp += HEAL_HITPOINTS; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS);
-		else { LOG("Enemy ID: %i healed for %i. Now has %i HP.", attacker.id, HEAL_HITPOINTS, attacker.hp); };
+		attacker.hp += HEAL_HITPOINTS;
+
+		if (attacker.type == EntityType::PLAYER)
+			LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS);
+		else
+			LOG("Enemy ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS);
 	}
 	else if (attack.effect == "selfKO")
 	{
-		attacker.hp -= attacker.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i selfKOed.", attacker.id);
-		else { LOG("Enemy ID: %i selfKOed.", attacker.id); };
+		attacker.hp = 0;
+
+		if (attacker.type == EntityType::PLAYER)
+			LOG("Player ID: %i selfKOed.", attacker.id);
+		else
+			LOG("Enemy ID: %i selfKOed.", attacker.id);
 	}
 	else if (attack.effect == "ragebait")
 	{
-		target.hp -= target.hp; if (attacker.type == EntityType::PLAYER) LOG("Player ID: %i falls for the ragebait.", attacker.id);
-		else { LOG("Enemy ID: %i falls for the ragebait.", attacker.id); }
+		target.hp = 0;
+
+		if (target.type == EntityType::PLAYER)
+			LOG("Player ID: %i falls for the ragebait.", target.id);
+		else
+			LOG("Enemy ID: %i falls for the ragebait.", target.id);
 	}
 	else if (attack.effect == "shield")
 	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i activates shield.", attacker.id); /*attacker.status = "shield"*/ attacker.shield_and_buff.first = true; }
-		else { LOG("Enemy ID: %i activates shield.", attacker.id); /*attacker.status = "shield";*/ attacker.shield_and_buff.first = true; };
+		attacker.shield_and_buff.first = true;
 	}
 	else if (attack.effect == "buff")
 	{
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
-		else { LOG("Enemy ID: %i buffs its dmg by %i.", attacker.id, BUFF_DMG_INCREASE); /*attacker.status = "Buff";*/ attacker.shield_and_buff.second = true; }
+		attacker.shield_and_buff.second = true;
 	}
-	else
+	else if (attack.effect != "none")
 	{
 		target.status = attack.effect;
 	}
-	//apply items
+
 	int dmg_increase = 0;
 	int dmg_reduction = 0;
 	int confused_probability = 0;
-	Engine::GetInstance().itemManager->ApplyCombatItems(dmg_increase, dmg_reduction, confused_probability);
-	//effects of the target that affect the attacker
 
+	Engine::GetInstance().itemManager->ApplyCombatItems(
+		dmg_increase,
+		dmg_reduction,
+		confused_probability
+	);
+
+	// shield
 	if (target.shield_and_buff.first)
 	{
 		dmg_reduction += SHIELD_DMG_REDUCTION;
-		if (target.type == EntityType::PLAYER) { LOG("Player ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION); }
-		else { LOG("Enemy ID: %i reduces %i dmg thanks to the shield.", target.id, SHIELD_DMG_REDUCTION); }
 	}
+
+	// buff
 	if (attacker.shield_and_buff.second)
 	{
 		dmg_increase += BUFF_DMG_INCREASE;
-		if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
-		else { LOG("Enemy ID: %i increases %i dmg thanks to the buff.", attacker.id, BUFF_DMG_INCREASE); }
 	}
+
+	// calcular daño
 
 	int dmg_applied = attack.dmg + dmg_increase - dmg_reduction;
-	if (dmg_applied < 0) dmg_applied = 0; //clamp
 
-	if (confused_probability != 0 && attacker.type == EntityType::BASEENEMY)
+	if (dmg_applied < 0)
+		dmg_applied = 0;
+
+	// CONFUSED ITEM
+
+
+	if (confused_probability != 0 &&
+		attacker.type == EntityType::BASEENEMY)
 	{
-		if (CanAttack(100 - confused_probability)) {}
-		else { LOG("Enemy couldn't attack because of the item 'Disturbing Picture'."); return; }
-	}
-	else target.hp -= dmg_applied;
-
-	if (attacker.type == EntityType::PLAYER) { LOG("Player ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Enemy ID: %i now has %i HP.", target.id, target.hp); }
-	else { LOG("Enemy ID: %i makes attack: %s, dmg: %i", attacker.id, attack.name, dmg_applied); LOG("Player ID: %i now has %i HP.", target.id, target.hp); }
-
-	if (Engine::GetInstance().itemManager->IsItemActive("Sandwich wrapping")) // if item Sandwich wrapping is active -> heal 1 hp to player and companions
-	{
-		for (auto player : combatData->players)
+		if (!CanAttack(100 - confused_probability))
 		{
-			player.hp += 1;
+			LOG("Enemy couldn't attack because of the item.");
+			return;
 		}
-		LOG("Sandwich wrapping item heals each player by 1 HP.");
+	}
+
+
+	// guardar ataque pendiente
+
+	currentAttacker = &attacker;
+	currentTarget = &target;
+	currentAttack = attack;
+
+	pendingDamage = dmg_applied;
+
+	waitingAttack = true;
+	combatTimer = 0.0f;
+
+	// LOGS
+
+	if (attacker.type == EntityType::PLAYER)
+	{
+		LOG("Player ID: %i attacks %i for %i dmg",
+			attacker.id,
+			target.id,
+			dmg_applied);
+	}
+	else
+	{
+		LOG("Enemy ID: %i attacks %i for %i dmg",
+			attacker.id,
+			target.id,
+			dmg_applied);
+	}
+}
+void CombatManager::ApplyPlayerEffects()
+{
+	for (auto& player : combatData->players)
+	{
+		if (!player.alive)
+			continue;
+
+		std::string effect = player.status;
+
+		if (effect == "poisoned")
+		{
+			player.hp -= POISON_DAMAGE;
+
+			LOG("Player ID: %i takes poison damage. HP: %i",
+				player.id,
+				player.hp);
+		}
+
+		if (effect == "paralized")
+		{
+			if (player.status_duration == 2)
+			{
+				player.status = "none";
+
+				LOG("Player ID: %i is no longer paralized.",
+					player.id);
+
+				player.status_duration = 0;
+			}
+			else
+			{
+				player.status_duration++;
+
+				LOG("Player ID: %i remains paralized. Remaining turns: %i",
+					player.id,
+					3 - player.status_duration);
+			}
+		}
+
+		// shield
+		if (player.shield_and_buff.first)
+		{
+			if (player.status_duration == 1)
+			{
+				player.shield_and_buff.first = false;
+
+				LOG("Player ID: %i has no longer a shield.",
+					player.id);
+
+				player.status_duration = 0;
+			}
+			else
+			{
+				player.status_duration++;
+			}
+		}
+
+		// buff
+		if (player.shield_and_buff.second)
+		{
+			if (player.status_duration == 1)
+			{
+				player.shield_and_buff.second = false;
+
+				LOG("Player ID: %i has no longer a buff.",
+					player.id);
+
+				player.status_duration = 0;
+			}
+			else
+			{
+				player.status_duration++;
+			}
+		}
 	}
 }
 
-void CombatManager::ApplyEffects()
+void CombatManager::ApplyEnemyEffects()
 {
-
 	for (auto& enemy : combatData->enemies)
 	{
-		if (enemy.alive)
-		{
-			std::string effect = enemy.status;
+		if (!enemy.alive)
+			continue;
 
-			if (effect == "none") {}
-			if (effect == "poisoned") { enemy.hp -= POISON_DAMAGE; LOG("Enemy ID: %i takes poison damage. HP: %i", enemy.id, enemy.hp); }
-			if (effect == "paralized")
+		std::string effect = enemy.status;
+
+		if (effect == "poisoned")
+		{
+			enemy.hp -= POISON_DAMAGE;
+
+			LOG("Enemy ID: %i takes poison damage. HP: %i",
+				enemy.id,
+				enemy.hp);
+		}
+
+		if (effect == "paralized")
+		{
+			if (enemy.status_duration == 2)
 			{
-				if (enemy.status_duration == 2)
-				{
-					enemy.status = "none";
-					LOG("Enemy ID: %i is no longer paralized.", enemy.id);
-					enemy.status_duration = 0;
-				}
-				else { enemy.status_duration++; LOG("Enemy ID: %i remains paralized. Remaining turns: %i", enemy.id, 3-enemy.status_duration); /*When status_duration is 0, the next turn will not attack.*/ } 
+				enemy.status = "none";
+
+				LOG("Enemy ID: %i is no longer paralized.",
+					enemy.id);
+
+				enemy.status_duration = 0;
 			}
-			if (effect == "heal") {}
-			if (enemy.shield_and_buff.first)
+			else
 			{
-				if (enemy.status_duration == 1)
-				{
-					enemy.shield_and_buff.first = false;
-					LOG("Enemy ID: %i has no longer a shield.", enemy.id);
-					enemy.status_duration = 0;
-				}
-				else{ enemy.status_duration++; }
-			}
-			if (enemy.shield_and_buff.second)
-			{
-				if (enemy.status_duration == 1)
-				{
-					enemy.shield_and_buff.second = false;
-					LOG("Enemy ID: %i has no longer a buff.", enemy.id);
-					enemy.status_duration = 0;
-				}
-				else { enemy.status_duration++; }
+				enemy.status_duration++;
+
+				LOG("Enemy ID: %i remains paralized. Remaining turns: %i",
+					enemy.id,
+					3 - enemy.status_duration);
 			}
 		}
-	}
-	for (auto& player : combatData->players)
-	{
-		if (player.alive)
-		{
-			std::string effect = player.status;
 
-			if (effect == "none") {}
-			if (effect == "poisoned") { player.hp -= POISON_DAMAGE; LOG("Player ID: %i takes poison damage. HP: %i", player.id, player.hp); }
-			if (effect == "paralized")
+		// shield
+		if (enemy.shield_and_buff.first)
+		{
+			if (enemy.status_duration == 1)
 			{
-				if (player.status_duration == 2)
-				{
-					player.status = "none";
-					LOG("Player ID: %i is no longer paralized.", player.id);
-					player.status_duration = 0;
-				}
-				else { player.status_duration++; LOG("Player ID: %i remains paralized. Remaining turns: %i", player.id, 3 - player.status_duration);}
+				enemy.shield_and_buff.first = false;
+
+				LOG("Enemy ID: %i has no longer a shield.",
+					enemy.id);
+
+				enemy.status_duration = 0;
 			}
-			if (effect == "heal") {}
-			if (player.shield_and_buff.first) 
+			else
 			{
-				if (player.status_duration == 1)
-				{
-					player.shield_and_buff.first = false;
-					LOG("Player ID: %i has no longer a shield.", player.id);
-					player.status_duration = 0;
-				}
-				else { player.status_duration++; }
+				enemy.status_duration++;
 			}
-			if (player.shield_and_buff.second)
+		}
+
+		// buff
+		if (enemy.shield_and_buff.second)
+		{
+			if (enemy.status_duration == 1)
 			{
-				if (player.status_duration == 1)
-				{
-					player.shield_and_buff.second = false;
-					LOG("Player ID: %i has no longer a buff.", player.id);
-					player.status_duration = 0;
-				}
-				else { player.status_duration++; }
+				enemy.shield_and_buff.second = false;
+
+				LOG("Enemy ID: %i has no longer a buff.",
+					enemy.id);
+
+				enemy.status_duration = 0;
+			}
+			else
+			{
+				enemy.status_duration++;
 			}
 		}
 	}
@@ -569,9 +751,19 @@ void CombatManager::HandleTargetSelection()
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		int idx = combatState->enemy_index_targeted;
-		LOG("Confirmed attack on Enemy ID: %i", combatData->enemies[idx].id);
 
+		LOG("Confirmed attack on Enemy ID: %i",
+			combatData->enemies[idx].id);
+
+		PlayerHasAttacked = true;
+
+		// destruir UI
+		UnloadCombatUI();
+
+		choosingAtk = false;
 		combatState->selecting_target = false;
+
+
 		ApplyCombatLogic();
 	}
 }
@@ -630,7 +822,18 @@ void CombatManager::ShowButtonStart(Vector2D position, int enemy_ID, int fight_I
 
 bool CombatManager::ShowAttackOptions(int player_ID)
 {
-	LOG("ShowAttackOptions called");
+	if (combatState->turn != "Player")
+	{
+		LOG("Not player's turn.");
+		return false;
+	}
+
+	if (PlayerHasAttacked)
+	{
+		LOG("Player already acted this turn.");
+		return false;
+	}
+
 	UnloadCombatUI();
 	choosingAtk = true;
 
@@ -1188,11 +1391,6 @@ void CombatManager::RenderCombatants(float dt)
 		enemy.hp_Interior.y = enemy.hp_outline.y - 2;
 
 		enemy.hp_Interior.h = enemy.hp_outline.h;
-
-
-		
-
-		
 
 		if (enemy.hp > 0) {
 			//red

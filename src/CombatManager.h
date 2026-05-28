@@ -13,6 +13,13 @@
 #define SHIELD_DMG_REDUCTION 3
 #define BUFF_DMG_INCREASE 3
 
+
+
+#define EFFECT_DELAY 1000.0f
+#define ATTACK_DELAY 3000.0f
+#define DAMAGE_DELAY 1000.0f
+#define ENEMY_TURN_DELAY 5000.0f
+
 struct Attack {
     const char* name;
     int dmg;
@@ -130,7 +137,9 @@ public:
 
     void HandleTargetSelection();
     void ApplyCombatLogic();
-    void ApplyEffects();
+    void ApplyPlayerEffects();
+    void ApplyEnemyEffects();
+
     void CheckAlive();
     void MakeAttack(Combatant& target, Combatant& attacker, Attack attack);
     void EnemyAI();
@@ -173,6 +182,22 @@ private:
 
     SDL_Texture* playerHealthbar = nullptr;
 
+    bool PlayerHasAttacked = false;
+
     // Dibuja players y enemyes
     void RenderCombatants(float dt);
+
+
+
+    float combatTimer = 0.0f;
+    int pendingDamage = 0;
+    bool waitingEffect = false;
+    bool waitingAttack = false;
+    bool waitingDamage = false;
+    bool waitingEnemyTurn = false;
+
+    Combatant* currentAttacker = nullptr;
+    Combatant* currentTarget = nullptr;
+    Attack currentAttack;
+
 };
