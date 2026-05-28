@@ -1023,6 +1023,7 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 		{
 			Engine::GetInstance().questManager->CompleteQuest("Kill the boss");
 			Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(1); //unlock next dialogue for NPC with ID = 1
+			Engine::GetInstance().questManager->ActivateQuest("Talk with the homeless guy");
 		}
 		break;
 	}
