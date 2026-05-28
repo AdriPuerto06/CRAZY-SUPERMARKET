@@ -420,7 +420,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                     }
 
-                    if (active)
+                    if (active /*&& !(activated && (event_Name == "Button1" || event_Name == "Button2" || event_Name == "Button3" || event_Name == "Button4"))*/)
                     {
                         std::shared_ptr<Event> event;
                         if (Engine::GetInstance().entityManager->GetEntity(EntityType::EVENT, ID) == nullptr)
@@ -433,7 +433,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         }
                         event->Init(EntityType::EVENT, active, pos, texturePath, Event_ID, event_Name, activated);
                         event->entity_ID = ID;
-                        LOG("Event -> Event: %i, entity_ID: %i, at %f, %f.", Event_ID, ID, pos.getX(), pos.getY());
+                        LOG("Event -> Event ID: %i, Active: %i, at %f, %f.", Event_ID, active, pos.getX(), pos.getY());
                         event->Start();
                     }
                     else {
@@ -592,7 +592,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                             if (name == "activated")
                                 propertyNode.attribute("value").set_value(activated);
 
-                            LOG("Map: Event saved. Active: %i, Activated: %i", active, activated);
+                            /*LOG("Map: Event saved. Active: %i, Activated: %i", active, activated);*/
                         }
                     }
                 }
