@@ -149,6 +149,10 @@ struct PendingChange {
     int new_value;
     bool inc;
     SceneID entity_Scene;
+
+    bool operator==(const PendingChange& other) const {
+        return (entityType == other.entityType && ID == other.ID && type == other.type);
+    }
 };
 
 class Map : public Module
