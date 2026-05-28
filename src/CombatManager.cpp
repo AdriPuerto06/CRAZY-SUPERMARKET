@@ -1081,26 +1081,35 @@ void CombatManager::RenderCombatants(float dt)
 
 		// healthbar
 
+		// prota
 		if (player.id == 1) {
 			
+
+			//healthbar
 			int player_hpbar_posX = 0;
 			int player_hpbar_posY = 0;
 
-			float Wmax = 330;
-
+			float Wmax = 330; // maximum width
 			float unity = Wmax / player.maxhp;
-
 			player.hp_Interior.w = player.hp * unity;
-
 			player.hp_Interior.x = player_hpbar_posX + 117;
 			player.hp_Interior.y = player_hpbar_posY + 27;
+			player.hp_Interior.h = 37; // maximum height (this doesn't change)
+			Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
 
-			player.hp_Interior.h = 37;
+			//mana bar
+			combatState->magicPoints;
+			int player_manabar_posX = 0;
+			int player_manabar_posY = 0;
 
+			float Wmax_mana = 250; // maximum width
+			float Munity = Wmax_mana / 50;
+			SDL_Rect mana_rect = { player_manabar_posX + 110, player_manabar_posY + 65, combatState->magicPoints * Munity, 30};
+			Engine::GetInstance().render->DrawRectangle(mana_rect, 0, 0, 255, 255, true);
 
 			
 
-			Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
+			
 
 			Engine::GetInstance().render->DrawTexture(playerHealthbar, player_hpbar_posX, player_hpbar_posY, nullptr, 0.0f, 0.0, 0, 0, true);
 		}
