@@ -148,6 +148,7 @@ struct PendingChange {
     Component type;
     int new_value;
     bool inc;
+    SceneID entity_Scene;
 };
 
 class Map : public Module
@@ -213,7 +214,7 @@ public:
     Vector2D GetCameraLimitsInTiles(Vector2D camPosTile);
     Vector2D GetCameraPositionInTiles();
 
-    void PendingChangesCheckAndSetter(EntityType type, Component component, int ID, int& current_value);
+    void PendingChangesCheckAndSetter(EntityType type, Component component, int ID, int& current_value, SceneID entity_Scene);
 
 public: 
     std::string mapFileName;

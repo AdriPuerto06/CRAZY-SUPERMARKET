@@ -197,6 +197,13 @@ void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
 		change.type = Component::DIALOGUETREE;
 		change.entityType = EntityType::BASENPC;
 		change.inc = true;
+		switch (NPC_ID)
+		{
+		case 1:
+			change.entity_Scene = SceneID::LEVEL2;
+			break;
+		}
+		
 		Engine::GetInstance().map->pendingChanges.emplace_back(change);
 	}
 	LOG("Unlocked new dialogue with NPC ID: %i", NPC_ID);

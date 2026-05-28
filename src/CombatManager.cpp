@@ -940,6 +940,7 @@ void CombatManager::CheckAlive()
 		change.entityType = EntityType::PLAYER;
 		change.type = Component::MAGICPOINTS;
 		change.new_value = combatState->magicPoints;
+
 		Engine::GetInstance().map->pendingChanges.emplace_back(change);
 		LOG("Player wins the combat. Destroying the enemies...");
 		MarkEnemiesAsDead();
@@ -954,7 +955,7 @@ void CombatManager::CheckAlive()
 void CombatManager::MarkEnemiesAsDead()
 {
 	enemies_to_destroy.clear();
-	for (auto enemy : combatData->enemies)
+	for (auto& enemy : combatData->enemies)
 	{
 		if(!enemy.alive) enemies_to_destroy.push_back(enemy.id);
 	}
@@ -965,9 +966,9 @@ void CombatManager::UnlockAttack(EntityType type, const char* name)
 {
 	if (type == EntityType::PLAYER)
 	{
-		for (auto player : combatData->players)
+		for (auto& player : combatData->players)
 		{			
-			for (auto attack : player.attacks)
+			for (auto& attack : player.attacks)
 			{
 				if (std::strcmp(attack.name,name) == 0) { attack.unlocked = true; LOG("Attack: %s from player ID: %i unlocked.", attack.name, player.id); return; }
 			}
