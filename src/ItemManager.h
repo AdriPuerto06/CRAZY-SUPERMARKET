@@ -45,6 +45,7 @@ public:
 	void CreateButton(SDL_Texture* btnOptTex, SDL_Texture* btnOptPressedTex, SDL_Rect btPos, int n);
 	bool LoadItemsData(std::string path, std::string fileName);
 	void LoadItems();
+	void SaveItems();
 	std::vector<Item>* GetItems();
 
 	void ShowItems();
