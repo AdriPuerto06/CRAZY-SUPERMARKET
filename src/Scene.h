@@ -145,68 +145,56 @@ private:
 	void LoadLevel1();
 	void UnloadLevel1();
 	void UpdateLevel1(float dt);
-	void PostUpdateLevel1();
 
 	// L17 TODO 5: Define specific functions for level2 scene: Load, Unload, Update
 	void LoadLevel2();
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
-	void PostUpdateLevel2();
 
 	//Level3 functions
 	void LoadLevel3();
 	void UpdateLevel3(float dt);
 	void UnloadLevel3();
-	void PostUpdateLevel3();
 
 	//Level4 functions
 	void LoadLevel4();
 	void UpdateLevel4(float dt);
 	void UnloadLevel4();
-	void PostUpdateLevel4();
 
 	//Level5 functions
 	void LoadLevel5();
 	void UpdateLevel5(float dt);
 	void UnloadLevel5();
-	void PostUpdateLevel5();
 
 	//Level6 functions
 	void LoadLevel6();
 	void UpdateLevel6(float dt);
 	void UnloadLevel6();
-	void PostUpdateLevel6();
 
 	//Level7 functions
 	void LoadLevel7();
 	void UpdateLevel7(float dt);
 	void UnloadLevel7();
-	void PostUpdateLevel7();
 
 	//Level8 functions
 	void LoadLevel8();
 	void UpdateLevel8(float dt);
 	void UnloadLevel8();
-	void PostUpdateLevel8();
 
 	//Level9 functions
 	void LoadLevel9();
 	void UpdateLevel9(float dt);
 	void UnloadLevel9();
-	void PostUpdateLevel9();
 
 	//Level10 functions
 	void LoadLevel10();
 	void UpdateLevel10(float dt);
 	void UnloadLevel10();
-	void PostUpdateLevel10();
 
 	//Level11 functions
 	void LoadLevel11();
 	void UpdateLevel11(float dt);
 	void UnloadLevel11();
-	void PostUpdateLevel11();
-
 
 	//OPTIONS
 	void LoadOptions();
@@ -253,7 +241,6 @@ private:
 	
 	void UnloadBattle();
 	void UpdateBattle(float dt);
-	void PostUpdateBattle();
 
 	//Item
 	void LoadItem();
@@ -284,12 +271,18 @@ private:
 	SceneID gameScene;
 	SceneID timeScene;
 
+	//BattleScene
+	SDL_Texture* PasilloIMG = nullptr;
+	SDL_Texture* CocinaIMG = nullptr;
+	SDL_Texture* RopaIMG = nullptr;
+	SDL_Texture* JuguetesIMG = nullptr;
+	SDL_Texture* BattleBackgroundIMG = nullptr;
+
 	//Imagen
 	SDL_Texture* logoImg = nullptr;
 	SDL_Texture* teamImg = nullptr;
 	SDL_Texture* SMImg = nullptr;
 	SDL_Texture* almacenIMG = nullptr;
-	SDL_Texture* BattleIMG = nullptr;
 	SDL_Texture* cajonTex = nullptr;
 	SDL_Texture* bookTex = nullptr;
 	SDL_Texture* winImg = nullptr;

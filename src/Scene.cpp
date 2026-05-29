@@ -188,58 +188,41 @@ bool Scene::PostUpdate()
 	case SceneID::MAIN_MENU:
 		break;
 	case SceneID::LEVEL1:
-		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
-		PostUpdateLevel2();
 		break;
 	case SceneID::LEVEL3:
-		PostUpdateLevel3();
 		break;
 	case SceneID::LEVEL4:
-		PostUpdateLevel4();
 		break;
 	case SceneID::LEVEL5:
-		PostUpdateLevel5();
 		break;
 	case SceneID::LEVEL6:
-		PostUpdateLevel6();
 		break;
 	case SceneID::LEVEL7:
-		PostUpdateLevel7();
 		break;
 	case SceneID::LEVEL8:
-		PostUpdateLevel8();
 		break;
 	case SceneID::LEVEL9:
-		PostUpdateLevel9();
 		break;
 	case SceneID::LEVEL10:
-		PostUpdateLevel10();
 		break;
 	case SceneID::LEVEL11:
-		PostUpdateLevel11();
 		break;
 	case SceneID::OPTIONS:
-		PostUpdateOptions();
 		break;
 	case SceneID::MULTIPLAYER:
-		PostUpdateMultiplayer();
 		break;
 	case SceneID::CREDITS:
 		PostUpdateCredits();
 		break;
 	case SceneID::SOUND:
-		PostUpdateSounds();
 		break;
 	case SceneID::GRAFICS:
-		PostUpdateGrafics();
 		break;
 	case SceneID::PAUSE:
-		PostUpdatePause();
 		break;
 	case SceneID::BATTLE:
-		PostUpdateBattle();
 		break;
 	default:
 		break;
@@ -1502,10 +1485,6 @@ void Scene::UpdateOptions(float dt)
 	}
 }
 
-void Scene::PostUpdateOptions()
-{
-}
-
 
 // *********************************************
 // MULTIPLAYER functions
@@ -1563,10 +1542,6 @@ void Scene::UpdateMultiplayer(float dt)
 		splashTime = 0;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
-}
-
-void Scene::PostUpdateMultiplayer()
-{
 }
 
 
@@ -1716,10 +1691,6 @@ void Scene::UpdateSounds(float dt)
 {
 }
 
-void Scene::PostUpdateSounds()
-{
-}
-
 
 // *********************************************
 // GRAFICS functions
@@ -1751,10 +1722,6 @@ void Scene::UnloadGrafics()
 }
 
 void Scene::UpdateGrafics(float dt)
-{
-}
-
-void Scene::PostUpdateGrafics()
 {
 }
 
@@ -1799,9 +1766,6 @@ void Scene::UpdatePause(float dt)
 {
 }
 
-void Scene::PostUpdatePause()
-{
-}
 
 // *********************************************
 // BATTLE functions
@@ -1809,40 +1773,45 @@ void Scene::PostUpdatePause()
 
 void Scene::LoadBattle()
 {
-	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	// Array de rutas posibles
+	const char* battleBackgrounds[] = {
+		"Assets/Textures/BackGrounds/BattleScene_Pasillo.png",
+		"Assets/Textures/BackGrounds/BattleScene_Cocina.png",
+		"Assets/Textures/BackGrounds/BattleScene_Juguetes.png",
+		"Assets/Textures/BackGrounds/BattleScene_Ropa.png"
+	};
+
+	// Elegir una aleatoriamente
+	int randomIndex = rand() % 4;
+	BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
+
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
 	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
 	SDL_Texture* btnChgTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Normal.png");
 	SDL_Texture* btnChgPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Pressed.png");
 	SDL_Texture* btnScpTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Normal.png");
 	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
-	
-	//read enemy and player vector
-	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
+	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
-	//UI Buttons
+
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
 	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
-
 	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
 	CreateButton(NULL, NULL, bt2Pos, 12);
-
 	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
 	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
-
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
 	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
-
 	monocolor = true;
 }
 
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
-	if (BattleIMG != nullptr) {
-		Engine::GetInstance().textures->UnLoad(BattleIMG);
-		SMImg = nullptr; 
+	if (BattleBackgroundIMG != nullptr) {
+		Engine::GetInstance().textures->UnLoad(BattleBackgroundIMG);
+		BattleBackgroundIMG = nullptr; 
 	}
 	monocolor = false;
 	Engine::GetInstance().uiManager->CleanUp();
@@ -1850,11 +1819,7 @@ void Scene::UnloadBattle()
 
 void Scene::UpdateBattle(float dt)
 {
-	Engine::GetInstance().render->DrawTexture(BattleIMG, WindowSize.getX()/2 - 720, 0);
-}
-
-void Scene::PostUpdateBattle()
-{
+	Engine::GetInstance().render->DrawTexture(BattleBackgroundIMG, WindowSize.getX() / 2 - 720, 0);
 }
 
 // *********************************************
