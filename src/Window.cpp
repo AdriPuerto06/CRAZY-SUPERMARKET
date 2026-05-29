@@ -137,7 +137,7 @@ bool Window::SetFullSize() {
 	return true;
 }
 
-bool Window::SetWindowed(int scaleFactor) {
+bool Window::SetWindowed(float scaleFactor) {
 
 	SDL_SetWindowFullscreen(window, false);
 
