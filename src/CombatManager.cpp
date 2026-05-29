@@ -1307,8 +1307,13 @@ void CombatManager::RenderCombatants(float dt)
 			player.hp_Interior.h = 37; // maximum height (this doesn't change)
 			Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
 
+			// print hp
+			std::string s = std::to_string(player.hp);
+			const char* pchar = s.c_str();
+
+			Engine::GetInstance().render->DrawText(pchar, player.hp_Interior.x + 45 ,player.hp_Interior.y , 32, 32, { 255, 255, 255, 255 });
+
 			//mana bar
-			combatState->magicPoints;
 			int player_manabar_posX = 64;
 			int player_manabar_posY = 64;
 
@@ -1316,6 +1321,17 @@ void CombatManager::RenderCombatants(float dt)
 			int Munity = Wmax_mana / 50;
 			SDL_Rect mana_rect = { player_manabar_posX + 110, player_manabar_posY + 65, combatState->magicPoints * Munity, 30};
 			Engine::GetInstance().render->DrawRectangle(mana_rect, 0, 0, 255, 255, true);
+
+
+			// print mana
+			std::string s2 = std::to_string(combatState->magicPoints);
+			const char* pchar2 = s2.c_str();
+
+			Engine::GetInstance().render->DrawText(pchar2, player_manabar_posX + 110 + 110, player_manabar_posY + 70, 26, 26, { 255, 255, 255, 255 });
+
+
+
+
 
 			Engine::GetInstance().render->DrawTexture(playerHealthbar, player_hpbar_posX, player_hpbar_posY, nullptr, 0.0f, 0.0, 0, 0, true);
 		}
@@ -1341,6 +1357,12 @@ void CombatManager::RenderCombatants(float dt)
 			if (player.hp > 0) {
 				//green
 				Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 0, 255, 0, 255, true);
+
+				// print hp
+				std::string s = std::to_string(player.hp);
+				const char* pchar = s.c_str();
+
+				Engine::GetInstance().render->DrawText(pchar, player.hp_Interior.x + Wmax, player.hp_Interior.y - 16, 32, 32, { 255, 255, 255, 255 });
 			}
 		}
     }
@@ -1396,6 +1418,12 @@ void CombatManager::RenderCombatants(float dt)
 			//red
 			Engine::GetInstance().render->DrawRectangle(enemy.hp_Interior, 255, 0, 0, 255, true);
 
+			// print hp
+			std::string s = std::to_string(enemy.hp);
+			const char* pchar = s.c_str();
+
+			Engine::GetInstance().render->DrawText(pchar, enemy.hp_Interior.x - 32, enemy.hp_Interior.y - 16, 32, 32, { 255, 255, 255, 255 });
+			
 		}
 		
         // marcar objetivo + calcular damage
