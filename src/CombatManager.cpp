@@ -101,6 +101,9 @@ bool CombatManager::Start()
 	Poison_Texture = Engine::GetInstance().textures->Load("Assets/Textures/Combat/posion-Sheet.png");
 	Poison_Anim.LoadFromTSX("Assets/Textures/Combat/posion-Sheet.tsx", emptyAliases);
 
+	Paralized_Texture = Engine::GetInstance().textures->Load("Assets/Textures/Combat/paralized-Sheet.png");
+	Paralized_Anim.LoadFromTSX("Assets/Textures/Combat/paralized-Sheet.tsx", emptyAliases);
+
 	return true;
 }
 
@@ -1307,6 +1310,16 @@ void CombatManager::RenderCombatants(float dt)
 			const SDL_Rect& shieldframe = Shield_Anim.GetCurrentFrame();
 			Engine::GetInstance().render->DrawTexture(Shield_Texture, x - player.texW / 2, y - player.texH / 2, &shieldframe);
 		}
+		if (player.status == "poisoned") {
+			Poison_Anim.Update(dt);
+			const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(Poison_Texture, x, y, &poisonframe);
+		}
+		if (player.status == "paralized") {
+			Paralized_Anim.Update(dt);
+			const SDL_Rect& paralizedframe = Paralized_Anim.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(Paralized_Texture, x, y, &paralizedframe);
+		}
 
 		// healthbar
 
@@ -1426,6 +1439,12 @@ void CombatManager::RenderCombatants(float dt)
 			const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
 			Engine::GetInstance().render->DrawTexture(Poison_Texture, x, y, &poisonframe);
 		}
+		if (enemy.status == "paralized") {
+			Paralized_Anim.Update(dt);
+			const SDL_Rect& paralizedframe = Paralized_Anim.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(Paralized_Texture, x, y, &paralizedframe);
+		}
+
 
 		// healthbar
 

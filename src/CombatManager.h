@@ -195,7 +195,8 @@ private:
     SDL_Texture* Poison_Texture = nullptr;
     AnimationSet Poison_Anim;
 
-
+    SDL_Texture* Paralized_Texture = nullptr;
+    AnimationSet Paralized_Anim;
 
 
 
