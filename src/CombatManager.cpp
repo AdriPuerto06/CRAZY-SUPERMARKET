@@ -91,9 +91,16 @@ bool CombatManager::Start()
 {
 	srand((unsigned)time(NULL));
 	playerHealthbar = Engine::GetInstance().textures->Load("Assets/Textures/healthbarplayer.png");
+
+
 	std::unordered_map<int, std::string> emptyAliases;
+
 	Shield_Texture = Engine::GetInstance().textures->Load("Assets/Textures/Combat/Shield_buff_Sheet.png");
 	Shield_Anim.LoadFromTSX("Assets/Textures/Combat/Shield_buff_Sheet.tsx", emptyAliases);
+
+	Poison_Texture = Engine::GetInstance().textures->Load("Assets/Textures/Combat/posion-Sheet.png");
+	Poison_Anim.LoadFromTSX("Assets/Textures/Combat/posion-Sheet.tsx", emptyAliases);
+
 	return true;
 }
 
@@ -1405,6 +1412,20 @@ void CombatManager::RenderCombatants(float dt)
 			Engine::GetInstance().render->DrawRectangle(rect, 200, 40, 40, 200, true);
         }
 
+
+		//effects
+
+		//shield
+		if (enemy.shield_and_buff.first == true) {
+			Shield_Anim.Update(dt);
+			const SDL_Rect& shieldframe = Shield_Anim.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(Shield_Texture, x, y, &shieldframe);
+		}
+		if (enemy.status == "poisoned") {
+			Poison_Anim.Update(dt);
+			const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
+			Engine::GetInstance().render->DrawTexture(Poison_Texture, x, y, &poisonframe);
+		}
 
 		// healthbar
 
