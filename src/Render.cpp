@@ -147,7 +147,7 @@ bool Render::Awake()
 	TTF_Init();
 
 	//load a font into memory
-	font = TTF_OpenFont("Assets/Fonts/arial.ttf", 25);
+	font = TTF_OpenFont("Assets/Fonts/Minecraftia-Regular.ttf", 36);
 
 	return ret;
 }
