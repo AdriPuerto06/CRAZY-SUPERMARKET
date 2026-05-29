@@ -254,8 +254,8 @@ bool Scene::PostUpdate()
 	}
 
 	//Pause
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4,
-																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8,
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
+																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8 ||
 																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) {
 
 		gameScene = currentScene;
@@ -264,13 +264,6 @@ bool Scene::PostUpdate()
 		sceneStack.push(currentScene);
 	}
 
-	//Save-Load
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, currentScene);
-	}
 
 	//Go MainMenu
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
