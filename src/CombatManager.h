@@ -187,7 +187,8 @@ private:
     // Dibuja players y enemyes
     void RenderCombatants(float dt);
 
-
+    SDL_Texture* Shield_Texture = nullptr;
+    AnimationSet Shield_Anim;
 
     float combatTimer = 0.0f;
     int pendingDamage = 0;
