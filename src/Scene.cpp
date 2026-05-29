@@ -798,7 +798,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 14:
 		LOG("Scape clicked");
-		ChangeScene(SceneID::LEVEL1);
+		ChangeScene(sceneStack.pop());
 		break;
 	case 15:
 		LOG("Main Menu clicked");
