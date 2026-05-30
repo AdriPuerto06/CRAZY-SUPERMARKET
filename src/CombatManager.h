@@ -18,7 +18,21 @@
 #define EFFECT_DELAY 1000.0f
 #define ATTACK_DELAY 3000.0f
 #define DAMAGE_DELAY 1000.0f
-#define ENEMY_TURN_DELAY 5000.0f
+#define ENEMY_TURN_DELAY 3000.0f
+
+
+struct FloatingText
+{
+    std::string text;
+
+    Vector2D position;
+
+    float timer = 0.0f;
+    float duration = 700.0f;
+
+    SDL_Color color = { 0,0,0,0 };
+};
+
 
 struct Attack {
     const char* name;
@@ -210,5 +224,9 @@ private:
     Combatant* currentAttacker = nullptr;
     Combatant* currentTarget = nullptr;
     Attack currentAttack;
+
+
+    std::vector<FloatingText> floatingTexts;
+    void SpawnFloatingText(const std::string& text, float x, float y, SDL_Color color);
 
 };
