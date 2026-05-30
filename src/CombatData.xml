@@ -268,5 +268,12 @@
 		<attack name ="Attack3" dmg="1" effect="buff"></attack>
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
 	</enemy>
+
+	<enemy id ="103" HP="50">
+		<attack name="Attack1" dmg ="8" effect="none"></attack>
+		<attack name="Attack2" dmg ="1" effect="none"></attack>
+		<attack name ="Attack3" dmg="1" effect="buff"></attack>
+		<attack name="Attack4" dmg="1" effect="poison"></attack>
+	</enemy>
 	
 </combat>
