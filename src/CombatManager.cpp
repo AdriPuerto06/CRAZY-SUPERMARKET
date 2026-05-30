@@ -130,6 +130,25 @@ bool CombatManager::Update(float dt)
 		
 	}
 
+
+
+	for (auto it = floatingTexts.begin(); it != floatingTexts.end();)
+	{
+		it->timer += dt;
+
+		// movimiento hacia arriba
+		it->position.setY(it->position.getY() - 0.05f * dt);
+
+		if (it->timer >= it->duration)
+		{
+			it = floatingTexts.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
 	// COMBAT TIMERS
 	
 
@@ -196,6 +215,7 @@ bool CombatManager::Update(float dt)
 			combatTimer = 0.0f;
 
 			currentTarget->hp -= pendingDamage;
+			SpawnFloatingText( "-" + std::to_string(pendingDamage), currentTarget->position.getX(), currentTarget->position.getY() - 40, { 255,0,0,255 } );
 
 			currentTarget->anims.SetCurrent("hit");
 
@@ -458,7 +478,7 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	if (attack.effect == "heal")
 	{
 		attacker.hp += HEAL_HITPOINTS;
-
+		SpawnFloatingText( "+" + std::to_string(HEAL_HITPOINTS), attacker.position.getX(), attacker.position.getY() - 40, { 0,255,255,255 } );
 		if (attacker.type == EntityType::PLAYER)
 			LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS);
 		else
@@ -485,15 +505,27 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	else if (attack.effect == "shield")
 	{
 		attacker.shield_and_buff.first = true;
+		SpawnFloatingText( "SHIELDED!", attacker.position.getX(), attacker.position.getY() - 60, { 0,255,255,255 } );
 	}
 	else if (attack.effect == "buff")
 	{
 		attacker.shield_and_buff.second = true;
 	}
+	else if (attack.effect == "poisoned")
+	{
+		target.status = attack.effect;
+		SpawnFloatingText( "POISONED!", target.position.getX(), target.position.getY() - 60, { 0,255,0,255 } );
+	}
+	else if (attack.effect == "paralized")
+	{
+		target.status = attack.effect;
+		SpawnFloatingText("PARALIZED!", target.position.getX(), target.position.getY() - 60, { 255,255,255,255 });
+	}
 	else if (attack.effect != "none")
 	{
 		target.status = attack.effect;
 	}
+
 
 	int dmg_increase = 0;
 	int dmg_reduction = 0;
@@ -655,7 +687,7 @@ void CombatManager::ApplyEnemyEffects()
 		if (effect == "poisoned")
 		{
 			enemy.hp -= POISON_DAMAGE;
-
+			SpawnFloatingText("-" + std::to_string(POISON_DAMAGE), enemy.position.getX(), enemy.position.getY() - 40, { 0,255,0,255 } );
 			LOG("Enemy ID: %i takes poison damage. HP: %i",
 				enemy.id,
 				enemy.hp);
@@ -793,6 +825,10 @@ void CombatManager::EnemyAI()
 	if (possibleIndices.empty())
 	{
 		LOG("All enemies are paralized! Player's turn.");
+
+		waitingEnemyTurn = true;
+		combatTimer = ENEMY_TURN_DELAY;
+
 		return;
 	}
 
@@ -1497,4 +1533,19 @@ void CombatManager::RenderCombatants(float dt)
 			Engine::GetInstance().render->DrawRectangle(outline, 255, 255, 0, 255, false);
         }
     }
+	for (const auto& text : floatingTexts)
+	{
+		Engine::GetInstance().render->DrawText(text.text.c_str(), (int)text.position.getX(), (int)text.position.getY(), 64, 64, text.color );
+	}
+}
+
+void CombatManager::SpawnFloatingText(const std::string& text, float x, float y, SDL_Color color) 
+{
+	FloatingText ft;
+
+	ft.text = text;
+	ft.position = { x, y };
+	ft.color = color;
+
+	floatingTexts.push_back(ft);
 }
