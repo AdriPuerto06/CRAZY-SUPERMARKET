@@ -149,7 +149,7 @@ bool CombatManager::StartCombat()
 {
 	if (in_combat) return true;
 
-
+	currentScene = Engine::GetInstance().scene->GetCurrentScene();
 	Engine::GetInstance().scene->sceneStack.push(currentScene);
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 	in_combat = true;
