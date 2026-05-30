@@ -149,6 +149,8 @@ bool CombatManager::StartCombat()
 {
 	if (in_combat) return true;
 
+
+	Engine::GetInstance().scene->sceneStack.push(currentScene);
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 	in_combat = true;
 	Engine::GetInstance().render->camera.x = 0;
