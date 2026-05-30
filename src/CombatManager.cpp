@@ -1127,6 +1127,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 
 void CombatManager::CheckAlive()
 {
+	if (combatState->player_Wins || combatState->enemy_Wins) return;
 	// enemies
 	for (int i = 0; i < (int)combatData->enemies.size(); ++i)
 	{
@@ -1266,7 +1267,7 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 	switch (fight_ID)
 	{
 	case 2:
-		if (Engine::GetInstance().questManager->IsQuestActive("Beat those guys!"))
+		if (Engine::GetInstance().questManager->IsQuestActive("Beat those guys!") && !Engine::GetInstance().questManager->IsQuestCompleted("Beat those guys!"))
 		{
 			Engine::GetInstance().questManager->CompleteQuest("Beat those guys!");
 			Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(4); //unlock next dialogue for NPC with ID = 4
