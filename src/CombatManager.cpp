@@ -1273,7 +1273,7 @@ void CombatManager::CanCombatQuestBeCompleted(int fight_ID, bool victory)
 		}
 		break;
 	case 102:
-		if (Engine::GetInstance().questManager->IsQuestActive("Kill the boss"))
+		if (Engine::GetInstance().questManager->IsQuestActive("Kill the boss") && !Engine::GetInstance().questManager->IsQuestCompleted("Kill the boss"))
 		{
 			Engine::GetInstance().questManager->CompleteQuest("Kill the boss");
 			Engine::GetInstance().dialogueManager->UnlockNewDialogueTree(1); //unlock next dialogue for NPC with ID = 1
