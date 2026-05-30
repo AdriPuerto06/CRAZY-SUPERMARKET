@@ -793,6 +793,10 @@ void CombatManager::EnemyAI()
 	if (possibleIndices.empty())
 	{
 		LOG("All enemies are paralized! Player's turn.");
+
+		waitingEnemyTurn = true;
+		combatTimer = ENEMY_TURN_DELAY;
+
 		return;
 	}
 
