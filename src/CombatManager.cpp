@@ -505,15 +505,27 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	else if (attack.effect == "shield")
 	{
 		attacker.shield_and_buff.first = true;
+		SpawnFloatingText( "SHIELDED!", attacker.position.getX(), attacker.position.getY() - 60, { 0,255,255,255 } );
 	}
 	else if (attack.effect == "buff")
 	{
 		attacker.shield_and_buff.second = true;
 	}
+	else if (attack.effect == "poisoned")
+	{
+		target.status = attack.effect;
+		SpawnFloatingText( "POISONED!", target.position.getX(), target.position.getY() - 60, { 0,255,0,255 } );
+	}
+	else if (attack.effect == "paralized")
+	{
+		target.status = attack.effect;
+		SpawnFloatingText("PARALIZED!", target.position.getX(), target.position.getY() - 60, { 255,255,255,255 });
+	}
 	else if (attack.effect != "none")
 	{
 		target.status = attack.effect;
 	}
+
 
 	int dmg_increase = 0;
 	int dmg_reduction = 0;
@@ -1523,7 +1535,7 @@ void CombatManager::RenderCombatants(float dt)
     }
 	for (const auto& text : floatingTexts)
 	{
-		Engine::GetInstance().render->DrawText(text.text.c_str(), (int)text.position.getX(), (int)text.position.getY(), 32, 32, text.color );
+		Engine::GetInstance().render->DrawText(text.text.c_str(), (int)text.position.getX(), (int)text.position.getY(), 64, 64, text.color );
 	}
 }
 
