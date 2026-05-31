@@ -109,6 +109,11 @@ bool CombatManager::Start()
 
 bool CombatManager::Update(float dt)
 {
+
+	if (!in_combat) {
+		return true;
+	}
+
 	//choose the enemy to focus
 	if (combatState->turn == "Player" && combatState->selecting_target)
 	{
@@ -1185,7 +1190,10 @@ void CombatManager::CheckAlive()
 		Engine::GetInstance().scene->ChangeScene(SceneID::LOSE);
 		LOG("Enemies win the combat.");
 		/*Engine::GetInstance().scene->ChangeScene(goBack);*/
+		ResetCombatState();
+
 		in_combat = false;
+
 		enemies_to_destroy.clear();
 	}
 	else if (combatState->player_Wins) //delete the enemies you killed
@@ -1200,6 +1208,7 @@ void CombatManager::CheckAlive()
 		MarkEnemiesAsDead();
 		in_combat = false;
 		enemies_to_destroy.clear();
+		ResetCombatState();
 
 		Engine::GetInstance().scene->ChangeScene(goBack);
 		CanCombatQuestBeCompleted(combatData->fight_ID, true);
@@ -1549,4 +1558,23 @@ void CombatManager::SpawnFloatingText(const std::string& text, float x, float y,
 	ft.color = color;
 
 	floatingTexts.push_back(ft);
+}
+
+void CombatManager::ResetCombatState()
+{
+	waitingAttack = false;
+	waitingDamage = false;
+	waitingEffect = false;
+	waitingEnemyTurn = false;
+
+	combatTimer = 0.0f;
+
+	currentAttacker = nullptr;
+	currentTarget = nullptr;
+
+	pendingDamage = 0;
+
+	PlayerHasAttacked = false;
+
+	combatState->selecting_target = false;
 }

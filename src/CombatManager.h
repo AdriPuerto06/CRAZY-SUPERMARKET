@@ -167,6 +167,10 @@ public:
 
     std::vector<Attack> GetPlayerAttacks(int& HP);
 
+
+    void ResetCombatState();
+
+
     std::vector<bool> itemVector;
 
     std::string combatFileName;
