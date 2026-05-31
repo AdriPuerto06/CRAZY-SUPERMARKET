@@ -5003,7 +5003,7 @@
   </object>
   <object id="39" x="1056" y="736" width="192" height="128">
    <properties>
-    <property name="targetMap" value="RestaurantLobby.tmx"/>
+    <property name="targetMap" value="Restaurant.tmx"/>
    </properties>
   </object>
   <object id="40" x="1664" y="736" width="96" height="128">
@@ -5037,7 +5037,7 @@
   <object id="49" x="1056" y="1696" width="192" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Entities">
-  <object id="50" name="Player" type="Player" x="448" y="512">
+  <object id="50" name="Player" type="Player" x="1093" y="798">
    <point/>
   </object>
  </objectgroup>
