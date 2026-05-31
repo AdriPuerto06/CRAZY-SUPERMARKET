@@ -37,7 +37,9 @@
 		<attack_stats name="Punch extorsion" magicPoints="5" dmg="3" effect="paralized" unlocked="true"></attack_stats>
 		
 	</player>
-	<player id="2" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png" >
+	<!--Companions-->
+	<!--companions are the players except for player with id = 1, the player id is gotten from Companion_ID like this: player id = Companion_ID + 1-->
+	<player id="2" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png" > 
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>

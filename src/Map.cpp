@@ -354,7 +354,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        if (name == "Companion_ID")
+                        if (name == "Companion_ID") //player id in combatData is = Companion_ID + 1
                             Companion_ID = propertyNode.attribute("value").as_int();
 
                         if (name == "active")
