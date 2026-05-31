@@ -579,7 +579,7 @@ void Scene::CheckScene(std::string target) {
 	if (target == "Supermarket.tmx") ChangeScene(SceneID::LEVEL1);
 	else if (target == "azotea.tmx")      ChangeScene(SceneID::LEVEL2);
 	else if (target == "Backroom.tmx")      ChangeScene(SceneID::LEVEL3);
-	else if (target == "RestaurantLobby.tmx") ChangeScene(SceneID::LEVEL4);
+	else if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL4);
 	else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL5);
 	else if (target == "ClothesLobby.tmx") ChangeScene(SceneID::LEVEL6);
 	else if (target == "ClotheDungeon.tmx") ChangeScene(SceneID::LEVEL7);
@@ -1070,7 +1070,7 @@ void Scene::LoadLevel4() {
 	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantLobby.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
