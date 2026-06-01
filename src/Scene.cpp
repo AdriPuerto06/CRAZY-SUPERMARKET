@@ -1791,6 +1791,8 @@ void Scene::LoadBattle()
 	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
 	SDL_Texture* btnChgTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Normal.png");
 	SDL_Texture* btnChgPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Pressed.png");
+	SDL_Texture* btnBolsaTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Bolsa_Normal.png");
+	SDL_Texture* btnBolsaPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Bolsa_Pressed.png");
 	SDL_Texture* btnScpTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Normal.png");
 	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
 
