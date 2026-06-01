@@ -687,6 +687,14 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
 	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 
+	if (inProgres = true) {
+		SDL_Texture* btnCntTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Normal.png");
+		SDL_Texture* btnCntPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Pressed.png");
+
+		SDL_Rect bt7Pos = { WindowSize.getX() / 2 + 160, (WindowSize.getY() / 2) - 200, 229,90 };
+		CreateButton(btnCntTex, btnCntPressedTex, bt7Pos, 18);
+	}
+
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0, -1);
 
 	// Instantiate a UIButton in the Scene
@@ -822,6 +830,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 17:
 		Engine::GetInstance().vsync_Active = !Engine::GetInstance().vsync_Active;
 		LOG("Grafics: VSync %i", Engine::GetInstance().vsync_Active);
+		break;
+	case 18:
+		LOG("Continue");
 		break;
 	case 100:
 		if (!isAudioMuted)
