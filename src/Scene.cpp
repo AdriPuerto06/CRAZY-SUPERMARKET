@@ -1832,6 +1832,7 @@ void Scene::UpdateBattle(float dt)
 
 void Scene::LoadItem()
 {
+	monocolor = true;
 	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
 	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
 	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
@@ -1852,6 +1853,7 @@ void Scene::UpdateItem(float dt)
 
 void Scene::UnloadItem()
 {
+	monocolor = false;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 

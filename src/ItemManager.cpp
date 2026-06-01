@@ -30,6 +30,7 @@ bool ItemManager::Start()
 				   (float)Engine::GetInstance().render->camera.h };
 	if (inventory->empty()) LoadItems();
 
+	//UI
 	ItemsTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Items_Normal.png");
 	ItemsPresTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Items_Pressed.png");
 	StatsTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Stats_Normal.png");
@@ -40,6 +41,21 @@ bool ItemManager::Start()
 	Atck2Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	Atck3Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
 	Atck4Tex = Engine::GetInstance().textures->Load("Assets/Textures/UI/Icon_HP.png");
+
+	//Items
+	btnKnfTex = Engine::GetInstance().textures->Load("Assets/Items/Knife.png");
+	btnKnfPressedTex = Engine::GetInstance().textures->Load("Assets/Items/Knife_Pressed.png");
+	btnLghTex = Engine::GetInstance().textures->Load("Assets/Items/Linterna.png");
+	btnLghPressedTex = Engine::GetInstance().textures->Load("Assets/Items/Linterna_Pressed.png");
+	btnSktTex = Engine::GetInstance().textures->Load("Assets/Items/Skates.png");
+	btnSktPressedTex = Engine::GetInstance().textures->Load("Assets/Items/Skates_Pressed.png");
+	btnHmtTex = Engine::GetInstance().textures->Load("Assets/Items/Helmet.png");
+	btnHmtPressedTex = Engine::GetInstance().textures->Load("Assets/Items/Helmet_Pressed.png");
+	btnEmbTex = Engine::GetInstance().textures->Load("Assets/Items/Emboltorio.png");
+	btnEmbPressedTex = Engine::GetInstance().textures->Load("Assets/Items/Emboltorio_Pressed.png");
+	btnBWTex = Engine::GetInstance().textures->Load("Assets/Items/Blessed water.png");
+	btnBWPressedTex = Engine::GetInstance().textures->Load("Assets/Items/Blessed water_Pressed.png");
+
 	return true;
 }
 
@@ -166,17 +182,17 @@ bool ItemManager::ShowingQuests()
 bool ItemManager::ShowPlayerItems() {
 	LOG("Item Butons Created");
 	SDL_Rect bt1Pos = { WindowSize.getX() / 3, WindowSize.getY() / 5, 64,64};
-	CreateButton(NULL, NULL, bt1Pos, NULL);
+	CreateButton(btnKnfTex, btnKnfPressedTex, bt1Pos, NULL);
 	SDL_Rect bt2Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 5, 64,64 };
-	CreateButton(NULL, NULL, bt2Pos, NULL);
+	CreateButton(btnLghTex, btnLghPressedTex, bt2Pos, NULL);
 	SDL_Rect bt3Pos = { WindowSize.getX() / 3, WindowSize.getY() / 3 + 15, 64,64 };
-	CreateButton(NULL, NULL, bt3Pos, NULL);
+	CreateButton(btnSktTex, btnSktPressedTex, bt3Pos, NULL);
 	SDL_Rect bt4Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 3 + 15, 64,64 };
-	CreateButton(NULL, NULL, bt4Pos, NULL);
+	CreateButton(btnHmtTex, btnHmtPressedTex, bt4Pos, NULL);
 	SDL_Rect bt5Pos = { WindowSize.getX() / 3, WindowSize.getY() / 2 + 20, 64,64 };
-	CreateButton(NULL, NULL, bt5Pos, NULL);
+	CreateButton(btnEmbTex, btnEmbPressedTex, bt5Pos, NULL);
 	SDL_Rect bt6Pos = { WindowSize.getX() / 3 + 300, WindowSize.getY() / 2 + 20, 64,64};
-	CreateButton(NULL, NULL, bt6Pos, NULL);
+	CreateButton(btnBWTex, btnBWPressedTex, bt6Pos, NULL);
 	return true;
 }
 
