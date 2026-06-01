@@ -141,12 +141,12 @@ private:
 	void UpdateMainMenu(float dt);
 	void HandleMainMenuUIEvents(UIElement* uiElement);
 
-	// L17 TODO 4: Define specific functions for level1 scene: Load, Unload, Update, PostUpdate
+	//Level1 functions
 	void LoadLevel1();
 	void UnloadLevel1();
 	void UpdateLevel1(float dt);
 
-	// L17 TODO 5: Define specific functions for level2 scene: Load, Unload, Update
+	//Level2 functions
 	void LoadLevel2();
 	void UpdateLevel2(float dt);
 	void UnloadLevel2();
@@ -200,13 +200,11 @@ private:
 	void LoadOptions();
 	void UnloadOptions();
 	void UpdateOptions(float dt);
-	void PostUpdateOptions();
 
 	//MULTIPLAYER
 	void LoadMultiplayer();
 	void UnloadMultiplayer();
 	void UpdateMultiplayer(float dt);
-	void PostUpdateMultiplayer();
 
 	//CREDITS
 	void LoadCredits();
@@ -218,7 +216,6 @@ private:
 	void LoadSounds();
 	void UnloadSounds();
 	void UpdateSounds(float dt);
-	void PostUpdateSounds();
 	float musicVolume = 1.0f;
 	float sfxVolume = 1.0f;
 	bool  isAudioMuted = false;
@@ -229,13 +226,11 @@ private:
 	void LoadGrafics();
 	void UnloadGrafics();
 	void UpdateGrafics(float dt);
-	void PostUpdateGrafics();
 
 	//PAUSE
 	void LoadPause();
 	void UnloadPause();
 	void UpdatePause(float dt);
-	void PostUpdatePause();
 
 	//BATTLE
 	

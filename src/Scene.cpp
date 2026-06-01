@@ -188,7 +188,6 @@ bool Scene::PostUpdate()
 	case SceneID::MAIN_MENU:
 		break;
 	case SceneID::LEVEL1:
-		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
 		break;
@@ -209,7 +208,6 @@ bool Scene::PostUpdate()
 	case SceneID::LEVEL10:
 		break;
 	case SceneID::LEVEL11:
-		PostUpdateLevel11();
 		break;
 	case SceneID::OPTIONS:
 		break;
