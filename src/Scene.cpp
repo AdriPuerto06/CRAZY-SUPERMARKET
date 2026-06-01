@@ -801,7 +801,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 14:
 		LOG("Scape clicked");
-		ChangeScene(sceneStack.pop());
+		UnloadBattle();
+		Engine::GetInstance().combatManager->in_combat = false;
+		ChangeScene(Engine::GetInstance().combatManager->goBack);
 		break;
 	case 15:
 		LOG("Main Menu clicked");

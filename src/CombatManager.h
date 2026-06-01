@@ -164,12 +164,14 @@ public:
 
     std::vector<int> enemies_to_destroy;
 
+    SceneID goBack;
+
 private:
     pugi::xml_document combatFileXML;
 
     SceneID timeScene;
     SceneID currentScene;
-    SceneID goBack;
+    
     // Dibuja players y enemyes
     void RenderCombatants(float dt);
 };
