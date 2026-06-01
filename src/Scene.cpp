@@ -259,9 +259,6 @@ bool Scene::PostUpdate()
 		LOG("Change MainMenu");
 		ChangeScene(SceneID::MAIN_MENU);
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_L)) {
-		ChangeScene(SceneID::LEVEL4);
-	}
 
 	return ret;
 }
