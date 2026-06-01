@@ -1093,7 +1093,7 @@ void Scene::UnloadLevel4() {
 
 void Scene::LoadLevel5() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_rest_dungeon, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");

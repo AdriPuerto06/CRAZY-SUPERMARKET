@@ -10,7 +10,8 @@ static std::map<Music, const char*> music_paths =
     { m_roof, "Assets/Audio/Music/roof.wav" },
     { m_roof_drums, "Assets/Audio/Music/drums.wav" },
     { m_restaurant, "Assets/Audio/Music/rest.wav" },
-    { m_supermarket, "Assets/Audio/Music/regular market.wav" }
+    { m_supermarket, "Assets/Audio/Music/regular market.wav" },
+	{ m_rest_dungeon, "Assets/Audio/Music/rest dungeon.wav" }
 
 	
 };
