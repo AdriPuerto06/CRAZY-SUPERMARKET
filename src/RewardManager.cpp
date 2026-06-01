@@ -6,6 +6,7 @@
 #include "CombatManager.h"
 #include "EventManager.h"
 
+
 bool IsANumber(char c)
 {
 	for (int i = 0; i < 10; ++i)

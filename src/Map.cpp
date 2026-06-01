@@ -193,8 +193,6 @@ MapLayer* Map::GetNavigationLayer() {
 //L15 TODO 2: Define a method to load entities from the map XML
 void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
     isReloading = true;
-
-   /* Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.clear();*/
     //Iterate the object groups
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
         //Check if the object group is "Entities"
@@ -237,8 +235,10 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                             LOG("player HP: %d", player->HP);
                         }
                         if (name == "magicPoints")
+                        {
                             magicPoints = propertyNode.attribute("value").as_int(); //map has magicPoints
-
+                            PendingChangesCheckAndSetter(EntityType::PLAYER, Component::MAGICPOINTS, 0, magicPoints, sceneID);
+                        }
                         
                     }
                 }
@@ -249,6 +249,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     const char* texturePath = nullptr;
                     bool active = false;
                     int currentDialogueTree = 0;
+
+                    
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -267,6 +269,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                         if (name == "currentDialogueTree") {
                             currentDialogueTree = propertyNode.attribute("value").as_int();
+                            PendingChangesCheckAndSetter(EntityType::BASENPC, Component::DIALOGUETREE, NPC_ID, currentDialogueTree, sceneID); //if currentDialogueTree is suposed to be different (changed because
+                            // of a quest and couldn't assign it because the in current map the NPC was not active (not in memory)), this fucntion takes the reference of the value and modifies it accordingly.
                         }
                     }
 
@@ -416,7 +420,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                     }
 
-                    if (active)
+                    if (active /*&& !(activated && (event_Name == "Button1" || event_Name == "Button2" || event_Name == "Button3" || event_Name == "Button4"))*/)
                     {
                         std::shared_ptr<Event> event;
                         if (Engine::GetInstance().entityManager->GetEntity(EntityType::EVENT, ID) == nullptr)
@@ -429,7 +433,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         }
                         event->Init(EntityType::EVENT, active, pos, texturePath, Event_ID, event_Name, activated);
                         event->entity_ID = ID;
-                        LOG("Event -> Event: %i, entity_ID: %i, at %f, %f.", Event_ID, ID, pos.getX(), pos.getY());
+                        LOG("Event -> Event ID: %i, Active: %i, at %f, %f.", Event_ID, active, pos.getX(), pos.getY());
                         event->Start();
                     }
                     else {
@@ -530,8 +534,10 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                                 propertyNode.attribute("value").as_int();*/
 
                             if (name == "active")
+                            {
                                 propertyNode.attribute("value").set_value(active);
-
+                                LOG("Enemy with Enemy_ID: %i has Active: %i", enemy->ID, active);
+                            }
                             if (name == "texturePath")
                                 propertyNode.attribute("value").set_value(texturePath);
                         }
@@ -586,6 +592,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                             if (name == "activated")
                                 propertyNode.attribute("value").set_value(activated);
+
+                            /*LOG("Map: Event saved. Active: %i, Activated: %i", active, activated);*/
                         }
                     }
                 }
@@ -1019,13 +1027,13 @@ void Map::UpdateEnemiesData()
 {
     bool active = false;
     int ID;
-    bool change = false;
     auto ids = Engine::GetInstance().combatManager->enemies_to_destroy;
     for (pugi::xml_node objectGroupNode = mapFileXML.child("map").child("objectgroup"); objectGroupNode != NULL; objectGroupNode = objectGroupNode.next_sibling("objectgroup")) {
 
         if (objectGroupNode.attribute("name").as_string() == std::string("Entities")) {
 
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
+                bool change = false;
                 std::string entityType = objectNode.attribute("type").as_string();
                 
                 if (entityType == "Enemy")
@@ -1054,4 +1062,47 @@ void Map::UpdateEnemiesData()
                 }
             }
         }
+}
+
+void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int ID, int& current_value, SceneID entity_Scene)
+{
+    for (auto change : pendingChanges)
+    {
+        if (change.ID == ID && change.entityType == EntityType::BASENPC && (change.entity_Scene == entity_Scene))
+        {
+            switch (component)
+            {
+            case Component::DIALOGUETREE:
+                if (change.inc)
+                {
+                    current_value++;
+                }
+                else
+                { 
+                    current_value = change.new_value;
+                }
+                
+                LOG("Map: CurrentDialogueTree of NPC ID: %i was changed (it was pending)", ID);
+                pendingChanges.erase(
+                    std::remove(pendingChanges.begin(), pendingChanges.end(), change),
+                    pendingChanges.end()
+                );
+                break;
+            }
+        }
+
+        if (change.entityType == EntityType::PLAYER && (change.entity_Scene == entity_Scene))
+        {
+            switch (component)
+            {
+            case Component::MAGICPOINTS:
+                current_value = change.new_value;
+                pendingChanges.erase(
+                    std::remove(pendingChanges.begin(), pendingChanges.end(), change),
+                    pendingChanges.end()
+                );
+                break;
+            }
+        }
+    }
 }

@@ -29,7 +29,7 @@ public:
 	float GetBaseWidth() const { return baseWidth; }
 	float GetBaseHeight() const { return baseHeight; }
 	bool SetFullSize();
-	bool SetWindowed(int scaleFactor);
+	bool SetWindowed(float scaleFactor);
 
 public:
 	// The window we'll be rendering to

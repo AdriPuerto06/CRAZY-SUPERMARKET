@@ -13,6 +13,27 @@
 #define SHIELD_DMG_REDUCTION 3
 #define BUFF_DMG_INCREASE 3
 
+
+
+#define EFFECT_DELAY 1000.0f
+#define ATTACK_DELAY 3000.0f
+#define DAMAGE_DELAY 1000.0f
+#define ENEMY_TURN_DELAY 3000.0f
+
+
+struct FloatingText
+{
+    std::string text;
+
+    Vector2D position;
+
+    float timer = 0.0f;
+    float duration = 700.0f;
+
+    SDL_Color color = { 0,0,0,0 };
+};
+
+
 struct Attack {
     const char* name;
     int dmg;
@@ -130,7 +151,9 @@ public:
 
     void HandleTargetSelection();
     void ApplyCombatLogic();
-    void ApplyEffects();
+    void ApplyPlayerEffects();
+    void ApplyEnemyEffects();
+
     void CheckAlive();
     void MakeAttack(Combatant& target, Combatant& attacker, Attack attack);
     void EnemyAI();
@@ -143,6 +166,10 @@ public:
     void SaveScene();
 
     std::vector<Attack> GetPlayerAttacks(int& HP);
+
+
+    void ResetCombatState();
+
 
     std::vector<bool> itemVector;
 
@@ -171,7 +198,40 @@ private:
 
     SceneID timeScene;
     SceneID currentScene;
-    
+
+    SDL_Texture* playerHealthbar = nullptr;
+
+    bool PlayerHasAttacked = false;
+
     // Dibuja players y enemyes
     void RenderCombatants(float dt);
+
+
+    //effects
+    SDL_Texture* Shield_Texture = nullptr;
+    AnimationSet Shield_Anim;
+
+    SDL_Texture* Poison_Texture = nullptr;
+    AnimationSet Poison_Anim;
+
+    SDL_Texture* Paralized_Texture = nullptr;
+    AnimationSet Paralized_Anim;
+
+
+
+    float combatTimer = 0.0f;
+    int pendingDamage = 0;
+    bool waitingEffect = false;
+    bool waitingAttack = false;
+    bool waitingDamage = false;
+    bool waitingEnemyTurn = false;
+
+    Combatant* currentAttacker = nullptr;
+    Combatant* currentTarget = nullptr;
+    Attack currentAttack;
+
+
+    std::vector<FloatingText> floatingTexts;
+    void SpawnFloatingText(const std::string& text, float x, float y, SDL_Color color);
+
 };

@@ -94,8 +94,24 @@ void ItemManager::LoadItems()
 
 		LOG("item : %s Loaded", item.name);
 	}
+}
 
-	
+void ItemManager::SaveItems()
+{
+	int i = 0;
+	int l = inventory->size();
+	for (pugi::xml_node items_tree_node = itemsFileXML.child("items").child("item");
+		items_tree_node != NULL;
+		items_tree_node = items_tree_node.next_sibling("item"))
+	{
+		if (i > l) { LOG("More items in game that in file."); return; }
+		Item item = (*inventory)[i];
+		items_tree_node.attribute("active").set_value(item.active);
+		i++;
+	}
+	//Important: save the modifications to the XML 
+	std::string mapPathName = itemsPath + itemsFileName;
+	itemsFileXML.save_file(mapPathName.c_str());
 }
 
 bool ItemManager::OnUIMouseClickEvent(UIElement* uiElement)
@@ -283,7 +299,7 @@ void ItemManager::ActivateItem(const char* name)
 			if (item.active) { LOG("ItemManager: Item '%s' was already active.", name); }
 			item.active = true;
 			LOG("ItemManager: Item '%s' was already active.", name);
-			/*Save items file*/ 
+			SaveItems();
 		}
 	}
 }

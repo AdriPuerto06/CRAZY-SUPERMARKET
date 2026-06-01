@@ -9,6 +9,7 @@
 #include "EntityManager.h"
 #include "RewardManager.h"
 #include "BaseNPC.h"
+#include "Map.h"
 
 int SizeOf(const char* s)
 {
@@ -184,8 +185,27 @@ void DialogueManager::UnlockNewDialogueTree(int NPC_ID)
 	}
 
 	currentDialogueTreesNPC.at(index) += 1;*/
-
-	Engine::GetInstance().entityManager->GetNPC(NPC_ID)->currentDialogueTree += 1;
+	auto NPC = Engine::GetInstance().entityManager->GetNPC(NPC_ID);
+	if (NPC)
+	{
+		NPC->currentDialogueTree += 1;
+	}
+	else {
+		PendingChange change;
+		change.ID = NPC_ID;
+		change.new_value = 0;
+		change.type = Component::DIALOGUETREE;
+		change.entityType = EntityType::BASENPC;
+		change.inc = true;
+		switch (NPC_ID)
+		{
+		case 1:
+			change.entity_Scene = SceneID::LEVEL2;
+			break;
+		}
+		
+		Engine::GetInstance().map->pendingChanges.emplace_back(change);
+	}
 	LOG("Unlocked new dialogue with NPC ID: %i", NPC_ID);
 }
 

@@ -150,7 +150,7 @@ bool Scene::Update(float dt)
 		Engine::GetInstance().render->UpdateScale();
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
-		Engine::GetInstance().window->SetWindowed(2);
+		Engine::GetInstance().window->SetWindowed(0.75f);
 		Engine::GetInstance().render->UpdateScale();
 	}
 
@@ -188,6 +188,7 @@ bool Scene::PostUpdate()
 	case SceneID::MAIN_MENU:
 		break;
 	case SceneID::LEVEL1:
+		PostUpdateLevel1();
 		break;
 	case SceneID::LEVEL2:
 		break;
@@ -208,6 +209,7 @@ bool Scene::PostUpdate()
 	case SceneID::LEVEL10:
 		break;
 	case SceneID::LEVEL11:
+		PostUpdateLevel11();
 		break;
 	case SceneID::OPTIONS:
 		break;
@@ -817,7 +819,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 			fullScreen = true;
 		}
 		else if (fullScreen == true) {
-			Engine::GetInstance().window->SetWindowed(2);
+			Engine::GetInstance().window->SetWindowed(0.75f);
 			Engine::GetInstance().render->UpdateScale();
 			fullScreen = false;
 		}
