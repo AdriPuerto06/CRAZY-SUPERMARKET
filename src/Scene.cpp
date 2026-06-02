@@ -905,24 +905,16 @@ void Scene::LoadLevel1() {
 	//Call the function to load the map & music
 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Supermarket.tmx");
-	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_supermarket, 1200, -1);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
 	Engine::GetInstance().questManager->ActivateQuest("Speak with the granny");
 }
 
-void Scene::UpdateLevel1(float dt) {
-	//Music will play drums first and then the main theme will loop
-	if (!drumsFinished)
-	{
-		drumsTimer += dt;
-		if (drumsTimer >= 4000.0f)
-		{
-			drumsFinished = true;
-			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
-		}
-	}
+void Scene::UpdateLevel1(float dt) {	
+
+
 	//provisional para bajar y subir la vida del player
 	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		player->HP --;
@@ -960,7 +952,7 @@ void Scene::UnloadLevel1() {
 // *********************************************
 
 void Scene::LoadLevel2() {
-	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
@@ -970,6 +962,16 @@ void Scene::LoadLevel2() {
 }
 
 void Scene::UpdateLevel2(float dt) {
+	if (!drumsFinished)
+	{
+		drumsTimer += dt;
+		if (drumsTimer >= 4000.0f)
+		{
+			drumsFinished = true;
+			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
+		}
+	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL1);
 	}
@@ -1102,7 +1104,7 @@ void Scene::UnloadLevel4() {
 
 void Scene::LoadLevel5() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_rest_dungeon, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");
