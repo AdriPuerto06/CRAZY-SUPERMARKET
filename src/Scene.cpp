@@ -191,60 +191,42 @@ bool Scene::PostUpdate()
 		break;
 	case SceneID::MAIN_MENU:
 		break;
-		// helo
-	/*case SceneID::LEVEL1:
-		PostUpdateLevel1();
+	case SceneID::LEVEL1:
 		break;
 	case SceneID::LEVEL2:
-		PostUpdateLevel2();
 		break;
 	case SceneID::LEVEL3:
-		PostUpdateLevel3();
 		break;
 	case SceneID::LEVEL4:
-		PostUpdateLevel4();
 		break;
 	case SceneID::LEVEL5:
-		PostUpdateLevel5();
 		break;
 	case SceneID::LEVEL6:
-		PostUpdateLevel6();
 		break;
 	case SceneID::LEVEL7:
-		PostUpdateLevel7();
 		break;
 	case SceneID::LEVEL8:
-		PostUpdateLevel8();
 		break;
 	case SceneID::LEVEL9:
-		PostUpdateLevel9();
 		break;
 	case SceneID::LEVEL10:
-		PostUpdateLevel10();
 		break;
 	case SceneID::LEVEL11:
-		PostUpdateLevel11();
-		break;*/
+		break;
 	case SceneID::OPTIONS:
-		PostUpdateOptions();
 		break;
 	case SceneID::MULTIPLAYER:
-		PostUpdateMultiplayer();
 		break;
 	case SceneID::CREDITS:
 		PostUpdateCredits();
 		break;
 	case SceneID::SOUND:
-		PostUpdateSounds();
 		break;
 	case SceneID::GRAFICS:
-		PostUpdateGrafics();
 		break;
 	case SceneID::PAUSE:
-		PostUpdatePause();
 		break;
 	case SceneID::BATTLE:
-		PostUpdateBattle();
 		break;
 	default:
 		break;
@@ -261,21 +243,14 @@ bool Scene::PostUpdate()
 	//Pause
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
 																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8 ||
-																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) {
-
+																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) 
+	{
 		gameScene = currentScene;
 		Engine::GetInstance().map->SaveEntities(player, currentScene);
 		ChangeScene(SceneID::PAUSE);
 		sceneStack.push(currentScene);
 	}
 
-	//Save-Load
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
-		Engine::GetInstance().map->LoadEntities(player, currentScene);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
-		Engine::GetInstance().map->SaveEntities(player, currentScene);
-	}
 
 	//Go MainMenu
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_Z)) {
@@ -716,6 +691,14 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
 	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 
+	if (inProgres = true) {
+		SDL_Texture* btnCntTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Normal.png");
+		SDL_Texture* btnCntPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Pressed.png");
+
+		SDL_Rect bt7Pos = { WindowSize.getX() / 2 + 160, (WindowSize.getY() / 2) - 200, 229,90 };
+		CreateButton(btnCntTex, btnCntPressedTex, bt7Pos, 18);
+	}
+
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0, -1);
 
 	// Instantiate a UIButton in the Scene
@@ -827,7 +810,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 14:
 		LOG("Scape clicked");
-		ChangeScene(SceneID::LEVEL1);
+		UnloadBattle();
+		Engine::GetInstance().combatManager->in_combat = false;
+		ChangeScene(Engine::GetInstance().combatManager->goBack);
 		break;
 	case 15:
 		LOG("Main Menu clicked");
@@ -849,6 +834,9 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 	case 17:
 		Engine::GetInstance().vsync_Active = !Engine::GetInstance().vsync_Active;
 		LOG("Grafics: VSync %i", Engine::GetInstance().vsync_Active);
+		break;
+	case 18:
+		LOG("Continue");
 		break;
 	case 100:
 		if (!isAudioMuted)
@@ -921,24 +909,16 @@ void Scene::LoadLevel1() {
 	//Call the function to load the map & music
 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Supermarket.tmx");
-	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_supermarket, 1200, -1);
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL1);
 	Engine::GetInstance().questManager->ActivateQuest("Speak with the granny");
 }
 
-void Scene::UpdateLevel1(float dt) {
-	//Music will play drums first and then the main theme will loop
-	if (!drumsFinished)
-	{
-		drumsTimer += dt;
-		if (drumsTimer >= 4000.0f)
-		{
-			drumsFinished = true;
-			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
-		}
-	}
+void Scene::UpdateLevel1(float dt) {	
+
+
 	//provisional para bajar y subir la vida del player
 	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 		player->HP --;
@@ -976,7 +956,7 @@ void Scene::UnloadLevel1() {
 // *********************************************
 
 void Scene::LoadLevel2() {
-	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
@@ -986,6 +966,16 @@ void Scene::LoadLevel2() {
 }
 
 void Scene::UpdateLevel2(float dt) {
+	if (!drumsFinished)
+	{
+		drumsTimer += dt;
+		if (drumsTimer >= 4000.0f)
+		{
+			drumsFinished = true;
+			Engine::GetInstance().audio->PlayMusic(m_roof, 0.0f, -1);
+		}
+	}
+
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 		ChangeScene(SceneID::LEVEL1);
 	}
@@ -1118,7 +1108,7 @@ void Scene::UnloadLevel4() {
 
 void Scene::LoadLevel5() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_rest_dungeon, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantDungeon.tmx");
@@ -1514,10 +1504,6 @@ void Scene::UpdateOptions(float dt)
 	}
 }
 
-void Scene::PostUpdateOptions()
-{
-}
-
 
 // *********************************************
 // MULTIPLAYER functions
@@ -1575,10 +1561,6 @@ void Scene::UpdateMultiplayer(float dt)
 		splashTime = 0;
 		ChangeScene(SceneID::MAIN_MENU);
 	}
-}
-
-void Scene::PostUpdateMultiplayer()
-{
 }
 
 
@@ -1728,10 +1710,6 @@ void Scene::UpdateSounds(float dt)
 {
 }
 
-void Scene::PostUpdateSounds()
-{
-}
-
 
 // *********************************************
 // GRAFICS functions
@@ -1763,10 +1741,6 @@ void Scene::UnloadGrafics()
 }
 
 void Scene::UpdateGrafics(float dt)
-{
-}
-
-void Scene::PostUpdateGrafics()
 {
 }
 
@@ -1811,9 +1785,6 @@ void Scene::UpdatePause(float dt)
 {
 }
 
-void Scene::PostUpdatePause()
-{
-}
 
 // *********************************************
 // BATTLE functions
@@ -1821,40 +1792,47 @@ void Scene::PostUpdatePause()
 
 void Scene::LoadBattle()
 {
-	BattleIMG = Engine::GetInstance().textures->Load("Assets/Textures/BackGrounds/BattleScene.png");
+	// Array de rutas posibles
+	const char* battleBackgrounds[] = {
+		"Assets/Textures/BackGrounds/BattleScene_Pasillo.png",
+		"Assets/Textures/BackGrounds/BattleScene_Cocina.png",
+		"Assets/Textures/BackGrounds/BattleScene_Juguetes.png",
+		"Assets/Textures/BackGrounds/BattleScene_Ropa.png"
+	};
+
+	// Elegir una aleatoriamente
+	int randomIndex = rand() % 4;
+	BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
+
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
 	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
 	SDL_Texture* btnChgTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Normal.png");
 	SDL_Texture* btnChgPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Change_Pressed.png");
+	SDL_Texture* btnBolsaTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Bolsa_Normal.png");
+	SDL_Texture* btnBolsaPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Bolsa_Pressed.png");
 	SDL_Texture* btnScpTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Normal.png");
 	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
-	
-	//read enemy and player vector
-	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 
+	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
 	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
-	//UI Buttons
+
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
 	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
-
 	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
 	CreateButton(NULL, NULL, bt2Pos, 12);
-
 	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
 	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
-
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
 	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
-
 	monocolor = true;
 }
 
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
-	if (BattleIMG != nullptr) {
-		Engine::GetInstance().textures->UnLoad(BattleIMG);
-		SMImg = nullptr; 
+	if (BattleBackgroundIMG != nullptr) {
+		Engine::GetInstance().textures->UnLoad(BattleBackgroundIMG);
+		BattleBackgroundIMG = nullptr; 
 	}
 	monocolor = false;
 	Engine::GetInstance().uiManager->CleanUp();
@@ -1862,11 +1840,7 @@ void Scene::UnloadBattle()
 
 void Scene::UpdateBattle(float dt)
 {
-	Engine::GetInstance().render->DrawTexture(BattleIMG, WindowSize.getX()/2 - 720, 0);
-}
-
-void Scene::PostUpdateBattle()
-{
+	Engine::GetInstance().render->DrawTexture(BattleBackgroundIMG, WindowSize.getX() / 2 - 720, 0);
 }
 
 // *********************************************
@@ -1875,6 +1849,7 @@ void Scene::PostUpdateBattle()
 
 void Scene::LoadItem()
 {
+	monocolor = true;
 	SDL_Texture* btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
 	SDL_Texture* btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
 	cajonTex = Engine::GetInstance().textures->Load("Assets/Textures/cajon_Items.png");
@@ -1895,6 +1870,7 @@ void Scene::UpdateItem(float dt)
 
 void Scene::UnloadItem()
 {
+	monocolor = false;
 	Engine::GetInstance().uiManager->CleanUp();
 }
 

@@ -21,7 +21,9 @@ enum Music {
     m_battle,
     m_roof,
     m_roof_drums,
-	m_restaurant
+	m_restaurant,
+	m_supermarket,
+    m_rest_dungeon
 };
 
 enum Sfx {

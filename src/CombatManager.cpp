@@ -295,6 +295,8 @@ bool CombatManager::StartCombat()
 {
 	if (in_combat) return true;
 
+	goBack = Engine::GetInstance().scene->GetCurrentScene(); 
+	Engine::GetInstance().scene->sceneStack.push(goBack);
 	Engine::GetInstance().scene->ChangeScene(SceneID::BATTLE);
 	in_combat = true;
 	Engine::GetInstance().render->camera.x = 0;

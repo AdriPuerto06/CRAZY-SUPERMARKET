@@ -191,12 +191,13 @@ public:
 
     std::vector<int> enemies_to_destroy;
 
+    SceneID goBack;
+
 private:
     pugi::xml_document combatFileXML;
 
     SceneID timeScene;
     SceneID currentScene;
-    SceneID goBack;
 
     SDL_Texture* playerHealthbar = nullptr;
 

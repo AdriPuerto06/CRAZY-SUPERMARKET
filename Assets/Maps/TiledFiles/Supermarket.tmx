@@ -5044,7 +5044,7 @@
 		<object id="14" x="256" y="1248" width="64" height="64" />
 	</objectgroup>
 	<objectgroup id="4" name="Entities">
-		<object id="15" name="Player" type="Player" x="1025" y="1320">
+		<object id="15" name="Player" type="Player" x="434" y="1199">
 			<point />
 		</object>
 		<object id="19" name="NPC14" type="NPC" x="1052" y="1298">

@@ -92,6 +92,20 @@ private:
 	SDL_Texture* Atck3Tex = nullptr;
 	SDL_Texture* Atck4Tex = nullptr;
 
+	//Items
+	SDL_Texture* btnKnfTex = nullptr;
+	SDL_Texture* btnKnfPressedTex = nullptr;
+	SDL_Texture* btnLghTex = nullptr;
+	SDL_Texture* btnLghPressedTex = nullptr;
+	SDL_Texture* btnSktTex = nullptr;
+	SDL_Texture* btnSktPressedTex = nullptr;
+	SDL_Texture* btnHmtTex = nullptr;
+	SDL_Texture* btnHmtPressedTex = nullptr;
+	SDL_Texture* btnEmbTex = nullptr;
+	SDL_Texture* btnEmbPressedTex = nullptr;
+	SDL_Texture* btnBWTex = nullptr;
+	SDL_Texture* btnBWPressedTex = nullptr;
+
 	bool showingBack = false;
 
 	
