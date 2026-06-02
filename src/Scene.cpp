@@ -1815,7 +1815,7 @@ void Scene::LoadBattle()
 	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
 	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
 	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
-	CreateButton(NULL, NULL, bt2Pos, 12);
+	CreateButton(btnBolsaTex, btnBolsaPressedTex, bt2Pos, 12);
 	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
 	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
 	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
