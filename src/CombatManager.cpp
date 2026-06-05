@@ -900,7 +900,7 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 	choosingAtk = true;
 
 	// find player index by ID
-	int playerIndex = 0;
+	/*int playerIndex = 0;
 	for (int i = 0; i < (int)combatData->players.size(); ++i)
 	{
 		if (combatData->players[i].id == player_ID)
@@ -908,9 +908,9 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 			playerIndex = i;
 			break;
 		}
-	}
+	}*/
 
-	auto& attacks = combatData->players[playerIndex].attacks;
+	auto& attacks = combatData->players[combatState->player_index_selected].attacks;
 	int size = attacks.size();
 	std::vector<std::pair<SDL_Rect, const char*>> buttonsAttack;
 
@@ -1030,7 +1030,14 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			player.id = id;
 			player.hp = combat_tree_node.attribute("HP").as_int();
 			player.maxhp = player.hp;
-			player.type = EntityType::PLAYER;
+			if (id == 1)
+			{
+				player.type = EntityType::PLAYER;
+			}
+			else {
+				player.type = EntityType::BASECOMPANION;
+			}
+			
 			player.status_duration = 0;
 
 			// animation

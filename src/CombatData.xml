@@ -42,19 +42,19 @@
 	<player id="2" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png" > 
 		
 		<!--Mary Nancy - Wizard-->
-		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none" unlocked="false"></attack_stats>
-		<attack_stats name="Blocking" magicPoints="2" dmg="5" effect="none" unlocked="false"></attack_stats>
-		<attack_stats name="Headache" magicPoints="1" dmg="0" effect="poisoned" unlocked="false"></attack_stats>
-		<attack_stats name="Radioactive eruption" magicPoints="5" dmg="3" effect="paralized" unlocked="false"></attack_stats>
+		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none" unlocked="true"></attack_stats>
+		<attack_stats name="Blocking" magicPoints="2" dmg="5" effect="none" unlocked="true"></attack_stats>
+		<attack_stats name="Headache" magicPoints="1" dmg="0" effect="poisoned" unlocked="true"></attack_stats>
+		<attack_stats name="Radioactive eruption" magicPoints="5" dmg="3" effect="paralized" unlocked="true"></attack_stats>
 
 	</player>
 	<player id="3" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">
 
 		<!--Cornelius - Healer-->
-		<attack_stats name="Delightful bomb" magicPoints="4" dmg="8" effect="none" unlocked="false"></attack_stats>
-		<attack_stats name="Reminiscence" magicPoints="3" dmg="-10" effect="heal" unlocked="false"></attack_stats>
-		<attack_stats name="Confusing perfume" magicPoints="2" dmg="0" effect="confused" unlocked="false"></attack_stats>
-		<attack_stats name="Sacrifice" magicPoints="5" dmg="999" effect="selfKO" unlocked="false"></attack_stats>
+		<attack_stats name="Delightful bomb" magicPoints="4" dmg="8" effect="none" unlocked="true"></attack_stats>
+		<attack_stats name="Reminiscence" magicPoints="3" dmg="-10" effect="heal" unlocked="true"></attack_stats>
+		<attack_stats name="Confusing perfume" magicPoints="2" dmg="0" effect="confused" unlocked="true"></attack_stats>
+		<attack_stats name="Sacrifice" magicPoints="5" dmg="999" effect="selfKO" unlocked="true"></attack_stats>
 
 	</player>
 	<!--<player id="4" HP="25">
