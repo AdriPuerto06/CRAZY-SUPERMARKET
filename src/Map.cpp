@@ -1117,10 +1117,6 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
             {
             case Component::MAGICPOINTS:
                 current_value = change.new_value;
-                pendingChanges.erase(
-                    std::remove(pendingChanges.begin(), pendingChanges.end(), change),
-                    pendingChanges.end()
-                );
                 break;
 
             case Component::WIZARDJOINED:
