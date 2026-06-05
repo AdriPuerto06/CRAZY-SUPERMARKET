@@ -15,7 +15,7 @@
 
 BaseCompanion::BaseCompanion(){}
 
-void BaseCompanion::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int Dialogue_ID)
+void BaseCompanion::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID)
 {
 	this->type = type;
 	this->position = position;
@@ -23,7 +23,6 @@ void BaseCompanion::Init(EntityType type, bool active, Vector2D position, const 
 	this->HP = HP;
 	this->ID = ID;
 	this->texturePath = texturePath;
-    this->Dialogue_ID = Dialogue_ID;
 }
 
 BaseCompanion::~BaseCompanion() {
@@ -278,7 +277,7 @@ void BaseCompanion::OnCollision(PhysBody* physA, PhysBody* physB)
     Vector2D buttonPos = Vector2D(500, 500);
     /*LOG("Vector 'cDT' size: %i", Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.size());
     int dialogue_Tree = Engine::GetInstance().dialogueManager->currentDialogueTreesNPC[ID - 1];*/
-    Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, Dialogue_ID);
+    Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, ID);
     Engine::GetInstance().dialogueManager->showingButtonStart = true;
 }
 
