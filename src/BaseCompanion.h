@@ -14,7 +14,7 @@ public:
 
 	BaseCompanion();
 	~BaseCompanion();
-	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID);
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int Dialogue_ID);
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
@@ -51,4 +51,5 @@ public:
 
 	int HP;
 	int ID;
+	int Dialogue_ID;
 };
