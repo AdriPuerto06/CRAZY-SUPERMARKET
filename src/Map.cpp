@@ -224,8 +224,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
                     }
                     int HP;
-                    bool WizardJoined = false;
-                    bool CorneliusJoined = false;
+                    int WizardJoined = false;
+                    int CorneliusJoined = false;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
@@ -245,6 +245,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "WizardJoined")
                         {
                             WizardJoined = propertyNode.attribute("value").as_bool();
+                            PendingChangesCheckAndSetter(EntityType::PLAYER, Component::WIZARDJOINED, 0, WizardJoined, sceneID);
                             player->WizardJoined = WizardJoined;
                         }
                         if (name == "CorneliusJoined")
@@ -493,9 +494,12 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                                 propertyNode.attribute("value").set_value(player->HP);
                             }
                         } 
-                        if (name == "magicPoints") { propertyNode.attribute("value").set_value(magicPoints); }
-                        if (name == "WizardJoined") { propertyNode.attribute("value").set_value(player->WizardJoined); }
-                        if (name == "CorneliusJoined") { propertyNode.attribute("value").set_value(player->CorneliusJoined); }
+                        if (name == "magicPoints") 
+                        { propertyNode.attribute("value").set_value(magicPoints); }
+                        if (name == "WizardJoined") 
+                        { propertyNode.attribute("value").set_value(player->WizardJoined); }
+                        if (name == "CorneliusJoined") 
+                        { propertyNode.attribute("value").set_value(player->CorneliusJoined); }
                     }
                 }
 
@@ -1107,7 +1111,7 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
             }
         }
 
-        if (change.entityType == EntityType::PLAYER && (change.entity_Scene == entity_Scene))
+        if (change.entityType == EntityType::PLAYER)
         {
             switch (component)
             {
@@ -1118,6 +1122,15 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
                     pendingChanges.end()
                 );
                 break;
+
+            case Component::WIZARDJOINED:
+                current_value = change.new_value;
+                break;
+
+            case Component::CORNELIUSJOINED:
+                current_value = change.new_value;
+                break;
+            
             }
         }
     }

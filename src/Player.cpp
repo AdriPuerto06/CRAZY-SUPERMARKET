@@ -189,6 +189,7 @@ void Player::Move() {
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed * inc;
+		LOG("WizardJoined: %i", WizardJoined);
 		//anims.SetCurrent("move");
 	}
 	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) { direction.setX(0); }*/

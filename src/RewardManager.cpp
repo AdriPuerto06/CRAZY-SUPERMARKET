@@ -97,10 +97,28 @@ void RewardManager::GetReward(Reward reward)
 
 	case RewardType::COMPANION:
 		if (std::strcmp(reward.reward_value.c_str(), "Wizard") == 0) 
-		{ Engine::GetInstance().scene->GetPlayer()->WizardJoined = true; Engine::GetInstance().combatManager->isWizardActive = true; LOG("Wizard joins the battle!"); }
+		{ 
+			Engine::GetInstance().scene->GetPlayer()->WizardJoined = true; Engine::GetInstance().combatManager->isWizardActive = true; LOG("Wizard joins the battle!"); 
+			
+			PendingChange change;
+			change.entityType = EntityType::PLAYER;
+			change.type = Component::WIZARDJOINED;
+			change.new_value = true;
+
+			Engine::GetInstance().map->pendingChanges.emplace_back(change);
+		}
 
 		if (std::strcmp(reward.reward_value.c_str(), "Cornelius") == 0) 
-		{ Engine::GetInstance().scene->GetPlayer()->CorneliusJoined = true; Engine::GetInstance().combatManager->isCorneliusActive = true; LOG("Cornelius joins the battle!");}
+		{ 
+			Engine::GetInstance().scene->GetPlayer()->CorneliusJoined = true; Engine::GetInstance().combatManager->isCorneliusActive = true; LOG("Cornelius joins the battle!");
+			
+			PendingChange change;
+			change.entityType = EntityType::PLAYER;
+			change.type = Component::CORNELIUSJOINED;
+			change.new_value = true;
+
+			Engine::GetInstance().map->pendingChanges.emplace_back(change);
+		}
 		Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 		break;
 
