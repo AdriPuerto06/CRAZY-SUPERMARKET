@@ -143,6 +143,7 @@ void Player::Teleport() {
 			y >= zone.y && y <= zone.y + zone.height)
 		{
 			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
+			Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 			pendingMapLoad = zone.targetMap;
 			teleportCooldown = 120;
 			return;
