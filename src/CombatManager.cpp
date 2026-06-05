@@ -1008,9 +1008,6 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			}
 		}
 
-		if (isWizardActive) { players_id.push_back(2); }
-		if (isCorneliusActive) { players_id.push_back(3); }
-
 		// players
 		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("player");
 			combat_tree_node != NULL;
@@ -1046,6 +1043,9 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 
 			combatData->players.push_back(player);
 		}
+
+ 		if (isWizardActive) { players_id.push_back(2); }
+		if (isCorneliusActive) { players_id.push_back(3); }
 
 		// enemies
 		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");

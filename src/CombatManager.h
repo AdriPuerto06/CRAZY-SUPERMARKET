@@ -191,8 +191,8 @@ public:
 
     std::vector<int> enemies_to_destroy;
 
-    bool isWizardActive;
-    bool isCorneliusActive;
+    bool isWizardActive = false;
+    bool isCorneliusActive = false;
 
     SceneID goBack;
 

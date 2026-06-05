@@ -115,6 +115,10 @@ void BaseEnemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 	Vector2D buttonPos = Vector2D{ 500,500 };
 	Engine::GetInstance().combatManager->SaveScene();
+
+	Engine::GetInstance().combatManager->isWizardActive = Engine::GetInstance().scene->GetPlayer()->WizardJoined;
+	Engine::GetInstance().combatManager->isCorneliusActive = Engine::GetInstance().scene->GetPlayer()->CorneliusJoined;
+
 	Engine::GetInstance().combatManager->ShowButtonStart(buttonPos, this->ID, fight_ID);
 	Engine::GetInstance().combatManager->showingButtonStart = true;
 }
