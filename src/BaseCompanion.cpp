@@ -41,7 +41,7 @@ bool BaseCompanion::Start() {
 	texH = texture->h;
 	texW = texture->w;
 	//sensor
-	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::KINEMATIC);
+	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::DYNAMIC);
 	pbody->ctype = ColliderType::COMPANION;
 	pbody->listener = this;
 
@@ -52,7 +52,10 @@ bool BaseCompanion::Start() {
 
 bool BaseCompanion::Update(float dt)
 {
-    if (Engine::GetInstance().scene->GetPlayer()->WizardJoined && std::strcmp(this->name.c_str(), "Wizard")==0 || Engine::GetInstance().scene->GetPlayer()->CorneliusJoined && std::strcmp(this->name.c_str(), "Cornelius")==0)
+    bool joined = Engine::GetInstance().scene->GetPlayer()->WizardJoined;
+    bool isWizard = this->Dialogue_ID == 101;
+    bool isCornelius = this->Dialogue_ID == 102;
+    if (joined and (isWizard or isCornelius))
     {
         PerformPathfinding();
         Move();
@@ -273,6 +276,7 @@ void BaseCompanion::OnCollision(PhysBody* physA, PhysBody* physB)
 {
     if (Engine::GetInstance().dialogueManager->in_conversation) return;
     if (!(physB->ctype == ColliderType::PLAYER) || Engine::GetInstance().dialogueManager->showingButtonStart == true) return;
+    if (Engine::GetInstance().scene->GetPlayer()->WizardJoined && this->Dialogue_ID == 101 || Engine::GetInstance().scene->GetPlayer()->CorneliusJoined && this->Dialogue_ID == 102) return;
 
     /*Vector2D buttonPos = Vector2D((position.getX() + texW / 2), (position.getY() + texH * 1.5));*/
     Vector2D buttonPos = Vector2D(500, 500);
