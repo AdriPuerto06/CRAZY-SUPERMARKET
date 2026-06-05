@@ -41,7 +41,7 @@ bool BaseCompanion::Start() {
 	texH = texture->h;
 	texW = texture->w;
 	//sensor
-	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::DYNAMIC);
+	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::KINEMATIC);
 	pbody->ctype = ColliderType::COMPANION;
 	pbody->listener = this;
 

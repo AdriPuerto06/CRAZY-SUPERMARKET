@@ -5,7 +5,7 @@
 #include "DialogueManager.h"
 #include "CombatManager.h"
 #include "EventManager.h"
-
+#include "Map.h"
 
 bool IsANumber(char c)
 {
@@ -96,8 +96,12 @@ void RewardManager::GetReward(Reward reward)
 		break;
 
 	case RewardType::COMPANION:
-		if (std::strcmp(reward.reward_value.c_str(), "Wizard") == 0) { Engine::GetInstance().scene->GetPlayer()->WizardJoined = true; Engine::GetInstance().combatManager->isWizardActive = true; LOG("Wizard joins the battle!"); }
-		if (std::strcmp(reward.reward_value.c_str(), "Cornelius") == 0) { Engine::GetInstance().scene->GetPlayer()->CorneliusJoined = true; Engine::GetInstance().combatManager->isCorneliusActive = true; LOG("Cornelius joins the battle!");}
+		if (std::strcmp(reward.reward_value.c_str(), "Wizard") == 0) 
+		{ Engine::GetInstance().scene->GetPlayer()->WizardJoined = true; Engine::GetInstance().combatManager->isWizardActive = true; LOG("Wizard joins the battle!"); }
+
+		if (std::strcmp(reward.reward_value.c_str(), "Cornelius") == 0) 
+		{ Engine::GetInstance().scene->GetPlayer()->CorneliusJoined = true; Engine::GetInstance().combatManager->isCorneliusActive = true; LOG("Cornelius joins the battle!");}
+		Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 		break;
 
 	case RewardType::DIALOGUE:
