@@ -359,7 +359,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     int Companion_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
-                    bool joined = false;
+                    int Dialogue_ID = -1;
+
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -376,8 +377,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
-                        if (name == "joined")
-                            joined = propertyNode.attribute("value").as_bool();
+                        if (name == "Dialogue_ID")
+                            Dialogue_ID = propertyNode.attribute("value").as_int();
                     }
 
                     if (active)
@@ -391,9 +392,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASECOMPANION, ID));
                         }
-                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID);
+                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID, Dialogue_ID);
                         companion->entity_ID = ID;
-                        LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f. Joined: %i", Companion_ID, ID, pos.getX(), pos.getY(), joined);
+                        LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f.", Companion_ID, ID, pos.getX(), pos.getY());
                         companion->Start();
                     }
                     else {
