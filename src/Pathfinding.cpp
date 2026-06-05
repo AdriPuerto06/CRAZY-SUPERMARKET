@@ -157,196 +157,142 @@ bool Pathfinding::IsWalkable(int x, int y) {
     return isWalkable;
 }
 
-void Pathfinding::PropagateBFS() {
+//void Pathfinding::PropagateAStar(ASTAR_HEURISTICS heuristic) {
+//
+//    // L13: TODO 2: Adapt Dijkstra algorithm for AStar. Consider the different heuristics
+//
+//    Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
+//    Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+//
+//    bool foundDestination = false;
+//    if (frontierAStar.size() > 0) {
+//        Vector2D frontierTile = frontierAStar.top().second;
+//
+//        if (frontierTile == playerPosTile) {
+//            foundDestination = true;
+//
+//            //When the destination is reach, call the function ComputePath
+//            ComputePath(frontierTile.getX(), frontierTile.getY());
+//        }
+//    }
+//
+//    //If frontier queue contains elements pop the first element and find the neighbors
+//    if (frontierAStar.size() > 0 && !foundDestination) {
+//
+//        //Get the value of the firt element in the queue
+//        Vector2D frontierTile = frontierAStar.top().second;
+//        //remove the first element from the queue
+//        frontierAStar.pop();
+//
+//        std::list<Vector2D> neighbors;
+//        if (IsWalkable(frontierTile.getX() + 1, frontierTile.getY())) {
+//            neighbors.push_back(Vector2D((int)frontierTile.getX() + 1, (int)frontierTile.getY()));
+//        }
+//        if (IsWalkable(frontierTile.getX(), frontierTile.getY() + 1)) {
+//            neighbors.push_back(Vector2D((int)frontierTile.getX(), (int)frontierTile.getY() + 1));
+//        }
+//        if (IsWalkable(frontierTile.getX() - 1, frontierTile.getY())) {
+//            neighbors.push_back(Vector2D((int)frontierTile.getX() - 1, (int)frontierTile.getY()));
+//        }
+//        if (IsWalkable(frontierTile.getX(), frontierTile.getY() - 1)) {
+//            neighbors.push_back(Vector2D((int)frontierTile.getX(), (int)frontierTile.getY() - 1));
+//        }
+//
+//        //For each neighbor, if not visited, add it to the frontier queue and visited list
+//        for (const auto& neighbor : neighbors) {
+//
+//            // the movement cost from the start point A to the current tile.
+//            int g = costSoFar[(int)frontierTile.getX()][(int)frontierTile.getY()] + MovementCost((int)neighbor.getX(), (int)neighbor.getY());
+//
+//            // the estimated movement cost from the current square to the destination point.
+//            int h = 0;
+//
+//            switch (heuristic)
+//            {
+//            case ASTAR_HEURISTICS::MANHATTAN:
+//                h = neighbor.distanceMahattan(playerPosTile);
+//                break;
+//            case ASTAR_HEURISTICS::EUCLIDEAN:
+//                h = neighbor.distanceEuclidean(playerPosTile);
+//                break;
+//            case ASTAR_HEURISTICS::SQUARED:
+//                h = neighbor.distanceSquared(playerPosTile);
+//                break;
+//            }
+//
+//            // A* Priority function
+//            int f = g + h;
+//
+//            if (std::find(visited.begin(), visited.end(), neighbor) == visited.end() || g < costSoFar[neighbor.getX()][neighbor.getY()]) {
+//                costSoFar[neighbor.getX()][neighbor.getY()] = g;
+//                frontierAStar.push(std::make_pair(f, neighbor));
+//                visited.push_back(neighbor);
+//                breadcrumbs.push_back(frontierTile);
+//            }
+//        }
+//
+//    }
+//}
 
-    // L11 TODO 4: Check if we have reach a destination
-    bool foundDestination = false;
-    if (!frontier.empty()) {
-        Vector2D frontierTile = frontier.front();
-		Vector2D playerPos = Engine::GetInstance().scene->GetPlayerPosition();
-        Vector2D playerPosTile = Engine::GetInstance().map->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
+void Pathfinding::PropagateAStar(ASTAR_HEURISTICS heuristic)
+{
+    Vector2D playerPos = Engine::GetInstance().scene->GetPlayerPosition();
+    Vector2D goal = Engine::GetInstance().map->WorldToMap(
+        (int)playerPos.getX(),
+        (int)playerPos.getY()
+    );
 
-        if (frontierTile == playerPosTile) {
-            foundDestination = true;
-            // L12: TODO 2: When the destination is reach, call the function ComputePath
-            ComputePath(frontierTile.getX(), frontierTile.getY());
-        }
+    if (frontierAStar.empty())
+        return;
+
+    Vector2D frontierTile = frontierAStar.top().second;
+
+    // ¿Hemos llegado?
+    if (frontierTile == goal)
+    {
+        ComputePath(frontierTile.getX(), frontierTile.getY());
+        return;
     }
 
-    // L11: TODO 1: If frontier queue contains elements pop the first element and find the neighbors
-    if (!frontier.empty() && !foundDestination) {
-        //Get the value of the firt element in the queue
-        Vector2D frontierTile = frontier.front();
-        //remove the first element from the queue
-        frontier.pop();
-		//Get the neighbors (4 directions)
-		std::list<Vector2D> neighbors;
-        if (IsWalkable((int)frontierTile.getX() + 1, (int)frontierTile.getY())) {
-            neighbors.push_back(Vector2D(frontierTile.getX() + 1, frontierTile.getY()));
-        }
-        if (IsWalkable((int)frontierTile.getX(), (int)frontierTile.getY() + 1)) {
-            neighbors.push_back(Vector2D(frontierTile.getX(), frontierTile.getY() + 1));
-        }
-        if (IsWalkable((int)frontierTile.getX() - 1, (int)frontierTile.getY())) {
-            neighbors.push_back(Vector2D(frontierTile.getX() - 1, frontierTile.getY()));
-        }
-        if (IsWalkable((int)frontierTile.getX(), (int)frontierTile.getY() - 1)) {
-            neighbors.push_back(Vector2D(frontierTile.getX(), frontierTile.getY() - 1));
-        }
+    frontierAStar.pop();
 
-        // L11: TODO 2: For each neighbor, if not visited, add it to the frontier queue and visited list
-        for (const auto& neighbor : neighbors) {
+    std::list<Vector2D> neighbors;
 
-			//Check if the neighbor has been visited
-			bool isVisited = false;
-            for(const auto& visitedTile : visited) {
-                if(visitedTile == neighbor) {
-                    isVisited = true;
-                    break;
-				}
-			}
-			//If not visited add it to the frontier and visited list
-            if (!isVisited) {
-                frontier.push(neighbor);
-                visited.push_back(neighbor);
-                //L12 TODO 1: store the position from where the neighbor was reached in the breadcrumbs list
-                breadcrumbs.push_back(frontierTile);
-            }
+    if (IsWalkable(frontierTile.getX() + 1, frontierTile.getY()))
+        neighbors.push_back(Vector2D(frontierTile.getX() + 1, frontierTile.getY()));
+
+    if (IsWalkable(frontierTile.getX() - 1, frontierTile.getY()))
+        neighbors.push_back(Vector2D(frontierTile.getX() - 1, frontierTile.getY()));
+
+    if (IsWalkable(frontierTile.getX(), frontierTile.getY() + 1))
+        neighbors.push_back(Vector2D(frontierTile.getX(), frontierTile.getY() + 1));
+
+    if (IsWalkable(frontierTile.getX(), frontierTile.getY() - 1))
+        neighbors.push_back(Vector2D(frontierTile.getX(), frontierTile.getY() - 1));
+
+    for (auto& n : neighbors)
+    {
+        int g = costSoFar[frontierTile.getX()][frontierTile.getY()] +
+            MovementCost(n.getX(), n.getY());
+
+        int h = 0;
+        switch (heuristic)
+        {
+        case MANHATTAN: h = n.distanceMahattan(goal); break;
+        case EUCLIDEAN: h = n.distanceEuclidean(goal); break;
+        case SQUARED:   h = n.distanceSquared(goal); break;
         }
 
-    }
-}
+        int f = g + h;
 
-void Pathfinding::PropagateDijkstra() {
-
-    // L12: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
-    bool foundDestination = false;
-    if (frontierDijkstra.size() > 0) {
-        Vector2D frontierTile = frontierDijkstra.top().second;
-        Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
-        Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
-
-        if (frontierTile == playerPosTile) {
-            foundDestination = true;
-
-            // L12: TODO 2: When the destination is reach, call the function ComputePath
-            ComputePath(frontierTile.getX(), frontierTile.getY());
+        if (std::find(visited.begin(), visited.end(), n) == visited.end()
+            || g < costSoFar[n.getX()][n.getY()])
+        {
+            costSoFar[n.getX()][n.getY()] = g;
+            frontierAStar.push(std::make_pair(f, n));
+            visited.push_back(n);
+            breadcrumbs.push_back(frontierTile);   // padre correcto
         }
-    }
-
-    //If frontier queue contains elements pop the first element and find the neighbors
-    if (frontier.size() > 0 && !foundDestination) {
-
-        //Get the value of the firt element in the queue
-        Vector2D frontierTile = frontierDijkstra.top().second;
-        //remove the first element from the queue
-        frontierDijkstra.pop();
-
-        std::list<Vector2D> neighbors;
-        if (IsWalkable(frontierTile.getX() + 1, frontierTile.getY())) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX() + 1, (int)frontierTile.getY()));
-        }
-        if (IsWalkable(frontierTile.getX(), frontierTile.getY() + 1)) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX(), (int)frontierTile.getY() + 1));
-        }
-        if (IsWalkable(frontierTile.getX() - 1, frontierTile.getY())) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX() - 1, (int)frontierTile.getY()));
-        }
-        if (IsWalkable(frontierTile.getX(), frontierTile.getY() - 1)) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX(), (int)frontierTile.getY() - 1));
-        }
-
-        //For each neighbor, if not visited, add it to the frontier queue and visited list
-        for (const auto& neighbor : neighbors) {
-
-            int cost = costSoFar[(int)frontierTile.getX()][(int)frontierTile.getY()] + MovementCost((int)neighbor.getX(), (int)neighbor.getY());
-
-            if (std::find(visited.begin(), visited.end(), neighbor) == visited.end() || cost < costSoFar[neighbor.getX()][neighbor.getY()]) {
-                costSoFar[neighbor.getX()][neighbor.getY()] = cost;
-                frontierDijkstra.push(std::make_pair(cost, neighbor));
-                visited.push_back(neighbor);
-                breadcrumbs.push_back(frontierTile);
-            }
-        }
-
-    }
-
-}
-
-void Pathfinding::PropagateAStar(ASTAR_HEURISTICS heuristic) {
-
-    // L13: TODO 2: Adapt Dijkstra algorithm for AStar. Consider the different heuristics
-
-    Vector2D playerPos = Engine::GetInstance().scene.get()->GetPlayerPosition();
-    Vector2D playerPosTile = Engine::GetInstance().map.get()->WorldToMap((int)playerPos.getX(), (int)playerPos.getY());
-
-    bool foundDestination = false;
-    if (frontierAStar.size() > 0) {
-        Vector2D frontierTile = frontierAStar.top().second;
-
-        if (frontierTile == playerPosTile) {
-            foundDestination = true;
-
-            //When the destination is reach, call the function ComputePath
-            ComputePath(frontierTile.getX(), frontierTile.getY());
-        }
-    }
-
-    //If frontier queue contains elements pop the first element and find the neighbors
-    if (frontierAStar.size() > 0 && !foundDestination) {
-
-        //Get the value of the firt element in the queue
-        Vector2D frontierTile = frontierAStar.top().second;
-        //remove the first element from the queue
-        frontierAStar.pop();
-
-        std::list<Vector2D> neighbors;
-        if (IsWalkable(frontierTile.getX() + 1, frontierTile.getY())) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX() + 1, (int)frontierTile.getY()));
-        }
-        if (IsWalkable(frontierTile.getX(), frontierTile.getY() + 1)) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX(), (int)frontierTile.getY() + 1));
-        }
-        if (IsWalkable(frontierTile.getX() - 1, frontierTile.getY())) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX() - 1, (int)frontierTile.getY()));
-        }
-        if (IsWalkable(frontierTile.getX(), frontierTile.getY() - 1)) {
-            neighbors.push_back(Vector2D((int)frontierTile.getX(), (int)frontierTile.getY() - 1));
-        }
-
-        //For each neighbor, if not visited, add it to the frontier queue and visited list
-        for (const auto& neighbor : neighbors) {
-
-            // the movement cost from the start point A to the current tile.
-            int g = costSoFar[(int)frontierTile.getX()][(int)frontierTile.getY()] + MovementCost((int)neighbor.getX(), (int)neighbor.getY());
-
-            // the estimated movement cost from the current square to the destination point.
-            int h = 0;
-
-            switch (heuristic)
-            {
-            case ASTAR_HEURISTICS::MANHATTAN:
-                h = neighbor.distanceMahattan(playerPosTile);
-                break;
-            case ASTAR_HEURISTICS::EUCLIDEAN:
-                h = neighbor.distanceEuclidean(playerPosTile);
-                break;
-            case ASTAR_HEURISTICS::SQUARED:
-                h = neighbor.distanceSquared(playerPosTile);
-                break;
-            }
-
-            // A* Priority function
-            int f = g + h;
-
-            if (std::find(visited.begin(), visited.end(), neighbor) == visited.end() || g < costSoFar[neighbor.getX()][neighbor.getY()]) {
-                costSoFar[neighbor.getX()][neighbor.getY()] = g;
-                frontierAStar.push(std::make_pair(f, neighbor));
-                visited.push_back(neighbor);
-                breadcrumbs.push_back(frontierTile);
-            }
-        }
-
     }
 }
 
