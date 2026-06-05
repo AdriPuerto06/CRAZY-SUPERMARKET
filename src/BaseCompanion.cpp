@@ -76,7 +76,7 @@ void BaseCompanion::Move()
             0,
             0
         );
-
+        /*LOG("PathTiles empty...");*/
         return;
     }
 
