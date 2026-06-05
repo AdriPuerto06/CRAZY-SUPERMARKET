@@ -220,6 +220,16 @@
 		</node>
 
 	</dialogue_tree>
-	
-	
+
+
+	<!--Companions-->
+	<!--Wizard-->
+	<dialogue_tree ID="0" NPC="101">
+
+		<node id ="0" text="From now on, I will be by your side. Lets end this crap!">
+			<choice id ="1" option="Lets go!" next_node ="-1" reward="2" reward_value="Wizard"/>
+		</node>
+
+	</dialogue_tree>
+
 </dialogs>

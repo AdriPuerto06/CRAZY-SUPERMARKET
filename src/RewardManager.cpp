@@ -96,6 +96,8 @@ void RewardManager::GetReward(Reward reward)
 		break;
 
 	case RewardType::COMPANION:
+		if (std::strcmp(reward.reward_value.c_str(), "Wizard")) { Engine::GetInstance().scene->GetPlayer()->WizardJoined = true; LOG("Wizard joins the battle!"); }
+		if (std::strcmp(reward.reward_value.c_str(), "Cornelius")) { Engine::GetInstance().scene->GetPlayer()->CorneliusJoined = true; LOG("Cornelius joins the battle!");}
 		break;
 
 	case RewardType::DIALOGUE:

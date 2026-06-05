@@ -11,6 +11,7 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "CombatManager.h"
+#include "DialogueManager.h"
 
 BaseCompanion::BaseCompanion(){}
 
@@ -50,8 +51,11 @@ bool BaseCompanion::Start() {
 
 bool BaseCompanion::Update(float dt)
 {
-    PerformPathfinding();
-    Move();
+    if (Engine::GetInstance().scene->GetPlayer()->WizardJoined && this->name == "Wizard" || Engine::GetInstance().scene->GetPlayer()->CorneliusJoined && this->name == "Cornelius")
+    {
+        PerformPathfinding();
+        Move();
+    }
     Draw(dt);
 
     return true;
@@ -266,12 +270,25 @@ void BaseCompanion::SetPosition(Vector2D pos) {
 
 void BaseCompanion::OnCollision(PhysBody* physA, PhysBody* physB) 
 {
+    if (Engine::GetInstance().dialogueManager->in_conversation) return;
+    if (!(physB->ctype == ColliderType::PLAYER) || Engine::GetInstance().dialogueManager->showingButtonStart == true) return;
 
+    /*Vector2D buttonPos = Vector2D((position.getX() + texW / 2), (position.getY() + texH * 1.5));*/
+    Vector2D buttonPos = Vector2D(500, 500);
+    /*LOG("Vector 'cDT' size: %i", Engine::GetInstance().dialogueManager->currentDialogueTreesNPC.size());
+    int dialogue_Tree = Engine::GetInstance().dialogueManager->currentDialogueTreesNPC[ID - 1];*/
+    Engine::GetInstance().dialogueManager->ShowButtonStart(buttonPos, 0, ID);
+    Engine::GetInstance().dialogueManager->showingButtonStart = true;
 }
 
 void BaseCompanion::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 {
-	
+    if ((physB->ctype == ColliderType::PLAYER) && Engine::GetInstance().dialogueManager->showingButtonStart && !(Engine::GetInstance().dialogueManager->in_conversation))
+    {
+        Engine::GetInstance().dialogueManager->UnloadDialogueUI();
+        Engine::GetInstance().dialogueManager->in_conversation = false;
+        Engine::GetInstance().dialogueManager->showingButtonStart = false;
+    }
 }
 
 Vector2D BaseCompanion::GetPosition()

@@ -66,6 +66,9 @@ public:
 	Vector2D direction;
 
 	bool showingMenu = false;
+
+	bool WizardJoined;
+	bool CorneliusJoined;
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;

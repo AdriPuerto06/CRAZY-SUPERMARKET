@@ -224,6 +224,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
                     }
                     int HP;
+                    bool WizardJoined = false;
+                    bool CorneliusJoined = false;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
@@ -233,13 +235,23 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             HP = propertyNode.attribute("value").as_int();
                             LOG("player HP: %d", player->HP);
+                            /*player->HP = HP;*/
                         }
                         if (name == "magicPoints")
                         {
                             magicPoints = propertyNode.attribute("value").as_int(); //map has magicPoints
                             PendingChangesCheckAndSetter(EntityType::PLAYER, Component::MAGICPOINTS, 0, magicPoints, sceneID);
                         }
-                        
+                        if (name == "WizardJoined")
+                        {
+                            WizardJoined = propertyNode.attribute("value").as_bool();
+                            player->WizardJoined = WizardJoined;
+                        }
+                        if (name == "CorneliusJoined")
+                        {
+                            CorneliusJoined = propertyNode.attribute("value").as_bool();
+                            player->CorneliusJoined = CorneliusJoined;
+                        }
                     }
                 }
 
@@ -347,6 +359,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     int Companion_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
+                    bool joined = false;
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -363,7 +376,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
-
+                        if (name == "joined")
+                            joined = propertyNode.attribute("value").as_bool();
                     }
 
                     if (active)
@@ -379,7 +393,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         }
                         companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID);
                         companion->entity_ID = ID;
-                        LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f.", Companion_ID, ID, pos.getX(), pos.getY());
+                        LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f. Joined: %i", Companion_ID, ID, pos.getX(), pos.getY(), joined);
                         companion->Start();
                     }
                     else {
@@ -477,11 +491,10 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                             if (HP > 0) {
                                 propertyNode.attribute("value").set_value(player->HP);
                             }
-                        }
-                        else 
+                        } 
                         if (name == "magicPoints") { propertyNode.attribute("value").set_value(magicPoints); }
-
-                        
+                        if (name == "WizardJoined") { propertyNode.attribute("value").set_value(player->WizardJoined); }
+                        if (name == "CorneliusJoined") { propertyNode.attribute("value").set_value(player->CorneliusJoined); }
                     }
                 }
 
@@ -550,7 +563,9 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     std::shared_ptr<BaseEnemy> companion = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
                     if (companion) {
                         const char* texturePath = companion->texturePath;
-                        bool active = companion->active;
+                        bool active;
+                        if (std::strcmp(companion->name.c_str(), "Wizard")) { active = player->WizardJoined; }
+                        if (std::strcmp(companion->name.c_str(), "Cornelius")) { active = player->CorneliusJoined; }
                         /*int companion_ID = -1;*/
                         //get NPC data
                         for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");

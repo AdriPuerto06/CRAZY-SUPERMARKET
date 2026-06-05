@@ -5070,6 +5070,9 @@
  </objectgroup>
  <objectgroup id="6" name="Entities">
   <object id="23" name="Player" type="Player" x="814" y="278">
+   <properties>
+    <property name="magicPoints" type="int" value="50"/>
+   </properties>
    <point/>
   </object>
   <object id="24" name="Statue" type="NPC" x="800" y="1216">
