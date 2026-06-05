@@ -151,3 +151,7 @@ Vector2D Input::GetMouseMotion()
 {
 	return Vector2D((float)mouseMotionX, (float)mouseMotionY);
 }
+
+SDL_Gamepad* Input::GetGamepad() {
+	return gamepad; // guardado cuando conectas mando
+}

@@ -76,5 +76,8 @@ private:
 	int autosaveCooldown = 120;
 
 	bool godMode = false;
+
+	float dirX;
+	float dirY;
 	
 };

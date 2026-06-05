@@ -208,6 +208,24 @@ void Player::Move() {
 		//anims.SetCurrent("move");
 	}
 
+	SDL_Gamepad* pad = Engine::GetInstance().input->GetGamepad(); // asumo que tienes algo así
+
+	if (pad) {
+		// Left stick
+		Sint16 lx = SDL_GetGamepadAxis(pad, SDL_GAMEPAD_AXIS_LEFTX);
+		Sint16 ly = SDL_GetGamepadAxis(pad, SDL_GAMEPAD_AXIS_LEFTY);
+
+		// D-Pad (digital movement)
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_LEFT))
+			velocity.x = -speed * inc;
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_RIGHT))
+			velocity.x = speed * inc;
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_UP))
+			velocity.y = -speed * inc;
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_DOWN))
+			velocity.y = speed * inc;
+	}
+
 	b2Vec2 playerVel = b2Body_GetLinearVelocity(pbody->body);
 }
 

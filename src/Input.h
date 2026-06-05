@@ -63,6 +63,8 @@ public:
 	Vector2D GetMousePosition();
 	Vector2D GetMouseMotion();
 
+	SDL_Gamepad* GetGamepad();
+
 private:
 	bool windowEvents[WE_COUNT];
 	KeyState* keyboard;
@@ -71,4 +73,6 @@ private:
 	int mouseMotionY;
 	int mouseX;
 	int mouseY;
+
+	SDL_Gamepad* gamepad;
 };
