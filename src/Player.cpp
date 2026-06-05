@@ -189,24 +189,20 @@ void Player::Move() {
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed * inc;
-		/*direction.setX(-1.f);*/
 		//anims.SetCurrent("move");
 	}
 	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) { direction.setX(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed * inc;
-		/*direction.setX(1.f);*/
 		//anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		velocity.y = -speed * inc;
-		/*direction.setY(1.f);*/
 		//anims.SetCurrent("move");
 	}
 	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) { direction.setY(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		velocity.y = speed * inc;
-		/*direction.setY(-1.f);*/
 		//anims.SetCurrent("move");
 	}
 
