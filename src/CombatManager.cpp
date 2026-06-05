@@ -259,6 +259,12 @@ bool CombatManager::Update(float dt)
 			waitingEffect = true;
 		}
 	}
+
+	//Debug
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) {
+		LOG("Players size: %i", combatData->players.size());
+	}
+
 	return true;
 }
 
@@ -1004,6 +1010,9 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 				std::string enemies_id_str = fight_tree_node.attribute("enemies_id").as_string();
 				players_id = GetIDs(players_id_str);
 				enemies_id = GetIDs(enemies_id_str);
+
+				if (isWizardActive) { players_id.push_back(2); }
+				if (isCorneliusActive) { players_id.push_back(3); }
 				break;
 			}
 		}
@@ -1043,9 +1052,6 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 
 			combatData->players.push_back(player);
 		}
-
- 		if (isWizardActive) { players_id.push_back(2); }
-		if (isCorneliusActive) { players_id.push_back(3); }
 
 		// enemies
 		for (pugi::xml_node combat_tree_node = combatFileXML.child("combat").child("enemy");
