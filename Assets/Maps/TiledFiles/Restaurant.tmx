@@ -3712,6 +3712,8 @@
   </object>
   <object id="4" name="Player" type="Player" x="128" y="1120">
    <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
     <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>

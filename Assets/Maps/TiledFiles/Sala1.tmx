@@ -3270,6 +3270,8 @@
  <objectgroup id="5" name="Entities">
   <object id="32" name="Player" type="Player" x="928" y="1184">
    <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
     <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>

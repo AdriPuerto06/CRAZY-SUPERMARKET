@@ -13278,6 +13278,11 @@
   <object id="47" x="1952" y="2208" width="96" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="Entities">
+  <properties>
+   <property name="CorneliusJoined" type="bool" value="false"/>
+   <property name="WizardJoined" type="bool" value="false"/>
+   <property name="magicPoints" type="int" value="50"/>
+  </properties>
   <object id="48" name="Player" type="Player" x="2132.06" y="569.333">
    <properties>
     <property name="magicPoints" type="int" value="50"/>
