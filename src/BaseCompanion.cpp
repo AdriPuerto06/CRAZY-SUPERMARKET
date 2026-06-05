@@ -52,7 +52,7 @@ bool BaseCompanion::Start() {
 
 bool BaseCompanion::Update(float dt)
 {
-    if (Engine::GetInstance().scene->GetPlayer()->WizardJoined && this->name == "Wizard" || Engine::GetInstance().scene->GetPlayer()->CorneliusJoined && this->name == "Cornelius")
+    if (Engine::GetInstance().scene->GetPlayer()->WizardJoined && std::strcmp(this->name.c_str(), "Wizard")==0 || Engine::GetInstance().scene->GetPlayer()->CorneliusJoined && std::strcmp(this->name.c_str(), "Cornelius")==0)
     {
         PerformPathfinding();
         Move();
