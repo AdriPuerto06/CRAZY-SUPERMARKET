@@ -532,6 +532,10 @@
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
+	
+	
+	
+	
 	<!--Bosses-->
 	<enemy id ="101" HP="50">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
@@ -543,7 +547,7 @@
 	<enemy id ="102" HP="50">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
-		<attack name ="Attack3" dmg="1" effect="buff"></attack>
+		<attack name ="Attack3" dmg="1" effect="shield"></attack>
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
 	</enemy>
 
@@ -552,6 +556,14 @@
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="buff"></attack>
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
+	</enemy>
+
+	<!--Final Boss-->
+	<enemy id ="104" HP="75">
+		<attack name="Attack1" dmg ="5" effect="none"></attack>
+		<attack name="Attack2" dmg ="4" effect="none"></attack>
+		<attack name ="Attack3" dmg="6" effect="buff"></attack>
+		<attack name="Attack4" dmg="2" effect="poison"></attack>
 	</enemy>
 	
 </combat>

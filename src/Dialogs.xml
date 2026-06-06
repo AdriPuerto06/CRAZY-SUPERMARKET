@@ -226,8 +226,31 @@
 	<!--Wizard-->
 	<dialogue_tree ID="0" NPC="101">
 
-		<node id ="0" text="From now on, I will be by your side. Lets end this crap!">
+		<node id ="0" text="From now on, I will be by your side. I'm good in combat! Lets end this crap!">
 			<choice id ="1" option="Lets go!" next_node ="-1" reward="2" reward_value="Wizard"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="102">
+
+		<node id ="0" text="From now on, I will be by your side. I have powerful habilities! Lets end this nonsense!">
+			<choice id ="1" option="Lets go!" next_node ="-1" reward="2" reward_value="Cornelius"/>
+		</node>
+
+	</dialogue_tree>
+
+<!--FrontRoom (previous to the final boss)-->
+
+	<!--Riddle-->
+	<dialogue_tree ID="0" NPC="12">
+
+		<node id ="0" text="text1">
+			<choice id ="1" option="a1" next_node ="1"/>
+		</node>
+
+		<node id ="1" text="Get out.">
+			<choice id ="1" option="Ok." next_node ="-1" reward="7" reward_value="LEVEL11"/>
 		</node>
 
 	</dialogue_tree>

@@ -5057,15 +5057,17 @@
  <objectgroup id="4" name="Entities">
   <object id="15" name="Player" type="Player" x="800" y="192">
    <properties>
-    <property name="magicPoints" type="int" value="500"/>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
+    <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
   </object>
-  <object id="39" name="BOSS1" type="Enemy" x="794" y="1430">
+  <object id="39" name="FinalBoss" type="Enemy" x="794" y="1430">
    <properties>
-    <property name="Enemy_ID" type="int" value="101"/>
+    <property name="Enemy_ID" type="int" value="104"/>
     <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="101"/>
+    <property name="fight_ID" type="int" value="104"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
