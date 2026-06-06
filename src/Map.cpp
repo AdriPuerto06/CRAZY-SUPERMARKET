@@ -251,6 +251,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "CorneliusJoined")
                         {
                             CorneliusJoined = propertyNode.attribute("value").as_bool();
+                            PendingChangesCheckAndSetter(EntityType::PLAYER, Component::CORNELIUSJOINED, 0, CorneliusJoined, sceneID);
                             player->CorneliusJoined = CorneliusJoined;
                         }
                     }
