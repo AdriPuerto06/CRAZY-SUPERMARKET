@@ -30182,7 +30182,7 @@
    </properties>
    <point/>
   </object>
-  <object id="81" name="Player" type="Player" x="2419" y="498">
+  <object id="81" name="Player" type="Player" x="2400" y="512">
    <properties>
     <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>
