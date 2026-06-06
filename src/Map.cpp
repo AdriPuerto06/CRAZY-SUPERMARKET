@@ -566,7 +566,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                 if (entityType == "Companion")
                 {
                     /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
-                    std::shared_ptr<BaseEnemy> companion = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
+                    std::shared_ptr<BaseCompanion> companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
                     if (companion) {
                         const char* texturePath = companion->texturePath;
                         bool active;
