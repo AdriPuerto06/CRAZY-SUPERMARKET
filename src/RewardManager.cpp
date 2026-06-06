@@ -31,14 +31,16 @@ int GetNumFromString(std::string str) {
 SceneID GetSceneID(const char* scene)
 {
 	std::string s = scene;
-	int i = 0;
-	while (!IsANumber(s[i]) && s.size() > i)
+
+	size_t i = 0;
+	while (i < s.size() && !IsANumber(s[i]))
 	{
-		i++;
-		if (s.size() < i) break;
+		++i;
 	}
-	s.erase(0, i-1);
-	return (SceneID)(GetNumFromString(s) - 1);
+
+	s.erase(0, i);
+
+	return static_cast<SceneID>(GetNumFromString(s) - 1);
 }
 
 RewardManager::RewardManager() : Module()
