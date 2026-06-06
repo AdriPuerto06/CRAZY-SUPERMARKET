@@ -1422,7 +1422,7 @@ void Scene::LoadLevel11() {
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL11);
-	Engine::GetInstance().eventManager->GetEvents();
+	/*Engine::GetInstance().eventManager->GetEvents();*/
 }
 
 void Scene::UpdateLevel11(float dt) {
