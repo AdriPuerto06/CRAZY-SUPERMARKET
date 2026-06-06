@@ -174,10 +174,10 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		LOG("Map name: %s", Engine::GetInstance().map->mapFileName.c_str());
 		Engine::GetInstance().scene->GetPlayer()->WizardJoined = true;
-	}
+	}*/
 
 	return true;
 }
