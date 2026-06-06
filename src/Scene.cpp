@@ -977,16 +977,6 @@ void Scene::UpdateLevel2(float dt) {
 		}
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
-		Engine::GetInstance().entityManager->CleanUp();
-	}
-
 	if (player && !player->pendingMapLoad.empty())
 	{
 		std::string target = player->pendingMapLoad;
@@ -1024,12 +1014,6 @@ void Scene::LoadLevel3() {
 }
 
 void Scene::UpdateLevel3(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
 	if (player && !player->pendingMapLoad.empty())
 	{
 		std::string target = player->pendingMapLoad;
@@ -1069,15 +1053,6 @@ void Scene::LoadLevel4() {
 }
 
 void Scene::UpdateLevel4(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1120,15 +1095,6 @@ void Scene::LoadLevel5() {
 }
 
 void Scene::UpdateLevel5(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1171,15 +1137,6 @@ void Scene::LoadLevel6() {
 }
 
 void Scene::UpdateLevel6(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1222,15 +1179,6 @@ void Scene::LoadLevel7() {
 }
 
 void Scene::UpdateLevel7(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1273,15 +1221,6 @@ void Scene::LoadLevel8() {
 }
 
 void Scene::UpdateLevel8(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1324,15 +1263,6 @@ void Scene::LoadLevel9() {
 }
 
 void Scene::UpdateLevel9(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1375,15 +1305,6 @@ void Scene::LoadLevel10() {
 }
 
 void Scene::UpdateLevel10(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1426,15 +1347,6 @@ void Scene::LoadLevel11() {
 }
 
 void Scene::UpdateLevel11(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{

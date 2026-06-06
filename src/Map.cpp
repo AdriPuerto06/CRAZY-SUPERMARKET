@@ -565,31 +565,31 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                 if (entityType == "Companion")
                 {
-                    /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
-                    std::shared_ptr<BaseCompanion> companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
-                    if (companion) {
-                        const char* texturePath = companion->texturePath;
-                        bool active;
-                        if (std::strcmp(companion->name.c_str(), "Wizard") == 0) { active = player->WizardJoined; }
-                        if (std::strcmp(companion->name.c_str(), "Cornelius") == 0) { active = player->CorneliusJoined; }
-                        /*int companion_ID = -1;*/
-                        //get NPC data
-                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
-                            propertyNode;
-                            propertyNode = propertyNode.next_sibling("property"))
-                        {
-                            std::string name = propertyNode.attribute("name").as_string();
+                    ///*int ENEMY_ID = objectNode.attribute("id").as_int();*/
+                    //std::shared_ptr<BaseCompanion> companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
+                    //if (companion) {
+                    //    /*const char* texturePath = companion->texturePath;
+                    //    bool active = true;*/
+                    //    /*if (companion->Dialogue_ID == 101) { active = player->WizardJoined; }
+                    //    if (companion->Dialogue_ID == 102) { active = player->CorneliusJoined; }*/
+                    //    /*int companion_ID = -1;*/
+                    //    //get NPC data
+                    //    //for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                    //    //    propertyNode;
+                    //    //    propertyNode = propertyNode.next_sibling("property"))
+                    //    //{
+                    //    //    std::string name = propertyNode.attribute("name").as_string();
 
-                            /*if (name == "ENEMY_ID")
-                                propertyNode.attribute("value").as_int();*/
+                    //    //    /*if (name == "ENEMY_ID")
+                    //    //        propertyNode.attribute("value").as_int();*/
 
-                            if (name == "active")
-                                propertyNode.attribute("value").set_value(active);
+                    //    //    if (name == "active")
+                    //    //        propertyNode.attribute("value").set_value(active);
 
-                            if (name == "texturePath")
-                                propertyNode.attribute("value").set_value(texturePath);
-                        }
-                    }
+                    //    //    if (name == "texturePath")
+                    //    //        propertyNode.attribute("value").set_value(texturePath);
+                    //    //}
+                    //}
                 }
 
 
@@ -1112,23 +1112,11 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
             }
         }
 
-        if (change.entityType == EntityType::PLAYER)
+        if (change.entityType == EntityType::PLAYER && change.type == component)
         {
-            switch (component)
-            {
-            case Component::MAGICPOINTS:
-                current_value = change.new_value;
-                break;
-
-            case Component::WIZARDJOINED:
-                current_value = change.new_value;
-                break;
-
-            case Component::CORNELIUSJOINED:
-                current_value = change.new_value;
-                break;
-            
-            }
+            current_value = change.new_value;
+            return;
         }
+
     }
 }
