@@ -5022,11 +5022,6 @@
     <property name="targetMap" value="ClothesLobby.tmx"/>
    </properties>
   </object>
-  <object id="43" x="1056" y="1568" width="192" height="128">
-   <properties>
-    <property name="targetMap" value="ToyDungeon.tmx"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="6" name="Checkpoints">
   <object id="44" x="416" y="448" width="96" height="32"/>
