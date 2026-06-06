@@ -71,4 +71,6 @@ private:
     float axisRX = 0.0f;
     float axisRY = 0.0f;
     bool buttonSouth = false;
+    bool lastButtonSouth = false;
+
 };

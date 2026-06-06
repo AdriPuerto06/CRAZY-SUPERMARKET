@@ -32,6 +32,8 @@ bool Input::Awake()
         return false;
     }
 
+    SDL_InitSubSystem(SDL_INIT_GAMEPAD);
+
     return true;
 }
 
@@ -149,7 +151,8 @@ bool Input::PreUpdate()
         }
     }
 
-    // --- 3) SIMULAR CLICK IZQUIERDO CON BOTÓN A/X ---
+    // --- SIMULAR CLICK IZQUIERDO SOLO CUANDO CAMBIA EL ESTADO ---
+    if (buttonSouth != lastButtonSouth)
     {
         SDL_Event e;
 
@@ -163,7 +166,10 @@ bool Input::PreUpdate()
 
         SDL_GetMouseState(&e.button.x, &e.button.y);
         SDL_PushEvent(&e);
+
+        lastButtonSouth = buttonSouth;
     }
+
 
     return true;
 }
