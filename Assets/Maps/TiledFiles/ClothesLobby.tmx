@@ -2189,7 +2189,7 @@
   <object id="30" x="416" y="64" width="192" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="Entities">
-  <object id="31" name="Player" type="Player" x="512" y="128">
+  <object id="31" name="Player" type="Player" x="847" y="816">
    <properties>
     <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>

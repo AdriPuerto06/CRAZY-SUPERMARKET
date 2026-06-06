@@ -2667,6 +2667,7 @@
    <properties>
     <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>
+    <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
   </object>

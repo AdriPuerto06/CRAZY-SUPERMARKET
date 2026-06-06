@@ -5037,7 +5037,7 @@
   <object id="49" x="1056" y="1696" width="192" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Entities">
-  <object id="50" name="Player" type="Player" x="448" y="576">
+  <object id="50" name="Player" type="Player" x="480" y="544">
    <properties>
     <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>
