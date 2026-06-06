@@ -52,15 +52,6 @@ bool BaseCompanion::Start() {
 
 bool BaseCompanion::Update(float dt)
 {
-    bool joined = false;
-    if (Engine::GetInstance().scene->GetPlayer()) joined = Engine::GetInstance().scene->GetPlayer()->WizardJoined;
-    bool isWizard = this->Dialogue_ID == 101;
-    bool isCornelius = this->Dialogue_ID == 102;
-    if (joined and (isWizard or isCornelius))
-    {
-        PerformPathfinding();
-        Move();
-    }
     Draw(dt);
 
     return true;

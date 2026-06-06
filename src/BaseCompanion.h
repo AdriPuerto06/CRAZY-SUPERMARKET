@@ -45,7 +45,7 @@ public:
 	const char* texturePath;
 
 	b2Vec2 velocity;
-	float speed = 2.0f;
+	float speed = 4.0f;
 	std::shared_ptr<Pathfinding> pathfinding;
 	float separationRange = 5.0f;
 
