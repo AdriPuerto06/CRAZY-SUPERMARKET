@@ -3668,7 +3668,7 @@
   </object>
   <object id="41" x="224" y="352" width="64" height="96">
    <properties>
-    <property name="targetMap" value="Sala1.tmx"/>
+    <property name="targetMap" value="Backroom.tmx"/>
    </properties>
   </object>
   <object id="49" x="1152" y="352" width="64" height="96">

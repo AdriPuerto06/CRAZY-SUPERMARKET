@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="25">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="26">
  <tileset firstgid="1" name="victorian-streets" tilewidth="32" tileheight="32" tilecount="1536" columns="16">
   <image source="../Tilesets/victorian-streets.png" width="512" height="3072"/>
  </tileset>
@@ -5062,6 +5062,15 @@
     <property name="targetMap" value="FinalDungeon.tmx"/>
    </properties>
   </object>
+  <object id="25" name="Cornelius" type="Companion" x="800" y="640">
+   <properties>
+    <property name="Companion_ID" type="int" value="2"/>
+    <property name="Dialogue_ID" type="int" value="102"/>
+    <property name="active" type="bool" value="true"/>
+    <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="5" name="Checkpoints">
   <object id="20" x="160" y="1440" width="64" height="32"/>
@@ -5069,7 +5078,7 @@
   <object id="22" x="800" y="160" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="Entities">
-  <object id="23" name="Player" type="Player" x="814" y="278">
+  <object id="23" name="Player" type="Player" x="192" y="1504">
    <properties>
     <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>

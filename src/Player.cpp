@@ -208,7 +208,7 @@ void Player::Move() {
 		//anims.SetCurrent("move");
 	}
 
-	SDL_Gamepad* pad = Engine::GetInstance().input->GetGamepad(); // asumo que tienes algo así
+	SDL_Gamepad* pad = Engine::GetInstance().input->GetGamepad();
 
 	if (pad) {
 		// Left stick
