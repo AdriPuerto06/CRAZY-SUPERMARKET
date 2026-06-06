@@ -5030,12 +5030,12 @@
   </properties>
   <object id="1" x="512" y="64" width="278.667" height="96"/>
   <object id="2" x="832" y="64" width="288" height="96"/>
-  <object id="3" x="800" y="64" width="32" height="32"/>
+  <object id="3" x="800" y="64" width="32" height="96"/>
   <object id="4" x="1120" y="64" width="64" height="416"/>
   <object id="5" x="1184" y="448" width="416" height="32"/>
   <object id="6" x="1536" y="480" width="64" height="1088"/>
   <object id="7" x="896" y="1536" width="640" height="64"/>
-  <object id="8" x="0" y="1536" width="736" height="64"/>
+  <object id="8" x="0" y="1536" width="898.667" height="64"/>
   <object id="9" x="0" y="0" width="64" height="1536"/>
   <object id="10" x="224" y="1248" width="64" height="192"/>
   <object id="11" x="160" y="1280" width="64" height="64"/>
@@ -5046,23 +5046,13 @@
   <object id="16" x="64" y="64" width="448" height="416"/>
  </objectgroup>
  <objectgroup id="4" name="Teleport">
-  <object id="17" x="800" y="96" width="32" height="96.3333">
-   <properties>
-    <property name="targetMap" value="ToyDungeon.tmx"/>
-   </properties>
-  </object>
   <object id="18" x="160" y="1344" width="64" height="96">
    <properties>
     <property name="targetMap" value="Backroom.tmx"/>
     <property name="unlock" type="bool" value="false"/>
    </properties>
   </object>
-  <object id="19" x="736" y="1536" width="160" height="64">
-   <properties>
-    <property name="targetMap" value="FinalDungeon.tmx"/>
-   </properties>
-  </object>
-  <object id="25" name="Cornelius" type="Companion" x="800" y="640">
+  <object id="25" name="Cornelius" type="Companion" x="480" y="1472">
    <properties>
     <property name="Companion_ID" type="int" value="2"/>
     <property name="Dialogue_ID" type="int" value="102"/>
@@ -5074,8 +5064,6 @@
  </objectgroup>
  <objectgroup id="5" name="Checkpoints">
   <object id="20" x="160" y="1440" width="64" height="32"/>
-  <object id="21" x="736" y="1504" width="160" height="32"/>
-  <object id="22" x="800" y="160" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="Entities">
   <object id="23" name="Player" type="Player" x="192" y="1504">
