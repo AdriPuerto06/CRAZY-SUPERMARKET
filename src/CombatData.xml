@@ -56,7 +56,7 @@
 		<attack_stats name="Delightful bomb" magicPoints="4" dmg="8" effect="none" unlocked="true"></attack_stats>
 		<attack_stats name="Reminiscence" magicPoints="3" dmg="-10" effect="heal" unlocked="true"></attack_stats>
 		<attack_stats name="Confusing perfume" magicPoints="2" dmg="0" effect="confused" unlocked="true"></attack_stats>
-		<attack_stats name="Sacrifice" magicPoints="5" dmg="999" effect="selfKO" unlocked="true"></attack_stats>
+		<attack_stats name="Poisoned heal" magicPoints="0" dmg="-5" effect="poisoned" unlocked="true"></attack_stats>
 
 	</player>
 	<!--<player id="4" HP="25">
