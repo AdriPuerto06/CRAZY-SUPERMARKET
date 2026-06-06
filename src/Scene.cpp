@@ -807,7 +807,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 13:
 		Engine::GetInstance().combatManager->ChangePlayer();
-		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);
+		/*LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);*/
 		break;
 	case 14:
 		LOG("Scape clicked");

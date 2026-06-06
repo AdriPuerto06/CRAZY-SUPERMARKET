@@ -32,15 +32,11 @@ SceneID GetSceneID(const char* scene)
 {
 	std::string s = scene;
 
-	size_t i = 0;
-	while (i < s.size() && !IsANumber(s[i]))
-	{
-		++i;
-	}
+	size_t pos = s.find_first_of("0123456789");
+	if (pos == std::string::npos)
+		return SceneID(11); // or handle error
 
-	s.erase(0, i);
-
-	return static_cast<SceneID>(GetNumFromString(s) - 1);
+	return static_cast<SceneID>(std::stoi(s.substr(pos)) - 1);
 }
 
 RewardManager::RewardManager() : Module()
