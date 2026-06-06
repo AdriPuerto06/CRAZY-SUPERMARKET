@@ -570,8 +570,8 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     if (companion) {
                         const char* texturePath = companion->texturePath;
                         bool active;
-                        if (std::strcmp(companion->name.c_str(), "Wizard")) { active = player->WizardJoined; }
-                        if (std::strcmp(companion->name.c_str(), "Cornelius")) { active = player->CorneliusJoined; }
+                        if (std::strcmp(companion->name.c_str(), "Wizard") == 0) { active = player->WizardJoined; }
+                        if (std::strcmp(companion->name.c_str(), "Cornelius") == 0) { active = player->CorneliusJoined; }
                         /*int companion_ID = -1;*/
                         //get NPC data
                         for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
