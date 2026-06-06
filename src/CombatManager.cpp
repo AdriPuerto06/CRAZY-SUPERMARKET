@@ -992,7 +992,8 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 		combatData->Clear();
 
 		combatData->fight_ID = fight_ID;
-		combatState->magicPoints = Engine::GetInstance().map->magicPoints;
+		/*combatState->magicPoints = Engine::GetInstance().map->magicPoints;*/
+		combatState->magicPoints = 50;
 
 		std::vector<int> players_id;
 		std::vector<int> enemies_id;
