@@ -1230,6 +1230,10 @@ void CombatManager::CheckAlive()
 		enemies_to_destroy.clear();
 		ResetCombatState();
 
+		if (combatData->fight_ID == 104) //final boss
+		{
+			Engine::GetInstance().scene->ChangeScene(SceneID::WIN);
+		}
 		Engine::GetInstance().scene->ChangeScene(goBack);
 		CanCombatQuestBeCompleted(combatData->fight_ID, true);
 	}
