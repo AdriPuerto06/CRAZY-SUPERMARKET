@@ -1008,7 +1008,7 @@ void Scene::UnloadLevel2() {
 // *********************************************
 
 void Scene::LoadLevel3() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_backrooms, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Backroom.tmx");
@@ -1130,7 +1130,7 @@ void Scene::UnloadLevel5() {
 
 void Scene::LoadLevel6() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_lil_clot, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ClothesLobby.tmx");
@@ -1172,7 +1172,7 @@ void Scene::UnloadLevel6() {
 
 void Scene::LoadLevel7() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_clothes, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ClotheDungeon.tmx");
@@ -1340,7 +1340,7 @@ void Scene::UnloadLevel10() {
 
 void Scene::LoadLevel11() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_boss, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Cursed_Supermarket.tmx");
