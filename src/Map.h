@@ -240,6 +240,7 @@ private:
     MapData mapData;
 	//L15 TODO 2: make the mapFileXML an attribute of the Map class
     pugi::xml_document mapFileXML;
+    pugi::xml_document saveFileXML;
     //
 	std::list<PhysBody*> colliderList;
 

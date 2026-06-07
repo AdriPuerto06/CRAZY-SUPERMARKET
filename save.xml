@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Save>
+	<Scene>0</Scene>
+
+	<Player>
+		<pos x="832,00" y="1216,00"/>
+	</Player>
+
+	<Companions>
+		<Wizard joined="false"/>
+		<Joined joined="false"/>
+	</Companions>
+
+	<Quests>
+		<Completed id="1"/>
+	</Quests>
+
+	<Events>
+		<activated id="1"/>
+	</Events>
+
+	<Items>
+		<activated id="1"/>
+	</Items>
+
+	<Dialogs>
+		
+	</Dialogs>
+	<!--<Flags>
+		<Set name="HasKey"/>
+		<Set name="BossDefeated"/>
+	</Flags>-->
+</Save>
+
