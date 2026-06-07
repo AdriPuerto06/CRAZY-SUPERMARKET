@@ -248,8 +248,8 @@ bool Scene::PostUpdate()
 	{
 		gameScene = currentScene;
 		Engine::GetInstance().map->SaveEntities(player, currentScene);
-		ChangeScene(SceneID::PAUSE);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::PAUSE);
 	}
 
 
