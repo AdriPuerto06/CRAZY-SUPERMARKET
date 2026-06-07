@@ -245,12 +245,21 @@
 	<!--Riddle-->
 	<dialogue_tree ID="0" NPC="12">
 
-		<node id ="0" text="text1">
-			<choice id ="1" option="a1" next_node ="1"/>
+		<node id ="0" text="Psychotic Statue:&#10;BEEP... BEEP... UNEXPECTED ITEM IN THE BAGGING AREA!&#10;You skipped the queue of destiny, sinner of aisle 4. You punched her on the wrong day... and now her blood is lava and this market is HELL!&#10;&#10;To open the Final Warehouse, answer my arithmetic of guilt:&#10;I have a hundred eyes but cannot see. I hold the threads of time you decided to flee. I devour the days of the week, but if you touch it on the wrong day, the granny looses all the slay. What am I?">
+			<choice id ="1" option="A broken security camera" next_node ="1"/>
+			<choice id ="2" option="The calendar" next_node ="2"/>
 		</node>
 
-		<node id ="1" text="Get out.">
-			<choice id ="1" option="Ok." next_node ="-1" reward="7" reward_value="LEVEL11"/>
+		<node id ="1" text="Psychotic Statue:&#10;WRONG! BARCODE NOT RECOGNIZED! ERROR! ERROR!&#10;Think bloody harder! Your sins are stacking up like unpaid receipts! Let's try again...">
+			<choice id ="1" option="Ugh, fine, repeat the question..." next_node ="0"/>
+		</node>
+
+		<node id ="2" text="Psychotic Statue:&#10;CORRECT! The Calendar! The holy Tuesday you brutally ignored!&#10;She is waiting for you on the other side... knitting your shroud with plastic bags. GO MEET YOUR DOOM!">
+			<choice id ="1" option="Let's finish this. (Enter Boss Arena)" next_node ="3"/>
+		</node>
+
+		<node id ="3" text="Go!">
+			<choice id ="1" option="Yes!" next_node ="-1" reward="7" reward_value="LEVEL11"/>
 		</node>
 
 	</dialogue_tree>

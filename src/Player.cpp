@@ -269,19 +269,21 @@ void Player::Draw(float dt) {
 
 void Player:: ShowMenu() {
 	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL4;
-	if(can_show_menu)
-	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
-		Engine::GetInstance().itemManager->ShowInventoryOptions();
-		Engine::GetInstance().itemManager->GetPlayerStats();
-		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
-		Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
-		showingMenu = true;
+	if (can_show_menu)
+	{
+		bool inventoryPressed = Engine::GetInstance().input->GetButton(SDL_GAMEPAD_BUTTON_NORTH);
+		if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || inventoryPressed) && !showingMenu) {
+			Engine::GetInstance().itemManager->ShowInventoryOptions();
+			Engine::GetInstance().itemManager->GetPlayerStats();
+			Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+			Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
+			showingMenu = true;
+		}
+		else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || inventoryPressed) && showingMenu) {
+			Engine::GetInstance().uiManager->CleanUp();
+			showingMenu = false;
+		}
 	}
-	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
-		Engine::GetInstance().uiManager->CleanUp();
-		showingMenu = false;
-	}
-
 }
 
 bool Player::CleanUp()

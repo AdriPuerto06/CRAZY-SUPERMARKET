@@ -806,7 +806,8 @@ void CombatManager::HandleTargetSelection()
 	}
 
 	// ENTER
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	bool confirmAttack = Engine::GetInstance().input->GetButton(SDL_GAMEPAD_BUTTON_WEST);
+	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) || confirmAttack)
 	{
 		int idx = combatState->enemy_index_targeted;
 
