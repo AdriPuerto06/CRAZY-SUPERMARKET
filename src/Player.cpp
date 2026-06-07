@@ -124,9 +124,9 @@ void Player::CheckDialogueAndCombatLogic()
 
 void Player::Teleport() {
 	// Teleport the player to a specific position for testing purposes
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_T) == KEY_DOWN) {
 		pbody->SetPosition(96, 96);
-	}
+	}*/
 
 	if (teleportCooldown > 0) {
 		teleportCooldown--;
@@ -143,6 +143,7 @@ void Player::Teleport() {
 			y >= zone.y && y <= zone.y + zone.height)
 		{
 			LOG("TELEPORT TRIGGERED to %s", zone.targetMap.c_str());
+			Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 			pendingMapLoad = zone.targetMap;
 			teleportCooldown = 120;
 			return;
@@ -189,25 +190,40 @@ void Player::Move() {
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed * inc;
-		/*direction.setX(-1.f);*/
+		LOG("WizardJoined: %i", WizardJoined);
 		//anims.SetCurrent("move");
 	}
 	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) { direction.setX(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed * inc;
-		/*direction.setX(1.f);*/
 		//anims.SetCurrent("move");
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		velocity.y = -speed * inc;
-		/*direction.setY(1.f);*/
 		//anims.SetCurrent("move");
 	}
 	/*else if (!Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) { direction.setY(0); }*/
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		velocity.y = speed * inc;
-		/*direction.setY(-1.f);*/
 		//anims.SetCurrent("move");
+	}
+
+	SDL_Gamepad* pad = Engine::GetInstance().input->GetGamepad();
+
+	if (pad) {
+		// Left stick
+		Sint16 lx = SDL_GetGamepadAxis(pad, SDL_GAMEPAD_AXIS_LEFTX);
+		Sint16 ly = SDL_GetGamepadAxis(pad, SDL_GAMEPAD_AXIS_LEFTY);
+
+		// D-Pad (digital movement)
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_LEFT))
+			velocity.x = -speed * inc;
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_RIGHT))
+			velocity.x = speed * inc;
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_UP))
+			velocity.y = -speed * inc;
+		if (SDL_GetGamepadButton(pad, SDL_GAMEPAD_BUTTON_DPAD_DOWN))
+			velocity.y = speed * inc;
 	}
 
 	b2Vec2 playerVel = b2Body_GetLinearVelocity(pbody->body);

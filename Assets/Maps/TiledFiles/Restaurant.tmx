@@ -3668,7 +3668,7 @@
   </object>
   <object id="41" x="224" y="352" width="64" height="96">
    <properties>
-    <property name="targetMap" value="Sala1.tmx"/>
+    <property name="targetMap" value="Backroom.tmx"/>
    </properties>
   </object>
   <object id="49" x="1152" y="352" width="64" height="96">
@@ -3686,7 +3686,7 @@
   <object id="1" name="Enemy2" type="Enemy" x="429.333" y="1037.33">
    <properties>
     <property name="Enemy_ID" type="int" value="2"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="2"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
@@ -3695,7 +3695,7 @@
   <object id="2" name="Enemy3" type="Enemy" x="765.333" y="730.667">
    <properties>
     <property name="Enemy_ID" type="int" value="3"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="2"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
@@ -3704,14 +3704,16 @@
   <object id="3" name="Enemy4" type="Enemy" x="1213.33" y="1085.33">
    <properties>
     <property name="Enemy_ID" type="int" value="4"/>
-    <property name="active" type="bool" value="false"/>
+    <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="2"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>
   </object>
-  <object id="4" name="Player" type="Player" x="96" y="1120">
+  <object id="4" name="Player" type="Player" x="128" y="1120">
    <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
     <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>

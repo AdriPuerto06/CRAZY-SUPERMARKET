@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="81" height="61" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="51">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="81" height="61" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="52">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
@@ -5003,7 +5003,7 @@
   </object>
   <object id="39" x="1056" y="736" width="192" height="128">
    <properties>
-    <property name="targetMap" value="RestaurantLobby.tmx"/>
+    <property name="targetMap" value="Restaurant.tmx"/>
    </properties>
   </object>
   <object id="40" x="1664" y="736" width="96" height="128">
@@ -5022,11 +5022,6 @@
     <property name="targetMap" value="ClothesLobby.tmx"/>
    </properties>
   </object>
-  <object id="43" x="1056" y="1568" width="192" height="128">
-   <properties>
-    <property name="targetMap" value="ToyDungeon.tmx"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="6" name="Checkpoints">
   <object id="44" x="416" y="448" width="96" height="32"/>
@@ -5037,7 +5032,12 @@
   <object id="49" x="1056" y="1696" width="192" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Entities">
-  <object id="50" name="Player" type="Player" x="448" y="512">
+  <object id="50" name="Player" type="Player" x="448" y="576">
+   <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
+    <property name="magicPoints" type="int" value="50"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

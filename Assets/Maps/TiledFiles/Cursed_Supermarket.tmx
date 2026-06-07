@@ -5028,7 +5028,7 @@
    <property name="Collision" type="bool" value="true"/>
    <property name="Draw" type="bool" value="false"/>
   </properties>
-  <object id="1" x="0" y="0" width="704" height="64"/>
+  <object id="1" x="0" y="0" width="898.477" height="64"/>
   <object id="2" x="1536" y="64" width="64" height="1536"/>
   <object id="3" x="896" y="1536" width="640" height="64"/>
   <object id="4" x="64" y="1536" width="640" height="64"/>
@@ -5047,25 +5047,22 @@
   <object id="38" x="1248" y="1248" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="Teleport">
-  <object id="33" x="704" y="0" width="192" height="64">
-   <properties>
-    <property name="targetMap" value="FinalDungeon.tmx"/>
-   </properties>
-  </object>
   <object id="34" x="704" y="1536" width="192" height="64"/>
  </objectgroup>
  <objectgroup id="4" name="Entities">
-  <object id="15" name="Player" type="Player" x="800" y="192">
+  <object id="15" name="Player" type="Player" x="800" y="256">
    <properties>
-    <property name="magicPoints" type="int" value="500"/>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
+    <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
   </object>
-  <object id="39" name="BOSS1" type="Enemy" x="794" y="1430">
+  <object id="39" name="FinalBoss" type="Enemy" x="794" y="1430">
    <properties>
-    <property name="Enemy_ID" type="int" value="101"/>
+    <property name="Enemy_ID" type="int" value="104"/>
     <property name="active" type="bool" value="true"/>
-    <property name="fight_ID" type="int" value="101"/>
+    <property name="fight_ID" type="int" value="104"/>
     <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
    </properties>
    <point/>

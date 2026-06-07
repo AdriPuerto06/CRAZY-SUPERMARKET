@@ -96,6 +96,7 @@ bool EventManager::IsEventActivated(const char* name)
 void EventManager::PossibleActivate(const char* name)
 {
 	std::shared_ptr<Event> event = GetEvent(name);
+	//RestaurantDungeon
 	if (event == nullptr)
 	{
 		//next events don't exist as an entity, but as a kind of activators for other events. These events are rewards from quests, dialogues...
@@ -171,6 +172,21 @@ void EventManager::PossibleActivate(const char* name)
 			LOG("'Button4' activated.");
 			MakeAction(name);
 		}
+		//FahionDungeon
+		else if (std::strcmp(name, "Button5") == 0)
+		{
+			event->activated = true;
+			event->Disable();
+			LOG("'Button5' activated.");
+			MakeAction("Door4");
+		}
+		else if (std::strcmp(name, "Button6") == 0)
+		{
+			event->activated = true;
+			event->Disable();
+			LOG("'Button6' activated.");
+			MakeAction("Door5");
+		}
 	}
 }
 
@@ -178,6 +194,7 @@ void EventManager::MakeAction(const char* name)
 {
 	std::shared_ptr<Event> event = GetEvent(name);
 	if (!event->active) { LOG("Event not active.");  return; }
+	//RestaurantDungeon
 	if (std::strcmp(name,"Door1")==0)
 	{
 		event->Disable();
@@ -221,6 +238,19 @@ void EventManager::MakeAction(const char* name)
 			b4->Disable();
 			b4->active = false;
 		}
+	}
+	//FashionDungeon
+	else if (std::strcmp(name, "Door4") == 0)
+	{
+		event->Disable();
+		event->active = false;
+		LOG("Door4 opened.");
+	}
+	else if (std::strcmp(name, "Door5") == 0)
+	{
+		event->Disable();
+		event->active = false;
+		LOG("Door5 opened.");
 	}
 	Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
 }

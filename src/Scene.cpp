@@ -174,6 +174,11 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
+		LOG("Map name: %s", Engine::GetInstance().map->mapFileName.c_str());
+		Engine::GetInstance().scene->GetPlayer()->WizardJoined = true;
+	}*/
+
 	return true;
 }
 
@@ -550,7 +555,7 @@ void Scene::CheckScene(std::string target) {
 	if (target == "Supermarket.tmx") ChangeScene(SceneID::LEVEL1);
 	else if (target == "azotea.tmx")      ChangeScene(SceneID::LEVEL2);
 	else if (target == "Backroom.tmx")      ChangeScene(SceneID::LEVEL3);
-	else if (target == "RestaurantLobby.tmx") ChangeScene(SceneID::LEVEL4);
+	else if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL4);
 	else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL5);
 	else if (target == "ClothesLobby.tmx") ChangeScene(SceneID::LEVEL6);
 	else if (target == "ClotheDungeon.tmx") ChangeScene(SceneID::LEVEL7);
@@ -802,7 +807,7 @@ void Scene::HandleMainMenuUIEvents(UIElement* uiElement)
 		break;
 	case 13:
 		Engine::GetInstance().combatManager->ChangePlayer();
-		LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);
+		/*LOG("Current player ID: %i", Engine::GetInstance().combatManager->combatData->players[Engine::GetInstance().combatManager->combatState->player_index_selected].id);*/
 		break;
 	case 14:
 		LOG("Scape clicked");
@@ -972,16 +977,6 @@ void Scene::UpdateLevel2(float dt) {
 		}
 	}
 
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
-		Engine::GetInstance().entityManager->CleanUp();
-	}
-
 	if (player && !player->pendingMapLoad.empty())
 	{
 		std::string target = player->pendingMapLoad;
@@ -1009,7 +1004,7 @@ void Scene::UnloadLevel2() {
 // *********************************************
 
 void Scene::LoadLevel3() {
-	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_backrooms, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Backroom.tmx");
@@ -1019,12 +1014,6 @@ void Scene::LoadLevel3() {
 }
 
 void Scene::UpdateLevel3(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
 	if (player && !player->pendingMapLoad.empty())
 	{
 		std::string target = player->pendingMapLoad;
@@ -1056,7 +1045,7 @@ void Scene::LoadLevel4() {
 	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantLobby.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Restaurant.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
@@ -1064,15 +1053,6 @@ void Scene::LoadLevel4() {
 }
 
 void Scene::UpdateLevel4(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1115,15 +1095,6 @@ void Scene::LoadLevel5() {
 }
 
 void Scene::UpdateLevel5(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1155,7 +1126,7 @@ void Scene::UnloadLevel5() {
 
 void Scene::LoadLevel6() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_lil_clot, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ClothesLobby.tmx");
@@ -1166,15 +1137,6 @@ void Scene::LoadLevel6() {
 }
 
 void Scene::UpdateLevel6(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1206,7 +1168,7 @@ void Scene::UnloadLevel6() {
 
 void Scene::LoadLevel7() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_clothes, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "ClotheDungeon.tmx");
@@ -1217,15 +1179,6 @@ void Scene::LoadLevel7() {
 }
 
 void Scene::UpdateLevel7(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1268,15 +1221,6 @@ void Scene::LoadLevel8() {
 }
 
 void Scene::UpdateLevel8(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1319,15 +1263,6 @@ void Scene::LoadLevel9() {
 }
 
 void Scene::UpdateLevel9(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1370,15 +1305,6 @@ void Scene::LoadLevel10() {
 }
 
 void Scene::UpdateLevel10(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{
@@ -1410,26 +1336,17 @@ void Scene::UnloadLevel10() {
 
 void Scene::LoadLevel11() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_boss, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Cursed_Supermarket.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL11);
-	Engine::GetInstance().eventManager->GetEvents();
+	/*Engine::GetInstance().eventManager->GetEvents();*/
 }
 
 void Scene::UpdateLevel11(float dt) {
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL1);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL2);
-	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
-		ChangeScene(SceneID::LEVEL3);
-	}
 
 	if (player && !player->pendingMapLoad.empty())
 	{

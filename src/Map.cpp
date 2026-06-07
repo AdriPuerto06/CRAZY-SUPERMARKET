@@ -224,6 +224,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         LOG("Player positioned at %f, %f.", pos.getX(), pos.getY());
                     }
                     int HP;
+                    int WizardJoined = false;
+                    int CorneliusJoined = false;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
                         propertyNode = propertyNode.next_sibling("property"))
@@ -233,13 +235,25 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             HP = propertyNode.attribute("value").as_int();
                             LOG("player HP: %d", player->HP);
+                            /*player->HP = HP;*/
                         }
                         if (name == "magicPoints")
                         {
                             magicPoints = propertyNode.attribute("value").as_int(); //map has magicPoints
                             PendingChangesCheckAndSetter(EntityType::PLAYER, Component::MAGICPOINTS, 0, magicPoints, sceneID);
                         }
-                        
+                        if (name == "WizardJoined")
+                        {
+                            WizardJoined = propertyNode.attribute("value").as_bool();
+                            PendingChangesCheckAndSetter(EntityType::PLAYER, Component::WIZARDJOINED, 0, WizardJoined, sceneID);
+                            player->WizardJoined = WizardJoined;
+                        }
+                        if (name == "CorneliusJoined")
+                        {
+                            CorneliusJoined = propertyNode.attribute("value").as_bool();
+                            PendingChangesCheckAndSetter(EntityType::PLAYER, Component::CORNELIUSJOINED, 0, CorneliusJoined, sceneID);
+                            player->CorneliusJoined = CorneliusJoined;
+                        }
                     }
                 }
 
@@ -347,6 +361,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     int Companion_ID = 0;
                     const char* texturePath = nullptr;
                     bool active = false;
+                    int Dialogue_ID = -1;
+
                     //get NPC data
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
                         propertyNode;
@@ -354,7 +370,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                     {
                         std::string name = propertyNode.attribute("name").as_string();
 
-                        if (name == "Companion_ID")
+                        if (name == "Companion_ID") //player id in combatData is = Companion_ID + 1
                             Companion_ID = propertyNode.attribute("value").as_int();
 
                         if (name == "active")
@@ -363,7 +379,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
-
+                        if (name == "Dialogue_ID")
+                            Dialogue_ID = propertyNode.attribute("value").as_int();
                     }
 
                     if (active)
@@ -377,7 +394,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASECOMPANION, ID));
                         }
-                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID);
+                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID, Dialogue_ID);
                         companion->entity_ID = ID;
                         LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f.", Companion_ID, ID, pos.getX(), pos.getY());
                         companion->Start();
@@ -477,11 +494,13 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                             if (HP > 0) {
                                 propertyNode.attribute("value").set_value(player->HP);
                             }
-                        }
-                        else 
-                        if (name == "magicPoints") { propertyNode.attribute("value").set_value(magicPoints); }
-
-                        
+                        } 
+                        if (name == "magicPoints") 
+                        { propertyNode.attribute("value").set_value(magicPoints); }
+                        if (name == "WizardJoined") 
+                        { propertyNode.attribute("value").set_value(player->WizardJoined); }
+                        if (name == "CorneliusJoined") 
+                        { propertyNode.attribute("value").set_value(player->CorneliusJoined); }
                     }
                 }
 
@@ -546,29 +565,31 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                 if (entityType == "Companion")
                 {
-                    /*int ENEMY_ID = objectNode.attribute("id").as_int();*/
-                    std::shared_ptr<BaseEnemy> companion = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
-                    if (companion) {
-                        const char* texturePath = companion->texturePath;
-                        bool active = companion->active;
-                        /*int companion_ID = -1;*/
-                        //get NPC data
-                        for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
-                            propertyNode;
-                            propertyNode = propertyNode.next_sibling("property"))
-                        {
-                            std::string name = propertyNode.attribute("name").as_string();
+                    ///*int ENEMY_ID = objectNode.attribute("id").as_int();*/
+                    //std::shared_ptr<BaseCompanion> companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASECOMPANION));
+                    //if (companion) {
+                    //    /*const char* texturePath = companion->texturePath;
+                    //    bool active = true;*/
+                    //    /*if (companion->Dialogue_ID == 101) { active = player->WizardJoined; }
+                    //    if (companion->Dialogue_ID == 102) { active = player->CorneliusJoined; }*/
+                    //    /*int companion_ID = -1;*/
+                    //    //get NPC data
+                    //    //for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
+                    //    //    propertyNode;
+                    //    //    propertyNode = propertyNode.next_sibling("property"))
+                    //    //{
+                    //    //    std::string name = propertyNode.attribute("name").as_string();
 
-                            /*if (name == "ENEMY_ID")
-                                propertyNode.attribute("value").as_int();*/
+                    //    //    /*if (name == "ENEMY_ID")
+                    //    //        propertyNode.attribute("value").as_int();*/
 
-                            if (name == "active")
-                                propertyNode.attribute("value").set_value(active);
+                    //    //    if (name == "active")
+                    //    //        propertyNode.attribute("value").set_value(active);
 
-                            if (name == "texturePath")
-                                propertyNode.attribute("value").set_value(texturePath);
-                        }
-                    }
+                    //    //    if (name == "texturePath")
+                    //    //        propertyNode.attribute("value").set_value(texturePath);
+                    //    //}
+                    //}
                 }
 
 
@@ -1091,18 +1112,11 @@ void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int
             }
         }
 
-        if (change.entityType == EntityType::PLAYER && (change.entity_Scene == entity_Scene))
+        if (change.entityType == EntityType::PLAYER && change.type == component)
         {
-            switch (component)
-            {
-            case Component::MAGICPOINTS:
-                current_value = change.new_value;
-                pendingChanges.erase(
-                    std::remove(pendingChanges.begin(), pendingChanges.end(), change),
-                    pendingChanges.end()
-                );
-                break;
-            }
+            current_value = change.new_value;
+            return;
         }
+
     }
 }

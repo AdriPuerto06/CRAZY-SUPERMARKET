@@ -2664,6 +2664,11 @@
  </objectgroup>
  <objectgroup id="4" name="Entities">
   <object id="22" name="Player" type="Player" x="192" y="288">
+   <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
+    <property name="magicPoints" type="int" value="50"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

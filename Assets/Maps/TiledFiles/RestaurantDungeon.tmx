@@ -12599,6 +12599,8 @@
   </properties>
   <object id="1" name="Player" type="Player" x="1504" y="448">
    <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
     <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>

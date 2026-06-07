@@ -66,6 +66,9 @@ public:
 	Vector2D direction;
 
 	bool showingMenu = false;
+
+	bool WizardJoined;
+	bool CorneliusJoined;
 private:
 	b2Vec2 velocity;
 	AnimationSet anims;
@@ -73,5 +76,8 @@ private:
 	int autosaveCooldown = 120;
 
 	bool godMode = false;
+
+	float dirX;
+	float dirY;
 	
 };

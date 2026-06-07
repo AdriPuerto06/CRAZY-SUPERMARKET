@@ -143,6 +143,7 @@
     <None Include=".gitignore" />
     <None Include="Assets\Maps\azotea.tmx" />
     <None Include="Assets\Maps\TiledFiles\azotea.tmx" />
+    <None Include="Assets\Maps\TiledFiles\ClotheDungeon.tmx" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>

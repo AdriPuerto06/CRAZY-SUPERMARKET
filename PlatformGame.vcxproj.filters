@@ -67,6 +67,9 @@
     <None Include="Assets\Maps\TiledFiles\azotea.tmx">
       <Filter>Configuration FIles</Filter>
     </None>
+    <None Include="Assets\Maps\TiledFiles\ClotheDungeon.tmx">
+      <Filter>Configuration FIles</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio.cpp">

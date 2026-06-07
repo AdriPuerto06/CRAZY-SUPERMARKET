@@ -9,66 +9,68 @@
 
 enum EventWindow
 {
-	WE_QUIT = 0,
-	WE_HIDE = 1,
-	WE_SHOW = 2,
-	WE_COUNT
+    WE_QUIT = 0,
+    WE_HIDE = 1,
+    WE_SHOW = 2,
+    WE_COUNT
 };
 
 enum KeyState
 {
-	KEY_IDLE = 0,
-	KEY_DOWN,
-	KEY_REPEAT,
-	KEY_UP
+    KEY_IDLE = 0,
+    KEY_DOWN,
+    KEY_REPEAT,
+    KEY_UP
 };
 
 class Input : public Module
 {
-
 public:
 
-	Input();
+    Input();
+    virtual ~Input();
 
-	// Destructor
-	virtual ~Input();
+    bool Awake();
+    bool Start();
+    bool PreUpdate();
+    bool CleanUp();
 
-	// Called before render is available
-	bool Awake();
+    KeyState GetKey(int id) const { return keyboard[id]; }
+    KeyState GetMouseButtonDown(int id) const { return mouseButtons[id - 1]; }
 
-	// Called before the first frame
-	bool Start();
+    bool GetWindowEvent(EventWindow ev);
 
-	// Called each loop iteration
-	bool PreUpdate();
+    Vector2D GetMousePosition();
+    Vector2D GetMouseMotion();
 
-	// Called before quitting
-	bool CleanUp();
+    SDL_Gamepad* GetGamepad() { return gamepad; }
 
-	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(int id) const
-	{
-		return keyboard[id];
-	}
-
-	KeyState GetMouseButtonDown(int id) const
-	{
-		return mouseButtons[id - 1];
-	}
-
-	// Check if a certain window event happened
-	bool GetWindowEvent(EventWindow ev);
-
-	// Get mouse / axis position
-	Vector2D GetMousePosition();
-	Vector2D GetMouseMotion();
+    // --- GAMEPAD GETTERS ---
+    float GetAxisLeftX() const { return axisLX; }
+    float GetAxisLeftY() const { return axisLY; }
+    float GetAxisRightX() const { return axisRX; }
+    float GetAxisRightY() const { return axisRY; }
+    bool GetButtonSouth() const { return buttonSouth; }
 
 private:
-	bool windowEvents[WE_COUNT];
-	KeyState* keyboard;
-	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
-	int	mouseMotionX;
-	int mouseMotionY;
-	int mouseX;
-	int mouseY;
+
+    bool windowEvents[WE_COUNT];
+    KeyState* keyboard;
+    KeyState mouseButtons[NUM_MOUSE_BUTTONS];
+
+    int mouseMotionX;
+    int mouseMotionY;
+    int mouseX;
+    int mouseY;
+
+    SDL_Gamepad* gamepad = nullptr;
+
+    // --- GAMEPAD STATE ---
+    float axisLX = 0.0f;
+    float axisLY = 0.0f;
+    float axisRX = 0.0f;
+    float axisRY = 0.0f;
+    bool buttonSouth = false;
+    bool lastButtonSouth = false;
+
 };

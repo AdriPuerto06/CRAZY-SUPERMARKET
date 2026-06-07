@@ -12577,6 +12577,8 @@
  <objectgroup id="5" name="Entities">
   <object id="44" name="Player" type="Player" x="3636" y="304">
    <properties>
+    <property name="CorneliusJoined" type="bool" value="false"/>
+    <property name="WizardJoined" type="bool" value="false"/>
     <property name="magicPoints" type="int" value="50"/>
    </properties>
    <point/>
