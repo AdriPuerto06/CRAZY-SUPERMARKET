@@ -1705,17 +1705,21 @@ void Scene::UpdatePause(float dt)
 
 void Scene::LoadBattle()
 {
-	// Array de rutas posibles
-	const char* battleBackgrounds[] = {
-		"Assets/Textures/BackGrounds/BattleScene_Pasillo.png",
-		"Assets/Textures/BackGrounds/BattleScene_Cocina.png",
-		"Assets/Textures/BackGrounds/BattleScene_Juguetes.png",
-		"Assets/Textures/BackGrounds/BattleScene_Ropa.png"
-	};
+	if (BattleBackgroundIMG == nullptr) {
+		// Array de rutas posibles
+		const char* battleBackgrounds[] = {
+			"Assets/Textures/BackGrounds/BattleScene_Pasillo.png",
+			"Assets/Textures/BackGrounds/BattleScene_Cocina.png",
+			"Assets/Textures/BackGrounds/BattleScene_Toy.png",
+			"Assets/Textures/BackGrounds/BattleScene_Ropa.png"
+		};
 
-	// Elegir una aleatoriamente
-	int randomIndex = rand() % 4;
-	BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
+		// Elegir una aleatoriamente
+		int randomIndex = rand() % 4;
+		BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
+
+		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+	}
 
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
 	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
@@ -1727,15 +1731,18 @@ void Scene::LoadBattle()
 	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
 
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
-	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
+	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() / 4 + 60, 139,153 };
 	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
+
+	/*
 	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
 	CreateButton(btnBolsaTex, btnBolsaPressedTex, bt2Pos, 12);
-	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
+	*/
+
+	SDL_Rect bt3Pos = { WindowSize.getX() / 15, 2 * WindowSize.getY() / 4 + 60, 144,153 };
 	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
-	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
+	SDL_Rect bt4Pos = { WindowSize.getX() / 15, 3 * WindowSize.getY() / 4 + 60, 139,79 };
 	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
 	monocolor = true;
 }
