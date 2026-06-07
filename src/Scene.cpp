@@ -252,8 +252,8 @@ bool Scene::PostUpdate()
 	{
 		gameScene = currentScene;
 		Engine::GetInstance().map->SaveEntities(player, currentScene);
-		ChangeScene(SceneID::PAUSE);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::PAUSE);
 	}
 
 
@@ -613,7 +613,7 @@ void Scene::UpdateIntroScreen(float dt)
 		SDL_SetTextureColorMod(teamImg, mod, mod, mod);
 		SDL_SetTextureAlphaMod(teamImg, mod);
 
-		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 360, 0);
+		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 515, 0);
 	}
 
 	splashTime += dt / 4000.0f;
