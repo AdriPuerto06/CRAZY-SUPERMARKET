@@ -5102,7 +5102,7 @@
     <property name="NPC_ID" value="17"/>
     <property name="active" type="bool" value="true"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/NPC3.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/Vieja.tsx"/>
    </properties>
    <point/>
   </object>
