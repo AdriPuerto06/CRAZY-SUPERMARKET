@@ -1826,6 +1826,7 @@ void Scene::UnloadBattle()
 	{
 		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 	}
+	Engine::GetInstance().combatManager->UnloadCombatUI();
 }
 
 void Scene::UpdateBattle(float dt)
