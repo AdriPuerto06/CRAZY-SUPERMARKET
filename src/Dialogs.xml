@@ -221,6 +221,70 @@
 
 	</dialogue_tree>
 
+	<!--Filler NPCs-->
+	<dialogue_tree ID="0" NPC="8">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="9">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="10">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="11">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="12">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="13">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="14">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
+
+	<dialogue_tree ID="0" NPC="15">
+
+		<node id ="0" text="Hi">
+			<choice id ="1" option="Hi" next_node ="-1"/>
+		</node>
+
+	</dialogue_tree>
 
 	<!--Companions-->
 	<!--Wizard-->
