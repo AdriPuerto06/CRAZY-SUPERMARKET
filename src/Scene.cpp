@@ -1769,13 +1769,7 @@ void Scene::LoadBattle()
 		int randomIndex = rand() % 4;
 		BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
 		
-		if (Engine::GetInstance().combatManager->goBack == SceneID::LEVEL11) {
-			Engine::GetInstance().audio->PlayMusic(m_boss, 0.2, -1);
-		}
-		else
-		{
-			Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
-		}
+		
 	}
 
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
@@ -1807,7 +1801,13 @@ void Scene::LoadBattle()
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
-	
+	if (Engine::GetInstance().combatManager->goBack == SceneID::LEVEL11) {
+		Engine::GetInstance().audio->PlayMusic(m_boss, 0.2, -1);
+	}
+	else
+	{
+		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+	}
 }
 
 void Scene::UpdateBattle(float dt)
