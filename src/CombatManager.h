@@ -166,6 +166,7 @@ public:
     void SaveScene();
 
     std::vector<Attack> GetPlayerAttacks(int& HP);
+    void CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int ID);
 
 
     void ResetCombatState();
@@ -228,6 +229,12 @@ private:
     bool waitingAttack = false;
     bool waitingDamage = false;
     bool waitingEnemyTurn = false;
+
+    SDL_Texture* btnBckTex = nullptr;
+    SDL_Texture* btnBckPressedTex = nullptr;
+    SDL_Texture* btnJetTex = nullptr;
+    SDL_Texture* btnJetPressedTex = nullptr;
+ 
 
     Combatant* currentAttacker = nullptr;
     Combatant* currentTarget = nullptr;

@@ -104,6 +104,11 @@ bool CombatManager::Start()
 	Paralized_Texture = Engine::GetInstance().textures->Load("Assets/Textures/Combat/paralized-Sheet.png");
 	Paralized_Anim.LoadFromTSX("Assets/Textures/Combat/paralized-Sheet.tsx", emptyAliases);
 
+	btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+	btnJetTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
+	btnJetPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+
 	return true;
 }
 
@@ -276,6 +281,12 @@ bool CombatManager::PostUpdate() {
 bool CombatManager::CleanUp()
 {
 	in_combat = false;
+
+	Engine::GetInstance().textures->UnLoad(btnBckTex);
+	Engine::GetInstance().textures->UnLoad(btnBckPressedTex);
+	Engine::GetInstance().textures->UnLoad(btnJetTex);
+	Engine::GetInstance().textures->UnLoad(btnJetPressedTex);
+	
 	combatFileXML.empty();
 	combatData->Clear();
 	return true;
@@ -946,9 +957,7 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 	//create "back" button
 	SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 700,
 						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 120,20 };
-	std::dynamic_pointer_cast<UIButton>(
-		Engine::GetInstance().uiManager->CreateUIElement(
-			UIElementType::BUTTON, 10, "Back", bt5Pos, this));
+	CreateButton(btnBckTex, btnBckPressedTex, bt5Pos, 10);
 
 	return true;
 }
@@ -1601,4 +1610,11 @@ void CombatManager::ResetCombatState()
 	PlayerHasAttacked = false;
 
 	combatState->selecting_target = false;
+}
+
+void CombatManager::CreateButton(SDL_Texture* btnTex, SDL_Texture* btnPressedTex, SDL_Rect btPos, int ID)
+{
+	auto btn = std::dynamic_pointer_cast<UIButton>(
+		Engine::GetInstance().uiManager->CreateUIElement(UIElementType::BUTTON, ID, " ", btPos, this));
+	if (btn) btn->SetTextures(btnTex, btnPressedTex, btnPressedTex);
 }

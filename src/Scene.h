@@ -126,7 +126,7 @@ public:
 	void CheckScene(std::string target);
 	void LoadBattle();
 	bool monocolor = false;
-	bool inProgres = true;
+	bool inProgres = false;
 
 private:
 

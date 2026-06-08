@@ -174,6 +174,11 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		ChangeScene(SceneID::LEVEL4);
+	}
+
 	/*if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_0) == KEY_DOWN) {
 		LOG("Map name: %s", Engine::GetInstance().map->mapFileName.c_str());
 		Engine::GetInstance().scene->GetPlayer()->WizardJoined = true;
@@ -692,13 +697,13 @@ void Scene::LoadMainMenu() {
 	SDL_Texture* btnExitTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Normal.png");
 	SDL_Texture* btnExitPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Exit_Pressed.png");
 
-	if (inProgres = true) {
-		SDL_Texture* btnCntTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Normal.png");
-		SDL_Texture* btnCntPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Pressed.png");
+	//if (inProgres = true) {
+	//	SDL_Texture* btnCntTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Normal.png");
+	//	SDL_Texture* btnCntPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Continue_Pressed.png");
 
-		SDL_Rect bt7Pos = { WindowSize.getX() / 2 + 160, (WindowSize.getY() / 2) - 200, 229,90 };
-		CreateButton(btnCntTex, btnCntPressedTex, bt7Pos, 18);
-	}
+	//	SDL_Rect bt7Pos = { WindowSize.getX() / 2 + 160, (WindowSize.getY() / 2) - 200, 229,90 };
+	//	CreateButton(btnCntTex, btnCntPressedTex, bt7Pos, 18);
+	//}
 
 	Engine::GetInstance().audio->PlayMusic(m_title, 0.0, -1);
 
