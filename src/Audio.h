@@ -39,7 +39,8 @@ enum Sfx {
     s_button,
     s_slider,
     s_punch,
-    s_kick
+    s_kick,
+    s_fidget
 };
 
 

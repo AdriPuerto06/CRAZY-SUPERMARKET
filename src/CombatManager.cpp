@@ -480,6 +480,14 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	{
 		Engine::GetInstance().audio->PlayFx(s_kick, 0);
 	}
+	else if (std::string(attack.name) == "Fidget Dance")
+	{
+		Engine::GetInstance().audio->PlayFx(s_fidget, 0);
+	}
+	else if (std::string(attack.name) == "Punch extorsion")
+	{
+		Engine::GetInstance().audio->PlayFx(s_punch, 1);
+	}
 
 	attacker.anims.SetLoopFor("attack", false);
 	attacker.anims.SetCurrent("attack");
