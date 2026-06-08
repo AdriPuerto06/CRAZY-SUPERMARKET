@@ -6458,7 +6458,7 @@
    </properties>
    <point/>
   </object>
-  <object id="2" name="Octopuss" type="NPC" x="1632" y="1088">
+  <object id="2" name="Octopuss" type="NPC" x="1540" y="1136">
    <properties>
     <property name="NPC_ID" type="int" value="2"/>
     <property name="active" type="bool" value="true"/>
@@ -6467,7 +6467,7 @@
    </properties>
    <point/>
   </object>
-  <object id="3" name="Player" type="Player" x="1632" y="672">
+  <object id="3" name="Player" type="Player" x="1642" y="817">
    <properties>
     <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>
@@ -6475,12 +6475,13 @@
    </properties>
    <point/>
   </object>
-  <object id="15" name="Enemy1" type="Enemy" x="1632" y="832">
+  <object id="15" name="Enemy1" type="Enemy" x="1910" y="976">
    <properties>
     <property name="Enemy_ID" type="int" value="1"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/frisbee-Sheet.tsx"/>
     <property name="fight_ID" type="int" value="1"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/frisbee-Sheet.png"/>
    </properties>
    <point/>
   </object>

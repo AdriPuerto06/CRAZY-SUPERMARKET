@@ -313,6 +313,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 {
                     int Enemy_ID = 0;
                     const char* texturePath = nullptr;
+                    const char* anim_tsxpath = nullptr; // nueva propiedad
                     bool active = false;
                     int fight_ID = 0;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
@@ -330,6 +331,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
+                        if (name == "anim_tsxpath")
+                            anim_tsxpath = (const char*)propertyNode.attribute("value").as_string();
+
                         if (name == "fight_ID")
                             fight_ID = propertyNode.attribute("value").as_int();
                     }
@@ -345,7 +349,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
                         }
-                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, Enemy_ID, fight_ID);
+                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, anim_tsxpath, Enemy_ID, fight_ID);
                         enemy->entity_ID = ID;
                         LOG("Enemy -> Enemy_ID: %i, entity_ID: %i, at %f, %f.", Enemy_ID, ID, pos.getX(), pos.getY());
                         enemy->Start();
