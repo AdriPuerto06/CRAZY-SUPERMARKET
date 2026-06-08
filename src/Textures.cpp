@@ -60,7 +60,7 @@ SDL_Texture* const Textures::Load(const char* path)
 		texture = LoadSurface(surface);
 
 		//con esto se verá todo más pixelado, lo cual es BUENO, pero sin esto se ven los pixeles mas difuminados y queda más natural.
-		//SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+		SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 
 		SDL_DestroySurface(surface); // SDL3: free with SDL_DestroySurface
 	}

@@ -1113,7 +1113,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			}
 			if (!p.anim_tsxpath.empty())
 			{
-				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), emptyAliases))
+				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), aliases))
 				{
 					// intenta usar "idle" si existe, sino queda la primera anim por defecto
 					if (p.anims.Has("idle")) 
