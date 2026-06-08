@@ -26,7 +26,7 @@
 	<fight id ="103" players_id="1" enemies_id="103"></fight>
 	<fight id ="104" players_id="1" enemies_id="104"></fight>
 	
-	<player id="1" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">>
+	<player id="1" HP="25" anim_tsxpath="Assets/Textures/Characters/Prota.tsx" texturePath="Assets/Textures/Characters/Prota.png">>
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
@@ -41,7 +41,7 @@
 	</player>
 	<!--Companions-->
 	<!--companions are the players except for player with id = 1, the player id is gotten from Companion_ID like this: player id = Companion_ID + 1-->
-	<player id="2" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png" > 
+	<player id="2" HP="25" anim_tsxpath="Assets/Textures/Characters/Prota.tsx" texturePath="Assets/Textures/Characters/Prota.png" > 
 		
 		<!--Mary Nancy - Wizard-->
 		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none" unlocked="true"></attack_stats>
