@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include <vector>
+#include "Animation.h"
 
 class BaseNPC : public Entity {
 public:
@@ -9,7 +10,7 @@ public:
 	~BaseNPC();
 	BaseNPC(EntityType type) : type(type), active(true) {};
 
-	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int currentDialogueTree);
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, const char* anim_tsxpath, int ID, int currentDialogueTree);
 
 	bool Awake();
 
@@ -36,9 +37,15 @@ public:
 	Vector2D position;
 	SDL_Texture* texture = NULL;
 	const char* texturePath;
+	const char* anim_tsxpath;
 	int texW, texH;
+	AnimationSet anims;
 
 	int ID;
 	int currentDialogueTree;
 	bool showingButton;
+
+	// hitbox
+	int hitW = 0;
+	int hitH = 0;
 };
