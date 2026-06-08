@@ -567,7 +567,7 @@ void Scene::UnloadCurrentScene() {
 void Scene::CheckScene(std::string target) {
 
 	if (target == "Supermarket.tmx") ChangeScene(SceneID::LEVEL1);
-	else if (target == "azotea.tmx")      ChangeScene(SceneID::LEVEL2);
+	else if (target == "Rooftop.tmx")      ChangeScene(SceneID::LEVEL2);
 	else if (target == "Backroom.tmx")      ChangeScene(SceneID::LEVEL3);
 	else if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL4);
 	else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL5);
@@ -1029,7 +1029,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Rooftop.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
@@ -1826,6 +1826,7 @@ void Scene::UnloadBattle()
 	{
 		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 	}
+	Engine::GetInstance().combatManager->UnloadCombatUI();
 }
 
 void Scene::UpdateBattle(float dt)

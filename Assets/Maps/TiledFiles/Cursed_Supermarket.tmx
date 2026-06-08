@@ -5063,7 +5063,7 @@
     <property name="Enemy_ID" type="int" value="104"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="104"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Endemonia_combat.tsx"/>
    </properties>
    <point/>
   </object>

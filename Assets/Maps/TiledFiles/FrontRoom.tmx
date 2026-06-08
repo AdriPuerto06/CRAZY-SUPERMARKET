@@ -5057,9 +5057,9 @@
   <object id="20" x="160" y="1440" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="Entities">
-  <object id="23" name="Player" type="Player" x="361.33" y="1467.12">
+  <object id="23" name="Player" type="Player" x="192" y="1504">
    <properties>
-    <property name="CorneliusJoined" type="bool" value="true"/>
+    <property name="CorneliusJoined" type="bool" value="false"/>
     <property name="WizardJoined" type="bool" value="false"/>
     <property name="magicPoints" type="int" value="50"/>
    </properties>
@@ -5070,7 +5070,7 @@
     <property name="NPC_ID" value="12"/>
     <property name="active" type="bool" value="true"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/Estatua.tsx"/>
    </properties>
    <point/>
   </object>
@@ -5079,8 +5079,7 @@
     <property name="Companion_ID" type="int" value="2"/>
     <property name="Dialogue_ID" type="int" value="102"/>
     <property name="active" type="bool" value="true"/>
-    <property name="anim_tsxpath" value="Assets/Textures/Characters/Belloton.tsx"/>
-    <property name="texturePath" value="Assets/Textures/Characters/Belloton.png"/>
+    <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
    </properties>
    <point/>
   </object>
