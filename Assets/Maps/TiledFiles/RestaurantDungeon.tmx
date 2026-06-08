@@ -309,7 +309,7 @@
     <property name="Enemy_ID" type="int" value="20"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="4"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Slime_verde.tsx"/>
    </properties>
    <point/>
   </object>
@@ -318,7 +318,7 @@
     <property name="Enemy_ID" type="int" value="21"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="7"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Tomatona.tsx"/>
    </properties>
    <point/>
   </object>
@@ -327,7 +327,7 @@
     <property name="Enemy_ID" type="int" value="10"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="10"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Tomatona.tsx"/>
    </properties>
    <point/>
   </object>
@@ -336,7 +336,7 @@
     <property name="Enemy_ID" type="int" value="9"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="9"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Slime_verde.tsx"/>
    </properties>
    <point/>
   </object>
@@ -345,7 +345,7 @@
     <property name="Enemy_ID" type="int" value="8"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="8"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Slime_morado.tsx"/>
    </properties>
    <point/>
   </object>
@@ -354,7 +354,7 @@
     <property name="Enemy_ID" type="int" value="15"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="6"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Pan.tsx"/>
    </properties>
    <point/>
   </object>
@@ -363,7 +363,7 @@
     <property name="Enemy_ID" type="int" value="11"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="12"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Zapatico.tsx"/>
    </properties>
    <point/>
   </object>
@@ -372,7 +372,7 @@
     <property name="Enemy_ID" type="int" value="12"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="11"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/frisbee-Sheet.tsx"/>
    </properties>
    <point/>
   </object>
@@ -381,7 +381,7 @@
     <property name="Enemy_ID" type="int" value="14"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="14"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Langostin.tsx"/>
    </properties>
    <point/>
   </object>
@@ -390,7 +390,7 @@
     <property name="Enemy_ID" type="int" value="13"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="13"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx"/>
    </properties>
    <point/>
   </object>
@@ -399,7 +399,7 @@
     <property name="Enemy_ID" type="int" value="16"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="15"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Espejito.tsx"/>
    </properties>
    <point/>
   </object>
@@ -408,7 +408,7 @@
     <property name="Enemy_ID" type="int" value="17"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="16"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Langostin.tsx"/>
    </properties>
    <point/>
   </object>
@@ -417,7 +417,7 @@
     <property name="Enemy_ID" type="int" value="18"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="17"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Milk.tsx"/>
    </properties>
    <point/>
   </object>
@@ -426,7 +426,7 @@
     <property name="Enemy_ID" type="int" value="19"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="18"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Slime_morado.tsx"/>
    </properties>
    <point/>
   </object>
@@ -453,7 +453,7 @@
     <property name="Enemy_ID" type="int" value="102"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="102"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Espejito_combat.tsx"/>
    </properties>
    <point/>
   </object>
@@ -462,7 +462,7 @@
     <property name="Enemy_ID" type="int" value="22"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="15"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Zapatico.tsx"/>
    </properties>
    <point/>
   </object>
@@ -471,7 +471,7 @@
     <property name="Enemy_ID" type="int" value="23"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="16"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/frisbee-Sheet.tsx"/>
    </properties>
    <point/>
   </object>
@@ -480,7 +480,7 @@
     <property name="Enemy_ID" type="int" value="24"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="7"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx"/>
    </properties>
    <point/>
   </object>
@@ -489,7 +489,7 @@
     <property name="Enemy_ID" type="int" value="25"/>
     <property name="active" type="bool" value="true"/>
     <property name="fight_ID" type="int" value="8"/>
-    <property name="texturePath" value="Assets/Maps/Tilesets/x.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Langostin.tsx"/>
    </properties>
    <point/>
   </object>
