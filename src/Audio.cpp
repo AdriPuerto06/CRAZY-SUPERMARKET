@@ -5,7 +5,7 @@
 //sounds to be added
 static std::map<Music, const char*> music_paths =
 {
-    { m_title, "Assets/Audio/Music/title music.wav" },
+    { m_title, "Assets/Audio/Music/title_music.wav" },
 	{ m_battle, "Assets/Audio/Music/battle music.wav" },
     { m_roof, "Assets/Audio/Music/roof.wav" },
     { m_roof_drums, "Assets/Audio/Music/drums.wav" },
