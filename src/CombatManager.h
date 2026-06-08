@@ -234,6 +234,12 @@ private:
     SDL_Texture* btnBckPressedTex = nullptr;
     SDL_Texture* btnJetTex = nullptr;
     SDL_Texture* btnJetPressedTex = nullptr;
+    SDL_Texture* btnDanceTex = nullptr;
+    SDL_Texture* btnDancePressedTex = nullptr;
+    SDL_Texture* btnFutTex = nullptr;
+    SDL_Texture* btnFutPressedTex = nullptr;
+    SDL_Texture* btnExtTex = nullptr;
+    SDL_Texture* btnExtPressedTex = nullptr;
  
 
     Combatant* currentAttacker = nullptr;

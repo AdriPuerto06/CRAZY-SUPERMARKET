@@ -106,8 +106,14 @@ bool CombatManager::Start()
 
 	btnBckTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
 	btnBckPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
-	btnJetTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Normal.png");
-	btnJetPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Back_Pressed.png");
+	btnJetTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Jet_Normal.png");
+	btnJetPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Jet_Pressed.png");
+	btnDanceTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Dance_Normal.png");
+	btnDancePressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Dance_Pressed.png");
+	btnFutTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Fut_Normal.png");
+	btnFutPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Fut_Pressed.png");
+	btnExtTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Ext_Normal.png");
+	btnExtPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Ext_Pressed.png");
 
 	return true;
 }
@@ -286,6 +292,12 @@ bool CombatManager::CleanUp()
 	Engine::GetInstance().textures->UnLoad(btnBckPressedTex);
 	Engine::GetInstance().textures->UnLoad(btnJetTex);
 	Engine::GetInstance().textures->UnLoad(btnJetPressedTex);
+	Engine::GetInstance().textures->UnLoad(btnFutTex);
+	Engine::GetInstance().textures->UnLoad(btnFutPressedTex);
+	Engine::GetInstance().textures->UnLoad(btnDanceTex);
+	Engine::GetInstance().textures->UnLoad(btnDancePressedTex);
+	Engine::GetInstance().textures->UnLoad(btnExtTex);
+	Engine::GetInstance().textures->UnLoad(btnExtPressedTex);
 	
 	combatFileXML.empty();
 	combatData->Clear();
@@ -925,15 +937,19 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 	int size = attacks.size();
 	std::vector<std::pair<SDL_Rect, const char*>> buttonsAttack;
 
-	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
+	SDL_Rect bt1Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 122,108 };
 
-	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 300,50 };
+	SDL_Rect bt2Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 100, 122,108 };
 
-	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
+	SDL_Rect bt3Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 - 65, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 220, 122,108 };
 
-	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 200, 300,50 };
+	SDL_Rect bt4Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 365, Engine::GetInstance().window->GetWindowSize().getY() / 4 + 220, 122,108 };
 
-	std::vector<SDL_Rect> bPos;
+	CreateButton(btnJetTex, btnJetPressedTex, bt1Pos, 1);
+	CreateButton(btnFutTex, btnFutPressedTex, bt2Pos, 2);
+	CreateButton(btnDanceTex, btnDancePressedTex, bt3Pos, 3);
+	CreateButton(btnExtTex, btnExtPressedTex, bt4Pos, 4);
+	/*std::vector<SDL_Rect> bPos;
 	bPos.push_back(bt1Pos); bPos.push_back(bt2Pos); bPos.push_back(bt3Pos); bPos.push_back(bt4Pos);
 	//create attack buttons
 	 int bPosCount = 0;
@@ -952,11 +968,11 @@ bool CombatManager::ShowAttackOptions(int player_ID)
 			Engine::GetInstance().uiManager->CreateUIElement(
 				UIElementType::BUTTON, id, a.second, a.first, this));
 		id++;
-	}
+	}*/
 
 	//create "back" button
 	SDL_Rect bt5Pos = { Engine::GetInstance().window->GetWindowSize().getX() / 8 + 700,
-						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 120,20 };
+						Engine::GetInstance().window->GetWindowSize().getY() / 4 + 300, 180,85 };
 	CreateButton(btnBckTex, btnBckPressedTex, bt5Pos, 10);
 
 	return true;
