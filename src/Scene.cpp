@@ -142,7 +142,9 @@ bool Scene::Update(float dt)
 	case SceneID::LOSE:
 		UpdateLose(dt);
 		break;
-
+	case SceneID::CUTSCENE:
+		UpdateCutsceneScene(dt);
+		break;
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
@@ -242,14 +244,18 @@ bool Scene::PostUpdate()
 	}
 
 	//Pause
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
+	bool pausePressed =
+		Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
+		Engine::GetInstance().input->GetButton(SDL_GAMEPAD_BUTTON_START) == KEY_DOWN;
+
+	if ((pausePressed || Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
 																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8 ||
 																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) 
 	{
 		gameScene = currentScene;
 		Engine::GetInstance().map->SaveEntities(player, currentScene);
-		ChangeScene(SceneID::PAUSE);
 		sceneStack.push(currentScene);
+		ChangeScene(SceneID::PAUSE);
 	}
 
 
@@ -451,6 +457,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LOSE:
 		LoadWin();
 		break;
+	case SceneID::CUTSCENE:
+		LoadCutsceneScene();
+		break;
 	}
 }
 
@@ -546,6 +555,9 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LOSE:
 		UnloadLose();
 		break;
+	case SceneID::CUTSCENE:
+		UnloadCutsceneScene();
+		break;
 	}
 
 }
@@ -564,6 +576,45 @@ void Scene::CheckScene(std::string target) {
 	else if (target == "FinalDungeon.tmx") ChangeScene(SceneID::LEVEL10);
 	else if (target == "Cursed_Supermarket.tmx") ChangeScene(SceneID::LEVEL11);
 
+}
+
+
+
+// Cutscene
+void Scene::StartTeleportScene(SceneID target)
+{
+	// store the target and change to the empty scene
+	pendingTeleportTarget = target;
+	ChangeScene(SceneID::CUTSCENE);
+}
+
+void Scene::LoadCutsceneScene()
+{
+	// Ensure UI cleaned and timer reset
+	Engine::GetInstance().uiManager->CleanUp();
+	cutsceneTimer = 0.0f;
+
+	// Stop other audio or set ambience here
+	
+}
+
+void Scene::UpdateCutsceneScene(float dt)
+{
+	cutsceneTimer += dt;
+
+	// If SPACE pressed or timeout reached, proceed to target
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || cutsceneTimer >= cutsceneDuration)
+	{
+		ChangeScene(pendingTeleportTarget);
+	}
+}
+
+void Scene::UnloadCutsceneScene()
+{
+	// cleanup if necessary
+	Engine::GetInstance().uiManager->CleanUp();
+	cutsceneTimer = 0.0f;
+	LOG("Exiting Cutscene.");
 }
 
 // *********************************************
@@ -609,7 +660,7 @@ void Scene::UpdateIntroScreen(float dt)
 		SDL_SetTextureColorMod(teamImg, mod, mod, mod);
 		SDL_SetTextureAlphaMod(teamImg, mod);
 
-		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 360, 0);
+		Engine::GetInstance().render->DrawTexture(teamImg, WindowSize.getX() / 2 - 515, 0);
 	}
 
 	splashTime += dt / 4000.0f;
@@ -1705,17 +1756,21 @@ void Scene::UpdatePause(float dt)
 
 void Scene::LoadBattle()
 {
-	// Array de rutas posibles
-	const char* battleBackgrounds[] = {
-		"Assets/Textures/BackGrounds/BattleScene_Pasillo.png",
-		"Assets/Textures/BackGrounds/BattleScene_Cocina.png",
-		"Assets/Textures/BackGrounds/BattleScene_Juguetes.png",
-		"Assets/Textures/BackGrounds/BattleScene_Ropa.png"
-	};
+	if (BattleBackgroundIMG == nullptr) {
+		// Array de rutas posibles
+		const char* battleBackgrounds[] = {
+			"Assets/Textures/BackGrounds/BattleScene_Pasillo.png",
+			"Assets/Textures/BackGrounds/BattleScene_Cocina.png",
+			"Assets/Textures/BackGrounds/BattleScene_Toy.png",
+			"Assets/Textures/BackGrounds/BattleScene_Ropa.png"
+		};
 
-	// Elegir una aleatoriamente
-	int randomIndex = rand() % 4;
-	BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
+		// Elegir una aleatoriamente
+		int randomIndex = rand() % 4;
+		BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
+
+		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+	}
 
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
 	SDL_Texture* btnAtkPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Pressed.png");
@@ -1727,15 +1782,18 @@ void Scene::LoadBattle()
 	SDL_Texture* btnScpPressedTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Scape_Pressed.png");
 
 	int actCombat = Engine::GetInstance().combatManager->combatData->fight_ID;
-	Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
 
-	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() - 220, 139,153 };
+	SDL_Rect bt1Pos = { WindowSize.getX() / 15, WindowSize.getY() / 4 + 60, 139,153 };
 	CreateButton(btnAtkTex, btnAtkPressedTex, bt1Pos, 11);
+
+	/*
 	SDL_Rect bt2Pos = { WindowSize.getX() / 15 + 200, WindowSize.getY() - 220, 180,30 };
-	CreateButton(NULL, NULL, bt2Pos, 12);
-	SDL_Rect bt3Pos = { WindowSize.getX() / 15 + 400, WindowSize.getY() - 220, 144,153 };
+	CreateButton(btnBolsaTex, btnBolsaPressedTex, bt2Pos, 12);
+	*/
+
+	SDL_Rect bt3Pos = { WindowSize.getX() / 15, 2 * WindowSize.getY() / 4 + 60, 144,153 };
 	CreateButton(btnChgTex, btnChgPressedTex, bt3Pos, 13);
-	SDL_Rect bt4Pos = { WindowSize.getX() / 15 + 600, WindowSize.getY() - 220, 139,79 };
+	SDL_Rect bt4Pos = { WindowSize.getX() / 15, 3 * WindowSize.getY() / 4 + 60, 139,79 };
 	CreateButton(btnScpTex, btnScpPressedTex, bt4Pos, 14);
 	monocolor = true;
 }

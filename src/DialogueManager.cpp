@@ -103,14 +103,19 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 			ButtonAction(2);
 		}
 		break;
-	case 3: // Button MyButton
+	case 3: // Continue button
+		if (dialogue->has_pending_reward) {
+			Engine::GetInstance().rewardManager->GetReward(dialogue->pendingReward);
+			dialogue->has_pending_reward = false;
+		}
 		UnloadDialogueUI();
 		Engine::GetInstance().render->StartTextDisplay("", 0.0f);
 		in_conversation = false;
 		tree->Clear();
-		LOG("Cleaned dialogue UI.");
+		showing_continue = false;
+		LOG("Cleaned dialogue UI and applied pending reward (if present).");
 		break;
-	case 4: // Button MyButton
+	case 4: //Start talk
 		UnloadDialogueUI();
 		showingButtonStart = false;
 		Engine::GetInstance().render->DrawTexture(backgroundText, WindowSize.getX() / 10, 0);
@@ -126,16 +131,35 @@ bool DialogueManager::OnUIMouseClickEvent(UIElement* uiElement)
 
 void DialogueManager::ButtonAction(int ID)
 {
-	if (!(tree->rewards[dialogue->node_id][0].type == RewardType::NONE))
-	Engine::GetInstance().rewardManager->GetReward(tree->rewards[dialogue->node_id][0]);
-	//update values of dialogue
+	
+	Reward clickedReward = tree->rewards[dialogue->node_id][0];
+
+	// update values of dialogue
 	dialogue->choice = ID;
-	dialogue->node_id = tree->choices_next_node[dialogue->node_id][ID-1];
+	int nextNode = tree->choices_next_node[dialogue->node_id][ID-1];
 	LOG("Dialogs: Choice %i. Current node: %i", ID, dialogue->node_id);
+	
+	// reward when player presses Continue
+	if (nextNode == -1)
+	{
+		if (!(clickedReward.type == RewardType::NONE))
+		{
+			dialogue->pendingReward = clickedReward;
+			dialogue->has_pending_reward = true;
+			LOG("Dialogue reward deferred until Continue.");
+		}
+	}
+	else
+	{
+		//other quest that don't have continue
+		if (!(clickedReward.type == RewardType::NONE))
+			Engine::GetInstance().rewardManager->GetReward(clickedReward);
+	}
+
+	dialogue->node_id = nextNode;
+
 	if (dialogue->node_id != -1 && !showing_continue)
 	{
-		/*ShowOptions(dialogue->node_id);*/
-
 		Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 0.0f);
 	}
 	can_be_clicked = false;
@@ -167,6 +191,10 @@ bool DialogueManager::StartDialogue(int dialogue_tree_ID, int npc_id)
 	dialogue->dialogue_tree_NPC = npc_id;
 	dialogue->node_id = tree->nodes_id[0];
 	
+	// reset any pending reward from previous dialogues
+	dialogue->has_pending_reward = false;
+	dialogue->pendingReward = Reward();
+
 	showing_continue = false;
 	/*can_be_clicked = true;*/
 	Engine::GetInstance().render->StartTextDisplay(tree->nodes_text[dialogue->node_id], 100.0f);
