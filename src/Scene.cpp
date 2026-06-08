@@ -1303,7 +1303,7 @@ void Scene::UnloadLevel8() {
 
 void Scene::LoadLevel9() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "FrontRoom.tmx");
@@ -1387,7 +1387,7 @@ void Scene::UnloadLevel10() {
 
 void Scene::LoadLevel11() {
 
-	Engine::GetInstance().audio->PlayMusic(m_boss, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_backrooms, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Cursed_Supermarket.tmx");
@@ -1768,8 +1768,14 @@ void Scene::LoadBattle()
 		// Elegir una aleatoriamente
 		int randomIndex = rand() % 4;
 		BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
-
-		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+		
+		if (Engine::GetInstance().combatManager->goBack == SceneID::LEVEL11) {
+			Engine::GetInstance().audio->PlayMusic(m_boss, 0.2, -1);
+		}
+		else
+		{
+			Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+		}
 	}
 
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
