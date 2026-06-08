@@ -5070,7 +5070,7 @@
     <property name="NPC_ID" value="12"/>
     <property name="active" type="bool" value="true"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/Estatua.tsx"/>
    </properties>
    <point/>
   </object>
