@@ -368,6 +368,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                     int Companion_ID = 0;
                     const char* texturePath = nullptr;
+                    const char* anim_tsxpath = nullptr; // añadida lectura de animación
                     bool active = false;
                     int Dialogue_ID = -1;
 
@@ -387,6 +388,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
+                        if (name == "anim_tsxpath")
+                            anim_tsxpath = (const char*)propertyNode.attribute("value").as_string();
+
                         if (name == "Dialogue_ID")
                             Dialogue_ID = propertyNode.attribute("value").as_int();
                     }
@@ -402,7 +406,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASECOMPANION, ID));
                         }
-                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID, Dialogue_ID);
+                        
+                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, anim_tsxpath, Companion_ID, Dialogue_ID);
                         companion->entity_ID = ID;
                         LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f.", Companion_ID, ID, pos.getX(), pos.getY());
                         companion->Start();
