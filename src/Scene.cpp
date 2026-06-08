@@ -751,7 +751,7 @@ void Scene::LoadMainMenu() {
 		CreateButton(btnCntTex, btnCntPressedTex, bt7Pos, 18);
 	}
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0.0, -1);
+	
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 115, (WindowSize.getY() / 2) - 200, 229,90 };
@@ -783,6 +783,7 @@ void Scene::UnloadMainMenu() {
 
 void Scene::UpdateMainMenu(float dt)
 {
+	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
 	Engine::GetInstance().render->camera.x = 0;
 	Engine::GetInstance().render->camera.y = 0;
 

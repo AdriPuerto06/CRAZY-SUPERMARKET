@@ -30,7 +30,13 @@ static std::map<Sfx, const char*> sfx_paths =
     {s_slider, "Assets/Audio/Fx/slider.wav"},
     {s_punch, "Assets/Audio/Fx/punch.wav" },
     {s_kick, "Assets/Audio/Fx/kick.wav" },
-    {s_fidget, "Assets/Audio/Fx/fidget.wav" }
+    {s_fidget, "Assets/Audio/Fx/fidget.wav" },
+    {s_heal, "Assets/Audio/Fx/heal.wav" },
+	{s_shield, "Assets/Audio/Fx/shield.wav" },
+	{s_buff, "Assets/Audio/Fx/buff.wav" },
+	{s_poison, "Assets/Audio/Fx/poison.wav" },
+	{s_paral, "Assets/Audio/Fx/paral.wav" }
+
 
 
 

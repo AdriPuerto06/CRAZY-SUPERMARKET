@@ -500,6 +500,8 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	{
 		attacker.hp += HEAL_HITPOINTS;
 		SpawnFloatingText( "+" + std::to_string(HEAL_HITPOINTS), attacker.position.getX(), attacker.position.getY() - 40, { 0,255,255,255 } );
+		Engine::GetInstance().audio->PlayFx(s_heal, 0);
+
 		if (attacker.type == EntityType::PLAYER)
 			LOG("Player ID: %i healed for %i.", attacker.id, HEAL_HITPOINTS);
 		else
@@ -525,20 +527,24 @@ void CombatManager::MakeAttack(Combatant& target, Combatant& attacker, Attack at
 	}
 	else if (attack.effect == "shield")
 	{
+		Engine::GetInstance().audio->PlayFx(s_shield, 0);
 		attacker.shield_and_buff.first = true;
 		SpawnFloatingText( "SHIELDED!", attacker.position.getX(), attacker.position.getY() - 60, { 0,255,255,255 } );
 	}
 	else if (attack.effect == "buff")
 	{
+		Engine::GetInstance().audio->PlayFx(s_buff, 0);
 		attacker.shield_and_buff.second = true;
 	}
 	else if (attack.effect == "poisoned")
 	{
+		Engine::GetInstance().audio->PlayFx(s_poison, 0);
 		target.status = attack.effect;
 		SpawnFloatingText( "POISONED!", target.position.getX(), target.position.getY() - 60, { 0,255,0,255 } );
 	}
 	else if (attack.effect == "paralized")
 	{
+		Engine::GetInstance().audio->PlayFx(s_paral, 0);
 		target.status = attack.effect;
 		SpawnFloatingText("PARALIZED!", target.position.getX(), target.position.getY() - 60, { 255,255,255,255 });
 	}
