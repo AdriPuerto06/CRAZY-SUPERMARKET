@@ -14,7 +14,7 @@ public:
 
 	BaseEnemy();
 	~BaseEnemy();
-	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int fight_ID);
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, const char* anim_tsxpath, int ID, int fight_ID);
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
@@ -40,7 +40,9 @@ public:
 	SDL_Texture* texture = NULL;
 	int texW, texH;
 	AnimationSet anims;
+
 	const char* texturePath;
+	const char* anim_tsxpath;
 
 	b2Vec2 velocity;
 	float speed;
@@ -54,4 +56,10 @@ public:
 	int fight_ID;
 
 	bool showingButton;
+
+	//hitbox
+	int hitW = 0;
+	int hitH = 0;
+
+	
 };

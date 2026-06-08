@@ -52,6 +52,10 @@ public:
     float GetAxisRightY() const { return axisRY; }
     bool GetButtonSouth() const { return buttonSouth; }
 
+    bool GetButton(SDL_GamepadButton button) const {
+        return SDL_GetGamepadButton(gamepad, button);
+    }
+
 private:
 
     bool windowEvents[WE_COUNT];

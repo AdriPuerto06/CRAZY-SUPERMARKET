@@ -46,6 +46,8 @@ bool Scene::Awake()
 
 	sceneStack.push(SceneID::MAIN_MENU);
 
+	
+
 	LOG("Loading Scene");
 	bool ret = true;
 	return ret;
@@ -142,7 +144,9 @@ bool Scene::Update(float dt)
 	case SceneID::LOSE:
 		UpdateLose(dt);
 		break;
-
+	case SceneID::CUTSCENE:
+		UpdateCutsceneScene(dt);
+		break;
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
@@ -247,7 +251,11 @@ bool Scene::PostUpdate()
 	}
 
 	//Pause
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
+	bool pausePressed =
+		Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
+		Engine::GetInstance().input->GetButton(SDL_GAMEPAD_BUTTON_START) == KEY_DOWN;
+
+	if ((pausePressed || Engine::GetInstance().input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) && (currentScene == SceneID::LEVEL1 || currentScene == SceneID::LEVEL2 || currentScene == SceneID::LEVEL3 || currentScene == SceneID::LEVEL4 ||
 																				currentScene == SceneID::LEVEL5 || currentScene == SceneID::LEVEL6 || currentScene == SceneID::LEVEL7 || currentScene == SceneID::LEVEL8 ||
 																				currentScene == SceneID::LEVEL9 || currentScene == SceneID::LEVEL10 || currentScene == SceneID::LEVEL11)) 
 	{
@@ -456,6 +464,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LOSE:
 		LoadWin();
 		break;
+	case SceneID::CUTSCENE:
+		LoadCutsceneScene();
+		break;
 	}
 }
 
@@ -551,6 +562,9 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LOSE:
 		UnloadLose();
 		break;
+	case SceneID::CUTSCENE:
+		UnloadCutsceneScene();
+		break;
 	}
 
 }
@@ -571,9 +585,64 @@ void Scene::CheckScene(std::string target) {
 
 }
 
+
+
+// Cutscene
+void Scene::StartTeleportScene(SceneID target)
+{
+	// store the target and change to the empty scene
+	pendingTeleportTarget = target;
+	ChangeScene(SceneID::CUTSCENE);
+}
+
+void Scene::LoadCutsceneScene()
+{
+	// Ensure UI cleaned and timer reset
+	Engine::GetInstance().uiManager->CleanUp();
+	cutsceneTimer = 0.0f;
+
+
+	std::unordered_map<int, std::string> aliases = { {0,"idle"}};
+	anims.LoadFromTSX("Assets/Cutscenes/cutscene-Sheet.tsx", aliases);
+	cutsceneTex = Engine::GetInstance().textures->Load("Assets/Cutscenes/cutscene-Sheet.png");
+
+
+	// Stop other audio or set ambience here
+	Engine::GetInstance().audio->StopFx();
+}
+
+void Scene::UpdateCutsceneScene(float dt)
+{
+	cutsceneTimer += dt;
+
+	anims.Update(dt);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+	int drawX = 0;
+	int drawY = 0;
+
+	Engine::GetInstance().render->DrawTexture(cutsceneTex, drawX, drawY, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, false);
+
+	// If SPACE pressed or timeout reached, proceed to target
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || cutsceneTimer >= cutsceneDuration)
+	{
+		ChangeScene(pendingTeleportTarget);
+	}
+}
+
+void Scene::UnloadCutsceneScene()
+{
+	// cleanup if necessary
+	Engine::GetInstance().uiManager->CleanUp();
+	Engine::GetInstance().textures->UnLoad(cutsceneTex);
+	cutsceneTimer = 0.0f;
+	LOG("Exiting Cutscene.");
+}
+
 // *********************************************
 // INTRO SCREEN functions
 // *********************************************
+
 
 void Scene::LoadIntroScreen()
 {
@@ -705,7 +774,7 @@ void Scene::LoadMainMenu() {
 	//	CreateButton(btnCntTex, btnCntPressedTex, bt7Pos, 18);
 	//}
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0.0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
 
 	// Instantiate a UIButton in the Scene
 	SDL_Rect bt1Pos = { WindowSize.getX() / 2 - 115, (WindowSize.getY() / 2) - 200, 229,90 };
@@ -1257,7 +1326,7 @@ void Scene::UnloadLevel8() {
 
 void Scene::LoadLevel9() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0);
+	Engine::GetInstance().audio->PlayMusic(m_front, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "FrontRoom.tmx");
@@ -1341,7 +1410,7 @@ void Scene::UnloadLevel10() {
 
 void Scene::LoadLevel11() {
 
-	Engine::GetInstance().audio->PlayMusic(m_boss, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_backrooms, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Cursed_Supermarket.tmx");
@@ -1722,8 +1791,8 @@ void Scene::LoadBattle()
 		// Elegir una aleatoriamente
 		int randomIndex = rand() % 4;
 		BattleBackgroundIMG = Engine::GetInstance().textures->Load(battleBackgrounds[randomIndex]);
-
-		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+		
+		
 	}
 
 	SDL_Texture* btnAtkTex = Engine::GetInstance().textures->Load("Assets/Textures/UI/UI_Atk_Normal.png");
@@ -1755,17 +1824,26 @@ void Scene::LoadBattle()
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
-	if (BattleBackgroundIMG != nullptr) {
-		Engine::GetInstance().textures->UnLoad(BattleBackgroundIMG);
-		BattleBackgroundIMG = nullptr; 
+	if (Engine::GetInstance().combatManager->goBack == SceneID::LEVEL11) {
+		Engine::GetInstance().audio->PlayMusic(m_boss, 0.2, -1);
 	}
-	monocolor = false;
-	Engine::GetInstance().uiManager->CleanUp();
+	else
+	{
+		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+	}
 }
 
 void Scene::UpdateBattle(float dt)
 {
 	Engine::GetInstance().render->DrawTexture(BattleBackgroundIMG, WindowSize.getX() / 2 - 720, 0);
+
+	if (Engine::GetInstance().combatManager->goBack == SceneID::LEVEL11) {
+		Engine::GetInstance().audio->PlayMusic(m_boss, 0.2, -1);
+	}
+	else
+	{
+		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+	}
 }
 
 // *********************************************

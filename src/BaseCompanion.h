@@ -14,7 +14,8 @@ public:
 
 	BaseCompanion();
 	~BaseCompanion();
-	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int Dialogue_ID);
+	
+	void Init(EntityType type, bool active, Vector2D position, const char* texturePath, const char* anim_tsxpath, int ID, int Dialogue_ID);
 	bool Awake();
 	bool Start();
 	bool Update(float dt);
@@ -43,6 +44,7 @@ public:
 	int texW, texH;
 	AnimationSet anims;
 	const char* texturePath;
+	const char* anim_tsxpath;
 
 	b2Vec2 velocity;
 	float speed = 4.0f;
@@ -52,4 +54,8 @@ public:
 	int HP;
 	int ID;
 	int Dialogue_ID;
+
+
+	int hitW = 0;
+	int hitH = 0;
 };

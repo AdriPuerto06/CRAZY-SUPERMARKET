@@ -5,7 +5,7 @@
 //sounds to be added
 static std::map<Music, const char*> music_paths =
 {
-    { m_title, "Assets/Audio/Music/title music.wav" },
+    { m_title, "Assets/Audio/Music/title_music.wav" },
 	{ m_battle, "Assets/Audio/Music/battle music.wav" },
     { m_roof, "Assets/Audio/Music/roof.wav" },
     { m_roof_drums, "Assets/Audio/Music/drums.wav" },
@@ -15,7 +15,9 @@ static std::map<Music, const char*> music_paths =
     { m_boss, "Assets/Audio/Music/boss.wav" },
     { m_backrooms, "Assets/Audio/Music/backro.wav" },
     { m_clothes, "Assets/Audio/Music/cloths.wav" },
-    { m_lil_clot, "Assets/Audio/Music/lil cloths.wav" }
+    { m_lil_clot, "Assets/Audio/Music/lil cloths.wav" },
+    { m_front, "Assets/Audio/Music/front.wav" }
+
 	
 };
 
@@ -27,7 +29,15 @@ static std::map<Sfx, const char*> sfx_paths =
     {s_button, "Assets/Audio/Fx/button.wav"},
     {s_slider, "Assets/Audio/Fx/slider.wav"},
     {s_punch, "Assets/Audio/Fx/punch.wav" },
-    {s_kick, "Assets/Audio/Fx/kick.wav" }
+    {s_kick, "Assets/Audio/Fx/kick.wav" },
+    {s_fidget, "Assets/Audio/Fx/fidget.wav" },
+    {s_heal, "Assets/Audio/Fx/heal.wav" },
+	{s_shield, "Assets/Audio/Fx/shield.wav" },
+	{s_buff, "Assets/Audio/Fx/buff.wav" },
+	{s_poison, "Assets/Audio/Fx/poison.wav" },
+	{s_paral, "Assets/Audio/Fx/paral.wav" }
+
+
 
 
 };

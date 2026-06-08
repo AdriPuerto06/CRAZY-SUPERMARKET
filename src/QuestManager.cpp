@@ -157,16 +157,16 @@ void QuestManager::ViewQuest()
 			std::string text = std::string(q.name);
 			std::string desc = std::string(q.description);
 
-			int x = winW - 300;
+			int x = winW - 400;
 			
 			int y = Ystart + Yspacing;
 			// pasar false en DrawTexture hace que siga la camara en vez de dejar la imagen tiesa ahí (muy loco)
-			Engine::GetInstance().render->DrawTexture(PopUp, x - PopUp->w - 5, y, nullptr, 0.0f, 0.0, 0, 0, false);
+			Engine::GetInstance().render->DrawTexture(PopUp, x - PopUp->w - 10, y + 10, nullptr, 0.0f, 0.0, 0, 0, false);
 
-			Engine::GetInstance().render->DrawText(text.c_str(), x, y, 0, 0, color);
-			Engine::GetInstance().render->DrawText(desc.c_str(), x, y + 32, (5*CHAR_LENGTH / 7) * desc.size(), (5*CHAR_HEIGHT / 7), color);
+			Engine::GetInstance().render->DrawText(text.c_str(), x, y, 380, 0, color);
+			Engine::GetInstance().render->DrawText(desc.c_str(), x, y + 64, 380, 20, color);
 			
-			Yspacing += 32;
+			Yspacing += 100;
 
 		}
 	}

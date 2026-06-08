@@ -27,7 +27,8 @@ enum Music {
     m_boss,
     m_backrooms,
     m_clothes,
-	m_lil_clot
+	m_lil_clot,
+    m_front
 };
 
 enum Sfx {
@@ -38,7 +39,13 @@ enum Sfx {
     s_button,
     s_slider,
     s_punch,
-    s_kick
+    s_kick,
+    s_fidget,
+    s_heal,
+    s_shield,
+    s_buff,
+    s_poison,
+    s_paral
 };
 
 

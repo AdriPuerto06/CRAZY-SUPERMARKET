@@ -11,10 +11,11 @@
 #include "EntityManager.h"
 #include "Map.h"
 #include "CombatManager.h"
+#include <unordered_map>
 
 BaseEnemy::BaseEnemy(){}
 
-void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, int ID, int fight_ID)
+void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char* texturePath, const char* anim_tsxpath, int ID, int fight_ID)
 {
 	this->type = type;
 	this->position = position;
@@ -22,6 +23,7 @@ void BaseEnemy::Init(EntityType type, bool active, Vector2D position, const char
 	this->HP = HP;
 	this->ID = ID;
 	this->texturePath = texturePath;
+	this->anim_tsxpath = anim_tsxpath;
 	this->fight_ID = fight_ID;
 }
 
@@ -37,10 +39,34 @@ bool BaseEnemy::Start() {
 
 	//texture
 	texture = Engine::GetInstance().textures->Load(texturePath);
-	texH = texture->h;
-	texW = texture->w;
-	//sensor
-	pbody = Engine::GetInstance().physics->CreateRectangle(position.getX() + texW / 2, position.getY() + texH / 2, texH * 1.25, texW * 1.25, bodyType::STATIC);
+	Engine::GetInstance().textures->GetSize(texture, texW, texH);
+
+	if (anim_tsxpath != nullptr && anim_tsxpath[0] != '\0') {
+		std::unordered_map<int, std::string> emptyAliases;
+		anims.LoadFromTSX(anim_tsxpath, emptyAliases);
+	}
+
+	// Determinar tamaño de hitbox basado en el frame actual de la animación.
+	// Si no hay animación válida, fallback al tamaño completo de la textura.
+	anims.Update(0); // asegurar que el set tenga un frame actual si es posible
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+	int frameW = texW;
+	if (animFrame.w != 0)
+	{
+		frameW = animFrame.w;
+	}
+	int frameH = texH;
+	if (animFrame.h != 0)
+	{
+		frameH = animFrame.h;
+	}
+
+	hitW = frameW;
+	hitH = frameH;
+
+	//sensor: creamos la hitbox centrada en la posición usando el tamaño del frame
+	pbody = Engine::GetInstance().physics->CreateRectangle((int)(position.getX() + hitW / 2),(int)(position.getY() + hitH / 2),hitW,hitH,bodyType::STATIC);
 	pbody->ctype = ColliderType::ENEMY;
 	pbody->listener = this;
 	//bools
@@ -74,11 +100,16 @@ void BaseEnemy::Draw(float dt) {
 	position.setX((float)x);
 	position.setY((float)y);
 
-	// Draw pathfinding debug
-	//pathfinding->DrawPath();
 
-	//Draw the player using the texture and the current animation frame
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2);
+	bool hasAnimFrame = (animFrame.w != 0 && animFrame.h != 0);
+	if (texture != nullptr) {
+		if (hasAnimFrame) {
+			Engine::GetInstance().render->DrawTexture(texture, x - animFrame.w / 2, y - animFrame.h / 2, &animFrame);
+		}
+		else {
+			Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2);
+		}
+	}
 }
 
 bool BaseEnemy::CleanUp()
@@ -98,14 +129,38 @@ bool BaseEnemy::Destroy()
 }
 
 void BaseEnemy::SetPosition(Vector2D pos) {
-	pbody->SetPosition((int)(pos.getX()), (int)(pos.getY()));
+	
+	anims.Update(0);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	int w = texW;
+	if (animFrame.w != 0)
+	{
+		w = animFrame.w;
+	}
+	int h = texH;
+	if (animFrame.h != 0)
+	{
+		h = animFrame.h;
+	}
+	pbody->SetPosition((int)(pos.getX() + w / 2.0f), (int)(pos.getY() + h / 2.0f));
 }
 
 Vector2D BaseEnemy::GetPosition() {
 	int x, y;
 	pbody->GetPosition(x, y);
-	// Adjust for center
-	return Vector2D((float)x-texW/2,(float)y-texH/2);
+	anims.Update(0);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	int w = texW;
+	if (animFrame.w != 0)
+	{
+		w = animFrame.w;
+	}
+	int h = texH;
+	if (animFrame.h != 0)
+	{
+		h = animFrame.h;
+	}
+	return Vector2D((float)x - w / 2.0f, (float)y - h / 2.0f);
 }
 
 //Define OnCollision function for the enemy. 

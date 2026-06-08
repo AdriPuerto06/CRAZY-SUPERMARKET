@@ -26,7 +26,7 @@
 	<fight id ="103" players_id="1" enemies_id="103"></fight>
 	<fight id ="104" players_id="1" enemies_id="104"></fight>
 	
-	<player id="1" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">>
+	<player id="1" HP="25" anim_tsxpath="Assets/Textures/Combat/Characters/Prota_combat.tsx" texturePath="Assets/Textures/Combat/Characters/Prota.png">>
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
@@ -41,7 +41,7 @@
 	</player>
 	<!--Companions-->
 	<!--companions are the players except for player with id = 1, the player id is gotten from Companion_ID like this: player id = Companion_ID + 1-->
-	<player id="2" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png" > 
+	<player id="2" HP="25" anim_tsxpath="Assets/Textures/Combat/Characters/Maga_combat.tsx" texturePath="Assets/Textures/Combat/Characters/Maga.png" > 
 		
 		<!--Mary Nancy - Wizard-->
 		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none" unlocked="true"></attack_stats>
@@ -50,7 +50,7 @@
 		<attack_stats name="Radioactive eruption" magicPoints="5" dmg="3" effect="paralized" unlocked="true"></attack_stats>
 
 	</player>
-	<player id="3" HP="25" anim_tsxpath="Assets/Textures/testguy32x32x200resize.tsx" texturePath="Assets/Textures/testguy32x32x200resize.png">
+	<player id="3" HP="25" anim_tsxpath="Assets/Textures/Combat/Characters/Belloton_combat.tsx" texturePath="Assets/Textures/Combat/Characters/Belloton.png">
 
 		<!--Cornelius - Healer-->
 		<attack_stats name="Delightful bomb" magicPoints="4" dmg="8" effect="none" unlocked="true"></attack_stats>
@@ -101,438 +101,550 @@
 	
 	
 	<!--Enemies-->
-	
-	<enemy id =" 1" HP="15" anim_tsxpath= "Assets\Textures\frisbee-Sheet.tsx" texturePath="Assets\Textures\frisbee-Sheet.png">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="4" effect="none"></attack>
+
+	<enemy id ="1" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
 		<attack name="Attack4" dmg="2" effect="none"></attack>
 	</enemy>
-	<enemy id =" 2" HP="15">
-		<attack name="Attack1" dmg ="7" effect="none"></attack>
-		<attack name="Attack2" dmg ="1" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="2" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="6" effect="none"></attack>
 	</enemy>
-	<enemy id =" 3" HP="10">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="3" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id = "4" HP="5">
-		<attack name="Attack1" dmg ="3" effect="none"></attack>
-		<attack name="Attack2" dmg ="9" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="4" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id =" 5" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="5" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id =" 6" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="6" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id =" 7" HP="10">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="4" effect="none"></attack>
-		<attack name ="Attack3" dmg="3" effect="none"></attack>
+
+	<enemy id ="7" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
 		<attack name="Attack4" dmg="2" effect="none"></attack>
 	</enemy>
-	<enemy id =" 8" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="8" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id =" 9" HP="10">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="9" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id =" 10" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
+
+	<enemy id ="10" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id =" 11" HP="10">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="6" effect="none"></attack>
-		<attack name ="Attack3" dmg="4" effect="none"></attack>
+
+	<enemy id ="11" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
 		<attack name="Attack4" dmg="3" effect="none"></attack>
 	</enemy>
-	<enemy id =" 12" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
+	<enemy id ="12" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
 	</enemy>
-	<enemy id =" 13" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
+
+	<enemy id ="13" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
 	</enemy>
-	<enemy id =" 14" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 15" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 16" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 17" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 18" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 19" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 20" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 21" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 22" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 23" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 24" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id =" 25" HP="15">
-		<attack name="Attack1" dmg ="5" effect="none"></attack>
-		<attack name="Attack2" dmg ="3" effect="none"></attack>
-		<attack name ="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="26" HP="15">
+
+	<enemy id ="14" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="27" HP="15">
+
+	<enemy id ="15" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="16" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="28" HP="15">
+
+	<enemy id ="17" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="29" HP="15">
+
+	<enemy id ="18" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="19" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="30" HP="15">
+
+	<enemy id ="20" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="31" HP="15">
+
+	<enemy id ="21" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="32" HP="15">
+
+	<enemy id ="22" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="23" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="24" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="25" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="33" HP="15">
+
+	<enemy id ="26" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="27" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="34" HP="15">
+
+	<enemy id ="28" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="35" HP="15">
+
+	<enemy id ="29" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="30" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="36" HP="15">
+
+	<enemy id ="31" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="37" HP="15">
+
+	<enemy id ="32" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="38" HP="15">
+
+	<enemy id ="33" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="34" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="35" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="36" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="39" HP="15">
+
+	<enemy id ="37" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="38" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="40" HP="15">
+
+	<enemy id ="39" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="41" HP="15">
+
+	<enemy id ="40" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="41" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="42" HP="15">
+
+	<enemy id ="42" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="43" HP="15">
+
+	<enemy id ="43" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="44" HP="15">
+
+	<enemy id ="44" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="45" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="46" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="47" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="45" HP="15">
+
+	<enemy id ="48" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="49" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="46" HP="15">
+
+	<enemy id ="50" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="47" HP="15">
+
+	<enemy id ="51" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="52" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="48" HP="15">
+
+	<enemy id ="53" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="49" HP="15">
+
+	<enemy id ="54" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="50" HP="15">
+
+	<enemy id ="55" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="56" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="57" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="58" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="51" HP="15">
+
+	<enemy id ="59" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="60" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="52" HP="15">
+
+	<enemy id ="61" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="53" HP="15">
+
+	<enemy id ="62" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="63" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="54" HP="15">
+
+	<enemy id ="64" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="55" HP="15">
+
+	<enemy id ="65" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="56" HP="15">
+
+	<enemy id ="66" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="67" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="3" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="68" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Combat/Enemies/Salt and Pepper.png">
+		<attack name="Attack1" dmg="7" effect="none"></attack>
+		<attack name="Attack2" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="6" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="69" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="57" HP="15">
+
+	<enemy id ="70" HP="5" anim_tsxpath="Assets/Textures/Combat/Enemies/Pan.tsx" texturePath="Assets/Textures/Combat/Enemies/Pan.png">
+		<attack name="Attack1" dmg="3" effect="none"></attack>
+		<attack name="Attack2" dmg="9" effect="none"></attack>
+		<attack name="Attack3" dmg="2" effect="none"></attack>
+		<attack name="Attack4" dmg="1" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="71" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="58" HP="15">
+
+	<enemy id ="72" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Langostin.tsx" texturePath="Assets/Textures/Combat/Enemies/Langostin.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="59" HP="15">
+
+	<enemy id ="73" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Milk.tsx" texturePath="Assets/Textures/Combat/Enemies/Milk.png">
+		<attack name="Attack1" dmg="5" effect="none"></attack>
+		<attack name="Attack2" dmg="4" effect="none"></attack>
+		<attack name="Attack3" dmg="3" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
+	</enemy>
+
+	<enemy id ="74" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_morado.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_morado.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="60" HP="15">
+
+	<enemy id ="75" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Slime_verde.tsx" texturePath="Assets/Textures/Combat/Enemies/Slime_verde.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="61" HP="15">
+
+	<enemy id ="76" HP="15" anim_tsxpath="Assets/Textures/Combat/Enemies/Tomatona.tsx" texturePath="Assets/Textures/Combat/Enemies/Tomatona.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
 		<attack name="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id="62" HP="15">
+
+	<enemy id ="77" HP="10" anim_tsxpath="Assets/Textures/Combat/Enemies/Zapatico.tsx" texturePath="Assets/Textures/Combat/Enemies/Zapatico.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
+		<attack name="Attack2" dmg="6" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="3" effect="none"></attack>
 	</enemy>
-	<enemy id="63" HP="15">
+
+	<enemy id ="78" HP="15" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
 		<attack name="Attack1" dmg="5" effect="none"></attack>
 		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="64" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="65" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="66" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="67" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="68" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="69" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="70" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="71" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
-	</enemy>
-	<enemy id="72" HP="15">
-		<attack name="Attack1" dmg="5" effect="none"></attack>
-		<attack name="Attack2" dmg="3" effect="none"></attack>
-		<attack name="Attack3" dmg="2" effect="none"></attack>
-		<attack name="Attack4" dmg="1" effect="none"></attack>
+		<attack name="Attack3" dmg="4" effect="none"></attack>
+		<attack name="Attack4" dmg="2" effect="none"></attack>
 	</enemy>
 	
 	

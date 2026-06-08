@@ -261,6 +261,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 {
                     int NPC_ID = 0;
                     const char* texturePath = nullptr;
+                    const char* anim_tsxpath = nullptr;
                     bool active = false;
                     int currentDialogueTree = 0;
 
@@ -281,6 +282,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
+                        if (name == "anim_tsxpath")
+                            anim_tsxpath = (const char*)propertyNode.attribute("value").as_string();
+
                         if (name == "currentDialogueTree") {
                             currentDialogueTree = propertyNode.attribute("value").as_int();
                             PendingChangesCheckAndSetter(EntityType::BASENPC, Component::DIALOGUETREE, NPC_ID, currentDialogueTree, sceneID); //if currentDialogueTree is suposed to be different (changed because
@@ -299,7 +303,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASENPC, ID));
                         }
-                        npc->Init(EntityType::BASENPC, active, pos, texturePath, NPC_ID, currentDialogueTree);
+                        npc->Init(EntityType::BASENPC, active, pos, texturePath, anim_tsxpath, NPC_ID, currentDialogueTree);
                         npc->entity_ID = ID;
                         LOG("NPC -> NPC_ID: %i, entity_ID: %i, at %f, %f.", NPC_ID, ID, pos.getX(), pos.getY());
                         npc->Start();
@@ -313,6 +317,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                 {
                     int Enemy_ID = 0;
                     const char* texturePath = nullptr;
+                    const char* anim_tsxpath = nullptr; // nueva propiedad
                     bool active = false;
                     int fight_ID = 0;
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
@@ -330,6 +335,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
+                        if (name == "anim_tsxpath")
+                            anim_tsxpath = (const char*)propertyNode.attribute("value").as_string();
+
                         if (name == "fight_ID")
                             fight_ID = propertyNode.attribute("value").as_int();
                     }
@@ -345,7 +353,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             enemy = std::dynamic_pointer_cast<BaseEnemy>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASEENEMY, ID));
                         }
-                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, Enemy_ID, fight_ID);
+                        enemy->Init(EntityType::BASEENEMY, active, pos, texturePath, anim_tsxpath, Enemy_ID, fight_ID);
                         enemy->entity_ID = ID;
                         LOG("Enemy -> Enemy_ID: %i, entity_ID: %i, at %f, %f.", Enemy_ID, ID, pos.getX(), pos.getY());
                         enemy->Start();
@@ -360,6 +368,7 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
 
                     int Companion_ID = 0;
                     const char* texturePath = nullptr;
+                    const char* anim_tsxpath = nullptr; // añadida lectura de animación
                     bool active = false;
                     int Dialogue_ID = -1;
 
@@ -379,6 +388,9 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         if (name == "texturePath")
                             texturePath = (const char*)propertyNode.attribute("value").as_string();
 
+                        if (name == "anim_tsxpath")
+                            anim_tsxpath = (const char*)propertyNode.attribute("value").as_string();
+
                         if (name == "Dialogue_ID")
                             Dialogue_ID = propertyNode.attribute("value").as_int();
                     }
@@ -394,7 +406,8 @@ void Map::LoadEntities(std::shared_ptr<Player>& player, SceneID sceneID) {
                         {
                             companion = std::dynamic_pointer_cast<BaseCompanion>(Engine::GetInstance().entityManager->GetEntity(EntityType::BASECOMPANION, ID));
                         }
-                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, Companion_ID, Dialogue_ID);
+                        
+                        companion->Init(EntityType::BASECOMPANION, active, pos, texturePath, anim_tsxpath, Companion_ID, Dialogue_ID);
                         companion->entity_ID = ID;
                         LOG("Companion -> Companion_ID: %i, entity_ID: %i, at %f, %f.", Companion_ID, ID, pos.getX(), pos.getY());
                         companion->Start();
@@ -510,6 +523,7 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
                     std::shared_ptr<BaseNPC> npc = std::dynamic_pointer_cast<BaseNPC>(Engine::GetInstance().entityManager->GetEntity_Map(ID, EntityType::BASENPC));
                     if (npc) {
                         const char* texturePath = npc->texturePath;
+                        const char* anim_tsxpath = npc->anim_tsxpath;
                         bool active = npc->active;
                         int currentDialogueTree = npc->currentDialogueTree;
 
@@ -527,6 +541,9 @@ void Map::SaveEntities(std::shared_ptr<Player> player, SceneID sceneID) {
 
                             if (name == "texturePath")
                                 propertyNode.attribute("value").set_value(texturePath);
+
+                            if (name == "anim_tsxpath")
+                                propertyNode.attribute("value").set_value(anim_tsxpath ? anim_tsxpath : "");
 
                             if (name == "currentDialogueTree")
                                 propertyNode.attribute("value").set_value(currentDialogueTree);
@@ -1056,7 +1073,7 @@ void Map::UpdateEnemiesData()
             for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 bool change = false;
                 std::string entityType = objectNode.attribute("type").as_string();
-                
+
                 if (entityType == "Enemy")
                 {
                     for (pugi::xml_node propertyNode = objectNode.child("properties").child("property");
@@ -1071,7 +1088,7 @@ void Map::UpdateEnemiesData()
                         if (name == "active")
                         {
                             for (auto i : ids) { if (ID == i) change = true; }
-                            if (change) { 
+                            if (change) {
                                 propertyNode.attribute("value").set_value(active);  //change active value
                                 LOG("Enemy ID: %i marked %i (0 dead, 1 alive)", ID, active);
                                 std::string mapPathName = mapPath + mapFileName; //save file
@@ -1079,10 +1096,10 @@ void Map::UpdateEnemiesData()
                             };
                         }
                     }
-                    }
                 }
             }
         }
+    }
 }
 
 void Map::PendingChangesCheckAndSetter(EntityType type, Component component, int ID, int& current_value, SceneID entity_Scene)

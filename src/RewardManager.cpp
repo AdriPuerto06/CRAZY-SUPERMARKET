@@ -6,6 +6,7 @@
 #include "CombatManager.h"
 #include "EventManager.h"
 #include "Map.h"
+#include "Scene.h"
 
 bool IsANumber(char c)
 {
@@ -129,8 +130,11 @@ void RewardManager::GetReward(Reward reward)
 		break;
 
 	case RewardType::TELEPORT:
-		Engine::GetInstance().scene->ChangeScene(GetSceneID(reward.reward_value.c_str()));
+	{
+		SceneID target = GetSceneID(reward.reward_value.c_str());
+		Engine::GetInstance().scene->StartTeleportScene(target);
 		break;
+	}
 	}
 }
 

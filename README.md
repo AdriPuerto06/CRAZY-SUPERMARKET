@@ -105,3 +105,51 @@ In this release, the following features and improvements have been implemented:
 3. Run `CRAZY-SUPERMARKET.exe`.  
 
 ---
+
+## 🎵 Audio Credits & Licensing
+
+All audio assets used in this project strictly comply with the course guidelines regarding legal assets. They are categorized below by ownership and license type:
+
+### 📄 1. Original Audio (Assets created by the team)
+The following original audio tracks and sound effects were composed and produced using **BandLab** by the project's audio team. 
+
+* **Files:** `[backro.wav, battle music.wav, drums.wav, rest.wav, roof largo.wav, roof.wav, title_music.wav, crazy-supermarket.wav, regular supermarket.wav]`
+* **License:** Licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**.
+  > You are free to share, remix, and adapt this material as long as appropriate credit is given, it is not used for commercial purposes, and any derivative works are shared under the same license.
+  > 🔗 [View License Deed](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+---
+
+### 🎨 2. External Audio (Assets with Free License)
+The following sound assets were sourced from external platforms under free or educational-use terms.
+* **Files:** `[buff.wav, button.wav, fidget.wav, heal.wav, kick.wav, logo-epic-reveal.wav, paral.wav, poison.wav, punch.wav, shield.wav, slider.wav]`
+* **Original Authors / Sources:** 
+  * *buff.wav* by `[(No Name Associated)]` – [https://pixabay.com/es/sound-effects/retro-power-up-sound-05-474803/]
+  * *button.wav* by `[litupsubway]` – [https://pixabay.com/sound-effects/technology-ui-close-sfx-513359/]
+  * *fidget.wav* by `[tulsi_sounds (Freesound)]` – [https://pixabay.com/es/sound-effects/musical-fidget-spinner-808-101103/]
+  * *heal.wav* by `[Yodguard]` – [https://pixabay.com/es/sound-effects/pel%C3%ADculas-y-efectos-especiales-healing-magic-4-378668/]
+  * *kick.wav* by `[first_name85]` – [https://www.myinstants.com/en/instant/punch-sound-effect-remastered-97158/]
+  * *logo-epic-reveal.wav* by `[BreakzStudios]` – [https://pixabay.com/es/sound-effects/musical-epic-cinematic-reveal-logo-201065/]
+  * *paral.wav* by `[floraphonic]` – [https://pixabay.com/es/sound-effects/pel%C3%ADculas-y-efectos-especiales-duct-tape-2-183994/]
+  * *poison.wav* by `[Prmodrai]` – [https://pixabay.com/es/sound-effects/pel%C3%ADculas-y-efectos-especiales-damage-blowhole-402072/]
+  * *punch.wav* by `[Mane]` – [https://www.myinstants.com/en/instant/crazy-diamond-punch-63096/]
+  * *shield.wav* by `[nekoninja (Freesound)]` – [https://pixabay.com/es/sound-effects/pel%C3%ADculas-y-efectos-especiales-shield-guard-6963/]
+  * *slider.wav* by `[Audley_Fergine]` – [https://pixabay.com/es/sound-effects/pel%C3%ADculas-y-efectos-especiales-ui-button-click-5-327756/]
+
+* **License Details:** Sourced from Pixabay and open community soundboards. Pixabay assets are free for use under the Pixabay Content License. *Digital license certificates for Pixabay tracks are attached in the repository.* 
+
+---
+
+### 📻 3. External Audio / Derivative Works (Acquired Assets)
+The following assets correspond to external productions, memes, or collaborative content under specific platform guidelines.
+
+**Hybrid Remix Tracks (BandLab + Suno Co-creations):**
+* **Files:** `[boss.wav, cloths.wav, front.wav, lil_cloth.wav, rest dungeon.wav]`
+* **Description:** These tracks are **derivative works** based on original compositions and stems previously created by our team in BandLab. They were subsequently processed, restructured, and mixed using the Suno external platform.
+  * **Terms of Use:** Pursuant to the platform's Terms of Service for standard users, these hybrid tracks are authorized exclusively for **personal, academic, and non-commercial project purposes**, fully satisfying the educational scope of this course.
+
+* **Viral Video Sound Assets:**
+  * **File:** `jumpscare.wav` (*Arcade Craniacs Jumpscare Sound Effect*)
+  * **Source:** Acquired from YouTube [Source Link](https://www.youtube.com/watch?v=AR92BxrKcjw)
+  * **Original Reference:** Arcade Craniacs Viral Asset.
+  * **License/Terms:** Incorporated under fair use for educational, non-commercial purposes as an acquired community sound asset.

@@ -32,9 +32,11 @@ bool Player::Start() {
 
 	// load
 	
-	std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
+	std::unordered_map<int, std::string> aliases = { {0,"idle_Right"},{4,"idle_Left"},{8,"run_Right"}, {12, "run_Left"} };
 	anims.LoadFromTSX("Assets/Textures/Characters/Prota.tsx", aliases);
-	anims.SetCurrent("idle");
+	// deafult animation
+	anims.SetCurrent("idle_Right");
+	dirX = 1.0f;
 
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/Characters/Prota.png");
@@ -227,6 +229,23 @@ void Player::Move() {
 	}
 
 	b2Vec2 playerVel = b2Body_GetLinearVelocity(pbody->body);
+
+	if (velocity.x < 0.0f) {
+		anims.SetCurrent("run_Left");
+		dirX = -1.0f;
+	}
+	else if (velocity.x > 0.0f) {
+		anims.SetCurrent("run_Right");
+		dirX = 1.0f;
+	}
+	else if (velocity.y != 0.0f) {
+		if (dirX < 0.0f) { anims.SetCurrent("run_Left"); }
+		else { anims.SetCurrent("run_Right"); }
+	}
+	else {
+		if (dirX < 0.0f) { anims.SetCurrent("idle_Left"); }
+		else { anims.SetCurrent("idle_Right"); }
+	}
 }
 
 void Player::ApplyPhysics() {
@@ -263,25 +282,29 @@ void Player::Draw(float dt) {
 	position.setX((float)x);
 	position.setY((float)y);
 
-	// L10: TODO 5: Draw the player using the texture and the current animation frame
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 6, y - texH / 2, &animFrame);
+	int drawX = x - animFrame.w / 2;
+	int drawY = y - animFrame.h / 2;
+
+	Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &animFrame);
 }
 
 void Player:: ShowMenu() {
 	bool can_show_menu = Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL1 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL2 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL3 || Engine::GetInstance().scene->GetCurrentScene() == SceneID::LEVEL4;
-	if(can_show_menu)
-	if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && !showingMenu) {
-		Engine::GetInstance().itemManager->ShowInventoryOptions();
-		Engine::GetInstance().itemManager->GetPlayerStats();
-		Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
-		Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
-		showingMenu = true;
+	if (can_show_menu)
+	{
+		bool inventoryPressed = Engine::GetInstance().input->GetButton(SDL_GAMEPAD_BUTTON_NORTH);
+		if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || inventoryPressed) && !showingMenu) {
+			Engine::GetInstance().itemManager->ShowInventoryOptions();
+			Engine::GetInstance().itemManager->GetPlayerStats();
+			Engine::GetInstance().scene->sceneStack.push(Engine::GetInstance().scene->GetCurrentScene());
+			Engine::GetInstance().map->SaveEntities(Engine::GetInstance().scene->GetPlayer(), Engine::GetInstance().scene->GetCurrentScene());
+			showingMenu = true;
+		}
+		else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN || inventoryPressed) && showingMenu) {
+			Engine::GetInstance().uiManager->CleanUp();
+			showingMenu = false;
+		}
 	}
-	else if ((Engine::GetInstance().input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) && showingMenu) {
-		Engine::GetInstance().uiManager->CleanUp();
-		showingMenu = false;
-	}
-
 }
 
 bool Player::CleanUp()
@@ -337,11 +360,14 @@ Vector2D Player::GetPosition() {
 	int x, y;
 	pbody->GetPosition(x, y);
 	// Adjust for center
-	return Vector2D((float)x - texW / 2, (float)y - texH / 2);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	return Vector2D((float)x - animFrame.w / 2.0f, (float)y - animFrame.h / 2.0f);
 }
 
 void Player::SetPosition(Vector2D pos) {
-	pbody->SetPosition((int)(pos.getX() + texW / 2), (int)(pos.getY() + texH / 2));
+	
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	pbody->SetPosition((int)(pos.getX() + animFrame.w / 2.0f), (int)(pos.getY() + animFrame.h / 2.0f));
 }
 
 bool Player::Destroy()

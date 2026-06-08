@@ -277,5 +277,8 @@
     <Xml Include="src\ItemsData.xml">
       <Filter>Source Files\Game\Inventory</Filter>
     </Xml>
+    <Xml Include="save.xml">
+      <Filter>Source Files\Game</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

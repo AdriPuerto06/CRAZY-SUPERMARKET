@@ -39,7 +39,7 @@ enum class SceneID
 	QUESTS,
 	WIN,
 	LOSE,
-	NULLSCENE
+	CUTSCENE
 };
 
 struct SceneStack {
@@ -127,6 +127,9 @@ public:
 	void LoadBattle();
 	bool monocolor = false;
 	bool inProgres = false;
+
+	// Start the intermediate empty scene that will lead to `target` after timeout/space
+	void StartTeleportScene(SceneID target);
 
 private:
 
@@ -248,6 +251,13 @@ private:
 	void UnloadStats();
 	void UpdateStats(float dt);
 
+	// Cutscene
+	void LoadCutsceneScene();
+	void UpdateCutsceneScene(float dt);
+	void UnloadCutsceneScene();
+	SDL_Texture* cutsceneTex = nullptr;
+	AnimationSet anims;
+
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
@@ -266,6 +276,11 @@ private:
 	Vector2D WindowSize;
 	SceneID gameScene;
 	SceneID timeScene;
+
+	// Cutscene 
+	SceneID pendingTeleportTarget = SceneID::MAIN_MENU;
+	float cutsceneTimer = 0.0f;          // in milliseconds
+	float cutsceneDuration = 38000.0f;   // 38 seconds
 
 	//BattleScene
 	SDL_Texture* PasilloIMG = nullptr;
