@@ -21,6 +21,12 @@
 	<fight id ="16" players_id="1" enemies_id="17,23"></fight>
 	<fight id ="17" players_id="1" enemies_id="18"></fight>
 	<fight id ="18" players_id="1" enemies_id="19"></fight>
+	<fight id ="28" players_id="1" enemies_id="61"></fight>
+	<fight id ="29" players_id="1" enemies_id="62"></fight>
+	<fight id ="30" players_id="1" enemies_id="63"></fight>
+	<fight id ="31" players_id="1" enemies_id="64"></fight>
+	<fight id ="32" players_id="1" enemies_id="65"></fight>
+	<fight id ="33" players_id="1" enemies_id="66"></fight>
 	<fight id ="101" players_id="1" enemies_id="101"></fight>
 	<fight id ="102" players_id="1" enemies_id="102"></fight>
 	<fight id ="103" players_id="1" enemies_id="103"></fight>
