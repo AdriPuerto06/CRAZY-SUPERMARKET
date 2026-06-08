@@ -166,7 +166,7 @@ void QuestManager::ViewQuest()
 			Engine::GetInstance().render->DrawText(text.c_str(), x, y, 380, 0, color);
 			Engine::GetInstance().render->DrawText(desc.c_str(), x, y + 64, 380, 20, color);
 			
-			Yspacing += 32;
+			Yspacing += 100;
 
 		}
 	}
