@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <quests>
-	<quest id="1" name="Talk with the other guy" completed="false" active="false" reward="0" reward_value="4" path="" description="Talk with the homeless guy in that corner." />
+	<quest id="1" name="Talk with the other guy" completed="true" active="true" reward="0" reward_value="4" path="" description="Talk with the homeless guy in that corner." />
 	<quest id="2" name="Beat those guys!" completed="false" active="false" reward="0" reward_value="1" path="" description="Win the fight against the three bad guys." />
 	<quest id="3" name="Push the buttons" completed="false" active="false" reward="0" reward_value="6" path="" description="Find all the buttons in the dungeon and press them." />
-	<quest id="4" name="Speak with the granny" completed="false" active="false" reward="0" reward_value="6" path="" description="Talk with the granny that just sneaked in front of you." />
+	<quest id="4" name="Speak with the granny" completed="true" active="true" reward="0" reward_value="6" path="" description="Talk with the granny that just sneaked in front of you." />
 	<quest id="5" name="Talk with the homeless guy" completed="false" active="false" reward="0" reward_value="1" path="" description="Go back and talk with the homeless guy." />
 	<quest id="6" name="Kill the boss" completed="false" active="false" reward="0" reward_value="1" path="" description="Solve puzzles to be able to fight the boss." />
 </quests>

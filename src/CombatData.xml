@@ -108,19 +108,19 @@
 		<attack name ="Attack3" dmg="4" effect="none"></attack>
 		<attack name="Attack4" dmg="2" effect="none"></attack>
 	</enemy>
-	<enemy id =" 2" HP="15">
+	<enemy id =" 2" HP="15" anim_tsxpath= "Assets/Textures/Enemies/Salt and Pepper.tsx" texturePath="Assets/Textures/Enemies/Salt and Pepper.png">
 		<attack name="Attack1" dmg ="7" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="6" effect="none"></attack>
 	</enemy>
-	<enemy id =" 3" HP="10">
+	<enemy id =" 3" HP="10" anim_tsxpath= "Assets/Textures/Enemies/Langostin.tsx" texturePath="Assets/Textures/Enemies/Langostin.png">
 		<attack name="Attack1" dmg ="5" effect="none"></attack>
 		<attack name="Attack2" dmg ="3" effect="none"></attack>
 		<attack name ="Attack3" dmg="2" effect="none"></attack>
 		<attack name="Attack4" dmg="1" effect="none"></attack>
 	</enemy>
-	<enemy id = "4" HP="5">
+	<enemy id = "4" HP="5" anim_tsxpath= "Assets/Textures/Enemies/Pan.tsx" texturePath="Assets/Textures/Enemies/Pan.png">
 		<attack name="Attack1" dmg ="3" effect="none"></attack>
 		<attack name="Attack2" dmg ="9" effect="none"></attack>
 		<attack name ="Attack3" dmg="2" effect="none"></attack>

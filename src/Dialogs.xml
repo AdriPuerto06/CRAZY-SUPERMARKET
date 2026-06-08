@@ -5,7 +5,7 @@
 <!--TELEPORT: 7-->
 <dialogs>
 
-<!--Supermarket-->
+	<!--Supermarket-->
 	<!--Granny-->
 	<dialogue_tree ID="0" NPC="16">
 
@@ -23,28 +23,28 @@
 
 	</dialogue_tree>
 
-	
-<!--Azotea-->
+
+	<!--Azotea-->
 	<!--Vagabundo-->
-	<dialogue_tree ID="0" NPC="1"> 
+	<dialogue_tree ID="0" NPC="1">
 		<node id ="0" text="Jonatan Artiñano:&#10;Who are you?? Are you gonna hurt me??">
 			<choice id ="1" option="I think we are here cause I already hurt someone (oopsies) so not from the moment" next_node ="1"/>
 			<choice id ="2" option="Not if you don't push me" next_node ="1"/>
 		</node>
-		
+
 		<node id ="1" text="Jonatan Artiñano:&#10;Hold on, who did you hurt?">
 			<choice id ="1" option="A stupid granny that got in the way" next_node ="2"/>
 			<choice id ="2" option="Yo mama" next_node ="2"/>
 		</node>
-		
+
 		<node id ="2" text="Jonatan Artiñano:&#10;ARE YOU CRAZY?!? It's TUESDAY. You DON'T hurt grannies on tuesday, everybody here knows it..">
 			<choice id ="1" option="My bad gng" next_node ="3"/>
 		</node>
-		
+
 		<node id ="3" text="Jonatan Artiñano:&#10;Well YOU got us in here, YOU take us outta here, so take this, you won't doscratches now with these">
 			<choice id ="1" option="EY, i'm not THAT weak" next_node ="4"/>
 		</node>
-		
+
 		<node id ="4" text="*You obtained Jet Punch">
 			<choice id ="1" option="Claim" next_node ="5" reward="4" reward_value="Jet Punch"/>
 		</node>
@@ -74,7 +74,7 @@
 		</node>
 
 	</dialogue_tree>
-	
+
 	<!--Pulpa-->
 	<dialogue_tree ID="0" NPC="2">
 		<node id ="0" text="Octella Reynopus:&#10;I was looking for you hon, I knew you’d come.">
@@ -102,7 +102,7 @@
 		<node id ="6" text="Octella Reynopus:&#10;Thanks a lot! Go talk with the other guy.">
 			<choice id ="1" option="Heck yeah! Free stuff!" next_node ="-1" reward="0" reward_value="Talk with the other guy" />
 		</node>
-		
+
 	</dialogue_tree>
 	<!--Tio asustado de puños-->
 	<dialogue_tree ID="0" NPC="3">
@@ -126,43 +126,43 @@
 			<choice id ="1" option="Someone could say that, yeah" next_node ="-1" reward="0" reward_value="Beat those guys!"/>
 		</node>
 	</dialogue_tree>
-		<dialogue_tree ID="1" NPC="4">
-			<node id ="0" text="Kinro:&#10;Oh, you again, what's up?">
-				<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
-				<choice id ="2" option="Those guys won't be a problem now" next_node ="1"/>
+	<dialogue_tree ID="1" NPC="4">
+		<node id ="0" text="Kinro:&#10;Oh, you again, what's up?">
+			<choice id ="1" option="Nothing really, just killing those guys" next_node ="1"/>
+			<choice id ="2" option="Those guys won't be a problem now" next_node ="1"/>
 
-			</node>
+		</node>
 
-			<node id ="1" text="Kinro:&#10;What? Wait, really? Now that I look into it, you kinda smell like...">
-				<choice id ="1" option="Like tons of blood?" next_node ="2"/>
-				<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3"/>
+		<node id ="1" text="Kinro:&#10;What? Wait, really? Now that I look into it, you kinda smell like...">
+			<choice id ="1" option="Like tons of blood?" next_node ="2"/>
+			<choice id ="2" option="Like a newborns ass? People always told me that" next_node ="3"/>
 
-			</node>
+		</node>
 
-			<node id ="2" text="Kinro:&#10;Exactly! Did you loot them?">
-				<choice id ="1" option="Yeah, they had these weird, ugly, bag" next_node ="4"/>
+		<node id ="2" text="Kinro:&#10;Exactly! Did you loot them?">
+			<choice id ="1" option="Yeah, they had these weird, ugly, bag" next_node ="4"/>
 
-			</node>
+		</node>
 
-			<node id ="3" text="Kinro:&#10;mmm... no? Did you find anything useful?">
-				<choice id ="1" option="Yeah, they were pissing on a bag, don't ask me why I took it" next_node ="4"/>
+		<node id ="3" text="Kinro:&#10;mmm... no? Did you find anything useful?">
+			<choice id ="1" option="Yeah, they were pissing on a bag, don't ask me why I took it" next_node ="4"/>
 
-			</node>
+		</node>
 
-			<node id ="4" text="Kinro:&#10;Ey! That bag is mine, and inside it's my card">
-				<choice id ="1" option="Sorry but I don't want your number" next_node ="5"/>
+		<node id ="4" text="Kinro:&#10;Ey! That bag is mine, and inside it's my card">
+			<choice id ="1" option="Sorry but I don't want your number" next_node ="5"/>
 
-			</node>
+		</node>
 
-			<node id ="5" text="Kinro:&#10;No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
-				<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1"/>
+		<node id ="5" text="Kinro:&#10;No, you idiot, I work here, I got acces to the blocked doors, and I guess you're the only who can take me outta here, so take this...">
+			<choice id ="1" option="Just jk btw about the number thing haha (historical fumble)" next_node ="-1"/>
 
-			</node>
+		</node>
 	</dialogue_tree>
 
-	
-<!--RestaurantDungeon-->
-	
+
+	<!--RestaurantDungeon-->
+
 	<!--NPC to unlock Door2-->
 	<dialogue_tree ID = "0" NPC = "5">
 		<node id= "0" text="Kim Jarrey:&#10;Halt, sinner! You think you can just walk out? The doors are sealed, the neon lights are bleeding, and the spirits are restless. And it’s all YOUR fault.">
@@ -174,7 +174,7 @@
 			<choice id= "1" option = "Uh... Is it a Karen fighting over coupons?" next_node="3"/>
 			<choice id= "2" option = "Wait… Is it me? I am that special?" next_node="4"/>
 		</node>
-		
+
 		<node id= "2" text="Kim Jarrey:&#10;Milk? MILK?! You brought a cosmic plague upon this establishment and you’re thinking about cereal?! Get out of my sight and come back when you’re ready to face your sins.">
 			<choice id= "1" option = "but… my milk" next_node="-1"/>
 		</node>
@@ -206,8 +206,8 @@
 
 	</dialogue_tree>
 
-<!--FashionDungeon-->
-	
+	<!--FashionDungeon-->
+
 	<!--Riddle-->
 	<dialogue_tree ID="0" NPC="7">
 
@@ -240,25 +240,30 @@
 
 	</dialogue_tree>
 
-<!--FrontRoom (previous to the final boss)-->
+	<!--FrontRoom (previous to the final boss)-->
 
 	<!--Riddle-->
 	<dialogue_tree ID="0" NPC="12">
 
-		<node id ="0" text="Psychotic Statue:&#10;BEEP... BEEP... UNEXPECTED ITEM IN THE BAGGING AREA!&#10;You skipped the queue of destiny, sinner of aisle 4. You punched her on the wrong day... and now her blood is lava and this market is HELL!&#10;&#10;To open the Final Warehouse, answer my arithmetic of guilt:&#10;I have a hundred eyes but cannot see. I hold the threads of time you decided to flee. I devour the days of the week, but if you touch it on the wrong day, the granny looses all the slay. What am I?">
-			<choice id ="1" option="A broken security camera" next_node ="1"/>
-			<choice id ="2" option="The calendar" next_node ="2"/>
+		<node id ="0" text="Psychotic Statue:&#10;BEEP... BEEP... UNEXPECTED ITEM IN THE BAGGING AREA!&#10;You skipped the queue of destiny, sinner of aisle 4. You punched her on the wrong day... and now her blood is lava and this market is HELL!">
+			<choice id ="1" option="And I'll do it again once I see her" next_node ="1"/>
+
 		</node>
 
-		<node id ="1" text="Psychotic Statue:&#10;WRONG! BARCODE NOT RECOGNIZED! ERROR! ERROR!&#10;Think bloody harder! Your sins are stacking up like unpaid receipts! Let's try again...">
+		<node id ="1" text="Psychotic Statue:&#10;To open the Final Warehouse, answer my arithmetic of guilt:&#10;I have a hundred eyes but cannot see. I hold the threads of time you decided to flee. I devour the days of the week, but if you touch it on the wrong day, the granny looses all the slay. What am I?">
+			<choice id ="2" option="A broken security camera" next_node ="2"/>
+			<choice id ="2" option="The calendar" next_node ="3"/>
+		</node>
+
+		<node id ="2" text="Psychotic Statue:&#10;WRONG! BARCODE NOT RECOGNIZED! ERROR! ERROR!&#10;Think bloody harder! Your sins are stacking up like unpaid receipts! Let's try again...">
 			<choice id ="1" option="Ugh, fine, repeat the question..." next_node ="0"/>
 		</node>
 
-		<node id ="2" text="Psychotic Statue:&#10;CORRECT! The Calendar! The holy Tuesday you brutally ignored!&#10;She is waiting for you on the other side... knitting your shroud with plastic bags. GO MEET YOUR DOOM!">
-			<choice id ="1" option="Let's finish this. (Enter Boss Arena)" next_node ="3"/>
+		<node id ="3" text="Psychotic Statue:&#10;CORRECT! The Calendar! The holy Tuesday you brutally ignored!&#10;She is waiting for you on the other side... knitting your shroud with plastic bags. GO MEET YOUR DOOM!">
+			<choice id ="1" option="Let's finish this. (Enter Boss Arena)" next_node ="4"/>
 		</node>
 
-		<node id ="3" text="Go!">
+		<node id ="4" text="Go!">
 			<choice id ="1" option="Yes!" next_node ="-1" reward="7" reward_value="LEVEL11"/>
 		</node>
 
