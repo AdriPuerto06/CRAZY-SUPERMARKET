@@ -1105,6 +1105,12 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 				p.texture = Engine::GetInstance().textures->Load(p.texturePath.c_str());
 				if (p.texture) Engine::GetInstance().textures->GetSize(p.texture, p.texW, p.texH);
 			}
+			// Hardcodear los aliases para cada player
+			std::unordered_map<int, std::string> aliases = emptyAliases;
+			if (p.id == 1)
+			{
+				aliases = { {0, "idle"}, {0, "attack"}, {0, "hit"}, {0, "hit"} };
+			}
 			if (!p.anim_tsxpath.empty())
 			{
 				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), emptyAliases))
@@ -1360,113 +1366,123 @@ void CombatManager::RenderCombatants(float dt)
 			{
 				player.anims.Update(dt);
 				const SDL_Rect& frame = player.anims.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(player.texture, x - player.texW / 2, y - player.texH / 2, &frame);
 
-				//volver a idle
+				// center sprite
+				int drawX = x - frame.w / 2;
+				int drawY = y - frame.h / 2;
+
+				Engine::GetInstance().render->DrawTexture(player.texture, drawX, drawY, &frame);
+
+				// volver a idle
 				if (player.anims.HasFinishedOnce() && player.anims.GetCurrentName() != "idle" && player.anims.Has("idle"))
 				{
 					player.anims.SetCurrent("idle");
 				}
-			}
-			else {
-				// fallback texture
-				SDL_Rect rect = { x - 32, y - 32, 64, 64 };
-				Engine::GetInstance().render->DrawRectangle(rect, 0, 180, 255, 200, true);
-			}
-        
-			//effects
 
-			//shield
-			if (player.shield_and_buff.first == true) {
-				Shield_Anim.Update(dt);
-				const SDL_Rect& shieldframe = Shield_Anim.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(Shield_Texture, x - player.texW / 2, y - player.texH / 2, &shieldframe);
-			}
-			if (player.status == "poisoned") {
-				Poison_Anim.Update(dt);
-				const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(Poison_Texture, x, y, &poisonframe);
-			}
-			if (player.status == "paralized") {
-				Paralized_Anim.Update(dt);
-				const SDL_Rect& paralizedframe = Paralized_Anim.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(Paralized_Texture, x, y, &paralizedframe);
-			}
+				//effects
 
-			// healthbar
+				//shield
+				if (player.shield_and_buff.first == true) {
+					Shield_Anim.Update(dt);
+					const SDL_Rect& shieldframe = Shield_Anim.GetCurrentFrame();
+					int shieldX = drawX + (frame.w / 2) - (shieldframe.w / 2);
+					int shieldY = drawY + (frame.h / 2) - (shieldframe.h / 2);
+					Engine::GetInstance().render->DrawTexture(Shield_Texture, shieldX, shieldY, &shieldframe);
+				}
+				if (player.status == "poisoned") {
+					Poison_Anim.Update(dt);
+					const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
+					int px = drawX + (frame.w / 2) - (poisonframe.w / 2);
+					int py = drawY - poisonframe.h / 2;
+					Engine::GetInstance().render->DrawTexture(Poison_Texture, px, py, &poisonframe);
+				}
+				if (player.status == "paralized") {
+					Paralized_Anim.Update(dt);
+					const SDL_Rect& paralizedframe = Paralized_Anim.GetCurrentFrame();
+					int px = drawX + (frame.w / 2) - (paralizedframe.w / 2);
+					int py = drawY - paralizedframe.h / 2;
+					Engine::GetInstance().render->DrawTexture(Paralized_Texture, px, py, &paralizedframe);
+				}
 
-			// prota
-			if (player.id == 1) {
+				// healthbar
+
+				// prota
+				if (player.id == 1) {
 			
-				//healthbar
-				int player_hpbar_posX = 64;
-				int player_hpbar_posY = 64;
+					//healthbar
+					int player_hpbar_posX = 64;
+					int player_hpbar_posY = 64;
 
-				int Wmax = 330; // maximum width
-				int unity = Wmax / player.maxhp;
-				player.hp_Interior.w = player.hp * unity;
-				player.hp_Interior.x = player_hpbar_posX + 117;
-				player.hp_Interior.y = player_hpbar_posY + 27;
-				player.hp_Interior.h = 37; // maximum height (this doesn't change)
-				Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
-
-				// print hp
-				std::string s = std::to_string(player.hp);
-				const char* pchar = s.c_str();
-
-				Engine::GetInstance().render->DrawText(pchar, player.hp_Interior.x + 45 ,player.hp_Interior.y , 32, 32, { 255, 255, 255, 255 });
-
-				//mana bar
-				int player_manabar_posX = 64;
-				int player_manabar_posY = 64;
-
-				int Wmax_mana = 250; // maximum width
-				int Munity = Wmax_mana / 50;
-				SDL_Rect mana_rect = { player_manabar_posX + 110, player_manabar_posY + 65, combatState->magicPoints * Munity, 30};
-				Engine::GetInstance().render->DrawRectangle(mana_rect, 0, 0, 255, 255, true);
-
-
-				// print mana
-				std::string s2 = std::to_string(combatState->magicPoints);
-				const char* pchar2 = s2.c_str();
-
-				Engine::GetInstance().render->DrawText(pchar2, player_manabar_posX + 110 + 110, player_manabar_posY + 70, 26, 26, { 255, 255, 255, 255 });
-
-
-
-
-
-				Engine::GetInstance().render->DrawTexture(playerHealthbar, player_hpbar_posX, player_hpbar_posY, nullptr, 0.0f, 0.0, 0, 0, true);
-			}
-			else {
-
-				//outline
-				player.hp_outline.x = x;
-				player.hp_outline.y = y;
-				Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
-
-				//inner part
-				float Wmax = player.hp_outline.w;
-
-				float unity = Wmax / player.maxhp;
-
-				player.hp_Interior.w = player.hp * unity;
-
-				player.hp_Interior.x = x - 2;
-				player.hp_Interior.y = y - 2;
-
-				player.hp_Interior.h = player.hp_outline.h;
-
-				if (player.hp > 0) {
-					//green
-					Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 0, 255, 0, 255, true);
+					int Wmax = 330; // maximum width
+					int unity = Wmax / player.maxhp;
+					player.hp_Interior.w = player.hp * unity;
+					player.hp_Interior.x = player_hpbar_posX + 117;
+					player.hp_Interior.y = player_hpbar_posY + 27;
+					player.hp_Interior.h = 37; // maximum height (this doesn't change)
+					Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 255, 0, 0, 255, true);
 
 					// print hp
 					std::string s = std::to_string(player.hp);
 					const char* pchar = s.c_str();
 
-					Engine::GetInstance().render->DrawText(pchar, player.hp_Interior.x + Wmax, player.hp_Interior.y - 16, 32, 32, { 255, 255, 255, 255 });
+					Engine::GetInstance().render->DrawText(pchar, player.hp_Interior.x + 45 ,player.hp_Interior.y , 32, 32, { 255, 255, 255, 255 });
+
+					//mana bar
+					int player_manabar_posX = 64;
+					int player_manabar_posY = 64;
+
+					int Wmax_mana = 250; // maximum width
+					int Munity = Wmax_mana / 50;
+					SDL_Rect mana_rect = { player_manabar_posX + 110, player_manabar_posY + 65, combatState->magicPoints * Munity, 30};
+					Engine::GetInstance().render->DrawRectangle(mana_rect, 0, 0, 255, 255, true);
+
+
+					// print mana
+					std::string s2 = std::to_string(combatState->magicPoints);
+					const char* pchar2 = s2.c_str();
+
+					Engine::GetInstance().render->DrawText(pchar2, player_manabar_posX + 110 + 110, player_manabar_posY + 70, 26, 26, { 255, 255, 255, 255 });
+
+
+
+
+					Engine::GetInstance().render->DrawTexture(playerHealthbar, player_hpbar_posX, player_hpbar_posY, nullptr, 0.0f, 0.0, 0, 0, true);
 				}
+				else {
+
+					//outline (position relative to sprite top-left)
+					player.hp_outline.x = drawX;
+					player.hp_outline.y = drawY;
+					Engine::GetInstance().render->DrawRectangle(player.hp_outline, 0, 0, 0, 255, true);
+
+					//inner part
+					float Wmax = player.hp_outline.w;
+
+					float unity = Wmax / player.maxhp;
+
+					player.hp_Interior.w = player.hp * unity;
+
+					player.hp_Interior.x = drawX - 2;
+					player.hp_Interior.y = drawY - 2;
+
+					player.hp_Interior.h = player.hp_outline.h;
+
+					if (player.hp > 0) {
+						//green
+						Engine::GetInstance().render->DrawRectangle(player.hp_Interior, 0, 255, 0, 255, true);
+
+						// print hp
+						std::string s = std::to_string(player.hp);
+						const char* pchar = s.c_str();
+
+						Engine::GetInstance().render->DrawText(pchar, player.hp_Interior.x + Wmax, player.hp_Interior.y - 16, 32, 32, { 255, 255, 255, 255 });
+					}
+				}
+			}
+			else {
+				// fallback texture (centered)
+				SDL_Rect rect = { x - 32, y - 32, 64, 64 };
+				Engine::GetInstance().render->DrawRectangle(rect, 0, 180, 255, 200, true);
 			}
 		}
     }
@@ -1484,91 +1500,101 @@ void CombatManager::RenderCombatants(float dt)
 			{
 				enemy.anims.Update(dt);
 				const SDL_Rect& frame = enemy.anims.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(enemy.texture, x , y, &frame);
+
+				// center sprite on logical position
+				int drawX = x - frame.w / 2;
+				int drawY = y - frame.h / 2;
+
+				Engine::GetInstance().render->DrawTexture(enemy.texture, drawX, drawY, &frame);
 
 				// volver a idle
 				if (enemy.anims.HasFinishedOnce() && enemy.anims.GetCurrentName() != "idle" && enemy.anims.Has("idle"))
 				{
 					enemy.anims.SetCurrent("idle");
 				}
+
+				//effects
+
+				//shield (centered)
+				if (enemy.shield_and_buff.first == true) {
+					Shield_Anim.Update(dt);
+					const SDL_Rect& shieldframe = Shield_Anim.GetCurrentFrame();
+					int shieldX = drawX + (frame.w / 2) - (shieldframe.w / 2);
+					int shieldY = drawY + (frame.h / 2) - (shieldframe.h / 2);
+					Engine::GetInstance().render->DrawTexture(Shield_Texture, shieldX, shieldY, &shieldframe);
+				}
+				if (enemy.status == "poisoned") {
+					Poison_Anim.Update(dt);
+					const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
+					int px = drawX + (frame.w / 2) - (poisonframe.w / 2);
+					int py = drawY - poisonframe.h / 2;
+					Engine::GetInstance().render->DrawTexture(Poison_Texture, px, py, &poisonframe);
+				}
+				if (enemy.status == "paralized") {
+					Paralized_Anim.Update(dt);
+					const SDL_Rect& paralizedframe = Paralized_Anim.GetCurrentFrame();
+					int px = drawX + (frame.w / 2) - (paralizedframe.w / 2);
+					int py = drawY - paralizedframe.h / 2;
+					Engine::GetInstance().render->DrawTexture(Paralized_Texture, px, py, &paralizedframe);
+				}
+
+
+				// healthbar
+
+				//outline (position relative to sprite)
+				enemy.hp_outline.x = drawX;
+				enemy.hp_outline.y = drawY - 20;
+				Engine::GetInstance().render->DrawRectangle(enemy.hp_outline, 0, 0, 0, 255, true);
+
+				//inner part
+				float Wmax = (float)enemy.hp_outline.w;
+
+				float unity = Wmax / enemy.maxhp;
+
+				enemy.hp_Interior.w = enemy.hp * unity;
+
+				enemy.hp_Interior.x = drawX - 2;
+				enemy.hp_Interior.y = enemy.hp_outline.y - 2;
+
+				enemy.hp_Interior.h = enemy.hp_outline.h;
+
+				if (enemy.hp > 0) {
+					//red
+					Engine::GetInstance().render->DrawRectangle(enemy.hp_Interior, 255, 0, 0, 255, true);
+
+					// print hp
+					std::string s = std::to_string(enemy.hp);
+					const char* pchar = s.c_str();
+
+					Engine::GetInstance().render->DrawText(pchar, enemy.hp_Interior.x - 32, enemy.hp_Interior.y - 16, 32, 32, { 255, 255, 255, 255 });
+				
+				}
+			
+				// marcar objetivo + calcular damage
+				if (i == combatState->enemy_index_targeted && combatState->selecting_target)
+				{
+
+					// output
+					int output_x = enemy.hp_Interior.x + enemy.hp_Interior.w - (combatState->player_attack_dmg_selected * unity);
+					int output_w = combatState->player_attack_dmg_selected * unity;
+					if (output_x < enemy.hp_Interior.x) {
+						output_x = enemy.hp_Interior.x;
+						output_w = enemy.hp_Interior.w;
+					}
+
+					SDL_Rect output = { output_x, enemy.hp_Interior.y, output_w ,  enemy.hp_Interior.h };
+					Engine::GetInstance().render->DrawRectangle(output, 255, 255, 0, 255, true);
+
+					// resaltar (outline around sprite)
+					SDL_Rect outline = { drawX - 4, drawY - 4, frame.w + 8, frame.h + 8 };
+					Engine::GetInstance().render->DrawRectangle(outline, 255, 255, 0, 255, false);
+				}
 			}
 			else
 			{
-				// fallback
-				SDL_Rect rect = { x, y, 64, 64 };
+				// fallback (centered)
+				SDL_Rect rect = { x - 32, y - 32, 64, 64 };
 				Engine::GetInstance().render->DrawRectangle(rect, 200, 40, 40, 200, true);
-			}
-
-
-			//effects
-
-			//shield
-			if (enemy.shield_and_buff.first == true) {
-				Shield_Anim.Update(dt);
-				const SDL_Rect& shieldframe = Shield_Anim.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(Shield_Texture, x, y, &shieldframe);
-			}
-			if (enemy.status == "poisoned") {
-				Poison_Anim.Update(dt);
-				const SDL_Rect& poisonframe = Poison_Anim.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(Poison_Texture, x, y, &poisonframe);
-			}
-			if (enemy.status == "paralized") {
-				Paralized_Anim.Update(dt);
-				const SDL_Rect& paralizedframe = Paralized_Anim.GetCurrentFrame();
-				Engine::GetInstance().render->DrawTexture(Paralized_Texture, x, y, &paralizedframe);
-			}
-
-
-			// healthbar
-
-			//outline
-			enemy.hp_outline.x = x;
-			enemy.hp_outline.y = y - 20;
-			Engine::GetInstance().render->DrawRectangle(enemy.hp_outline, 0, 0, 0, 255, true);
-
-			//inner part
-			float Wmax = (float)enemy.hp_outline.w;
-
-			float unity = Wmax / enemy.maxhp;
-
-			enemy.hp_Interior.w = enemy.hp * unity;
-
-			enemy.hp_Interior.x = x - 2;
-			enemy.hp_Interior.y = enemy.hp_outline.y - 2;
-
-			enemy.hp_Interior.h = enemy.hp_outline.h;
-
-			if (enemy.hp > 0) {
-				//red
-				Engine::GetInstance().render->DrawRectangle(enemy.hp_Interior, 255, 0, 0, 255, true);
-
-				// print hp
-				std::string s = std::to_string(enemy.hp);
-				const char* pchar = s.c_str();
-
-				Engine::GetInstance().render->DrawText(pchar, enemy.hp_Interior.x - 32, enemy.hp_Interior.y - 16, 32, 32, { 255, 255, 255, 255 });
-			
-			}
-		
-			// marcar objetivo + calcular damage
-			if (i == combatState->enemy_index_targeted && combatState->selecting_target)
-			{
-
-				// output
-				int output_x = enemy.hp_Interior.x + enemy.hp_Interior.w - (combatState->player_attack_dmg_selected * unity);
-				int output_w = combatState->player_attack_dmg_selected * unity;
-				if (output_x < enemy.hp_Interior.x) {
-					output_x = enemy.hp_Interior.x;
-					output_w = enemy.hp_Interior.w;
-				}
-
-				SDL_Rect output = { output_x, enemy.hp_Interior.y, output_w ,  enemy.hp_Interior.h };
-				Engine::GetInstance().render->DrawRectangle(output, 255, 255, 0, 255, true);
-
-				// resaltar
-				SDL_Rect outline = { x - 4, y - 4, 72, 72 };
-				Engine::GetInstance().render->DrawRectangle(outline, 255, 255, 0, 255, false);
 			}
 		}
     }
