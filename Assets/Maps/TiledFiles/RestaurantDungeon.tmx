@@ -338,9 +338,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="8"/>
     <property name="active" type="bool" value="true"/>
-    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Slime_morado.png"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Slime_morado.tsx"/>
     <property name="fight_ID" type="int" value="8"/>
-    <property name="texturePath" value="Assets/Textures/Enemies/Slime_morado.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Slime_morado.png"/>
    </properties>
    <point/>
   </object>
@@ -527,9 +527,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="8"/>
     <property name="active" type="bool" value="true"/>
-    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Slime_morado.png"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Slime_morado.tsx"/>
     <property name="fight_ID" type="int" value="8"/>
-    <property name="texturePath" value="Assets/Textures/Enemies/Slime_morado.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Slime_morado.png"/>
    </properties>
    <point/>
   </object>
