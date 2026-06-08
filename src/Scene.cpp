@@ -1807,17 +1807,20 @@ void Scene::LoadBattle()
 void Scene::UnloadBattle()
 {
 	Engine::GetInstance().combatManager->in_combat = false;
-	if (BattleBackgroundIMG != nullptr) {
-		Engine::GetInstance().textures->UnLoad(BattleBackgroundIMG);
-		BattleBackgroundIMG = nullptr; 
-	}
-	monocolor = false;
-	Engine::GetInstance().uiManager->CleanUp();
+	
 }
 
 void Scene::UpdateBattle(float dt)
 {
 	Engine::GetInstance().render->DrawTexture(BattleBackgroundIMG, WindowSize.getX() / 2 - 720, 0);
+
+	if (Engine::GetInstance().combatManager->goBack == SceneID::LEVEL11) {
+		Engine::GetInstance().audio->PlayMusic(m_boss, 0.2, -1);
+	}
+	else
+	{
+		Engine::GetInstance().audio->PlayMusic(m_battle, 0.2, -1);
+	}
 }
 
 // *********************************************
