@@ -37061,8 +37061,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="61"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Langostin.tsx"/>
     <property name="fight_ID" type="int" value="28"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Langostin.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Langostin.png"/>
    </properties>
    <point/>
   </object>
@@ -37070,8 +37071,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="62"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Milk.tsx"/>
     <property name="fight_ID" type="int" value="29"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Milk.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Milk.png"/>
    </properties>
    <point/>
   </object>
@@ -37079,8 +37081,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="63"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Slime_morado.tsx"/>
     <property name="fight_ID" type="int" value="30"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Slime_morado.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Slime_morado.png"/>
    </properties>
    <point/>
   </object>
@@ -37088,8 +37091,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="64"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Slime_verde.tsx"/>
     <property name="fight_ID" type="int" value="31"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Slime_verde.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Slime_verde.png"/>
    </properties>
    <point/>
   </object>
@@ -37097,8 +37101,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="65"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Tomatona.tsx"/>
     <property name="fight_ID" type="int" value="32"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Tomatona.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Tomatona.png"/>
    </properties>
    <point/>
   </object>
@@ -37106,8 +37111,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="66"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Zapatico.tsx"/>
     <property name="fight_ID" type="int" value="33"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Zapatico.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Enemies/Zapatico.png"/>
    </properties>
    <point/>
   </object>

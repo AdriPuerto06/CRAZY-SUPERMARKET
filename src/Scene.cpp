@@ -567,7 +567,7 @@ void Scene::UnloadCurrentScene() {
 void Scene::CheckScene(std::string target) {
 
 	if (target == "Supermarket.tmx") ChangeScene(SceneID::LEVEL1);
-	else if (target == "azotea.tmx")      ChangeScene(SceneID::LEVEL2);
+	else if (target == "Rooftop.tmx")      ChangeScene(SceneID::LEVEL2);
 	else if (target == "Backroom.tmx")      ChangeScene(SceneID::LEVEL3);
 	else if (target == "Restaurant.tmx") ChangeScene(SceneID::LEVEL4);
 	else if (target == "RestaurantDungeon.tmx") ChangeScene(SceneID::LEVEL5);
