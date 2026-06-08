@@ -46,6 +46,8 @@ bool Scene::Awake()
 
 	sceneStack.push(SceneID::MAIN_MENU);
 
+	
+
 	LOG("Loading Scene");
 	bool ret = true;
 	return ret;
@@ -594,13 +596,27 @@ void Scene::LoadCutsceneScene()
 	Engine::GetInstance().uiManager->CleanUp();
 	cutsceneTimer = 0.0f;
 
+
+	std::unordered_map<int, std::string> aliases = { {0,"idle"}};
+	anims.LoadFromTSX("Assets/Cutscenes/cutscene-Sheet.tsx", aliases);
+	cutsceneTex = Engine::GetInstance().textures->Load("Assets/Cutscenes/cutscene-Sheet.png");
+
+
 	// Stop other audio or set ambience here
-	
+	Engine::GetInstance().audio->StopFx();
 }
 
 void Scene::UpdateCutsceneScene(float dt)
 {
 	cutsceneTimer += dt;
+
+	anims.Update(dt);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+
+	int drawX = 0;
+	int drawY = 0;
+
+	Engine::GetInstance().render->DrawTexture(cutsceneTex, drawX, drawY, &animFrame, 1.0f, 0.0, INT_MAX, INT_MAX, false);
 
 	// If SPACE pressed or timeout reached, proceed to target
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || cutsceneTimer >= cutsceneDuration)
@@ -613,6 +629,7 @@ void Scene::UnloadCutsceneScene()
 {
 	// cleanup if necessary
 	Engine::GetInstance().uiManager->CleanUp();
+	Engine::GetInstance().textures->UnLoad(cutsceneTex);
 	cutsceneTimer = 0.0f;
 	LOG("Exiting Cutscene.");
 }
@@ -620,6 +637,7 @@ void Scene::UnloadCutsceneScene()
 // *********************************************
 // INTRO SCREEN functions
 // *********************************************
+
 
 void Scene::LoadIntroScreen()
 {

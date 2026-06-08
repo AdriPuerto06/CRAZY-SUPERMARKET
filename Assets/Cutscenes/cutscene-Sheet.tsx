@@ -3,7 +3,7 @@
  <image source="cutscene-Sheet.png" width="14080" height="7200"/>
  <tile id="0">
   <animation>
-   <frame tileid="0" duration="3000"/>
+   <frame tileid="0" duration="6000"/>
    <frame tileid="13" duration="100"/>
    <frame tileid="14" duration="100"/>
    <frame tileid="15" duration="100"/>

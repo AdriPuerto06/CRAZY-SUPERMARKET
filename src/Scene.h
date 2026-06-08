@@ -251,10 +251,12 @@ private:
 	void UnloadStats();
 	void UpdateStats(float dt);
 
-	// Null / empty transition scene
+	// Cutscene
 	void LoadCutsceneScene();
 	void UpdateCutsceneScene(float dt);
 	void UnloadCutsceneScene();
+	SDL_Texture* cutsceneTex = nullptr;
+	AnimationSet anims;
 
 private:
 
@@ -278,7 +280,7 @@ private:
 	// Cutscene 
 	SceneID pendingTeleportTarget = SceneID::MAIN_MENU;
 	float cutsceneTimer = 0.0f;          // in milliseconds
-	float cutsceneDuration = 33000.0f;   // 33 seconds
+	float cutsceneDuration = 38000.0f;   // 38 seconds
 
 	//BattleScene
 	SDL_Texture* PasilloIMG = nullptr;
