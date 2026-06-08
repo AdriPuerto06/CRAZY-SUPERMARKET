@@ -1011,7 +1011,7 @@ void Scene::LoadLevel2() {
 	Engine::GetInstance().audio->PlayMusic(m_roof_drums, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "azotea.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Rooftop.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL2);
@@ -1096,7 +1096,7 @@ void Scene::LoadLevel4() {
 	Engine::GetInstance().audio->PlayMusic(m_restaurant, 0, -1);
 
 	//Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "Restaurant.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "RestaurantLobby.tmx");
 
 	//Call the function to load entities from the map
 	Engine::GetInstance().map->LoadEntities(player, SceneID::LEVEL4);
