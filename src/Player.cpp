@@ -263,8 +263,10 @@ void Player::Draw(float dt) {
 	position.setX((float)x);
 	position.setY((float)y);
 
-	// L10: TODO 5: Draw the player using the texture and the current animation frame
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 6, y - texH / 2, &animFrame);
+	int drawX = x - animFrame.w / 2;
+	int drawY = y - animFrame.h / 2;
+
+	Engine::GetInstance().render->DrawTexture(texture, drawX, drawY, &animFrame);
 }
 
 void Player:: ShowMenu() {
@@ -339,11 +341,14 @@ Vector2D Player::GetPosition() {
 	int x, y;
 	pbody->GetPosition(x, y);
 	// Adjust for center
-	return Vector2D((float)x - texW / 2, (float)y - texH / 2);
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	return Vector2D((float)x - animFrame.w / 2.0f, (float)y - animFrame.h / 2.0f);
 }
 
 void Player::SetPosition(Vector2D pos) {
-	pbody->SetPosition((int)(pos.getX() + texW / 2), (int)(pos.getY() + texH / 2));
+	
+	const SDL_Rect& animFrame = anims.GetCurrentFrame();
+	pbody->SetPosition((int)(pos.getX() + animFrame.w / 2.0f), (int)(pos.getY() + animFrame.h / 2.0f));
 }
 
 bool Player::Destroy()
