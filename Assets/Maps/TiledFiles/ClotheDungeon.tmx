@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="82" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="96">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="82" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="101">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
@@ -3972,9 +3972,9 @@
    <tile gid="212"/>
    <tile gid="212"/>
    <tile gid="212"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
    <tile gid="34"/>
    <tile gid="34"/>
    <tile gid="34"/>
@@ -4122,9 +4122,9 @@
    <tile gid="212"/>
    <tile gid="212"/>
    <tile gid="212"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
    <tile gid="34"/>
    <tile gid="34"/>
    <tile gid="34"/>
@@ -4272,9 +4272,9 @@
    <tile gid="212"/>
    <tile gid="212"/>
    <tile gid="212"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
    <tile gid="34"/>
    <tile gid="34"/>
    <tile gid="34"/>
@@ -4422,9 +4422,9 @@
    <tile gid="212"/>
    <tile gid="212"/>
    <tile gid="212"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
-   <tile gid="34"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
+   <tile gid="212"/>
    <tile gid="34"/>
    <tile gid="34"/>
    <tile gid="34"/>
@@ -15979,6 +15979,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="5025"/>
+   <tile gid="5026"/>
+   <tile gid="5027"/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -16022,9 +16025,6 @@
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16129,9 +16129,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
+   <tile gid="5057"/>
+   <tile gid="5058"/>
+   <tile gid="5059"/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -16279,6 +16279,9 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="5089"/>
+   <tile gid="5090"/>
+   <tile gid="5091"/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -16322,9 +16325,6 @@
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16429,9 +16429,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -16579,9 +16579,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -16729,9 +16729,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -36962,8 +36962,8 @@
   <object id="4" x="0" y="96" width="96" height="2524"/>
   <object id="5" x="96" y="1280" width="256" height="96"/>
   <object id="6" x="96" y="544" width="128" height="96"/>
-  <object id="7" x="352" y="544" width="1981.33" height="96"/>
-  <object id="8" x="1184" y="640" width="96" height="640"/>
+  <object id="7" x="352" y="544" width="2088.33" height="96"/>
+  <object id="8" x="1184" y="640" width="96" height="187"/>
   <object id="9" x="448" y="1280" width="3456" height="125.333"/>
   <object id="10" x="3904" y="960" width="96" height="800"/>
   <object id="11" x="4000" y="960" width="352" height="122.667"/>
@@ -36993,23 +36993,24 @@
   <object id="37" x="2560" y="640" width="96" height="352"/>
   <object id="38" x="2560" y="1088" width="96" height="192"/>
   <object id="41" x="2528" y="960" width="32" height="160"/>
-  <object id="42" x="2304" y="640" width="160" height="32"/>
+  <object id="96" x="1185" y="961.5" width="96" height="328"/>
+  <object id="97" x="1282" y="794.5" width="96" height="187"/>
  </objectgroup>
  <objectgroup id="5" name="Teleport">
   <object id="76" x="2560" y="992" width="96" height="96"/>
-  <object id="77" x="2336" y="544" width="96" height="96">
+  <object id="99" x="1216" y="832" width="64" height="128">
    <properties>
-    <property name="targetMap" value="ClothesLobby.tmx"/>
+    <property name="targetMap" value="FrontRoom.tmx"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="6" name="Checkpoints">
-  <object id="79" x="2336" y="512" width="96" height="32"/>
   <object id="85" x="4352" y="960" width="96" height="96"/>
   <object id="86" x="3008" y="1600" width="96" height="128"/>
   <object id="88" x="1120" y="2240" width="128" height="96"/>
   <object id="89" x="352" y="1280" width="96" height="96"/>
   <object id="90" x="224" y="544" width="128" height="96"/>
+  <object id="100" x="1184" y="832" width="32" height="128"/>
  </objectgroup>
  <objectgroup id="3" name="Entities">
   <object id="65" name="NPC8" type="NPC" x="1239.64" y="233.817">
@@ -37125,7 +37126,7 @@
    </properties>
    <point/>
   </object>
-  <object id="82" name="BOSS3" type="Enemy" x="640" y="1024">
+  <object id="82" name="BOSS3" type="Enemy" x="1140" y="926.667">
    <properties>
     <property name="Enemy_ID" type="int" value="103"/>
     <property name="active" type="bool" value="true"/>
@@ -41573,9 +41574,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="185"/>
+   <tile gid="185"/>
+   <tile gid="185"/>
    <tile/>
    <tile/>
    <tile/>
