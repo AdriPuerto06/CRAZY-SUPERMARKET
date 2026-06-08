@@ -153,3 +153,57 @@ The following assets correspond to external productions, memes, or collaborative
   * **Source:** Acquired from YouTube [Source Link](https://www.youtube.com/watch?v=AR92BxrKcjw)
   * **Original Reference:** Arcade Craniacs Viral Asset.
   * **License/Terms:** Incorporated under fair use for educational, non-commercial purposes as an acquired community sound asset.
+
+---
+
+## 🎨 Art, Visual Assets & Fonts Licensing
+
+All visual and typographical assets included in this repository comply with the course guidelines. Except where explicitly noted in the external sections below, **all 2D art, animations, and UI elements** are 100% original, created by our team's artists (*Biel Cadenas, Pau Gallego, and Adri Puerto*).
+
+### 📄 1. Original Art & Asset Directories (100% Created by the Team)
+The contents of the following directories consist entirely of original team-created visual assets:
+* `/Assets/Cutscenes/` – All original cinematic art.
+* `/Assets/Items/` – All original item sprites.
+* Within `/Assets/Textures/`:
+  * `/Characters/` – All original character sprites and animations.
+  * `/Combat/` (including all subdirectories) – All original combat-related visual feedback and assets.
+  * `/Enemies/` – All original enemy designs and sprites.
+  * `/UI/` – All original user interface elements and buttons.
+
+* **License for Original Content:** Licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**.
+  > 🔗 [View License Deed](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+---
+
+### 🧱 2. Map Design & Environment Tilesets (Mixed / Free License)
+* **Directory:** `/Assets/Maps/`
+* **Description:** The level design, layout, and structural arrangement of all supermarket sections are **100% original creations designed by our team**. However, external third-party environment asset packs and tilesets were utilized to build these maps.
+* **License Details:** Sourced under open-source and free-use platform licenses.
+> 📝 *Note: The official digital license certificates and text files for these tilesets have been attached directly to the project repository and can be verified inside the `/Assets/Maps/Licenses/` directory.*
+
+---
+
+### 🔤 3. Typography & Fonts (External / Free License)
+* **Directory:** `/Assets/Fonts/`
+* **File:** `Minecraftia-Regular.ttf`
+  * **Original Author:** ByFont
+  * **Source Reference:** [DaFont - Minecraftia Font](https://www.dafont.com/es/minecraftia.font)
+* **License Details:** Free for personal and non-commercial academic use. Included in the project under the author's open-access terms for software practice.
+
+* **File:** `arial.ttf` (or system-fallback)
+  * **Original Author:** Monotype Imaging / Microsoft Corporation
+  * **License Details:** Standard core system font. Utilized under the standard system OS/IDE end-user license agreement (EULA) for educational, non-commercial application development.
+---
+
+### 🛒 4. Specific Acquired Media & Texture Exceptions
+Within the `/Assets/Textures/` root folder and the `/BackGrounds/` subdirectory, the following specific external assets were incorporated for environmental design, references, or easter eggs:
+
+* **File:** `/Assets/Textures/cajon_Items.png` (Supermarket shelf photo)
+  * **Source:** [DepositPhotos Vector Closet](https://depositphotos.com/es/vectors/vector-closet.html?offset=1600)
+  * **Use terms:** Acquired and used under fair use for educational, non-commercial practice.
+* **File:** `/Assets/Textures/BackGrounds/win.png` (Win Verdejo wine bottle texture)
+  * **Source:** [Win Verdejo - Tienda Matarromera](https://tienda.matarromera.es/es/vino-sin-alcohol/283-win-verdejo-vino-sin-alcohol-8436532093470.html)
+  * **Use terms:** Incorporated strictly as a real-world environmental parody asset for non-commercial educational purposes.
+* **File:** `/Assets/Textures/images (2).png` (Jumpscare Easter Egg)
+  * **Source:** [Instagram - Popular Niño Scary Movie](https://www.instagram.com/popular/ni%C3%B1o-scary-movie/)
+  * **Use terms:** Used under fair use/parody guidelines for an internal game easter egg.
