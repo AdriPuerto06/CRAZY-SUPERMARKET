@@ -37017,7 +37017,7 @@
     <property name="NPC_ID" value="8"/>
     <property name="active" type="bool" value="false"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC1.tsx"/>
    </properties>
    <point/>
   </object>
@@ -37026,7 +37026,7 @@
     <property name="NPC_ID" value="11"/>
     <property name="active" type="bool" value="false"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC2.tsx"/>
    </properties>
    <point/>
   </object>
@@ -37035,7 +37035,7 @@
     <property name="NPC_ID" value="9"/>
     <property name="active" type="bool" value="false"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC3.tsx"/>
    </properties>
    <point/>
   </object>
@@ -37044,7 +37044,7 @@
     <property name="NPC_ID" value="10"/>
     <property name="active" type="bool" value="false"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC1.tsx"/>
    </properties>
    <point/>
   </object>
@@ -37053,7 +37053,7 @@
     <property name="NPC_ID" value="7"/>
     <property name="active" type="bool" value="true"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/goldCoin.png"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC1.tsx"/>
    </properties>
    <point/>
   </object>
