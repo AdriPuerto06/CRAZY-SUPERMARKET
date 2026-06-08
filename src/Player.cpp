@@ -32,9 +32,11 @@ bool Player::Start() {
 
 	// load
 	
-	std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
+	std::unordered_map<int, std::string> aliases = { {0,"idle_Right"},{4,"idle_Left"},{8,"run_Right"}, {12, "run_Left"} };
 	anims.LoadFromTSX("Assets/Textures/Characters/Prota.tsx", aliases);
-	anims.SetCurrent("idle");
+	// deafult animation
+	anims.SetCurrent("idle_Right");
+	dirX = 1.0f;
 
 	//L03: TODO 2: Initialize Player parameters
 	texture = Engine::GetInstance().textures->Load("Assets/Textures/Characters/Prota.png");
@@ -227,6 +229,23 @@ void Player::Move() {
 	}
 
 	b2Vec2 playerVel = b2Body_GetLinearVelocity(pbody->body);
+
+	if (velocity.x < 0.0f) {
+		anims.SetCurrent("run_Left");
+		dirX = -1.0f;
+	}
+	else if (velocity.x > 0.0f) {
+		anims.SetCurrent("run_Right");
+		dirX = 1.0f;
+	}
+	else if (velocity.y != 0.0f) {
+		if (dirX < 0.0f) { anims.SetCurrent("run_Left"); }
+		else { anims.SetCurrent("run_Right"); }
+	}
+	else {
+		if (dirX < 0.0f) { anims.SetCurrent("idle_Left"); }
+		else { anims.SetCurrent("idle_Right"); }
+	}
 }
 
 void Player::ApplyPhysics() {
