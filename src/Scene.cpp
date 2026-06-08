@@ -1303,7 +1303,7 @@ void Scene::UnloadLevel8() {
 
 void Scene::LoadLevel9() {
 
-	Engine::GetInstance().audio->PlayMusic(m_title, 0, -1);
+	Engine::GetInstance().audio->PlayMusic(m_front, 0, -1);
 
 	//Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/TiledFiles/", "FrontRoom.tmx");
