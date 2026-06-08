@@ -142,7 +142,9 @@ bool Scene::Update(float dt)
 	case SceneID::LOSE:
 		UpdateLose(dt);
 		break;
-
+	case SceneID::CUTSCENE:
+		UpdateCutsceneScene(dt);
+		break;
 	}
 
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
@@ -455,6 +457,9 @@ void Scene::LoadScene(SceneID newScene)
 	case SceneID::LOSE:
 		LoadWin();
 		break;
+	case SceneID::CUTSCENE:
+		LoadCutsceneScene();
+		break;
 	}
 }
 
@@ -550,6 +555,9 @@ void Scene::UnloadCurrentScene() {
 	case SceneID::LOSE:
 		UnloadLose();
 		break;
+	case SceneID::CUTSCENE:
+		UnloadCutsceneScene();
+		break;
 	}
 
 }
@@ -568,6 +576,45 @@ void Scene::CheckScene(std::string target) {
 	else if (target == "FinalDungeon.tmx") ChangeScene(SceneID::LEVEL10);
 	else if (target == "Cursed_Supermarket.tmx") ChangeScene(SceneID::LEVEL11);
 
+}
+
+
+
+// Cutscene
+void Scene::StartTeleportScene(SceneID target)
+{
+	// store the target and change to the empty scene
+	pendingTeleportTarget = target;
+	ChangeScene(SceneID::CUTSCENE);
+}
+
+void Scene::LoadCutsceneScene()
+{
+	// Ensure UI cleaned and timer reset
+	Engine::GetInstance().uiManager->CleanUp();
+	cutsceneTimer = 0.0f;
+
+	// Stop other audio or set ambience here
+	
+}
+
+void Scene::UpdateCutsceneScene(float dt)
+{
+	cutsceneTimer += dt;
+
+	// If SPACE pressed or timeout reached, proceed to target
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || cutsceneTimer >= cutsceneDuration)
+	{
+		ChangeScene(pendingTeleportTarget);
+	}
+}
+
+void Scene::UnloadCutsceneScene()
+{
+	// cleanup if necessary
+	Engine::GetInstance().uiManager->CleanUp();
+	cutsceneTimer = 0.0f;
+	LOG("Exiting Cutscene.");
 }
 
 // *********************************************

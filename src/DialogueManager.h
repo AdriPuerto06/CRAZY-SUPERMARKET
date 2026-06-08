@@ -28,6 +28,9 @@ struct CurrentDialogue {
 	int node_id;
 	int choice;
 	int next_node;
+
+	Reward pendingReward;
+	bool has_pending_reward = false;
 };
 
 class DialogueManager : public Module {
