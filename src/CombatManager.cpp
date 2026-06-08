@@ -1050,6 +1050,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			{
 				player.type = EntityType::PLAYER;
 			}
+
 			else {
 				player.type = EntityType::BASECOMPANION;
 			}
@@ -1125,6 +1126,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			{
 				aliases = { {0, "idle"}, {0, "attack"}, {0, "hit"}, {0, "hit"} };
 			}
+
 			if (!p.anim_tsxpath.empty())
 			{
 				if (p.anims.LoadFromTSX(p.anim_tsxpath.c_str(), aliases))
