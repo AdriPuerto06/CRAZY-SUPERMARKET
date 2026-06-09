@@ -211,8 +211,8 @@
 	<!--Riddle-->
 	<dialogue_tree ID="0" NPC="7">
 
-		<node id ="0" text="text1">
-			<choice id ="1" option="a1" next_node ="1"/>
+		<node id ="0" text="Hello">
+			<choice id ="1" option="Hi" next_node ="1"/>
 		</node>
 
 		<node id ="1" text="Get out.">
