@@ -37017,8 +37017,9 @@
    <properties>
     <property name="NPC_ID" value="8"/>
     <property name="active" type="bool" value="false"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/NPC1.tsx"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/NPC1.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC1.png"/>
    </properties>
    <point/>
   </object>
@@ -37026,8 +37027,9 @@
    <properties>
     <property name="NPC_ID" value="11"/>
     <property name="active" type="bool" value="false"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/NPC2.tsx"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/NPC2.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC2.png"/>
    </properties>
    <point/>
   </object>
@@ -37035,8 +37037,9 @@
    <properties>
     <property name="NPC_ID" value="9"/>
     <property name="active" type="bool" value="false"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/NPC3.tsx"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/NPC3.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC3.png"/>
    </properties>
    <point/>
   </object>
@@ -37044,8 +37047,9 @@
    <properties>
     <property name="NPC_ID" value="10"/>
     <property name="active" type="bool" value="false"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/NPC1.tsx"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/NPC1.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC1.png"/>
    </properties>
    <point/>
   </object>
@@ -37176,7 +37180,8 @@
     <property name="Companion_ID" type="int" value="1"/>
     <property name="Dialogue_ID" type="int" value="101"/>
     <property name="active" type="bool" value="true"/>
-    <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/Maga.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/Maga.png"/>
    </properties>
    <point/>
   </object>
