@@ -36997,7 +36997,11 @@
   <object id="97" x="1282" y="794.5" width="96" height="187"/>
  </objectgroup>
  <objectgroup id="5" name="Teleport">
-  <object id="76" x="2560" y="992" width="96" height="96"/>
+  <object id="76" x="2560" y="992" width="96" height="96">
+   <properties>
+    <property name="targetMap" value="ClothesLobby.tmx"/>
+   </properties>
+  </object>
   <object id="99" x="1216" y="832" width="64" height="128">
    <properties>
     <property name="targetMap" value="FrontRoom.tmx"/>
