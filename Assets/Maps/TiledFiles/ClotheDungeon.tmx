@@ -37057,8 +37057,9 @@
    <properties>
     <property name="NPC_ID" value="7"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/NPC1.tsx"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/NPC1.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/NPC1.png"/>
    </properties>
    <point/>
   </object>
