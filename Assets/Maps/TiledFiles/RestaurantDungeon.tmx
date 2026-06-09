@@ -12850,7 +12850,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button4"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="76" name="Button3" type="Event" x="2078.33" y="1709.67" width="64" height="64">
@@ -12859,7 +12859,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button3"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="77" name="Key for the next dungeon" type="Event" x="130.333" y="1880.33" width="32" height="32">
@@ -12868,7 +12868,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Key for the next dungeon"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/Rock2.png"/>
    </properties>
   </object>
   <object id="78" name="Healer" type="Event" x="132.939" y="2113.12" width="26.6667" height="24">
@@ -12877,7 +12877,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Healer"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/bronze_chest_closed.png"/>
    </properties>
   </object>
   <object id="79" name="Button2" type="Event" x="985" y="1339" width="64" height="64">
@@ -12886,7 +12886,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button2"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="80" name="Button1" type="Event" x="1537" y="377.667" width="64" height="64">
@@ -12895,7 +12895,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button1"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="81" name="Troll message" type="Event" x="1892.33" y="100" width="22.6667" height="22.6667">
@@ -12904,7 +12904,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Troll message"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="82" name="Door1" type="Event" x="682.333" y="211" width="32" height="96">
@@ -12913,7 +12913,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Door1"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/Side_Door_Closed.png"/>
    </properties>
   </object>
   <object id="83" name="Door2" type="Event" x="1566.33" y="1941.33" width="32" height="137.667">
@@ -12922,7 +12922,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Door2"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/Side_Door_Closed.png"/>
    </properties>
   </object>
   <object id="84" name="Key for Door1" type="Event" x="2108.52" y="2756.94" width="32" height="32">
@@ -12940,7 +12940,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Door3"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/Front_Door_Closed.png"/>
    </properties>
   </object>
   <object id="90" name="Enemy8" type="Enemy" x="1875.68" y="2148.58">
