@@ -657,7 +657,7 @@
 	
 	
 	<!--Bosses-->
-	<enemy id ="101" HP="50">
+	<enemy id ="101" HP="50"> anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="buff"></attack>
@@ -665,13 +665,14 @@
 	</enemy>
 
 	<enemy id ="102" HP="50">
+		anim_tsxpath="Assets/Textures/Enemies/Espejito.tsx" texturePath="Assets/Textures/Enemies/Espejito.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="shield"></attack>
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
 	</enemy>
 
-	<enemy id ="103" HP="50">
+	<enemy id ="103" HP="50"> anim_tsxpath="Assets/Textures/Enemies/Boss_Cape.tsx" texturePath="Assets/Textures/Enemies/Boss_Cape.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="buff"></attack>
@@ -679,7 +680,7 @@
 	</enemy>
 
 	<!--Final Boss-->
-	<enemy id ="104" HP="75">
+	<enemy id ="104" HP="75"> anim_tsxpath="Assets/Textures/Enemies/Endemonia.tsx" texturePath="Assets/Textures/Enemies/Endemonia.png">
 		<attack name="Attack1" dmg ="5" effect="none"></attack>
 		<attack name="Attack2" dmg ="4" effect="none"></attack>
 		<attack name ="Attack3" dmg="6" effect="buff"></attack>
