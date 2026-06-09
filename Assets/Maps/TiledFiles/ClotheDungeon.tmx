@@ -37145,7 +37145,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button5"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="84" name="Door4" type="Event" x="352" y="1376" width="32" height="96" rotation="-90">
@@ -37154,7 +37154,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Door4"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/Front_Door_Closed.png"/>
    </properties>
   </object>
   <object id="92" name="Door5" type="Event" x="4352" y="992" width="32" height="96" rotation="-90">
@@ -37163,7 +37163,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Door5"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Maps/Decorations/Front_Door_Closed.png"/>
    </properties>
   </object>
   <object id="93" name="Button6" type="Event" x="2784" y="1216" width="64" height="64">
@@ -37172,7 +37172,7 @@
     <property name="activated" type="bool" value="false"/>
     <property name="active" type="bool" value="true"/>
     <property name="event_Name" value="Button6"/>
-    <property name="texturePath" value="Assets/Textures/eventTexture.png"/>
+    <property name="texturePath" value="Assets/Textures/exclamation.png"/>
    </properties>
   </object>
   <object id="94" name="Wizard" type="Companion" x="2880" y="320">
