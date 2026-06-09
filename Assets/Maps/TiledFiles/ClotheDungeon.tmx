@@ -37135,9 +37135,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="103"/>
     <property name="active" type="bool" value="true"/>
-    <property name="anim_tsxpath" value="Assets/Textures/Combat/Enemies/Boss_Cape.tsx"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Enemies/Boss_Cape.tsx"/>
     <property name="fight_ID" type="int" value="103"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Boss_Cape.png"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Boss_Cape.png"/>
    </properties>
    <point/>
   </object>
