@@ -5062,8 +5062,9 @@
    <properties>
     <property name="Enemy_ID" type="int" value="104"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Combat/Enemies/Endemonia_combat.tsx"/>
     <property name="fight_ID" type="int" value="104"/>
-    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Endemonia_combat.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Combat/Enemies/Endemonia_combat.png"/>
    </properties>
    <point/>
   </object>
