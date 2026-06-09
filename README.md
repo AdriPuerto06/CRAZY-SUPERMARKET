@@ -9,6 +9,8 @@ This repository is part of the **Project II course** at the
 
 CRAZY-SUPERMARKET is a game about the bizarre adventures of a child who gets trapped at a supermarket after hitting a granny.
 
+# 🎞 Trailer!
+https://youtu.be/tGfJtX_gN7s
 ---
 
 ## 📖 Description
