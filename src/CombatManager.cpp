@@ -1178,7 +1178,7 @@ void CombatManager::GetTreeAttributes(int fight_ID, bool all)
 			}
 			// Hardcodear los aliases para cada enemigo
 			std::unordered_map<int, std::string> aliases = emptyAliases;
-			if (e.id == 1)
+			if (e.id == 1 || e.id == 12|| e.id == 23 || e.id == 34|| e.id == 45|| e.id == 56 || e.id == 67 || e.id == 78 || e.id == 50)
 			{
 				aliases = { {0, "idle"}, {4, "attack"}, {11, "hit"}, {16, "hit"} };
 			}
