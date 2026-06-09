@@ -192,8 +192,8 @@
 	<!--NPC to unlock quest "Push the buttons"-->
 	<dialogue_tree ID="0" NPC="6">
 
-		<node id ="0" text="text1">
-			<choice id ="1" option="a1" next_node ="1"/>
+		<node id ="0" text="Do this pleaseeeee.">
+			<choice id ="1" option="Ok." next_node ="1"/>
 		</node>
 
 		<node id ="1" text="Push the buttons to be able to explore the dungeon.">
