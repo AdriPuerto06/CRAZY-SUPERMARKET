@@ -5070,8 +5070,9 @@
    <properties>
     <property name="NPC_ID" value="12"/>
     <property name="active" type="bool" value="true"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/Estatua.tsx"/>
     <property name="currentDialogueTree" type="int" value="0"/>
-    <property name="texturePath" value="Assets/Textures/Characters/Estatua.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/Estatua.png"/>
    </properties>
    <point/>
   </object>
@@ -5080,7 +5081,8 @@
     <property name="Companion_ID" type="int" value="2"/>
     <property name="Dialogue_ID" type="int" value="102"/>
     <property name="active" type="bool" value="true"/>
-    <property name="texturePath" value="Assets/Textures/companionTexture.png"/>
+    <property name="anim_tsxpath" value="Assets/Textures/Characters/Belloton.tsx"/>
+    <property name="texturePath" value="Assets/Textures/Characters/Belloton.png"/>
    </properties>
    <point/>
   </object>
