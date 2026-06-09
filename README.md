@@ -49,7 +49,6 @@ _**Main Developer - QA - 2D Artist**:_ _Adri Puerto_
 
 In this release, the following features and improvements have been implemented:
 
-- ✅ [Inventory]
 - ✅ [Stats]
 - ✅ [Items]
 - ✅ [Win & Lose]
