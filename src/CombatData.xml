@@ -32,7 +32,7 @@
 	<fight id ="103" players_id="1" enemies_id="103"></fight>
 	<fight id ="104" players_id="1" enemies_id="104"></fight>
 	
-	<player id="1" HP="25" anim_tsxpath="Assets/Textures/Characters/Prota.tsx" texturePath="Assets/Textures/Characters/Prota.png">>
+	<player id="1" HP="25" anim_tsxpath="Assets/Textures/Combat/Characters/Prota_combat.tsx" texturePath="Assets/Textures/Combat/Characters/Prota.png">>
 		<!--<attack name="Attack1" dmg ="1"></attack>
 		<attack name="Attack2" dmg ="2"></attack>
 		<attack name="Attack3" dmg ="3"></attack>
@@ -47,7 +47,7 @@
 	</player>
 	<!--Companions-->
 	<!--companions are the players except for player with id = 1, the player id is gotten from Companion_ID like this: player id = Companion_ID + 1-->
-	<player id="2" HP="25" anim_tsxpath="Assets/Textures/Characters/Maga.tsx" texturePath="Assets/Textures/Characters/Maga.png" > 
+	<player id="2" HP="25" anim_tsxpath="Assets/Textures/Combat/Characters/Maga_combat.tsx" texturePath="Assets/Textures/Combat/Characters/Maga.png" > 
 		
 		<!--Mary Nancy - Wizard-->
 		<attack_stats name="Route flames" magicPoints="3" dmg="7" effect="none" unlocked="true"></attack_stats>
@@ -56,7 +56,7 @@
 		<attack_stats name="Radioactive eruption" magicPoints="5" dmg="3" effect="paralized" unlocked="true"></attack_stats>
 
 	</player>
-	<player id="3" HP="25" anim_tsxpath="Assets/Textures/Characters/Belloto.tsx" texturePath="Assets/Combat/Characters/Belloton.png">
+	<player id="3" HP="25" anim_tsxpath="Assets/Textures/Combat/Characters/Belloton_combat.tsx" texturePath="Assets/Textures/Combat/Characters/Belloton.png">
 
 		<!--Cornelius - Healer-->
 		<attack_stats name="Delightful bomb" magicPoints="4" dmg="8" effect="none" unlocked="true"></attack_stats>
@@ -664,14 +664,14 @@
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
 	</enemy>
 
-	<enemy id ="102" HP="50" anim_tsxpath="Assets/Textures/Enemies/Espejito.tsx" texturePath="Assets/Textures/Enemies/Espejito.png">
+	<enemy id ="102" HP="50" anim_tsxpath="Assets/Textures/Combat/Enemies/Espejito_combat.tsx" texturePath="Assets/Textures/Combat/Enemies/Espejito.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="shield"></attack>
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
 	</enemy>
 
-	<enemy id ="103" HP="50" anim_tsxpath="Assets/Textures/Enemies/Boss_Cape.tsx" texturePath="Assets/Textures/Enemies/Boss_Cape.png">
+	<enemy id ="103" HP="50" anim_tsxpath="Assets/Textures/Combat/Enemies/Boss_Cape_combat.tsx" texturePath="Assets/Textures/Combat/Enemies/Boss_Cape.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="buff"></attack>
@@ -679,7 +679,7 @@
 	</enemy>
 
 	<!--Final Boss-->
-	<enemy id ="104" HP="75" anim_tsxpath="Assets/Textures/Enemies/Endemonia.tsx" texturePath="Assets/Textures/Enemies/Endemonia.png">
+	<enemy id ="104" HP="75" anim_tsxpath="Assets/Textures/Combat/Enemies/Endemonia_combat.tsx" texturePath="Assets/Textures/Combat/Enemies/Endemonia.png">
 		<attack name="Attack1" dmg ="5" effect="none"></attack>
 		<attack name="Attack2" dmg ="4" effect="none"></attack>
 		<attack name ="Attack3" dmg="6" effect="buff"></attack>
