@@ -96,8 +96,6 @@ In this release, the following features and improvements have been implemented:
 
 ## 🐞 Known Issues
 
-> - The position of some assets still needs adjustment.
-
 ---
 
 ## 📦 Installation / Execution
