@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="82" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="101">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="150" height="82" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="102">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="../Tilesets/tmw_desert_spacing.png" width="265" height="199"/>
  </tileset>
@@ -16772,9 +16772,9 @@
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
+   <tile gid="5025"/>
+   <tile gid="5026"/>
+   <tile gid="5027"/>
    <tile/>
    <tile/>
    <tile/>
@@ -16879,7 +16879,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
@@ -16923,8 +16922,9 @@
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
-   <tile gid="217"/>
-   <tile gid="217"/>
+   <tile gid="5057"/>
+   <tile gid="5058"/>
+   <tile gid="5059"/>
    <tile/>
    <tile/>
    <tile/>
@@ -17072,9 +17072,9 @@
    <tile gid="217"/>
    <tile gid="217"/>
    <tile gid="217"/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="5089"/>
+   <tile gid="5090"/>
+   <tile gid="5091"/>
    <tile/>
    <tile/>
    <tile/>
@@ -36997,7 +36997,11 @@
   <object id="97" x="1282" y="794.5" width="96" height="187"/>
  </objectgroup>
  <objectgroup id="5" name="Teleport">
-  <object id="76" x="2560" y="992" width="96" height="96"/>
+  <object id="76" x="2560" y="992" width="64" height="96">
+   <properties>
+    <property name="targetMap" value="ClothesLobby.tmx"/>
+   </properties>
+  </object>
   <object id="99" x="1216" y="832" width="64" height="128">
    <properties>
     <property name="targetMap" value="FrontRoom.tmx"/>
@@ -37011,6 +37015,7 @@
   <object id="89" x="352" y="1280" width="96" height="96"/>
   <object id="90" x="224" y="544" width="128" height="96"/>
   <object id="100" x="1184" y="832" width="32" height="128"/>
+  <object id="101" x="2624" y="992" width="32" height="96"/>
  </objectgroup>
  <objectgroup id="3" name="Entities">
   <object id="65" name="NPC8" type="NPC" x="1239.64" y="233.817">
@@ -42224,9 +42229,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="185"/>
+   <tile gid="185"/>
+   <tile gid="185"/>
    <tile/>
    <tile/>
    <tile/>
