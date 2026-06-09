@@ -657,15 +657,14 @@
 	
 	
 	<!--Bosses-->
-	<enemy id ="101" HP="50"> anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
+	<enemy id ="101" HP="50" anim_tsxpath="Assets/Textures/frisbee-Sheet.tsx" texturePath="Assets/Textures/frisbee-Sheet.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="buff"></attack>
 		<attack name="Attack4" dmg="1" effect="poison"></attack>
 	</enemy>
 
-	<enemy id ="102" HP="50">
-		anim_tsxpath="Assets/Textures/Enemies/Espejito.tsx" texturePath="Assets/Textures/Enemies/Espejito.png">
+	<enemy id ="102" HP="50" anim_tsxpath="Assets/Textures/Enemies/Espejito.tsx" texturePath="Assets/Textures/Enemies/Espejito.png">
 		<attack name="Attack1" dmg ="8" effect="none"></attack>
 		<attack name="Attack2" dmg ="1" effect="none"></attack>
 		<attack name ="Attack3" dmg="1" effect="shield"></attack>
