@@ -12,6 +12,9 @@ CRAZY-SUPERMARKET is a game about the bizarre adventures of a child who gets tra
 # 🎞 Trailer!
 https://youtu.be/tGfJtX_gN7s
 ---
+# Web Page
+https://bielcadenas2.wixsite.com/crazy-supermarket
+---
 
 ## 📖 Description
 
@@ -94,8 +97,6 @@ In this release, the following features and improvements have been implemented:
 ## 🐞 Known Issues
 
 > - The position of some assets still needs adjustment.
-> - Some assets are still missing.
-> - There is no visual feedback during combat yet.
 
 ---
 
